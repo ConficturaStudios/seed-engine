@@ -1,0 +1,11 @@
+// For use in Seed Engine client programs
+
+#ifndef SEEDENGINE_
+#define SEEDENGINE_
+
+#include "Core.hpp"
+#include "Program.hpp"
+#include "Entry.hpp"
+#include "Log.hpp"
+
+#endif()
