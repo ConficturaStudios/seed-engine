@@ -7,6 +7,8 @@
 #include "Core.hpp"
 
 namespace Engine {
+
+    // Used for all debugging and message logging
     class ENGINE_DLL Log {
 
     public:

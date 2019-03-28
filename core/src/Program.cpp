@@ -21,6 +21,9 @@ namespace Engine {
             return;
         }
 
+        ENGINE_DEBUG("Starting program clock");
+        // Set the starting time for the Time class
+        Time::start();
 
         ENGINE_DEBUG("Initializing this window and input.");
         // Spawn window
@@ -50,7 +53,7 @@ namespace Engine {
 
             //TODO: create Time calss
 
-            delta_time = 1; //TODO: set deltaTime equal to Time::getUpTime()
+            delta_time = Time::getUpTime(); //TODO: set deltaTime equal to Time::getUpTime()
             accumulator += delta_time;
 
             // Manage update rate
@@ -58,7 +61,7 @@ namespace Engine {
 
                 // Distribute updates/game ticks
 
-                // Set Time delta time value = interval
+                Time::delta_time = interval;
 
                 this->CURRENT_UPS = 1 / interval;
                 accumulator -= interval;
@@ -80,8 +83,8 @@ namespace Engine {
             if (false) {
                 ENGINE_DEBUG("Applying VSync...");
                 float loop_slot = 1.0f / this->TARGET_FPS;
-                float end_time = loop_slot; //TODO: set end_time = Time::getLastLoopTime() + loop_slot;
-                while (2 < end_time) { //TODO: check while Time::currentSysTimeS().count() < end_time
+                float end_time = Time::getLastLoopTime() + loop_slot;
+                while (Time::currentSysTimeS().count() < end_time) {
                     ENGINE_DEBUG("Sleeping on main loop thread...");
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     ENGINE_DEBUG("Main loop thread is awake.");

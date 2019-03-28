@@ -7,6 +7,7 @@ message(STATUS "Processing src CMakeLists.txt")
 set(PROJECT_SRC
     Log.cpp
     Program.cpp
+    Time.cpp
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/core/include)

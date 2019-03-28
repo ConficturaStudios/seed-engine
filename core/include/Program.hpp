@@ -3,9 +3,11 @@
 
 #include "Core.hpp"
 #include "Log.hpp"
+#include "Time.hpp"
 
 namespace Engine {
 
+    // The program that controls the window and all logic.
     class ENGINE_DLL Program {
         public:
             Program();
@@ -17,11 +19,11 @@ namespace Engine {
             const float TARGET_UPS = 30; //TODO: Initialize from engine or game .ini file
 
             // Runs the program logic. Should be launched on a new thread.
-            // (int*) exit_code: A pointer to pass the returned exit code of the main loop.
+            // @param(int*) exit_code: A pointer to pass the returned exit code of the main loop.
             void run(int*);
 
             // Aborts this program during runtime.
-            // (int) error: The error code to return.
+            // @param(int) error: The error code to return.
             void abort(int);
 
             // Specifies the game to run.

@@ -6,7 +6,9 @@
 #include "Program.hpp"
 
 namespace Engine {
+
     // To be definied by client application
+    // @returns: A pointer to a new program object.
     extern Program* CreateProgram();
 
     int main(int argc, char** argv) {

@@ -4,6 +4,7 @@
 #define SEEDENGINE_
 
 #include "Core.hpp"
+#include "Time.hpp"
 #include "Program.hpp"
 #include "Entry.hpp"
 #include "Log.hpp"
