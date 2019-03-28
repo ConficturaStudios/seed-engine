@@ -22,11 +22,11 @@ namespace Engine {
 
         // Returns the game paused setting.
         // @returns: The paused state.
-        static bool isPaused();
+        inline static bool isPaused() { return paused; }
 
         // Returns the current delta time.
         // @returns: The current delta time.
-        static float getDeltaTime();
+        inline static float getDeltaTime() { return delta_time; }
 
         // Sets the time scale of the program to the passed value.
         // @param(float) time_scale: The new time scale value.
@@ -35,7 +35,7 @@ namespace Engine {
 
         // Returns the current time scale.
         // @returns: The current time scale.
-        static float getTimeScale();
+        inline static float getTimeScale() { return time_scale; }
 
         // Returns the time between updates.
         // @returns: The current update time in milliseconds.
@@ -43,7 +43,7 @@ namespace Engine {
 
         // Returns the time of the last update loop.
         // @returns: The time of the last update loop.
-        static float getLastLoopTime();
+        inline static float getLastLoopTime() { return (float)(last_loop_time.count()); }
 
         // Returns the current system time in milliseconds.
         // @returns: The current system time in milliseconds.

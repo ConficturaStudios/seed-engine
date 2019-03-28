@@ -28,14 +28,6 @@ namespace Engine {
         return paused;
     }
 
-    bool Time::isPaused() {
-        return Time::paused;
-    }
-
-    float Time::getDeltaTime() {
-        return Time::delta_time;
-    }
-
     float Time::setTimeScale(float time_scale) {
         float t = Time::time_scale;
         if (time_scale == 0 && !Time::paused) {
@@ -48,23 +40,13 @@ namespace Engine {
         return t;
     }
 
-    float Time::getTimeScale()
-    {
-        return Time::time_scale;
-    }
-
     float Time::getUpTime()
     {
-        float time = Time::elapsedTimeMS().count();
+        float time = (float)(Time::elapsedTimeMS().count());
         float deltaTime = time - Time::last_loop_time.count();
         std::chrono::milliseconds llt((int)(time));
         Time::last_loop_time = llt;
         return deltaTime * Time::getTimeScale();
-    }
-
-    float Time::getLastLoopTime()
-    {
-        return Time::last_loop_time.count();
     }
 
     std::chrono::milliseconds Time::currentSysTimeMS()
