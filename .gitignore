@@ -26,4 +26,4 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 *.bat
-.project_conf
+*.project_conf
