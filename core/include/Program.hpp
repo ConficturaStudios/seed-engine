@@ -39,10 +39,10 @@ namespace Engine {
 
             // The game loaded into this program. Will be nullptr if none has been loaded.
             // ** IN DEVELOPMENT **
-            int* game; //TODO: replace int* with actual game class
+            int* game = nullptr; //TODO: replace int* with actual game class
             // The game state loaded into this program. Will be nullptr if none has been loaded.
             // ** IN DEVELOPMENT **
-            int* game_state; //TODO: replace int* with actual game state class
+            int* game_state = nullptr; //TODO: replace int* with actual game state class
 
             // Internal flag that instructs the program to abort.
             bool abort_flag = false;

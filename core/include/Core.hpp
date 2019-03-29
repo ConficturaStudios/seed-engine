@@ -55,8 +55,13 @@
 #endif
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <thread>
 #include <chrono>
+#include <map>
+#include <vector>
+#include <iterator>
+#include <regex>
 
 #endif

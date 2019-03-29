@@ -4,6 +4,7 @@
 #include "Core.hpp"
 #include "Log.hpp"
 #include "Program.hpp"
+#include "Parser.hpp"
 
 namespace Engine {
 
@@ -27,6 +28,17 @@ namespace Engine {
 
         ENGINE_INFO("Program running on a new thread.");
 
+        program->loadGame();
+
+        // Test ini parser
+        Util::Parser::iniFile test_file = Util::Parser::parseINI("../../core/data/test_config.ini");
+
+        ENGINE_INFO("Press enter to exit...");
+
+        std::cin.get();
+
+        program->abort(0);
+
         // Wait for the main execution thread to complete before closing the program
         main_exe.join();
         ENGINE_INFO("Threads joined.");
@@ -34,6 +46,7 @@ namespace Engine {
         delete program;
 
         ENGINE_INFO("Exiting...");
+        std::this_thread::sleep_for(std::chrono::seconds(3));
         return exit_code;
     }
 }

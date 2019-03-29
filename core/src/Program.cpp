@@ -67,27 +67,27 @@ namespace Engine {
                 accumulator -= interval;
             }
 
-            ENGINE_DEBUG("Running render pass...");
+            //ENGINE_DEBUG("Running render pass...");
 
             // Run pre-render logic
 
             // Run render pass
 
-            ENGINE_DEBUG("Updating render window...");
+            //ENGINE_DEBUG("Updating render window...");
             // Update window
 
-            ENGINE_DEBUG("Updating Current FPS value...");
+            //ENGINE_DEBUG("Updating Current FPS value...");
             this->CURRENT_FPS = 1 / delta_time;
 
             // Sync time if vsync is enabled
             if (false) {
-                ENGINE_DEBUG("Applying VSync...");
+                //ENGINE_DEBUG("Applying VSync...");
                 float loop_slot = 1.0f / this->TARGET_FPS;
                 float end_time = Time::getLastLoopTime() + loop_slot;
                 while (Time::currentSysTimeS().count() < end_time) {
-                    ENGINE_DEBUG("Sleeping on main loop thread...");
+                    //ENGINE_DEBUG("Sleeping on main loop thread...");
                     std::this_thread::sleep_for(std::chrono::seconds(1));
-                    ENGINE_DEBUG("Main loop thread is awake.");
+                    //ENGINE_DEBUG("Main loop thread is awake.");
                 }
             }
 
@@ -102,7 +102,7 @@ namespace Engine {
 
         if (this->abort_flag) {
             *exit_code = this->abort_code;
-            ENGINE_WARN("this aborted. Exiting exection thread.");
+            ENGINE_WARN("Program aborted. Exiting exection thread.");
         }
         // TODO: add game and window exit logic
         else {

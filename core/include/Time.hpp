@@ -79,9 +79,9 @@ namespace Engine {
         // The last active time scale.
         static float last_time_scale;
         // The start time of the program
-        static std::chrono::milliseconds start_time;
+        static ENGINE_DLL std::chrono::milliseconds start_time;
         // The last update loop time value.
-        static std::chrono::milliseconds last_loop_time;
+        static ENGINE_DLL std::chrono::milliseconds last_loop_time;
 
     };
 }
