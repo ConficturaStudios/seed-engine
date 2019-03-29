@@ -1,7 +1,0 @@
-lang cpp
-git_f false
-bat_f true
-ci_f false
-test_f true
-built_deb_f true
-built_rel_f true
