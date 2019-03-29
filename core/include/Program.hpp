@@ -23,8 +23,12 @@ namespace Engine {
             void run(int*);
 
             // Aborts this program during runtime.
-            // @param(int) error: The error code to return.
+            // @param(int) error: The error code to return console.
             void abort(int);
+
+            // Exits this program.
+            // @param(int) exit_code: The exit code to return to the console.
+            void exit(int);
 
             // Specifies the game to run.
             // ** IN DEVELOPMENT **
@@ -48,6 +52,11 @@ namespace Engine {
             bool abort_flag = false;
             // Stores the required error code upon abort.
             int abort_code = 0;
+
+            // Internal flag that instructs the program to exit.
+            bool exit_flag = false;
+            // Stores the required exit code upon exit.
+            int exit_code = 0;
 
             // The current frames per second of this instance.
             float CURRENT_FPS = TARGET_FPS;

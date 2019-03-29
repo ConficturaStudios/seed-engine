@@ -17,7 +17,12 @@ namespace Engine {
         }
         if (this->abort_flag) {
             *exit_code = this->abort_code;
-            ENGINE_WARN("this aborted. Exiting exection thread.");
+            ENGINE_WARN("Program aborted. Exiting exection thread.");
+            return;
+        }
+        else if (this->exit_flag) {
+            *exit_code = this->exit_code;
+            ENGINE_INFO("Execution complete. Exiting exection thread.");
             return;
         }
 
@@ -44,12 +49,12 @@ namespace Engine {
         ENGINE_DEBUG("Loading game data.");
         // Load game data into application
 
-        // TODO: store the execution time of the this from load
+        //TODO: store the execution time of the this from load
 
         ENGINE_DEBUG("Starting main loop...");
         // Main this loop
         // TODO: allow the game and window to each control the this exit
-        while (!this->abort_flag) {
+        while (!this->abort_flag && !this->exit_flag) {
 
             //TODO: create Time calss
 
@@ -102,11 +107,11 @@ namespace Engine {
 
         if (this->abort_flag) {
             *exit_code = this->abort_code;
-            ENGINE_WARN("Program aborted. Exiting exection thread.");
+            ENGINE_ERROR("Program aborted. Exiting exection thread.");
         }
         // TODO: add game and window exit logic
         else {
-            *exit_code = 0;
+            *exit_code = this->exit_code;
             ENGINE_INFO("Execution complete. Exiting exection thread.");
         }
 
@@ -114,10 +119,17 @@ namespace Engine {
 
     }
 
+    //TODO: clean up abort functionality, wrap into exit(int) call
     void Program::abort(int error) {
         this->abort_code = error;
         this->abort_flag = true;
-        ENGINE_WARN("Aborting program...");
+        ENGINE_ERROR("Aborting program...");
+    }
+
+    void Program::exit(int exit_code) {
+        this->exit_code = exit_code;
+        this->exit_flag = true;
+        ENGINE_INFO("Exiting program...");
     }
 
     void Program::loadGame() {

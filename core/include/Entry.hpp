@@ -37,7 +37,7 @@ namespace Engine {
 
         std::cin.get();
 
-        program->abort(0);
+        program->exit(0);
 
         // Wait for the main execution thread to complete before closing the program
         main_exe.join();
@@ -45,7 +45,8 @@ namespace Engine {
         // Delete any memory used by the program
         delete program;
 
-        ENGINE_INFO("Exiting...");
+        //TODO: Change finished message type based on exit code
+        ENGINE_INFO("Finishing with exit code " + std::to_string(exit_code) + "...");
         std::this_thread::sleep_for(std::chrono::seconds(3));
         return exit_code;
     }
