@@ -5,6 +5,7 @@
 #include "Log.hpp"
 #include "Program.hpp"
 #include "Parser.hpp"
+#include "Event.hpp"
 
 namespace Engine {
 
@@ -29,6 +30,18 @@ namespace Engine {
         ENGINE_INFO("Program running on a new thread.");
 
         program->loadGame();
+
+        // Test Event System
+        /*
+        Event::MouseButtonEvent e = Event::MouseButtonEvent(0, Event::ButtonState::PRESSED, 0, 0);
+        
+        Event::EventDispatcher::registerDeligate(Event::MouseButtonEvent::EVENT_ID, [](Event::Event* e) -> bool {
+            std::string str = std::string("Event '") + (e->getName()) + "' occured";
+            ENGINE_DEBUG(str);
+            return true;
+        });
+
+        Event::EventDispatcher::push(&e);*/
 
         // Test ini parser
         Util::Parser::iniFile test_file = Util::Parser::parseINI("../../core/data/test_config.ini");

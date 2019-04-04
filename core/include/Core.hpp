@@ -56,12 +56,21 @@
 
 #include <iostream>
 #include <fstream>
+
 #include <string>
+
 #include <thread>
 #include <chrono>
+
+#include <queue>
 #include <map>
 #include <vector>
 #include <iterator>
+
 #include <regex>
+#include <functional>
+#include <algorithm>
+
+#define FLAG(x) (1 << x)
 
 #endif

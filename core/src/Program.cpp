@@ -12,16 +12,16 @@ namespace Engine {
 
     void Program::run(int* exit_code) {
         ENGINE_DEBUG("Main loop running.");
-        while (this->game == nullptr && !this->abort_flag) {
+        while (this->game_ == nullptr && !this->abort_flag_) {
             ENGINE_DEBUG("Waiting for game to be loaded...");
         }
-        if (this->abort_flag) {
-            *exit_code = this->abort_code;
+        if (this->abort_flag_) {
+            *exit_code = this->abort_code_;
             ENGINE_WARN("Program aborted. Exiting exection thread.");
             return;
         }
-        else if (this->exit_flag) {
-            *exit_code = this->exit_code;
+        else if (this->exit_flag_) {
+            *exit_code = this->exit_code_;
             ENGINE_INFO("Execution complete. Exiting exection thread.");
             return;
         }
@@ -54,21 +54,24 @@ namespace Engine {
         ENGINE_DEBUG("Starting main loop...");
         // Main this loop
         // TODO: allow the game and window to each control the this exit
-        while (!this->abort_flag && !this->exit_flag) {
+        while (!this->abort_flag_ && !this->exit_flag_) {
 
             //TODO: create Time calss
 
             delta_time = Time::getUpTime(); //TODO: set deltaTime equal to Time::getUpTime()
             accumulator += delta_time;
 
+            // Handle event buffer and event dispatchers
+            Event::EventDispatcher::run(0);
+
             // Manage update rate
             while (accumulator >= interval) {
 
                 // Distribute updates/game ticks
 
-                Time::delta_time = interval;
+                Time::delta_time_ = interval;
 
-                this->CURRENT_UPS = 1 / interval;
+                this->current_ups_ = 1 / interval;
                 accumulator -= interval;
             }
 
@@ -82,7 +85,7 @@ namespace Engine {
             // Update window
 
             //ENGINE_DEBUG("Updating Current FPS value...");
-            this->CURRENT_FPS = 1 / delta_time;
+            this->current_fps_ = 1 / delta_time;
 
             // Sync time if vsync is enabled
             if (false) {
@@ -105,13 +108,13 @@ namespace Engine {
         // Delete any consumed memory
 
 
-        if (this->abort_flag) {
-            *exit_code = this->abort_code;
+        if (this->abort_flag_) {
+            *exit_code = this->abort_code_;
             ENGINE_ERROR("Program aborted. Exiting exection thread.");
         }
         // TODO: add game and window exit logic
         else {
-            *exit_code = this->exit_code;
+            *exit_code = this->exit_code_;
             ENGINE_INFO("Execution complete. Exiting exection thread.");
         }
 
@@ -121,21 +124,21 @@ namespace Engine {
 
     //TODO: clean up abort functionality, wrap into exit(int) call
     void Program::abort(int error) {
-        this->abort_code = error;
-        this->abort_flag = true;
+        this->abort_code_ = error;
+        this->abort_flag_ = true;
         ENGINE_ERROR("Aborting program...");
     }
 
     void Program::exit(int exit_code) {
-        this->exit_code = exit_code;
-        this->exit_flag = true;
+        this->exit_code_ = exit_code;
+        this->exit_flag_ = true;
         ENGINE_INFO("Exiting program...");
     }
 
     void Program::loadGame() {
         ENGINE_INFO("Loading Game...");
-        if (this->game == nullptr) {
-            this->game = new int(0);
+        if (this->game_ == nullptr) {
+            this->game_ = new int(0);
         }
         else {
             ENGINE_WARN("A game has already been loaded to the program. Aborting current application, relaunching with new game.");
@@ -144,13 +147,13 @@ namespace Engine {
     }
 
     void Program::loadGameState() {
-        if (this->game == nullptr) {
+        if (this->game_ == nullptr) {
             ENGINE_ERROR("No game data is available to load into this state. Skipping operation.");
             return;
         }
         ENGINE_INFO("Loading Game State...");
-        if (this->game_state == nullptr) {
-            this->game_state = new int(0);
+        if (this->game_state_ == nullptr) {
+            this->game_state_ = new int(0);
         }
         else {
             ENGINE_WARN("A game state has already been loaded to the program. This action will reload the game with the new data.");

@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.0)
 message(STATUS "Processing src CMakeLists.txt")
 
 set(PROJECT_SRC
+    Event.cpp
     Log.cpp
     Parser.cpp
     Program.cpp

@@ -5,8 +5,9 @@
 
 namespace Engine {
 
+    #pragma warning(disable: 4251)
     // Controls time related data for the application.
-    class Time {
+    class ENGINE_DLL Time {
 
     // Allow Program::run(int*) to access private members
     friend class Program;
@@ -22,11 +23,11 @@ namespace Engine {
 
         // Returns the game paused setting.
         // @returns: The paused state.
-        inline static bool isPaused() { return paused; }
+        inline static bool isPaused() { return paused_; }
 
         // Returns the current delta time.
         // @returns: The current delta time.
-        inline static float getDeltaTime() { return delta_time; }
+        inline static float getDeltaTime() { return delta_time_; }
 
         // Sets the time scale of the program to the passed value.
         // @param(float) time_scale: The new time scale value.
@@ -35,7 +36,7 @@ namespace Engine {
 
         // Returns the current time scale.
         // @returns: The current time scale.
-        inline static float getTimeScale() { return time_scale; }
+        inline static float getTimeScale() { return time_scale_; }
 
         // Returns the time between updates.
         // @returns: The current update time in milliseconds.
@@ -43,7 +44,7 @@ namespace Engine {
 
         // Returns the time of the last update loop.
         // @returns: The time of the last update loop.
-        inline static float getLastLoopTime() { return (float)(last_loop_time.count()); }
+        inline static float getLastLoopTime() { return (float)(last_loop_time_.count()); }
 
         // Returns the current system time in milliseconds.
         // @returns: The current system time in milliseconds.
@@ -70,18 +71,18 @@ namespace Engine {
     private:
 
         // The time between frames in milliseconds.
-        static float delta_time;
+        static float delta_time_;
         // Is the game paused.
-        static bool paused;
+        static bool paused_;
 
         // The current time scale.
-        static float time_scale;
+        static float time_scale_;
         // The last active time scale.
-        static float last_time_scale;
+        static float last_time_scale_;
         // The start time of the program
-        static ENGINE_DLL std::chrono::milliseconds start_time;
+        static std::chrono::milliseconds start_time_;
         // The last update loop time value.
-        static ENGINE_DLL std::chrono::milliseconds last_loop_time;
+        static std::chrono::milliseconds last_loop_time_;
 
     };
 }

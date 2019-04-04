@@ -4,6 +4,7 @@
 #include "Core.hpp"
 #include "Log.hpp"
 #include "Time.hpp"
+#include "Event.hpp"
 
 namespace Engine {
 
@@ -43,25 +44,25 @@ namespace Engine {
 
             // The game loaded into this program. Will be nullptr if none has been loaded.
             // ** IN DEVELOPMENT **
-            int* game = nullptr; //TODO: replace int* with actual game class
+            int* game_ = nullptr; //TODO: replace int* with actual game class
             // The game state loaded into this program. Will be nullptr if none has been loaded.
             // ** IN DEVELOPMENT **
-            int* game_state = nullptr; //TODO: replace int* with actual game state class
+            int* game_state_ = nullptr; //TODO: replace int* with actual game state class
 
             // Internal flag that instructs the program to abort.
-            bool abort_flag = false;
+            bool abort_flag_ = false;
             // Stores the required error code upon abort.
-            int abort_code = 0;
+            int abort_code_ = 0;
 
             // Internal flag that instructs the program to exit.
-            bool exit_flag = false;
+            bool exit_flag_ = false;
             // Stores the required exit code upon exit.
-            int exit_code = 0;
+            int exit_code_ = 0;
 
             // The current frames per second of this instance.
-            float CURRENT_FPS = TARGET_FPS;
+            float current_fps_ = TARGET_FPS;
             // The current updates per second of this instance.
-            float CURRENT_UPS = TARGET_UPS;
+            float current_ups_ = TARGET_UPS;
 
     };
 }

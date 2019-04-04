@@ -8,6 +8,7 @@
 #include "Parser.hpp"
 #include "Program.hpp"
 #include "Entry.hpp"
+#include "Event.hpp"
 #include "Log.hpp"
 
 #endif()
