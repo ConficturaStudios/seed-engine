@@ -33,7 +33,7 @@ namespace Engine {
 
         // Test Event System
         /*
-        Event::MouseButtonEvent e = Event::MouseButtonEvent(0, Event::ButtonState::PRESSED, 0, 0);
+        Event::MouseButtonEvent e = Event::MouseButtonEvent(0, Event::ButtonState::PRESSED);
         
         Event::EventDispatcher::registerDeligate(Event::MouseButtonEvent::EVENT_ID, [](Event::Event* e) -> bool {
             std::string str = std::string("Event '") + (e->getName()) + "' occured";

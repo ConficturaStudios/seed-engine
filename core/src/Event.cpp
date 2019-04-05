@@ -18,14 +18,23 @@ namespace Engine {
             EventDispatcher::deligate_regtistry[event_id].push_back(deligate);
         }
 
-        void EventDispatcher::push(Event* event_ref) {
-            EventDispatcher::event_buffer.push(event_ref);
+        void EventDispatcher::push(Event* event_ptr) {
+            EventDispatcher::event_buffer.push(event_ptr);
         }
 
         Event* EventDispatcher::pop() {
             Event* next_event = EventDispatcher::event_buffer.front();
             EventDispatcher::event_buffer.pop();
             return next_event;
+        }
+
+        void EventDispatcher::force(Event* event_ptr) {
+            // Iterate through all delegates bound to this event
+            for each (std::function<bool(Event*)> deligate in EventDispatcher::deligate_regtistry[event_ptr->getId()])
+            {
+                // Call the function
+                deligate(event_ptr);
+            }
         }
 
         void EventDispatcher::run(unsigned int type_filter) {

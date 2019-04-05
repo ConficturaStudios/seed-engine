@@ -40,6 +40,11 @@ namespace Engine {
             // ** IN DEVELOPMENT **
             void loadGameState(); //TODO: Create game state (similar to save game data) class, pass to this function
 
+            // The event binding to be called when the window is closed.
+            // @param(Event::Event*) e: A pointer to the event being called
+            // @returns: True if no errors occur.
+            bool onClose(Event::Event*);
+
         private:
 
             // The game loaded into this program. Will be nullptr if none has been loaded.

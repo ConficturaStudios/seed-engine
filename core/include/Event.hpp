@@ -6,6 +6,8 @@
 namespace Engine {
     namespace Event {
 
+        //TODO: Finish event documentation
+
         // The type classification assigned to an event.
         enum class EventType : unsigned int {
             // A generic event.
@@ -44,12 +46,22 @@ namespace Engine {
 
         public:
 
+            // Constructs a new Event.
             Event() {}
 
+            // Returns the type of event this is.
+            // @returns: The event type.
             virtual EventType getEventType() const = 0;
+            // Returns the name of this event.
+            // @returns: The name of this event.
             virtual const char* getName() const = 0;
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
             virtual const unsigned int getId() const = 0;
 
+            // Checks if this event is of a specific type.
+            // @param(EventType) type: The type to check against.
+            // @returns: True if this is of the passed type.
             inline bool isType(EventType type) {
                 unsigned int uint_t = static_cast<unsigned int>(type);
                 return ((static_cast<unsigned int>(getEventType()) & uint_t) == uint_t);
@@ -57,6 +69,7 @@ namespace Engine {
 
         protected:
 
+            // Has this event been handled?
             bool handled = false;
 
         };
@@ -67,44 +80,446 @@ namespace Engine {
 
         public:
 
+            // Registers a function delegate to a specific Event ID to bind the actions.
+            // @param(const unsigned int) event_id: The ID of the event to bind to.
+            // @param(std::function<bool(Event*)>) deligate: The function to bind to the event.
             static void registerDeligate(const unsigned int, std::function<bool(Event*)>);
 
+            // Pushs an event into the event queue
+            // @param(Event*) event_ptr: A pointer to the event to occur.
             static void push(Event*);
 
+            // Removes and returns the next event in the buffer.
+            // @returns: The next event in the buffer.
             static Event* pop();
 
+            // Forces an event to notify its bound functions without adding it to the queue. This is a blocking event.
+            // @param(Event*) event_ptr: The event to force through.
+            static void force(Event*);
+
+            // Runs the deligate functions for every event in the buffer of the specified type.
+            // The events are removed after execution of its deligates.
+            // @param(unsigned int) type_filter: The types that will be run, skipping all others
             static void run(unsigned int);
 
 
         private:
 
+            // The event buffer queue.
             static std::queue<Event*> event_buffer;
+            // A mapped registry of all events and their bound functions.
             static std::map<const unsigned int, std::vector<std::function<bool(Event*)>>> deligate_regtistry;
 
         };
 
         // Event Subclasses
 
-
-        // An event triggered by mouse input.
-        class ENGINE_DLL MouseEvent : public Event {
+        // An event triggered by the system.
+        class ENGINE_DLL SystemEvent : public Event {
 
         public:
 
+            // Constructs a new System Event.
+            SystemEvent() : Event() {}
+
+            // Returns the type of event this is.
+            // @returns: The event type.
+            EventType getEventType() const { return EventType::SYSTEM; }
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "System Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::SYSTEM) << 3);
+
+        protected:
+
+        };
+
+        // An event triggered by the client application.
+        class ENGINE_DLL ClientEvent : public Event {
+
+        public:
+
+            // Constructs a new Client Event.
+            ClientEvent() : Event() {}
+
+            // Returns the type of event this is.
+            // @returns: The event type.
+            EventType getEventType() const { return EventType::CLIENT; }
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Client Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CLIENT) << 3);
+
+        protected:
+
+        };
+
+        // An event triggered by the engine itself.
+        class ENGINE_DLL EngineEvent : public Event {
+
+        public:
+
+            // Constructs a new Engine Event.
+            EngineEvent() : Event() {}
+
+            // Returns the type of event this is.
+            // @returns: The event type.
+            EventType getEventType() const { return EventType::ENGINE; }
+
+        protected:
+
+        };
+
+        // An event triggered by an engine logic tick.
+        class ENGINE_DLL EngineTickEvent : public EngineEvent {
+
+        public:
+
+            // Constructs a new Engine Tick Event.
+            // @param(float) delta_time: The delta time of the application
+            EngineTickEvent(float delta_time)
+                : EngineEvent(), delta_time_(delta_time) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Engine Tick Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // Returns the delta time during this event.
+            // @returns: The delta time when this event occured.
+            inline float deltaTime() { return delta_time_; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3);
+
+        protected:
+
+            // The delta time when this event occured.
+            float delta_time_;
+
+        };
+
+        // An event triggered during the render of a frame.
+        class ENGINE_DLL EngineRenderEvent : public EngineEvent {
+
+        public:
+
+            // Constructs a new Engine Render Event.
+            EngineRenderEvent()
+                : EngineEvent() {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Engine Render Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 1;
+
+        protected:
+
+        };
+
+        // An event triggered before rendering a frame.
+        class ENGINE_DLL EnginePreRenderEvent : public EngineEvent {
+
+        public:
+
+            // Constructs a new Engine Pre-Render Event.
+            EnginePreRenderEvent()
+                : EngineEvent() {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Engine Pre-Render Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 2;
+
+        protected:
+
+        };
+
+        // An event triggered after rendering a frame.
+        class ENGINE_DLL EnginePostRenderEvent : public EngineEvent {
+
+        public:
+
+            // Constructs a new Engine Post-Render Event.
+            EnginePostRenderEvent()
+                : EngineEvent() {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Engine Post-Render Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 3;
+
+        protected:
+
+        };
+
+        // An event triggered after loading game data.
+        class ENGINE_DLL EngineGameLoadEvent : public EngineEvent {
+
+        public:
+
+            // Constructs a new Engine Game Load Event.
+            EngineGameLoadEvent()
+                : EngineEvent() {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Engine Game Load Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 4;
+
+        protected:
+
+        };
+
+        // An event triggered by the application window.
+        class ENGINE_DLL WindowEvent : public Event {
+
+        public:
+
+            // Constructs a new Window Event.
+            // @param(unsigned int) window_id: The ID of the affected window.
+            WindowEvent(unsigned int window_id)
+                : Event(), window_id_(window_id) {}
+
+            // Returns the type of event this is.
+            // @returns: The event type.
+            EventType getEventType() const { return EventType::WINDOW; }
+
+            // Returns the ID of the affected window.
+            // @returns: The ID of the affected window.
+            inline unsigned int windowId() { return window_id_; }
+
+        protected:
+
+            // The ID of the affected window
+            unsigned int window_id_;
+
+        };
+
+        // An event triggered when a window is closed.
+        class ENGINE_DLL WindowCloseEvent : public WindowEvent {
+
+        public:
+
+            // Constructs a new Window Closed Event.
+            // @param(unsigned int) window_id: The ID of the affected window.
+            WindowCloseEvent(unsigned int window_id)
+                : WindowEvent(window_id) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Window Close Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3);
+
+        protected:
+
+        };
+
+        // An event triggered when a window is resized.
+        class ENGINE_DLL WindowResizeEvent : public WindowEvent {
+
+        public:
+
+            // Constructs a new Window Resized Event.
+            // @param(unsigned int) window_id: The ID of the affected window.
+            // @param(float) x: The new x dimension of the window.
+            // @param(float) y: The new y dimension of the window.
+            WindowResizeEvent(unsigned int window_id, float x, float y)
+                : WindowEvent(window_id), x_(x), y_(y) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Window Resize Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // Returns the new x dimension.
+            // @returns: The new x dimension.
+            inline float x() { return x_; }
+            // Returns the new y dimension.
+            // @returns: The new y dimension.
+            inline float y() { return y_; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 1;
+
+        protected:
+
+            // The new x dimension.
+            float x_;
+            // The new y dimension.
+            float y_;
+
+        };
+
+        // An event triggered when a window changes focus.
+        class ENGINE_DLL WindowFocusEvent : public WindowEvent {
+
+        public:
+
+            // Constructs a new Window Focus Event.
+            // @param(unsigned int) window_id: The ID of the affected window.
+            // @param(bool) has_focus: True if the window has gained focus.
+            WindowFocusEvent(unsigned int window_id, bool has_focus)
+                : WindowEvent(window_id), has_focus_(has_focus) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Window Focus Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // Returns true if the window has focus.
+            // @returns: True if the window has focus.
+            inline bool hasFocus() { return has_focus_; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 2;
+
+        protected:
+
+            // True if the window has focus.
+            bool has_focus_;
+
+        };
+
+        // An event triggered when a window is updated.
+        class ENGINE_DLL WindowUpdateEvent : public WindowEvent {
+
+        public:
+
+            // Constructs a new Window Update Event.
+            // @param(unsigned int) window_id: The ID of the affected window.
+            WindowUpdateEvent(unsigned int window_id)
+                : WindowEvent(window_id) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Window Update Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 3;
+
+        protected:
+
+        };
+
+        // An event triggered when a window is created.
+        class ENGINE_DLL WindowCreatedEvent : public WindowEvent {
+
+        public:
+
+            // Constructs a new Window Created Event.
+            // @param(unsigned int) window_id: The ID of the affected window.
+            WindowCreatedEvent(unsigned int window_id)
+                : WindowEvent(window_id) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Window Created Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 4;
+
+        protected:
+
+        };
+
+        // An event triggered by peripheral hardware.
+        class ENGINE_DLL PeripheralEvent : public Event {
+
+        public:
+
+            // Constructs a new Peripheral Hardware Event.
+            PeripheralEvent() : Event() {}
+
+            // Returns the type of event this is.
+            // @returns: The event type.
+            EventType getEventType() const { return EventType::PERIPHERAL; }
+
+        protected:
+
+        };
+
+        // An event triggered by mouse input.
+        class ENGINE_DLL MouseEvent : public PeripheralEvent {
+
+        public:
+
+            // Constructs a new Mouse Event.
+            // @param(float) x: The new x position of the mouse.
+            // @param(float) y: The new y position of the mouse.
             MouseEvent(float x, float y)
-                : Event(), x_(x), y_(y) {
+                : PeripheralEvent(), x_(x), y_(y) {
                 cur_x_ = x;
                 cur_y_ = y;
             }
 
+            // Returns the type of event this is.
+            // @returns: The event type.
             EventType getEventType() const { return EventType::MOUSE; }
 
+            // Returns the new x position of the mouse.
+            // @returns: The new x position of the mouse.
             inline float x() { return x_; }
+            // Returns the new y position of the mouse.
+            // @returns: The new y position of the mouse.
             inline float y() { return y_; }
 
         protected:
-            float x_, y_;
+
+            // The new x position of the mouse.
+            float x_;
+            // The new y position of the mouse.
+            float y_;
+            // The current x position of the mouse.
             static float cur_x_;
+            // The current y position of the mouse.
             static float cur_y_;
 
         };
@@ -114,23 +529,38 @@ namespace Engine {
 
         public:
 
+            // Constructs a new Mouse Moved Event.
+            // @param(float) x: The new x position of the mouse.
+            // @param(float) y: The new y position of the mouse.
             MouseMovedEvent(float x, float y)
                 : MouseEvent(x, y) {
                 dx_ = x - cur_x_;
                 dy_ = y - cur_y_;
             }
 
+            // Returns the name of this event.
+            // @returns: The name of this event.
             const char* getName() const { return "Mouse Moved Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
             const unsigned int getId() const { return EVENT_ID; }
 
+            // Returns the change in the x position of the mouse.
+            // @returns: The change in the x position of the mouse.
             inline float dx() { return dx_; }
+            // Returns the change in the y position of the mouse.
+            // @returns: The change in the y position of the mouse.
             inline float dy() { return dy_; }
 
+            // The ID number of this event type.
             static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3);
 
         private:
 
-            float dx_, dy_;
+            // The change in the x position of the mouse.
+            float dx_;
+            // The change in the y position of the mouse.
+            float dy_;
 
         };
 
@@ -139,20 +569,34 @@ namespace Engine {
 
         public:
 
-            MouseButtonEvent(int button, ButtonState state, float x, float y)
-                : MouseEvent(x, y), button_(button), state_(state) {}
+            // Constructs a new Mouse Button Event.
+            // @param(unsigned int) button_id: The ID of the button affected.
+            // @param(ButtonState) state: The state of the affected button.
+            MouseButtonEvent(unsigned int button_id, ButtonState state)
+                : MouseEvent(cur_x_, cur_y_), button_id_(button_id), state_(state) {}
 
+            // Returns the name of this event.
+            // @returns: The name of this event.
             const char* getName() const { return "Mouse Button Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
             const unsigned int getId() const { return EVENT_ID; }
 
-            inline int button() { return button_; }
+            // Returns the ID of the button affected.
+            // @returns: The ID of the button affected.
+            inline unsigned int buttonId() { return button_id_; }
+            // Returns the state of the affected button.
+            // @returns: The state of the affected button.
             inline ButtonState state() { return state_; }
 
+            // The ID number of this event type.
             static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3) | 1;
 
         private:
 
-            int button_;
+            // The ID of the button affected.
+            unsigned int button_id_;
+            // The state of the affected button.
             ButtonState state_;
 
         };
@@ -162,47 +606,190 @@ namespace Engine {
 
         public:
 
+            // Constructs a new Mouse Scrolled Event.
+            // @param(float) x_offset: The amount to scroll in the x direction.
+            // @param(float) y_offset: The amount to scroll in the y direction.
             MouseScrolledEvent(float x_offset, float y_offset)
                 : MouseEvent(cur_x_, cur_y_), x_offset_(x_offset), y_offset_(y_offset) {}
 
+            // Returns the name of this event.
+            // @returns: The name of this event.
             const char* getName() const { return "Mouse Moved Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
             const unsigned int getId() const { return EVENT_ID; }
 
+            // Returns the amount to scroll in the x direction.
+            // @returns: The amount to scroll in the x direction.
             inline float x_offset() { return x_offset_; }
+            // Returns the amount to scroll in the y direction.
+            // @returns: The amount to scroll in the y direction.
             inline float y_offset() { return y_offset_; }
 
+            // The ID number of this event type.
             static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3) | 2;
 
         private:
 
-            float x_offset_, y_offset_;
+            // The amount to scroll in the x direction.
+            float x_offset_;
+            // The amount to scroll in the y direction.
+            float y_offset_;
 
         };
 
         // An event triggered by a keyboard action.
-        class ENGINE_DLL KeyboardEvent : public Event {
+        class ENGINE_DLL KeyboardEvent : public PeripheralEvent {
 
         public:
 
-            KeyboardEvent(int keycode, int repeat, ButtonState state)
-                : Event(), keycode_(keycode), repeat_(repeat), state_(state) {}
+            // Constructs a new Keyboard Event.
+            // @param(unsinged int) keycode: The keycode of the affected key.
+            // @param(unsinged int) repeat: The repeat count.
+            // @param(ButtonState) state: The state of the affected key.
+            KeyboardEvent(unsigned int keycode, unsigned int repeat, ButtonState state)
+                : PeripheralEvent(), keycode_(keycode), repeat_(repeat), state_(state) {}
 
 
+            // Returns the type of event this is.
+            // @returns: The event type.
             EventType getEventType() const { return EventType::KEYBOARD; }
+            // Returns the name of this event.
+            // @returns: The name of this event.
             const char* getName() const { return "Keyboard Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
             const unsigned int getId() const { return EVENT_ID; }
 
-            inline int keycode() { return keycode_; }
-            inline int repeat() { return repeat_; }
+            // Returns the keycode of the affected key.
+            // @returns: The keycode of the affected key.
+            inline unsigned int keycode() { return keycode_; }
+            // Returns the repeat count.
+            // @returns: The repeat count.
+            inline unsigned int repeat() { return repeat_; }
+            // Returns the state of the affected key.
+            // @returns: The state of the affected key.
             inline ButtonState state() { return state_; }
 
+            // The ID number of this event type.
             static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::KEYBOARD) << 3);
 
         private:
 
-            int keycode_;
-            int repeat_;
+            // The keycode of the affected key.
+            unsigned int keycode_;
+            // The repeat count.
+            unsigned int repeat_;
+            // The state of the affected key.
             ButtonState state_;
+
+        };
+
+        // An event triggered by a controller action.
+        class ENGINE_DLL ControllerEvent : public PeripheralEvent {
+
+        public:
+
+            // Constructs a new Controller Event.
+            // @param(unsinged int) controller_id: The ID of the affected controller.
+            ControllerEvent(unsigned int controller_id)
+                : PeripheralEvent(), controller_id_(controller_id) {}
+
+
+            // Returns the type of event this is.
+            // @returns: The event type.
+            EventType getEventType() const { return EventType::CONTROLLER; }
+
+            // Returns the ID of the affected controller.
+            // @returns: The ID of the affected controller.
+            inline unsigned int controllerId() { return controller_id_; }
+
+        protected:
+
+            // The ID of the affected controller.
+            unsigned int controller_id_;
+
+        };
+
+        // An event triggered by a controller button action.
+        class ENGINE_DLL ControllerButtonEvent : public ControllerEvent {
+
+        public:
+
+            // Constructs a new Controller Button Event.
+            // @param(unsinged int) controller_id: The ID of the affected controller.
+            // @param(unsinged int) button_id: The ID of the affected button.
+            // @param(ButtonState) state: The state of the affected button.
+            ControllerButtonEvent(unsigned int controller_id, unsigned int button_id, ButtonState state)
+                : ControllerEvent(controller_id), button_id_(button_id), state_(state) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Controller Button Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // Returns the ID of the button affected.
+            // @returns: The ID of the button affected.
+            inline unsigned int buttonId() { return button_id_; }
+            // Returns the state of the affected button.
+            // @returns: The state of the affected button.
+            inline ButtonState state() { return state_; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 3);
+
+        private:
+
+            // The ID of the button affected.
+            unsigned int button_id_;
+            // The state of the affected button.
+            ButtonState state_;
+
+        };
+
+        // An event triggered by a controller axis change, such as moving a joystick.
+        class ENGINE_DLL ControllerAxisEvent : public ControllerEvent {
+
+        public:
+
+            // Constructs a new Controller Axis Event.
+            // @param(unsinged int) controller_id: The ID of the affected controller.
+            // @param(unsinged int) axis_id: The ID of the affected axis.
+            // @param(float) x: The x input of the axis.
+            // @param(float) y: The y input of the axis.
+            ControllerAxisEvent(unsigned int controller_id, unsigned int axis_id, float x, float y)
+                : ControllerEvent(controller_id), axis_id_(axis_id), x_(x), y_(y) {}
+
+            // Returns the name of this event.
+            // @returns: The name of this event.
+            const char* getName() const { return "Controller Axis Event"; }
+            // Returns the ID of this event.
+            // @returns: The ID of this event.
+            const unsigned int getId() const { return EVENT_ID; }
+
+            // Returns the ID of the affected axis.
+            // @returns: The ID of the affected axis.
+            inline unsigned int axisId() { return axis_id_; }
+            // Returns the x input of the axis.
+            // @returns: The x input of the axis.
+            inline float x() { return x_; }
+            // Returns the y input of the axis.
+            // @returns: The y input of the axis.
+            inline float y() { return y_; }
+
+            // The ID number of this event type.
+            static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 3) | 1;
+
+        private:
+
+            // The ID of the affected axis.
+            unsigned int axis_id_;
+            // The x input of the axis.
+            float x_;
+            // The y input of the axis.
+            float y_;
 
         };
 

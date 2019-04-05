@@ -32,10 +32,17 @@ namespace Engine {
 
         ENGINE_DEBUG("Initializing this window and input.");
         // Spawn window
+        unsigned int window_id = 0;
+        Event::EventDispatcher::registerDeligate(Event::WindowCloseEvent::EVENT_ID, [this](Event::Event* e) -> bool {
+            this->onClose(e);
+            return true;
+        });
 
         // Enable input
 
         // Initialize window, abort with error on failure
+
+        Event::EventDispatcher::force(new Event::WindowCreatedEvent(window_id));
 
         // Bind input to window
 
@@ -48,6 +55,7 @@ namespace Engine {
 
         ENGINE_DEBUG("Loading game data.");
         // Load game data into application
+        Event::EventDispatcher::force(new Event::EngineGameLoadEvent());
 
         //TODO: store the execution time of the this from load
 
@@ -67,9 +75,10 @@ namespace Engine {
             // Manage update rate
             while (accumulator >= interval) {
 
-                // Distribute updates/game ticks
-
                 Time::delta_time_ = interval;
+
+                // Distribute updates/game ticks
+                Event::EventDispatcher::force(new Event::EngineTickEvent(Time::delta_time_));
 
                 this->current_ups_ = 1 / interval;
                 accumulator -= interval;
@@ -79,10 +88,20 @@ namespace Engine {
 
             // Run pre-render logic
 
+            Event::EventDispatcher::force(new Event::EnginePreRenderEvent());
+
             // Run render pass
+
+            Event::EventDispatcher::force(new Event::EngineRenderEvent());
+
+            // Run post-render logic
+
+            Event::EventDispatcher::force(new Event::EnginePostRenderEvent());
 
             //ENGINE_DEBUG("Updating render window...");
             // Update window
+
+            Event::EventDispatcher::force(new Event::WindowUpdateEvent(window_id));
 
             //ENGINE_DEBUG("Updating Current FPS value...");
             this->current_fps_ = 1 / delta_time;
@@ -103,6 +122,7 @@ namespace Engine {
 
         ENGINE_DEBUG("Closing main window...");
         // Close the window
+        Event::EventDispatcher::force(new Event::WindowCloseEvent(window_id));
 
         ENGINE_DEBUG("Cleaning up memory...");
         // Delete any consumed memory
@@ -159,5 +179,12 @@ namespace Engine {
             ENGINE_WARN("A game state has already been loaded to the program. This action will reload the game with the new data.");
         }
     }
+
+    bool Program::onClose(Event::Event* e) {
+        Event::WindowCloseEvent* e_typed = static_cast<Event::WindowCloseEvent*>(e);
+        exit(0);
+        return true;
+    }
+
 }
 
