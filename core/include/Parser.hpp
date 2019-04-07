@@ -9,7 +9,7 @@ namespace Engine {
 
         // A parser for processing files for the program.
         // Note: Does not include .lua support, use the Lua class for this.
-        class ENGINE_DLL Parser {
+        class Parser {
 
         public:
 

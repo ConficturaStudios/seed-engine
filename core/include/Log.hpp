@@ -9,7 +9,7 @@
 namespace Engine {
 
     // Used for all debugging and message logging
-    class ENGINE_DLL Log {
+    class Log {
 
     public:
         
@@ -25,6 +25,8 @@ namespace Engine {
 
     };
 }
+
+//TODO: Modify code to check for ENGINE_COMPILE_DEBUG
 
 #define ENGINE_TRACE(...) Engine::Log::GetEngineLogger()->trace(__VA_ARGS__)
 #define ENGINE_DEBUG(...) Engine::Log::GetEngineLogger()->debug(__VA_ARGS__)

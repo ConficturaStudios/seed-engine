@@ -5,14 +5,22 @@
 #define SEEDENGINE_VERSION_MINOR 0
 #define SEEDENGINE_VERSION_PATCH 1
 
+#ifdef ENGINE_COMPILE_DEBUG
+    #define D3DCOMPILE_DEBUG 1
+#endif
+
 #if defined(_WIN32)
 // Windows Preprocessor Definitions
 
-    #ifndef ENGINE_EXPORT
+    /*#ifndef ENGINE_EXPORT
         #define ENGINE_DLL __declspec(dllimport)
     #else
         #define ENGINE_DLL __declspec(dllexport)
-    #endif
+    #endif*/
+
+    #include <d2d1.h>
+    #include <d3d11.h> // Direct3D 11
+    #include <d3d12.h> // Direct3D 12
 
     #if defined(_WIN64)
     // x64 Windows Specific Preprocessor Definitions

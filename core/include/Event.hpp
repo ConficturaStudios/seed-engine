@@ -40,7 +40,7 @@ namespace Engine {
         };
 
         // An event to be processed by the program.
-        class ENGINE_DLL Event {
+        class Event {
 
             friend class EventDispatcher;
 
@@ -74,9 +74,8 @@ namespace Engine {
 
         };
 
-        #pragma warning(disable: 4251)
         // An event dispatcher for handling event buffering and the distribution of events to deligates.
-        class ENGINE_DLL EventDispatcher {
+        class EventDispatcher {
 
         public:
 
@@ -115,7 +114,7 @@ namespace Engine {
         // Event Subclasses
 
         // An event triggered by the system.
-        class ENGINE_DLL SystemEvent : public Event {
+        class SystemEvent : public Event {
 
         public:
 
@@ -140,7 +139,7 @@ namespace Engine {
         };
 
         // An event triggered by the client application.
-        class ENGINE_DLL ClientEvent : public Event {
+        class ClientEvent : public Event {
 
         public:
 
@@ -165,7 +164,7 @@ namespace Engine {
         };
 
         // An event triggered by the engine itself.
-        class ENGINE_DLL EngineEvent : public Event {
+        class EngineEvent : public Event {
 
         public:
 
@@ -181,7 +180,7 @@ namespace Engine {
         };
 
         // An event triggered by an engine logic tick.
-        class ENGINE_DLL EngineTickEvent : public EngineEvent {
+        class EngineTickEvent : public EngineEvent {
 
         public:
 
@@ -212,7 +211,7 @@ namespace Engine {
         };
 
         // An event triggered during the render of a frame.
-        class ENGINE_DLL EngineRenderEvent : public EngineEvent {
+        class EngineRenderEvent : public EngineEvent {
 
         public:
 
@@ -235,7 +234,7 @@ namespace Engine {
         };
 
         // An event triggered before rendering a frame.
-        class ENGINE_DLL EnginePreRenderEvent : public EngineEvent {
+        class EnginePreRenderEvent : public EngineEvent {
 
         public:
 
@@ -258,7 +257,7 @@ namespace Engine {
         };
 
         // An event triggered after rendering a frame.
-        class ENGINE_DLL EnginePostRenderEvent : public EngineEvent {
+        class EnginePostRenderEvent : public EngineEvent {
 
         public:
 
@@ -281,7 +280,7 @@ namespace Engine {
         };
 
         // An event triggered after loading game data.
-        class ENGINE_DLL EngineGameLoadEvent : public EngineEvent {
+        class EngineGameLoadEvent : public EngineEvent {
 
         public:
 
@@ -304,7 +303,7 @@ namespace Engine {
         };
 
         // An event triggered by the application window.
-        class ENGINE_DLL WindowEvent : public Event {
+        class WindowEvent : public Event {
 
         public:
 
@@ -329,7 +328,7 @@ namespace Engine {
         };
 
         // An event triggered when a window is closed.
-        class ENGINE_DLL WindowCloseEvent : public WindowEvent {
+        class WindowCloseEvent : public WindowEvent {
 
         public:
 
@@ -353,7 +352,7 @@ namespace Engine {
         };
 
         // An event triggered when a window is resized.
-        class ENGINE_DLL WindowResizeEvent : public WindowEvent {
+        class WindowResizeEvent : public WindowEvent {
 
         public:
 
@@ -391,7 +390,7 @@ namespace Engine {
         };
 
         // An event triggered when a window changes focus.
-        class ENGINE_DLL WindowFocusEvent : public WindowEvent {
+        class WindowFocusEvent : public WindowEvent {
 
         public:
 
@@ -423,7 +422,7 @@ namespace Engine {
         };
 
         // An event triggered when a window is updated.
-        class ENGINE_DLL WindowUpdateEvent : public WindowEvent {
+        class WindowUpdateEvent : public WindowEvent {
 
         public:
 
@@ -447,7 +446,7 @@ namespace Engine {
         };
 
         // An event triggered when a window is created.
-        class ENGINE_DLL WindowCreatedEvent : public WindowEvent {
+        class WindowCreatedEvent : public WindowEvent {
 
         public:
 
@@ -471,7 +470,7 @@ namespace Engine {
         };
 
         // An event triggered by peripheral hardware.
-        class ENGINE_DLL PeripheralEvent : public Event {
+        class PeripheralEvent : public Event {
 
         public:
 
@@ -487,7 +486,7 @@ namespace Engine {
         };
 
         // An event triggered by mouse input.
-        class ENGINE_DLL MouseEvent : public PeripheralEvent {
+        class MouseEvent : public PeripheralEvent {
 
         public:
 
@@ -525,7 +524,7 @@ namespace Engine {
         };
 
         // An event triggered by mouse movement.
-        class ENGINE_DLL MouseMovedEvent : public MouseEvent {
+        class MouseMovedEvent : public MouseEvent {
 
         public:
 
@@ -565,7 +564,7 @@ namespace Engine {
         };
 
         // An event triggered by a mouse button.
-        class ENGINE_DLL MouseButtonEvent : public MouseEvent {
+        class MouseButtonEvent : public MouseEvent {
 
         public:
 
@@ -602,7 +601,7 @@ namespace Engine {
         };
 
         // An event triggered by mouse movement.
-        class ENGINE_DLL MouseScrolledEvent : public MouseEvent {
+        class MouseScrolledEvent : public MouseEvent {
 
         public:
 
@@ -639,7 +638,7 @@ namespace Engine {
         };
 
         // An event triggered by a keyboard action.
-        class ENGINE_DLL KeyboardEvent : public PeripheralEvent {
+        class KeyboardEvent : public PeripheralEvent {
 
         public:
 
@@ -686,7 +685,7 @@ namespace Engine {
         };
 
         // An event triggered by a controller action.
-        class ENGINE_DLL ControllerEvent : public PeripheralEvent {
+        class ControllerEvent : public PeripheralEvent {
 
         public:
 
@@ -712,7 +711,7 @@ namespace Engine {
         };
 
         // An event triggered by a controller button action.
-        class ENGINE_DLL ControllerButtonEvent : public ControllerEvent {
+        class ControllerButtonEvent : public ControllerEvent {
 
         public:
 
@@ -750,7 +749,7 @@ namespace Engine {
         };
 
         // An event triggered by a controller axis change, such as moving a joystick.
-        class ENGINE_DLL ControllerAxisEvent : public ControllerEvent {
+        class ControllerAxisEvent : public ControllerEvent {
 
         public:
 

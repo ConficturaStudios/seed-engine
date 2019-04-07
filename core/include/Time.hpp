@@ -5,9 +5,8 @@
 
 namespace Engine {
 
-    #pragma warning(disable: 4251)
     // Controls time related data for the application.
-    class ENGINE_DLL Time {
+    class Time {
 
     // Allow Program::run(int*) to access private members
     friend class Program;

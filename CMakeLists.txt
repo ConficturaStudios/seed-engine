@@ -20,6 +20,10 @@ if(CORE_BUILT)
     #add_subdirectory(shell)
 endif(CORE_BUILT)
 
+if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+    target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_COMPILE_DEBUG=1)
+endif (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+
 option(PACKAGE_TESTS "Build all tests" ON)
 if(PACKAGE_TESTS)
     # Prevent overriding the parent project's compiler/linker

@@ -9,7 +9,7 @@
 namespace Engine {
 
     // The program that controls the window and all logic.
-    class ENGINE_DLL Program {
+    class Program {
         public:
             Program();
             virtual ~Program();

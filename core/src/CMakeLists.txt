@@ -14,7 +14,7 @@ set(PROJECT_SRC
 
 include_directories(${PROJECT_SOURCE_DIR}/core/include)
 
-add_library(${PROJECT_NAME}-core SHARED ${PROJECT_SRC})
+add_library(${PROJECT_NAME}-core STATIC ${PROJECT_SRC})
 #set_target_properties(${PROJECT_NAME}-core PROPERTIES LINKER_LANGUAGE C)
 target_include_directories(${PROJECT_NAME}-core PUBLIC ${PROJECT_SOURCE_DIR}/core/include)
 
