@@ -33,7 +33,7 @@ if(PACKAGE_TESTS)
     add_subdirectory("${PROJECT_SOURCE_DIR}/extern/googletest" "extern/googletest")
     
     enable_testing()
-    set(PROJECT_TEST_NAME ${PROJECT_NAME}_TEST)
+    set(PROJECT_TEST_NAME ${PROJECT_NAME}-test)
 
     include_directories(${PROJECT_SOURCE_DIR}/extern/googletest/googletest/include)
     include_directories(${PROJECT_SOURCE_DIR}/extern/googletest/googletest/lib)

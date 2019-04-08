@@ -12,15 +12,22 @@
 #if defined(_WIN32)
 // Windows Preprocessor Definitions
 
-    /*#ifndef ENGINE_EXPORT
+    /*#ifndef ENGINE_API
         #define ENGINE_DLL __declspec(dllimport)
     #else
         #define ENGINE_DLL __declspec(dllexport)
     #endif*/
 
-    #include <d2d1.h>
+    #include <windows.h>
+    #include <windowsx.h>
+    #include <d2d1.h> // Direct2D
     #include <d3d11.h> // Direct3D 11
     #include <d3d12.h> // Direct3D 12
+
+    // include the Direct3D Library files
+    #pragma comment (lib, "d2d1.lib")
+    #pragma comment (lib, "d3d12.lib")
+    #pragma comment (lib, "d3d11.lib")
 
     #if defined(_WIN64)
     // x64 Windows Specific Preprocessor Definitions
