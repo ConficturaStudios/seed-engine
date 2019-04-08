@@ -33,9 +33,9 @@ namespace Engine {
         ENGINE_DEBUG("Initializing this window and input.");
         // Spawn window
         unsigned int window_id = 0;
-        Event::EventDispatcher::registerDeligate(Event::WindowCloseEvent::EVENT_ID, [this](Event::Event* e) -> bool {
+        Event::EventDispatcher::registerDeligate(
+            Event::WindowCloseEvent::EVENT_ID, [this](Event::Event* e) {
             this->onClose(e);
-            return true;
         });
 
         // Enable input

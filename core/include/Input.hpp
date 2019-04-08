@@ -119,9 +119,9 @@ namespace Engine {
             // Backspace
             BACKSPACE = 259,
             // Insert
-            INSERT = 260,
+            INS = 260,
             // Delete
-            DELETE = 261,
+            DEL = 261,
             // Right
             RIGHT = 262,
             // Left

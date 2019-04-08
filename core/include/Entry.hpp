@@ -2,7 +2,6 @@
 #define SEEDENGINE_INCLUDE_ENTRY_H_
 
 #include "Core.hpp"
-#include "Log.hpp"
 #include "Program.hpp"
 #include "Parser.hpp"
 #include "Event.hpp"
@@ -35,7 +34,7 @@ namespace Engine {
         /*
         Event::MouseButtonEvent e = Event::MouseButtonEvent(0, Event::ButtonState::PRESSED);
         
-        Event::EventDispatcher::registerDeligate(Event::MouseButtonEvent::EVENT_ID, [](Event::Event* e) -> bool {
+        Event::EventDispatcher::registerDeligate(Event::MouseButtonEvent::EVENT_ID, [](Event::Event* e) {
             std::string str = std::string("Event '") + (e->getName()) + "' occured";
             ENGINE_DEBUG(str);
             return true;

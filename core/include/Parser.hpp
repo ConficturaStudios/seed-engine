@@ -2,7 +2,6 @@
 #define SEEDENGINE_INCLUDE_PARSER_H_
 
 #include "Core.hpp"
-#include "Log.hpp"
 
 namespace Engine {
     namespace Util {

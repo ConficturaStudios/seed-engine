@@ -2,7 +2,6 @@
 #define SEEDENGINE_INCLUDE_PROGRAM_H_
 
 #include "Core.hpp"
-#include "Log.hpp"
 #include "Time.hpp"
 #include "Event.hpp"
 

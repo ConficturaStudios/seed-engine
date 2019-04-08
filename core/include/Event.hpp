@@ -63,8 +63,8 @@ namespace Engine {
             // @param(EventType) type: The type to check against.
             // @returns: True if this is of the passed type.
             inline bool isType(EventType type) {
-                unsigned int uint_t = static_cast<unsigned int>(type);
-                return ((static_cast<unsigned int>(getEventType()) & uint_t) == uint_t);
+                unsigned int uint_type = static_cast<unsigned int>(type);
+                return ((static_cast<unsigned int>(getEventType()) & uint_type) == uint_type);
             }
 
         protected:
@@ -82,7 +82,7 @@ namespace Engine {
             // Registers a function delegate to a specific Event ID to bind the actions.
             // @param(const unsigned int) event_id: The ID of the event to bind to.
             // @param(std::function<bool(Event*)>) deligate: The function to bind to the event.
-            static void registerDeligate(const unsigned int, std::function<bool(Event*)>);
+            static void registerDeligate(const unsigned int, std::function<void(Event*)>);
 
             // Pushs an event into the event queue
             // @param(Event*) event_ptr: A pointer to the event to occur.
@@ -107,7 +107,7 @@ namespace Engine {
             // The event buffer queue.
             static std::queue<Event*> event_buffer;
             // A mapped registry of all events and their bound functions.
-            static std::map<const unsigned int, std::vector<std::function<bool(Event*)>>> deligate_regtistry;
+            static std::map<const unsigned int, std::vector<std::function<void(Event*)>>> deligate_regtistry;
 
         };
 
