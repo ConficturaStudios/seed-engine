@@ -2,6 +2,7 @@
 #define SEEDENGINE_INCLUDE_WINDOW_H_
 
 #include "Core.hpp"
+#include "Parser.hpp"
 
 namespace seedengine {
     
@@ -11,22 +12,35 @@ namespace seedengine {
 
     public:
 
-        WindowProperties(std::string title,
-                            unsigned int id,
-                            unsigned int width,
-                            unsigned int height)
-            : title_(title), id_(id), width_(width), height_(height) {}
+        WindowProperties(const std::string& title,
+                            const unsigned int width,
+                            const unsigned int height)
+            : title_(title), width_(width), height_(height) {}
+
+        static WindowProperties defaultProperties() const {
+            return WindowProperties(
+                util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
+                util::parser::ini::DEFAULTS.sections["Window"].int_data["width"],
+                util::parser::ini::DEFAULTS.sections["Window"].int_data["height"]
+            );
+        }
 
     private:
 
         std::string title_;
-        unsigned int id_;
         unsigned int width_;
-        unsigned int hieght_;
+        unsigned int height_;
 
     }
 
     class Window {
+
+    public:
+
+    private:
+
+        unsigned int id_;
+        WindowProperties properties_;
 
     }
 

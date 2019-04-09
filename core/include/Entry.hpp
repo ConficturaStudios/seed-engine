@@ -31,9 +31,7 @@ namespace seedengine {
         program->loadGame();
 
         // Test ini parser
-        util::Parser::iniFile test_file = util::Parser::parseINI("../../core/data/test_config.ini");
-
-        
+        util::parser::ini::filedata test_file = util::parser::ini::parse("../../core/data/test_config.ini");
 
         ENGINE_INFO("Press enter to exit...");
 
