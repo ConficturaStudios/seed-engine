@@ -1,7 +1,7 @@
 #include "Parser.hpp"
 
-namespace Engine {
-    namespace Util {
+namespace seedengine {
+    namespace util {
 
         Parser::iniFile Parser::parseINI(std::string filepath) {
 
@@ -40,10 +40,10 @@ namespace Engine {
                     if (sections.find(active_section) != sections.end()) {
 
                         // Create storage for this section
-                        std::map<std::string, int> int_data;
-                        std::map<std::string, float> float_data;
-                        std::map<std::string, bool> bool_data;
-                        std::map<std::string, std::string> string_data;
+                        std::map<std::string, const int> int_data;
+                        std::map<std::string, const float> float_data;
+                        std::map<std::string, const bool> bool_data;
+                        std::map<std::string, const std::string&> string_data;
 
                         sections[active_section] = {
                             int_data,

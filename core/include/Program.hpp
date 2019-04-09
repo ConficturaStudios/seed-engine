@@ -5,7 +5,7 @@
 #include "Time.hpp"
 #include "Event.hpp"
 
-namespace Engine {
+namespace seedengine {
 
     // The program that controls the window and all logic.
     class Program {
@@ -40,9 +40,9 @@ namespace Engine {
             void loadGameState(); //TODO: Create game state (similar to save game data) class, pass to this function
 
             // The event binding to be called when the window is closed.
-            // @param(Event::Event*) e: A pointer to the event being called
+            // @param(Event*) e: A pointer to the event being called
             // @returns: True if no errors occur.
-            bool onClose(Event::Event*);
+            bool onClose(Event*);
 
         private:
 

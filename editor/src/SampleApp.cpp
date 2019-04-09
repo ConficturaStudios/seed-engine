@@ -1,6 +1,6 @@
 #include <seedengine>
 
-class SampleApp : public Engine::Program
+class SampleApp : public seedengine::Program
 {
 
 public:
@@ -13,10 +13,10 @@ public:
     }
 };
 
-Engine::Program* Engine::CreateProgram() {
+seedengine::Program* seedengine::CreateProgram() {
     return new SampleApp();
 }
 
 int main(int argc, char** argv) {
-    return Engine::main(argc, argv);
+    return seedengine::main(argc, argv);
 }

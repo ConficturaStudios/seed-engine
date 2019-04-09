@@ -1,6 +1,6 @@
 #include "Time.hpp"
 
-namespace Engine {
+namespace seedengine {
 
     float Time::delta_time_ = 0;
     bool Time::paused_ = false;

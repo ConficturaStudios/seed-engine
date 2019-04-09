@@ -3,13 +3,13 @@
 
 #include "Core.hpp"
 
-namespace Engine {
+namespace seedengine {
 
     // Controls time related data for the application.
     class Time {
 
-    // Allow Program::run(int*) to access private members
-    friend class Program;
+        // Allow Program::run(int*) to access private members
+        friend class Program;
 
     public:
 

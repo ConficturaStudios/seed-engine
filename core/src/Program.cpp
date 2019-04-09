@@ -1,6 +1,6 @@
 #include <Program.hpp>
 
-namespace Engine {
+namespace seedengine {
 
     Program::Program() {
 
@@ -33,8 +33,8 @@ namespace Engine {
         ENGINE_DEBUG("Initializing this window and input.");
         // Spawn window
         unsigned int window_id = 0;
-        Event::EventDispatcher::registerDeligate(
-            Event::WindowCloseEvent::EVENT_ID, [this](Event::Event* e) {
+        EventDispatcher::registerDeligate(
+            WindowCloseEvent::EVENT_ID, [this](Event* e) {
             this->onClose(e);
         });
 
@@ -42,7 +42,7 @@ namespace Engine {
 
         // Initialize window, abort with error on failure
 
-        Event::EventDispatcher::force(new Event::WindowCreatedEvent(window_id));
+        EventDispatcher::force(new WindowCreatedEvent(window_id));
 
         // Bind input to window
 
@@ -55,7 +55,7 @@ namespace Engine {
 
         ENGINE_DEBUG("Loading game data.");
         // Load game data into application
-        Event::EventDispatcher::force(new Event::EngineGameLoadEvent());
+        EventDispatcher::force(new EngineGameLoadEvent());
 
         //TODO: store the execution time of the this from load
 
@@ -70,7 +70,7 @@ namespace Engine {
             accumulator += delta_time;
 
             // Handle event buffer and event dispatchers
-            Event::EventDispatcher::run(0);
+            EventDispatcher::run(0);
 
             // Manage update rate
             while (accumulator >= interval) {
@@ -78,7 +78,7 @@ namespace Engine {
                 Time::delta_time_ = interval;
 
                 // Distribute updates/game ticks
-                Event::EventDispatcher::force(new Event::EngineTickEvent(Time::delta_time_));
+                EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
 
                 this->current_ups_ = 1 / interval;
                 accumulator -= interval;
@@ -88,20 +88,20 @@ namespace Engine {
 
             // Run pre-render logic
 
-            Event::EventDispatcher::force(new Event::EnginePreRenderEvent());
+            EventDispatcher::force(new EnginePreRenderEvent());
 
             // Run render pass
 
-            Event::EventDispatcher::force(new Event::EngineRenderEvent());
+            EventDispatcher::force(new EngineRenderEvent());
 
             // Run post-render logic
 
-            Event::EventDispatcher::force(new Event::EnginePostRenderEvent());
+            EventDispatcher::force(new EnginePostRenderEvent());
 
             //ENGINE_DEBUG("Updating render window...");
             // Update window
 
-            Event::EventDispatcher::force(new Event::WindowUpdateEvent(window_id));
+            EventDispatcher::force(new WindowUpdateEvent(window_id));
 
             //ENGINE_DEBUG("Updating Current FPS value...");
             this->current_fps_ = 1 / delta_time;
@@ -122,7 +122,7 @@ namespace Engine {
 
         ENGINE_DEBUG("Closing main window...");
         // Close the window
-        Event::EventDispatcher::force(new Event::WindowCloseEvent(window_id));
+        EventDispatcher::force(new WindowCloseEvent(window_id));
 
         ENGINE_DEBUG("Cleaning up memory...");
         // Delete any consumed memory
@@ -180,8 +180,8 @@ namespace Engine {
         }
     }
 
-    bool Program::onClose(Event::Event* e) {
-        Event::WindowCloseEvent* e_typed = static_cast<Event::WindowCloseEvent*>(e);
+    bool Program::onClose(Event* e) {
+        WindowCloseEvent* e_typed = static_cast<WindowCloseEvent*>(e);
         exit(0);
         return true;
     }

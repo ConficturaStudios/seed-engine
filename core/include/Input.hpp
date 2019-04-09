@@ -3,8 +3,18 @@
 
 #include "Core.hpp"
 
-namespace Engine {
-    namespace Input {
+namespace seedengine {
+    namespace input {
+
+        // The state of a given button or key.
+        enum class ButtonState : unsigned char {
+            // The button was released.
+            RELEASED  = 0,
+            // The button was pressed.
+            PRESSED   = 1,
+            // The button was held until repeated.
+            REPEAT    = 2
+        };
 
         // All US keyboard keycodes, based on GLFW definitions https://www.glfw.org/docs/latest/group__keys.html
         enum class Key : unsigned int {
@@ -254,6 +264,7 @@ namespace Engine {
             LAST = 348
         };
 
+        // Mouse button code bindings.
         enum class MouseButton : unsigned int {
             LEFT         = 0,
             RIGHT        = 1,
@@ -271,6 +282,7 @@ namespace Engine {
             ACTION_10    = 13
         };
 
+        // Controller button code bindings.
         enum class ControllerButton : unsigned int {
             SYSTEM       = 0,
             HOME         = 1,
@@ -300,6 +312,7 @@ namespace Engine {
             SPECIAL_3    = 20
         };
 
+        // Controller axis code bindings.
         enum class ControllerAxis : unsigned int {
             L_AXIS_X     = 0,
             L_AXIS_Y     = 1,
@@ -311,6 +324,7 @@ namespace Engine {
             SPECIAL_Y    = 5
         };
 
+        // XBox button code bindings.
         enum class XBoxButton : unsigned int {
             XBOX         = static_cast<unsigned int>(ControllerButton::SYSTEM),
             MENU         = static_cast<unsigned int>(ControllerButton::HOME),
@@ -335,6 +349,7 @@ namespace Engine {
             JOYSTICK_L   = static_cast<unsigned int>(ControllerButton::JOYSTICK_L)
         };
 
+        // XBox axis code bindings.
         enum class XBoxAxis : unsigned int {
             L_STICK_X    = static_cast<unsigned int>(ControllerAxis::L_AXIS_X),
             L_STICK_Y    = static_cast<unsigned int>(ControllerAxis::L_AXIS_Y),
@@ -343,6 +358,7 @@ namespace Engine {
             R_STICK_Y    = static_cast<unsigned int>(ControllerAxis::R_AXIS_Y)
         };
 
+        // PS4 button code bindings.
         enum class PS4Button : unsigned int {
             PLAYSTATION      = static_cast<unsigned int>(ControllerButton::SYSTEM),
             OPTIONS          = static_cast<unsigned int>(ControllerButton::HOME),
@@ -369,6 +385,7 @@ namespace Engine {
             TOUCH_PAD        = static_cast<unsigned int>(ControllerButton::SPECIAL_0)
         };
 
+        // PS4 axis code bindings.
         enum class PS4Axis : unsigned int {
             L_STICK_X        = static_cast<unsigned int>(ControllerAxis::L_AXIS_X),
             L_STICK_Y        = static_cast<unsigned int>(ControllerAxis::L_AXIS_Y),
@@ -380,7 +397,7 @@ namespace Engine {
             TOUCH_PAD_Y      = static_cast<unsigned int>(ControllerAxis::SPECIAL_Y)
         };
 
-        
+
 
     }
 }

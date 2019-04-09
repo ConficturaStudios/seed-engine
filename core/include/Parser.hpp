@@ -3,8 +3,8 @@
 
 #include "Core.hpp"
 
-namespace Engine {
-    namespace Util {
+namespace seedengine {
+    namespace util {
 
         // A parser for processing files for the program.
         // Note: Does not include .lua support, use the Lua class for this.
@@ -16,13 +16,13 @@ namespace Engine {
             struct iniSection {
                 
                 // All integers within this section
-                std::map<std::string, int> int_data;
+                std::map<std::string, const int> int_data;
                 // All floats within this section
-                std::map<std::string, float> float_data;
+                std::map<std::string, const float> float_data;
                 // All booleans within this section
-                std::map<std::string, bool> bool_data;
+                std::map<std::string, const bool> bool_data;
                 // All strings within this section
-                std::map<std::string, std::string> string_data;
+                std::map<std::string, const std::string&> string_data;
 
             };
 

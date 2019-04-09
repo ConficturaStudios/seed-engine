@@ -4,7 +4,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-namespace Engine {
+namespace seedengine {
 
     // Used for all debugging and message logging
     class Log {
@@ -26,18 +26,18 @@ namespace Engine {
 
 //TODO: Modify code to check for ENGINE_COMPILE_DEBUG
 
-#define ENGINE_TRACE(...) Engine::Log::GetEngineLogger()->trace(__VA_ARGS__)
-#define ENGINE_DEBUG(...) Engine::Log::GetEngineLogger()->debug(__VA_ARGS__)
-#define ENGINE_INFO(...) Engine::Log::GetEngineLogger()->info(__VA_ARGS__)
-#define ENGINE_WARN(...) Engine::Log::GetEngineLogger()->warn(__VA_ARGS__)
-#define ENGINE_ERROR(...) Engine::Log::GetEngineLogger()->error(__VA_ARGS__)
-#define ENGINE_CRIT(...) Engine::Log::GetEngineLogger()->critical(__VA_ARGS__)
+#define ENGINE_TRACE(...) seedengine::Log::GetEngineLogger()->trace(__VA_ARGS__)
+#define ENGINE_DEBUG(...) seedengine::Log::GetEngineLogger()->debug(__VA_ARGS__)
+#define ENGINE_INFO(...) seedengine::Log::GetEngineLogger()->info(__VA_ARGS__)
+#define ENGINE_WARN(...) seedengine::Log::GetEngineLogger()->warn(__VA_ARGS__)
+#define ENGINE_ERROR(...) seedengine::Log::GetEngineLogger()->error(__VA_ARGS__)
+#define ENGINE_CRIT(...) seedengine::Log::GetEngineLogger()->critical(__VA_ARGS__)
 
-#define CLIENT_TRACE(...) Engine::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define CLIENT_DEBUG(...) Engine::Log::GetClientLogger()->debug(__VA_ARGS__)
-#define CLIENT_INFO(...) Engine::Log::GetClientLogger()->info(__VA_ARGS__)
-#define CLIENT_WARN(...) Engine::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define CLIENT_ERROR(...) Engine::Log::GetClientLogger()->error(__VA_ARGS__)
-#define CLIENT_CRIT(...) Engine::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define CLIENT_TRACE(...) seedengine::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define CLIENT_DEBUG(...) seedengine::Log::GetClientLogger()->debug(__VA_ARGS__)
+#define CLIENT_INFO(...) seedengine::Log::GetClientLogger()->info(__VA_ARGS__)
+#define CLIENT_WARN(...) seedengine::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define CLIENT_ERROR(...) seedengine::Log::GetClientLogger()->error(__VA_ARGS__)
+#define CLIENT_CRIT(...) seedengine::Log::GetClientLogger()->critical(__VA_ARGS__)
 
 #endif
