@@ -11,14 +11,21 @@ namespace seedengine {
 
     public:
         
+        // Initializes the logger.
         static void init();
 
+        // Returns the logger for the engine core.
+        // @returns: The logger for the engine core.
         inline static std::shared_ptr<spdlog::logger>& GetEngineLogger() { return engine_logger_; }
+        // Returns the logger for the client software.
+        // @returns: The logger for the client software.
         inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return client_logger_; }
 
     private:
 
+        // The engine core logger.
         static std::shared_ptr<spdlog::logger>& engine_logger_;
+        // The client side logger.
         static std::shared_ptr<spdlog::logger>& client_logger_;
 
     };

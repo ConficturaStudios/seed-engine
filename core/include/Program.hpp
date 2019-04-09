@@ -5,13 +5,16 @@
 #include "Time.hpp"
 #include "Event.hpp"
 #include "Parser.hpp"
+#include "Window.hpp"
 
 namespace seedengine {
 
     // The program that controls the window and all logic.
     class Program {
         public:
+            // Constructs a new Program.
             Program();
+            // Program destructor.
             virtual ~Program();
 
             // Target Frames per Second
@@ -41,9 +44,8 @@ namespace seedengine {
             void loadGameState(); //TODO: Create game state (similar to save game data) class, pass to this function
 
             // The event binding to be called when the window is closed.
-            // @param(Event*) e: A pointer to the event being called
-            // @returns: True if no errors occur.
-            bool onClose(Event*);
+            // @param(WindowCloseEvent&) e: A reference to the window closed event being called
+            void onClose(WindowCloseEvent&);
 
         private:
 

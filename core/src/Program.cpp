@@ -32,17 +32,13 @@ namespace seedengine {
 
         ENGINE_DEBUG("Initializing this window and input.");
         // Spawn window
-        unsigned int window_id = 0;
-        EventDispatcher::registerDeligate(
-            WindowCloseEvent::EVENT_ID, [this](Event* e) {
-            this->onClose(e);
-        });
+        
+        Window* window = Window::create();
+        EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, this->onClose);
 
         // Enable input
 
         // Initialize window, abort with error on failure
-
-        EventDispatcher::force(new WindowCreatedEvent(window_id));
 
         // Bind input to window
 
@@ -100,8 +96,7 @@ namespace seedengine {
 
             //ENGINE_DEBUG("Updating render window...");
             // Update window
-
-            EventDispatcher::force(new WindowUpdateEvent(window_id));
+            window->update();
 
             //ENGINE_DEBUG("Updating Current FPS value...");
             this->current_fps_ = 1 / delta_time;
@@ -122,7 +117,7 @@ namespace seedengine {
 
         ENGINE_DEBUG("Closing main window...");
         // Close the window
-        EventDispatcher::force(new WindowCloseEvent(window_id));
+        window->close();
 
         ENGINE_DEBUG("Cleaning up memory...");
         // Delete any consumed memory
@@ -180,10 +175,8 @@ namespace seedengine {
         }
     }
 
-    bool Program::onClose(Event* e) {
-        WindowCloseEvent* e_typed = static_cast<WindowCloseEvent*>(e);
+    void Program::onClose(WindowCloseEvent& e) {
         exit(0);
-        return true;
     }
 
 }

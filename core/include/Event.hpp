@@ -70,8 +70,8 @@ namespace seedengine {
 
         // Registers a function delegate to a specific Event ID to bind the actions.
         // @param(const unsigned int) event_id: The ID of the event to bind to.
-        // @param(std::function<bool(Event*)>) deligate: The function to bind to the event.
-        static void registerDeligate(const unsigned int, std::function<void(Event*)>);
+        // @param(std::function<bool(Event&)>) deligate: The function to bind to the event.
+        static void registerDeligate(const unsigned int, std::function<void(Event&)>);
 
         // Pushs an event into the event queue
         // @param(Event*) event_ptr: A pointer to the event to occur.
@@ -96,7 +96,7 @@ namespace seedengine {
         // The event buffer queue.
         static std::queue<Event*> event_buffer;
         // A mapped registry of all events and their bound functions.
-        static std::map<const unsigned int, std::vector<std::function<void(Event*)>>> deligate_regtistry;
+        static std::map<const unsigned int, std::vector<std::function<void(Event&)>>> deligate_regtistry;
 
     };
 
@@ -294,25 +294,27 @@ namespace seedengine {
     // An event triggered by the application window.
     class WindowEvent : public Event {
 
+        friend class Window;
+
     public:
 
         // Constructs a new Window Event.
-        // @param(unsigned int) window_id: The ID of the affected window.
-        WindowEvent(unsigned int window_id)
-            : Event(), window_id_(window_id) {}
+        // @param(Window*) window: A pointer to the affected window.
+        WindowEvent(Window* window)
+            : Event(), window_(window) {}
 
         // Returns the type of event this is.
         // @returns: The event type.
         EventType getEventType() const { return EventType::WINDOW; }
 
-        // Returns the ID of the affected window.
-        // @returns: The ID of the affected window.
-        inline unsigned int windowId() { return window_id_; }
+        // Returns a pointer to the affected window.
+        // @returns: A pointer to the affected window.
+        inline Window* window() { return window_; }
 
     protected:
 
-        // The ID of the affected window
-        unsigned int window_id_;
+        // The affected window
+        Window* window_;
 
     };
 
@@ -322,9 +324,9 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Closed Event.
-        // @param(unsigned int) window_id: The ID of the affected window.
-        WindowCloseEvent(unsigned int window_id)
-            : WindowEvent(window_id) {}
+        // @param(unsigned int) window: The ID of the affected window.
+        WindowCloseEvent(Window* window)
+            : WindowEvent(window) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
@@ -346,11 +348,11 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Resized Event.
-        // @param(unsigned int) window_id: The ID of the affected window.
+        // @param(unsigned int) window: The ID of the affected window.
         // @param(float) x: The new x dimension of the window.
         // @param(float) y: The new y dimension of the window.
-        WindowResizeEvent(unsigned int window_id, float x, float y)
-            : WindowEvent(window_id), x_(x), y_(y) {}
+        WindowResizeEvent(Window* window, float x, float y)
+            : WindowEvent(window), x_(x), y_(y) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
@@ -384,10 +386,10 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Focus Event.
-        // @param(unsigned int) window_id: The ID of the affected window.
+        // @param(unsigned int) window: The ID of the affected window.
         // @param(bool) has_focus: True if the window has gained focus.
-        WindowFocusEvent(unsigned int window_id, bool has_focus)
-            : WindowEvent(window_id), has_focus_(has_focus) {}
+        WindowFocusEvent(Window* window, bool has_focus)
+            : WindowEvent(window), has_focus_(has_focus) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
@@ -416,9 +418,9 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Update Event.
-        // @param(unsigned int) window_id: The ID of the affected window.
-        WindowUpdateEvent(unsigned int window_id)
-            : WindowEvent(window_id) {}
+        // @param(unsigned int) window: The ID of the affected window.
+        WindowUpdateEvent(Window* window)
+            : WindowEvent(window) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
@@ -440,9 +442,9 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Created Event.
-        // @param(unsigned int) window_id: The ID of the affected window.
-        WindowCreatedEvent(unsigned int window_id)
-            : WindowEvent(window_id) {}
+        // @param(unsigned int) window: The ID of the affected window.
+        WindowCreatedEvent(Window* window)
+            : WindowEvent(window) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.

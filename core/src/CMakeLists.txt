@@ -10,6 +10,7 @@ set(PROJECT_SRC
     Parser.cpp
     Program.cpp
     Time.cpp
+    Window.cpp
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/core/include)

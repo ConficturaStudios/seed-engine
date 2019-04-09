@@ -12,6 +12,9 @@ namespace seedengine {
     // @returns: A pointer to a new program object.
     extern Program* CreateProgram();
 
+    // The main entry point of the Seed Engine Core.
+    // @param(int) argc: Command line argc.
+    // @param(char**) argv: Command line argv.
     int main(int argc, char** argv) {
 
         Log::init();
@@ -29,9 +32,6 @@ namespace seedengine {
         ENGINE_INFO("Program running on a new thread.");
 
         program->loadGame();
-
-        // Test ini parser
-        util::parser::ini::filedata test_file = util::parser::ini::parse("../../core/data/test_config.ini");
 
         ENGINE_INFO("Press enter to exit...");
 
