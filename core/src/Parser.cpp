@@ -58,16 +58,20 @@ namespace seedengine {
                     ENGINE_ERROR("Error in ini file \"" + filepath + "\" at line " + std::to_string(line_num) + ": no section header defined.");
                 }
                 else if (std::regex_match(ncomment_line, m, int_regex)) {
-                    sections[active_section].int_data[m[1]] = std::stoi(m[2]);
+                    const int v = std::stoi(m[2]);
+                    sections[active_section].int_data.insert(std::pair<std::string, const int>(m[1], v));
                 }
                 else if (std::regex_match(ncomment_line, m, float_regex)) {
-                    sections[active_section].float_data[m[1]] = std::stof(m[2]);
+                    const float v = std::stof(m[2]);
+                    sections[active_section].float_data.insert(std::pair<std::string, const float>(m[1], v));
                 }
                 else if (std::regex_match(ncomment_line, m, bool_regex)) {
-                    sections[active_section].bool_data[m[1]] = (m[2] == "true" || m[2] == "True" || m[2] == "TRUE");
+                    const bool v = (m[2] == "true" || m[2] == "True" || m[2] == "TRUE");
+                    sections[active_section].bool_data.insert(std::pair<std::string, const bool>(m[1], v));
                 }
                 else if (std::regex_match(ncomment_line, m, string_regex)) {
-                    sections[active_section].string_data[m[1]] = (m[3].str().empty()) ? m[4] : m[3];
+                    const std::string& v = (m[3].str().empty()) ? m[4] : m[3];
+                    sections[active_section].string_data.insert(std::pair<std::string, const std::string&>(m[1], v));
                 }
                 else {
                     ENGINE_ERROR("Error in ini file \"" + filepath + "\" at line " + std::to_string(line_num));
