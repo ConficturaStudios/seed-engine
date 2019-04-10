@@ -10,7 +10,7 @@ namespace seedengine {
         EventDispatcher::force(new WindowCloseEvent(this));
     }
 
-    Window* Window::create(const WindowProperties& preoperties = WindowProperties()) {
+    Window* Window::create(const WindowProperties& preoperties) {
         Window* window = new Window();
         EventDispatcher::push(new WindowCreatedEvent(window));
         return window;

@@ -20,12 +20,12 @@ namespace seedengine {
         // @param(const bool) fullscreen: Is the window borderless?
         // @param(const bool) borderless: Is the window fullscreen?
         // @param(const bool) vsync: Is VSync enabled for the window?
-        WindowProperties(   const std::string& title  = util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
-                            const unsigned int width  = util::parser::ini::DEFAULTS.sections["Window"].int_data["width"],
-                            const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["height"],
-                            const bool fullscreen     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["fullscreen"],
-                            const bool borderless     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["borderless"],
-                            const bool vsync          = util::parser::ini::DEFAULTS.sections["Window"].bool_data["vsync"])
+        WindowProperties(   const std::string& title  = util::parser::ini::defaults().sections["Window"].string_data["title"],
+                            const unsigned int width  = util::parser::ini::defaults().sections["Window"].int_data["width"],
+                            const unsigned int height = util::parser::ini::defaults().sections["Window"].int_data["height"],
+                            const bool fullscreen     = util::parser::ini::defaults().sections["Window"].bool_data["fullscreen"],
+                            const bool borderless     = util::parser::ini::defaults().sections["Window"].bool_data["borderless"],
+                            const bool vsync          = util::parser::ini::defaults().sections["Window"].bool_data["vsync"])
             : title_(title), width_(width), height_(height), borderless_(borderless), fullscreen_(fullscreen), vsync_(vsync) {}
 
 

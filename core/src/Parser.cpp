@@ -45,7 +45,7 @@ namespace seedengine {
                                 std::map<std::string, const int> int_data;
                                 std::map<std::string, const float> float_data;
                                 std::map<std::string, const bool> bool_data;
-                                std::map<std::string, const std::string&> string_data;
+                                std::map<std::string, const std::string> string_data;
 
                                 sections[active_section] = {
                                     int_data,
@@ -73,7 +73,7 @@ namespace seedengine {
                         }
                         else if (std::regex_match(ncomment_line, m, string_regex)) {
                             const std::string& v = (m[3].str().empty()) ? m[4] : m[3];
-                            sections[active_section].string_data.insert(std::pair<std::string, const std::string&>(m[1], v));
+                            sections[active_section].string_data.insert(std::pair<std::string, const std::string>(m[1], v));
                         }
                         else {
                             ENGINE_ERROR("Error in ini file \"" + filepath + "\" at line " + std::to_string(line_num));
@@ -91,9 +91,8 @@ namespace seedengine {
 
                 }
 
+
             }
         }
-        
-
     }
 }

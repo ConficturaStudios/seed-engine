@@ -3,8 +3,8 @@
 
 #include "Core.hpp"
 #include "Time.hpp"
-#include "Event.hpp"
 #include "Parser.hpp"
+#include "Event.hpp"
 #include "Window.hpp"
 
 namespace seedengine {
@@ -18,9 +18,9 @@ namespace seedengine {
             virtual ~Program();
 
             // Target Frames per Second
-            const float TARGET_FPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_fps"];
+            const float TARGET_FPS = util::parser::ini::defaults().sections["Engine"].float_data["target_fps"];
             // Target Updates per Second
-            const float TARGET_UPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_ups"];
+            const float TARGET_UPS = util::parser::ini::defaults().sections["Engine"].float_data["target_ups"];
 
             // Runs the program logic. Should be launched on a new thread.
             // @param(int*) exit_code: A pointer to pass the returned exit code of the main loop.

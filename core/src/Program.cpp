@@ -34,7 +34,9 @@ namespace seedengine {
         // Spawn window
         
         Window* window = Window::create();
-        EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, this->onClose);
+        EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
+            this->onClose(static_cast<WindowCloseEvent&>(e));
+        });
 
         // Enable input
 

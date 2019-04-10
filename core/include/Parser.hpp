@@ -17,7 +17,7 @@ namespace seedengine {
                     // All booleans within this section
                     std::map<std::string, const bool> bool_data;
                     // All strings within this section
-                    std::map<std::string, const std::string&> string_data;
+                    std::map<std::string, const std::string> string_data;
 
                 };
 
@@ -36,7 +36,7 @@ namespace seedengine {
                 filedata parse(std::string);
 
                 // Data from the defaults.ini file found in ~/seed-engine/core/data.
-                filedata DEFAULTS = parse("../../core/data/defaults.ini");
+                static filedata defaults() { return parse("../../core/data/defaults.ini"); };
             }
         }
     }
