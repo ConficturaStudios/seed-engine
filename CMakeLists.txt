@@ -12,6 +12,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glad)
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glfw)
 
 add_subdirectory(core)

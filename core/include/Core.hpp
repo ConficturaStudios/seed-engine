@@ -9,6 +9,10 @@
     #define D3DCOMPILE_DEBUG 1
 #endif
 
+// Cross Platform Libraries
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #if defined(_WIN32)
 // Windows Preprocessor Definitions
 

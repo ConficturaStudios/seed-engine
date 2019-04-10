@@ -21,4 +21,5 @@ target_include_directories(${PROJECT_NAME}-core PUBLIC ${PROJECT_SOURCE_DIR}/cor
 
 target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_EXPORT=1)
 
+target_link_libraries(${PROJECT_NAME}-core glad)
 target_link_libraries(${PROJECT_NAME}-core glfw ${GLFW_LIBRARIES})

@@ -10,6 +10,7 @@ set(PROJECT_SRC
 
 include_directories(${PROJECT_SOURCE_DIR}/extern/spdlog/include)
 include_directories(${PROJECT_SOURCE_DIR}/extern/glm/glm)
+include_directories(${PROJECT_SOURCE_DIR}/extern/glad/include)
 include_directories(${PROJECT_SOURCE_DIR}/extern/glfw/include)
 include_directories(${PROJECT_SOURCE_DIR}/core/include)
 include_directories(${PROJECT_SOURCE_DIR}/editor/include)
@@ -20,4 +21,5 @@ target_include_directories(${PROJECT_NAME}-editor PRIVATE ${PROJECT_SOURCE_DIR}/
 
 target_link_libraries(${PROJECT_NAME}-editor ${PROJECT_SOURCE_DIR}/lib/${CMAKE_BUILD_TYPE}/seed-engine-core.lib)
 
+target_link_libraries(${PROJECT_NAME}-editor glad)
 target_link_libraries(${PROJECT_NAME}-editor glfw ${GLFW_LIBRARIES})
