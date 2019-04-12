@@ -5,6 +5,9 @@ namespace seedengine {
         namespace parser {
             namespace ini {
 
+                // Data from the defaults.ini file found in ~/seed-engine/core/data.
+                filedata DEFAULTS = parse("../../core/data/defaults.ini");
+
                 filedata parse(std::string filepath) {
 
                     // Regex templates in ECMAScript format
@@ -72,7 +75,7 @@ namespace seedengine {
                             sections[active_section].bool_data.insert(std::pair<std::string, const bool>(m[1], v));
                         }
                         else if (std::regex_match(ncomment_line, m, string_regex)) {
-                            const std::string& v = (m[3].str().empty()) ? m[4] : m[3];
+                            const std::string v = (m[2].str().empty()) ? m[3] : m[2];
                             sections[active_section].string_data.insert(std::pair<std::string, const std::string>(m[1], v));
                         }
                         else {

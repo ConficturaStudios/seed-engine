@@ -9,9 +9,23 @@
     #define D3DCOMPILE_DEBUG 1
 #endif
 
+#define ENGINE_GRAPHICS_OPGL 1
+#define ENGINE_GRAPHICS_VLKN 2
+#define ENGINE_GRAPHICS_D3DX 3
+#define ENGINE_GRAPHICS_METL 4
+
+#if ENGINE_GRAPHICS_API == -1
+    #error "Graphics API not defined."
+#endif
+
 // Cross Platform Libraries
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+//Check for OpenGL
+#if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+    #include <glad/glad.h>
+    #include <GLFW/glfw3.h>
+#endif
+
+// Platform specific
 
 #if defined(_WIN32)
 // Windows Preprocessor Definitions
@@ -24,14 +38,18 @@
 
     #include <windows.h>
     #include <windowsx.h>
-    #include <d2d1.h> // Direct2D
-    #include <d3d11.h> // Direct3D 11
-    #include <d3d12.h> // Direct3D 12
 
-    // include the Direct3D Library files
-    #pragma comment (lib, "d2d1.lib")
-    #pragma comment (lib, "d3d12.lib")
-    #pragma comment (lib, "d3d11.lib")
+    //Check for DirectX
+    #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+        #include <d2d1.h> // Direct2D
+        #include <d3d11.h> // Direct3D 11
+        #include <d3d12.h> // Direct3D 12
+
+        // include the Direct3D Library files
+        #pragma comment (lib, "d2d1.lib")
+        #pragma comment (lib, "d3d12.lib")
+        #pragma comment (lib, "d3d11.lib")
+    #endif
 
     #if defined(_WIN64)
     // x64 Windows Specific Preprocessor Definitions
@@ -83,6 +101,7 @@
 #include <thread>
 #include <chrono>
 #include <memory>
+#include <mutex>
 
 #include <queue>
 #include <map>

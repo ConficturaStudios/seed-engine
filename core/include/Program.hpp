@@ -18,9 +18,9 @@ namespace seedengine {
             virtual ~Program();
 
             // Target Frames per Second
-            const float TARGET_FPS = util::parser::ini::defaults().sections["Engine"].float_data["target_fps"];
+            const float TARGET_FPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_fps"];
             // Target Updates per Second
-            const float TARGET_UPS = util::parser::ini::defaults().sections["Engine"].float_data["target_ups"];
+            const float TARGET_UPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_ups"];
 
             // Runs the program logic. Should be launched on a new thread.
             // @param(int*) exit_code: A pointer to pass the returned exit code of the main loop.
@@ -43,11 +43,36 @@ namespace seedengine {
             // ** IN DEVELOPMENT **
             void loadGameState(); //TODO: Create game state (similar to save game data) class, pass to this function
 
-            // The event binding to be called when the window is closed.
-            // @param(WindowCloseEvent&) e: A reference to the window closed event being called
-            void onClose(WindowCloseEvent&);
+            // Returns the currently loaded game.
+            // @returns: The currently loaded game.
+            inline int* getGame() {
+                std::lock_guard<std::mutex> guard(mu);
+                return game_;
+            }
+            // Returns the currently loaded game state.
+            // @returns: The currently loaded game state.
+            inline int* getGameState() {
+                std::lock_guard<std::mutex> guard(mu);
+                return game_state_;
+            }
+
+            // Should the program abort?
+            // @returns: True if the program should abort.
+            inline bool shouldAbort() {
+                std::lock_guard<std::mutex> guard(mu);
+                return abort_flag_;
+            }
+            // Should the program exit?
+            // @returns: True if the program should exit.
+            inline bool shouldExit() {
+                std::lock_guard<std::mutex> guard(mu);
+                return exit_flag_;
+            }
 
         private:
+
+            // A mutex to lock program functions for thread safety
+            std::mutex mu;
 
             // The game loaded into this program. Will be nullptr if none has been loaded.
             // ** IN DEVELOPMENT **
@@ -70,6 +95,10 @@ namespace seedengine {
             float current_fps_ = TARGET_FPS;
             // The current updates per second of this instance.
             float current_ups_ = TARGET_UPS;
+
+            // The event binding to be called when the window is closed.
+            // @param(WindowCloseEvent&) e: A reference to the window closed event being called.
+            void onClose(WindowCloseEvent&);
 
     };
 }

@@ -20,12 +20,12 @@ namespace seedengine {
         // @param(const bool) fullscreen: Is the window borderless?
         // @param(const bool) borderless: Is the window fullscreen?
         // @param(const bool) vsync: Is VSync enabled for the window?
-        WindowProperties(   const std::string& title  = util::parser::ini::defaults().sections["Window"].string_data["title"],
-                            const unsigned int width  = util::parser::ini::defaults().sections["Window"].int_data["width"],
-                            const unsigned int height = util::parser::ini::defaults().sections["Window"].int_data["height"],
-                            const bool fullscreen     = util::parser::ini::defaults().sections["Window"].bool_data["fullscreen"],
-                            const bool borderless     = util::parser::ini::defaults().sections["Window"].bool_data["borderless"],
-                            const bool vsync          = util::parser::ini::defaults().sections["Window"].bool_data["vsync"])
+        WindowProperties(   const std::string& title  = util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
+                            const unsigned int width  = util::parser::ini::DEFAULTS.sections["Window"].int_data["width"],
+                            const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["height"],
+                            const bool fullscreen     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["fullscreen"],
+                            const bool borderless     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["borderless"],
+                            const bool vsync          = util::parser::ini::DEFAULTS.sections["Window"].bool_data["vsync"])
             : title_(title), width_(width), height_(height), borderless_(borderless), fullscreen_(fullscreen), vsync_(vsync) {}
 
 
@@ -57,6 +57,10 @@ namespace seedengine {
         // Closes this window.
         void close();
 
+        // Should this window close?
+        // @returns: True if the window should close.
+        bool shouldClose();
+
         // Returns the title of this window.
         // @returns: The title of this window.
         inline std::string title() { return properties_.title_; }
@@ -80,10 +84,30 @@ namespace seedengine {
         // @returns: A pointer to a new Window.
         static Window* create(const WindowProperties& preoperties = WindowProperties());
 
+        // Event binding for when the window is resized.
+        // @param(WindowResizeEvent&) e: A reference to the window resized event being called.
+        void onResize(WindowResizeEvent&);
+
     private:
 
         // The properties of this window.
         WindowProperties properties_;
+
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+
+            // A pointer to a GLFW window.
+            GLFWwindow* gl_window_;
+
+            // A map used to reference the seedengine::Window tied to a specific GLFWwindow.
+            static std::map<GLFWwindow*, Window*> window_map_;
+
+            // A callback function to bind to GLFW for the window resized event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) width: The new window width.
+            // @param(int) height: The new window height.
+            static void glfwFramebufferSizeCallback(GLFWwindow*, int, int);
+
+        #endif
 
     };
 

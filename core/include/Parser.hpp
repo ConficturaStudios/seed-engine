@@ -36,7 +36,7 @@ namespace seedengine {
                 filedata parse(std::string);
 
                 // Data from the defaults.ini file found in ~/seed-engine/core/data.
-                static filedata defaults() { return parse("../../core/data/defaults.ini"); };
+                extern filedata DEFAULTS;
             }
         }
     }

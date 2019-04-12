@@ -12,15 +12,16 @@ namespace seedengine {
 
     void Program::run(int* exit_code) {
         ENGINE_DEBUG("Main loop running.");
-        while (this->game_ == nullptr && !this->abort_flag_) {
-            ENGINE_DEBUG("Waiting for game to be loaded...");
+        ENGINE_DEBUG("Waiting for game to be loaded...");
+        while (this->getGame() == nullptr && !this->shouldAbort() && !this->shouldExit()) {
+
         }
-        if (this->abort_flag_) {
+        if (this->shouldAbort()) {
             *exit_code = this->abort_code_;
             ENGINE_WARN("Program aborted. Exiting exection thread.");
             return;
         }
-        else if (this->exit_flag_) {
+        else if (this->shouldExit()) {
             *exit_code = this->exit_code_;
             ENGINE_INFO("Execution complete. Exiting exection thread.");
             return;
@@ -34,6 +35,15 @@ namespace seedengine {
         // Spawn window
         
         Window* window = Window::create();
+
+        if (window == nullptr) {
+            ENGINE_ERROR("Failed to create window.");
+            abort(-1);
+            *exit_code = this->abort_code_;
+            ENGINE_ERROR("Program aborted. Exiting exection thread.");
+            return;
+        }
+
         EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
             this->onClose(static_cast<WindowCloseEvent&>(e));
         });
@@ -60,7 +70,7 @@ namespace seedengine {
         ENGINE_DEBUG("Starting main loop...");
         // Main this loop
         // TODO: allow the game and window to each control the this exit
-        while (!this->abort_flag_ && !this->exit_flag_) {
+        while (!this->shouldAbort() && !this->shouldExit() && !window->shouldClose()) {
 
             //TODO: create Time calss
 
@@ -104,7 +114,7 @@ namespace seedengine {
             this->current_fps_ = 1 / delta_time;
 
             // Sync time if vsync is enabled
-            if (false) {
+            if (window->isVSync()) {
                 //ENGINE_DEBUG("Applying VSync...");
                 float loop_slot = 1.0f / this->TARGET_FPS;
                 float end_time = Time::getLastLoopTime() + loop_slot;
@@ -125,7 +135,7 @@ namespace seedengine {
         // Delete any consumed memory
 
 
-        if (this->abort_flag_) {
+        if (this->shouldAbort()) {
             *exit_code = this->abort_code_;
             ENGINE_ERROR("Program aborted. Exiting exection thread.");
         }
@@ -141,18 +151,21 @@ namespace seedengine {
 
     //TODO: clean up abort functionality, wrap into exit(int) call
     void Program::abort(int error) {
+        std::lock_guard<std::mutex> gaurd(mu);
         this->abort_code_ = error;
         this->abort_flag_ = true;
         ENGINE_ERROR("Aborting program...");
     }
 
     void Program::exit(int exit_code) {
+        std::lock_guard<std::mutex> gaurd(mu);
         this->exit_code_ = exit_code;
         this->exit_flag_ = true;
         ENGINE_INFO("Exiting program...");
     }
 
     void Program::loadGame() {
+        std::lock_guard<std::mutex> gaurd(mu);
         ENGINE_INFO("Loading Game...");
         if (this->game_ == nullptr) {
             this->game_ = new int(0);
@@ -164,6 +177,7 @@ namespace seedengine {
     }
 
     void Program::loadGameState() {
+        std::lock_guard<std::mutex> gaurd(mu);
         if (this->game_ == nullptr) {
             ENGINE_ERROR("No game data is available to load into this state. Skipping operation.");
             return;

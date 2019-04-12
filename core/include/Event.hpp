@@ -349,9 +349,9 @@ namespace seedengine {
 
         // Constructs a new Window Resized Event.
         // @param(unsigned int) window: The ID of the affected window.
-        // @param(float) x: The new x dimension of the window.
-        // @param(float) y: The new y dimension of the window.
-        WindowResizeEvent(Window* window, float x, float y)
+        // @param(unsigned int) x: The new x dimension of the window.
+        // @param(inunsigned intt) y: The new y dimension of the window.
+        WindowResizeEvent(Window* window, unsigned int x, unsigned int y)
             : WindowEvent(window), x_(x), y_(y) {}
 
         // Returns the name of this event.
@@ -363,10 +363,10 @@ namespace seedengine {
 
         // Returns the new x dimension.
         // @returns: The new x dimension.
-        inline float x() { return x_; }
+        inline unsigned int x() { return x_; }
         // Returns the new y dimension.
         // @returns: The new y dimension.
-        inline float y() { return y_; }
+        inline unsigned int y() { return y_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 1;
@@ -374,9 +374,9 @@ namespace seedengine {
     protected:
 
         // The new x dimension.
-        float x_;
+        unsigned int x_;
         // The new y dimension.
-        float y_;
+        unsigned int y_;
 
     };
 
