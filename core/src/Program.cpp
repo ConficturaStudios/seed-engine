@@ -31,9 +31,8 @@ namespace seedengine {
         // Set the starting time for the Time class
         Time::start();
 
-        ENGINE_DEBUG("Initializing this window and input.");
+        ENGINE_DEBUG("Initializing program window and input.");
         // Spawn window
-        
         Window* window = Window::create();
 
         if (window == nullptr) {
@@ -59,7 +58,9 @@ namespace seedengine {
         // Stores time information for frame update loop
         float accumulator = 0.0f;
         // Controls the time between updates.
-        float interval = 1.0f / this->TARGET_UPS;
+        float update_interval = 1000.0f / this->TARGET_UPS;
+        // Controls the time between frame renders.
+        float render_interval = 1000.0f / this->TARGET_FPS;
 
         ENGINE_DEBUG("Loading game data.");
         // Load game data into application
@@ -68,31 +69,35 @@ namespace seedengine {
         //TODO: store the execution time of the this from load
 
         ENGINE_DEBUG("Starting main loop...");
-        // Main this loop
-        // TODO: allow the game and window to each control the this exit
+
+        // Prepare for first loop iteration
+        Time::last_loop_time_ = Time::elapsedTimeMS();
+
+        // Main loop
         while (!this->shouldAbort() && !this->shouldExit() && !window->shouldClose()) {
 
-            //TODO: create Time calss
-
-            delta_time = Time::getUpTime(); //TODO: set deltaTime equal to Time::getUpTime()
+            delta_time = Time::getUpTime();
             accumulator += delta_time;
+
+            Time::delta_time_ = delta_time / 1000.0f;
 
             // Handle event buffer and event dispatchers
             EventDispatcher::run(0);
 
-            // Manage update rate
-            while (accumulator >= interval) {
+            //ENGINE_DEBUG("DT {2} ACC {0} UP-INT {1}", accumulator, update_interval, delta_time);
 
-                Time::delta_time_ = interval;
+            // Manage update rate
+            while (accumulator >= update_interval) {
 
                 // Distribute updates/game ticks
                 EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
+                //ENGINE_DEBUG("Update!");
 
-                this->current_ups_ = 1 / interval;
-                accumulator -= interval;
+                this->current_ups_ = 1000.0f / update_interval;
+                accumulator -= update_interval;
             }
 
-            //ENGINE_DEBUG("Running render pass...");
+
 
             // Run pre-render logic
 
@@ -106,21 +111,21 @@ namespace seedengine {
 
             EventDispatcher::force(new EnginePostRenderEvent());
 
-            //ENGINE_DEBUG("Updating render window...");
             // Update window
             window->update();
 
-            //ENGINE_DEBUG("Updating Current FPS value...");
-            this->current_fps_ = 1 / delta_time;
+            this->current_fps_ = 1000 / delta_time;
+
+            //ENGINE_DEBUG("FPS: {0}", this->current_fps_);
 
             // Sync time if vsync is enabled
             if (window->isVSync()) {
                 //ENGINE_DEBUG("Applying VSync...");
-                float loop_slot = 1.0f / this->TARGET_FPS;
+                float loop_slot = 1000.0f / this->TARGET_FPS;
                 float end_time = Time::getLastLoopTime() + loop_slot;
-                while (Time::currentSysTimeS().count() < end_time) {
+                while (Time::elapsedTimeMS().count() < end_time) {
                     //ENGINE_DEBUG("Sleeping on main loop thread...");
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    //std::this_thread::sleep_for(std::chrono::milliseconds(1));
                     //ENGINE_DEBUG("Main loop thread is awake.");
                 }
             }

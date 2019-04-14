@@ -12,7 +12,7 @@ namespace seedengine {
 
     void Time::start() {
         Time::start_time_ = Time::currentSysTimeMS();
-        Time::last_loop_time_ = start_time_;
+        Time::last_loop_time_ = std::chrono::milliseconds(0);
     }
 
     bool Time::togglePause() {
@@ -40,8 +40,7 @@ namespace seedengine {
         return t;
     }
 
-    float Time::getUpTime()
-    {
+    float Time::getUpTime() {
         float time = (float)(Time::elapsedTimeMS().count());
         float deltaTime = time - Time::last_loop_time_.count();
         std::chrono::milliseconds llt((int)(time));
@@ -49,31 +48,26 @@ namespace seedengine {
         return deltaTime * Time::getTimeScale();
     }
 
-    std::chrono::milliseconds Time::currentSysTimeMS()
-    {
+    std::chrono::milliseconds Time::currentSysTimeMS() {
         using namespace std::chrono;
         return duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     }
 
-    std::chrono::milliseconds Time::elapsedTimeMS()
-    {
+    std::chrono::milliseconds Time::elapsedTimeMS() {
         return currentSysTimeMS() - start_time_;
     }
 
-    std::chrono::seconds Time::currentSysTimeS()
-    {
+    std::chrono::seconds Time::currentSysTimeS() {
         using namespace std::chrono;
         return duration_cast<seconds>(system_clock::now().time_since_epoch());
     }
 
-    std::chrono::seconds Time::elapsedTimeS()
-    {
+    std::chrono::seconds Time::elapsedTimeS() {
         using namespace std::chrono;
         return duration_cast<seconds>(currentSysTimeMS() - start_time_);
     }
 
-    float Time::msToSec(long ms)
-    {
+    float Time::msToSec(long ms) {
         return ms / 1000.0f;
     }
 

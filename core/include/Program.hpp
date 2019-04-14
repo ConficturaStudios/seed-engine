@@ -59,13 +59,13 @@ namespace seedengine {
             // Should the program abort?
             // @returns: True if the program should abort.
             inline bool shouldAbort() {
-                std::lock_guard<std::mutex> guard(mu);
+                //std::lock_guard<std::mutex> guard(mu);
                 return abort_flag_;
             }
             // Should the program exit?
             // @returns: True if the program should exit.
             inline bool shouldExit() {
-                std::lock_guard<std::mutex> guard(mu);
+                //std::lock_guard<std::mutex> guard(mu);
                 return exit_flag_;
             }
 
