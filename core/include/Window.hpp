@@ -21,8 +21,8 @@ namespace seedengine {
         // @param(const bool) borderless: Is the window fullscreen?
         // @param(const bool) vsync: Is VSync enabled for the window?
         WindowProperties(   const std::string& title  = util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
-                            const unsigned int width  = util::parser::ini::DEFAULTS.sections["Window"].int_data["width"],
-                            const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["height"],
+                            const unsigned int width  = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_width"],
+                            const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_height"],
                             const bool fullscreen     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["fullscreen"],
                             const bool borderless     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["borderless"],
                             const bool vsync          = util::parser::ini::DEFAULTS.sections["Window"].bool_data["vsync"])
@@ -50,7 +50,7 @@ namespace seedengine {
 
     public:
         // Window destructor.
-        virtual ~Window() {}
+        virtual ~Window();
 
         // Updates what is shown on the window.
         void update();
@@ -106,6 +106,33 @@ namespace seedengine {
             // @param(int) width: The new window width.
             // @param(int) height: The new window height.
             static void glfwFramebufferSizeCallback(GLFWwindow*, int, int);
+
+            // A callback function to bind to GLFW for key events.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) key: The key affected.
+            // @param(int) scancode: A platform specific scancode.
+            // @param(int) action: The type of key action.
+            // @param(int) mods: A modifier flag for shift, ctrl, alt, and super.
+            static void glfwKeyCallback(GLFWwindow*, int, int, int, int);
+
+            // A callback function to bind to GLFW for mouse position events.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(double) xpos: The x position of the cursor.
+            // @param(double) ypos: The y position of the cursor.
+            static void glfwCursorPositionCallback(GLFWwindow*, double, double);
+
+            // A callback function to bind to GLFW for mouse button events.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) button: The button pressed.
+            // @param(int) action: The type of key action.
+            // @param(int) mods: A modifier flag for shift, ctrl, alt, and super.
+            static void glfwMouseButtonCallback(GLFWwindow*, int, int, int);
+
+            // A callback function to bind to GLFW for mouse scroll events.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(double) xoffset: The x offset of the scroll.
+            // @param(double) yoffset: The y offset of the scroll.
+            static void glfwScrollCallback(GLFWwindow*, double, double);
 
         #endif
 

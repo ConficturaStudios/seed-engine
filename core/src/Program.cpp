@@ -86,15 +86,21 @@ namespace seedengine {
 
             //ENGINE_DEBUG("DT {2} ACC {0} UP-INT {1}", accumulator, update_interval, delta_time);
 
-            // Manage update rate
-            while (accumulator >= update_interval) {
+            int update_count = 0;
 
-                // Distribute updates/game ticks
-                EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
-                //ENGINE_DEBUG("Update!");
+            // Manage update rate
+            while (accumulator >= update_interval && update_count < MAX_UPF) {
+
+                // Only update logic if the game is not paused
+                if (!Time::isPaused()) {
+                    // Distribute updates/game ticks
+                    EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
+                    //ENGINE_DEBUG("Update!");
+                }
 
                 this->current_ups_ = 1000.0f / update_interval;
                 accumulator -= update_interval;
+                update_count++;
             }
 
 
@@ -114,7 +120,7 @@ namespace seedengine {
             // Update window
             window->update();
 
-            this->current_fps_ = 1000 / delta_time;
+            this->current_fps_ = 1000.0f / delta_time;
 
             //ENGINE_DEBUG("FPS: {0}", this->current_fps_);
 
@@ -138,7 +144,7 @@ namespace seedengine {
 
         ENGINE_DEBUG("Cleaning up memory...");
         // Delete any consumed memory
-
+        delete window;
 
         if (this->shouldAbort()) {
             *exit_code = this->abort_code_;

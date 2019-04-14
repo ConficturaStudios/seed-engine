@@ -264,6 +264,14 @@ namespace seedengine {
             LAST = 348
         };
 
+        // Keyboard modifier buttons.
+        enum class KeyMod : unsigned int {
+            SHIFT = FLAG(1),
+            CTRL = FLAG(2),
+            ALT = FLAG(3),
+            SUPER = FLAG(4)
+        };
+
         // Mouse button code bindings.
         enum class MouseButton : unsigned int {
             LEFT         = 0,

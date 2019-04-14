@@ -562,8 +562,9 @@ namespace seedengine {
         // Constructs a new Mouse Button Event.
         // @param(unsigned int) button_id: The ID of the button affected.
         // @param(input::ButtonState) state: The state of the affected button.
-        MouseButtonEvent(unsigned int button_id, input::ButtonState state)
-            : MouseEvent(cur_x_, cur_y_), button_id_(button_id), state_(state) {}
+        // @param(unsigned int) mods: Applied modifier flags.
+        MouseButtonEvent(unsigned int button_id, input::ButtonState state, unsigned int mods)
+            : MouseEvent(cur_x_, cur_y_), button_id_(button_id), state_(state), mods_(mods) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
@@ -578,6 +579,9 @@ namespace seedengine {
         // Returns the state of the affected button.
         // @returns: The state of the affected button.
         inline input::ButtonState state() { return state_; }
+        // Returns the applied modifiers.
+        // @returns: The applied modifiers.
+        inline unsigned int mods() { return mods_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3) | 1;
@@ -588,6 +592,8 @@ namespace seedengine {
         unsigned int button_id_;
         // The state of the affected button.
         input::ButtonState state_;
+        // Any shift, ctrl, alt, super modifier flags applied to the key.
+        unsigned int mods_;
 
     };
 
@@ -637,8 +643,9 @@ namespace seedengine {
         // @param(unsinged int) keycode: The keycode of the affected key.
         // @param(unsinged int) repeat: The repeat count.
         // @param(input::ButtonState) state: The state of the affected key.
-        KeyboardEvent(unsigned int keycode, unsigned int repeat, input::ButtonState state)
-            : PeripheralEvent(), keycode_(keycode), repeat_(repeat), state_(state) {}
+        // @param(unsigned int) mods: Applied modifier flags.
+        KeyboardEvent(unsigned int keycode, unsigned int repeat, input::ButtonState state, unsigned int mods)
+            : PeripheralEvent(), keycode_(keycode), repeat_(repeat), state_(state), mods_(mods) {}
 
 
         // Returns the type of event this is.
@@ -660,6 +667,9 @@ namespace seedengine {
         // Returns the state of the affected key.
         // @returns: The state of the affected key.
         inline input::ButtonState state() { return state_; }
+        // Returns the applied modifiers.
+        // @returns: The applied modifiers.
+        inline unsigned int mods() { return mods_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::KEYBOARD) << 3);
@@ -672,6 +682,8 @@ namespace seedengine {
         unsigned int repeat_;
         // The state of the affected key.
         input::ButtonState state_;
+        // Any shift, ctrl, alt, super modifier flags applied to the key.
+        unsigned int mods_;
 
     };
 

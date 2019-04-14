@@ -46,7 +46,17 @@ namespace seedengine {
         delete program;
 
         //TODO: Change finished message type based on exit code
-        ENGINE_INFO("Finishing with exit code " + std::to_string(exit_code) + "...");
+        switch(exit_code) {
+            case -1:
+                ENGINE_ERROR("Finishing with exit code {0}...", exit_code);
+                break;
+            case 0:
+                ENGINE_INFO("Finishing with exit code {0}...", exit_code);
+                break;
+            default:
+                ENGINE_WARN("Finishing with exit code {0}...", exit_code);
+                break;
+        }
         std::this_thread::sleep_for(std::chrono::seconds(3));
         return exit_code;
     }

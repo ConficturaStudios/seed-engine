@@ -17,10 +17,12 @@ namespace seedengine {
             // Program destructor.
             virtual ~Program();
 
-            // Target Frames per Second
+            // Target Frames per Second.
             const float TARGET_FPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_fps"];
-            // Target Updates per Second
+            // Target Updates per Second.
             const float TARGET_UPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_ups"];
+            // Max Updates per Frame.
+            const int MAX_UPF = util::parser::ini::DEFAULTS.sections["Engine"].int_data["max_updates_per_frame"];
 
             // Runs the program logic. Should be launched on a new thread.
             // @param(int*) exit_code: A pointer to pass the returned exit code of the main loop.

@@ -2,10 +2,27 @@
 
 namespace seedengine {
 
+    Window::~Window() {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            glfwDestroyWindow(gl_window_);
+            glfwTerminate(); //TODO: Seperate GLFW termination from window close
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+    }
+
     void Window::update() {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glfwSwapBuffers(gl_window_);
             glfwPollEvents();
         // Check for Vulkan
@@ -19,13 +36,13 @@ namespace seedengine {
             return;
         #endif
         
-        EventDispatcher::force(new WindowUpdateEvent(this));
+        EventDispatcher::push(new WindowUpdateEvent(this));
     }
 
     void Window::close() {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
-            glfwTerminate();
+            glfwSetWindowShouldClose(gl_window_, true);
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
             return;
@@ -37,7 +54,7 @@ namespace seedengine {
             return;
         #endif
 
-        EventDispatcher::force(new WindowCloseEvent(this));
+        EventDispatcher::push(new WindowCloseEvent(this));
     }
 
     bool Window::shouldClose() {
@@ -73,14 +90,47 @@ namespace seedengine {
                 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
             #endif
 
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+            //TODO: Encapsulate monitors into a new class
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            glfwWindowHint(GLFW_RED_BITS, gl_vid_mode->redBits);
+            glfwWindowHint(GLFW_GREEN_BITS, gl_vid_mode->greenBits);
+            glfwWindowHint(GLFW_BLUE_BITS, gl_vid_mode->blueBits);
+            glfwWindowHint(GLFW_REFRESH_RATE, gl_vid_mode->refreshRate);
+
+            glfwWindowHint(GLFW_DECORATED, (window->properties_.borderless_) ? GLFW_FALSE : GLFW_TRUE);
+
+            //TODO: Clean up window creation code while taking into account fullscreen and borderless options
+
+            int win_width = (window->properties_.fullscreen_ && window->properties_.borderless_) ?
+                gl_vid_mode->width : window->width();
+            int win_height = (window->properties_.fullscreen_ && window->properties_.borderless_) ?
+                gl_vid_mode->height : window->height();
+
             // Create GL Window
-            GLFWwindow* gl_window = glfwCreateWindow(window->width(), window->height(), window->title().c_str(), NULL, NULL);
-            if (gl_window == NULL)
+            GLFWwindow* gl_window = glfwCreateWindow(
+                win_width, win_height, window->title().c_str(),
+                (window->properties_.fullscreen_ && window->properties_.borderless_) ? gl_monitor : nullptr, nullptr);
+            if (gl_window == nullptr)
             {
                 ENGINE_ERROR("Failed to create GLFW window.");
                 glfwTerminate();
                 return nullptr;
             }
+
+            if (window->properties_.fullscreen_ && !window->properties_.borderless_) {
+                glfwMaximizeWindow(gl_window);
+            }
+
+            if (!window->properties_.fullscreen_ && window->properties_.borderless_) {
+                int pos_x = (gl_vid_mode->width - window->width()) / 2;
+                int pos_y = (gl_vid_mode->height - window->height()) / 2;
+                glfwSetWindowMonitor(gl_window, nullptr, pos_x, pos_y, window->width(), window->height(), gl_vid_mode->refreshRate);
+            }
+
             glfwMakeContextCurrent(gl_window);
 
             // Initialize GLAD
@@ -100,6 +150,11 @@ namespace seedengine {
             EventDispatcher::registerDeligate(WindowResizeEvent::EVENT_ID, [window](Event& e) {
                 window->onResize(static_cast<WindowResizeEvent&>(e));
             });
+
+            glfwSetKeyCallback(gl_window, glfwKeyCallback);
+            glfwSetCursorPosCallback(gl_window, glfwCursorPositionCallback);
+            glfwSetMouseButtonCallback(gl_window, glfwMouseButtonCallback);
+            glfwSetScrollCallback(gl_window, glfwScrollCallback);
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -139,7 +194,49 @@ namespace seedengine {
             // Update viewport to match window size
             //TODO: Update viewport using ratio values to window
             glViewport(0, 0, width, height);
-            EventDispatcher::force(new WindowResizeEvent(Window::window_map_[gl_window], width, height));
+            EventDispatcher::push(new WindowResizeEvent(Window::window_map_[gl_window], width, height));
+        }
+
+        void Window::glfwKeyCallback(GLFWwindow* gl_window, int key, int scancode, int action, int mods) {
+            input::ButtonState button_state;
+            switch (action) {
+                case GLFW_PRESS:
+                    button_state = input::ButtonState::PRESSED;
+                    break;
+                case GLFW_RELEASE:
+                    button_state = input::ButtonState::RELEASED;
+                    break;
+                case GLFW_REPEAT:
+                    button_state = input::ButtonState::REPEAT;
+                    break;
+            }
+            ENGINE_DEBUG("Key '{0}' was {1} ({2})!", key, action, static_cast<unsigned int>(button_state));
+            EventDispatcher::push(new KeyboardEvent(key, 0, button_state, mods));
+        }
+
+        void Window::glfwCursorPositionCallback(GLFWwindow* gl_window, double xpos, double ypos) {
+            EventDispatcher::push(new MouseMovedEvent((float)xpos, (float)ypos));
+        }
+
+        void Window::glfwMouseButtonCallback(GLFWwindow* gl_window, int button, int action, int mods) {
+            input::ButtonState button_state;
+            switch (action) {
+                case GLFW_PRESS:
+                    button_state = input::ButtonState::PRESSED;
+                    break;
+                case GLFW_RELEASE:
+                    button_state = input::ButtonState::RELEASED;
+                    break;
+                case GLFW_REPEAT:
+                    button_state = input::ButtonState::REPEAT;
+                    break;
+            }
+            ENGINE_DEBUG("Mouse Button '{0}' was {1} ({2})!", button, action, static_cast<unsigned int>(button_state));
+            EventDispatcher::push(new MouseButtonEvent(button, button_state, mods));
+        }
+
+        void Window::glfwScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+            EventDispatcher::push(new MouseScrolledEvent((float)xoffset, (float)yoffset));
         }
 
     #endif
