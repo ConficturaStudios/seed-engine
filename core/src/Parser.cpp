@@ -6,7 +6,7 @@ namespace seedengine {
             namespace ini {
 
                 // Data from the defaults.ini file found in ~/seed-engine/core/data.
-                filedata DEFAULTS = parse("../../core/data/defaults.ini");
+                filedata DEFAULTS = parse(CORE_PATH("data/defaults.ini"));
 
                 filedata parse(std::string filepath) {
 

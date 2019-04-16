@@ -57,6 +57,8 @@ namespace seedengine {
         // Closes this window.
         void close();
 
+        //TODO: Add resize, maximize, minimize, center, and reposition functions
+
         // Should this window close?
         // @returns: True if the window should close.
         bool shouldClose();
@@ -100,6 +102,11 @@ namespace seedengine {
 
             // A map used to reference the seedengine::Window tied to a specific GLFWwindow.
             static std::map<GLFWwindow*, Window*> window_map_;
+
+            // A callback function to bind to GLFW for error handling.
+            // @param(int) error: The error code.
+            // @param(const char*) description: A description of the error.
+            static void glfwErrorCallback(int, const char*);
 
             // A callback function to bind to GLFW for the window resized event.
             // @param(GLFWwindow*) gl_window: The window to bind to.

@@ -83,6 +83,9 @@ namespace seedengine {
 
             // Initialize GLFW
             glfwInit();
+            
+            glfwSetErrorCallback(glfwErrorCallback);
+            
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -104,6 +107,8 @@ namespace seedengine {
             glfwWindowHint(GLFW_DECORATED, (window->properties_.borderless_) ? GLFW_FALSE : GLFW_TRUE);
 
             //TODO: Clean up window creation code while taking into account fullscreen and borderless options
+            //TODO: Add resource sharing to the window creation
+            //TODO: Add icon property option
 
             int win_width = (window->properties_.fullscreen_ && window->properties_.borderless_) ?
                 gl_vid_mode->width : window->width();
@@ -189,6 +194,10 @@ namespace seedengine {
     #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
         std::map<GLFWwindow*, Window*> Window::window_map_;
+
+        void Window::glfwErrorCallback(int error, const char* description) {
+            ENGINE_ERROR("GLFW ERROR ({0}): {1}", error, description);
+        }
 
         void Window::glfwFramebufferSizeCallback(GLFWwindow* gl_window, int width, int height) {
             // Update viewport to match window size

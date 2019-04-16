@@ -26,4 +26,6 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 *.bat
+*.bash
 *.project_conf
+ToDoLists.txt

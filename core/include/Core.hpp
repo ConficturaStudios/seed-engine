@@ -114,6 +114,10 @@
 
 // Custom Macros:
 
+// Creates an absolute file path within the engine core folder.
+#define CORE_PATH(x) ENGINE_CORE_PATH "/" x
+
+// Creates a bitwise flag.
 #define FLAG(x) (1 << x)
 
 // Engine specific includes:

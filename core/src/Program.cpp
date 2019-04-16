@@ -148,12 +148,12 @@ namespace seedengine {
 
         if (this->shouldAbort()) {
             *exit_code = this->abort_code_;
-            ENGINE_ERROR("Program aborted. Exiting exection thread.");
+            ENGINE_ERROR("Program aborted. Exiting execution thread.");
         }
         // TODO: add game and window exit logic
         else {
             *exit_code = this->exit_code_;
-            ENGINE_INFO("Execution complete. Exiting exection thread.");
+            ENGINE_INFO("Execution complete. Exiting execution thread.");
         }
 
         return;

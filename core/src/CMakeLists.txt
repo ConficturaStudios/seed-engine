@@ -20,6 +20,7 @@ add_library(${PROJECT_NAME}-core STATIC ${PROJECT_SRC})
 target_include_directories(${PROJECT_NAME}-core PUBLIC ${PROJECT_SOURCE_DIR}/core/include)
 
 target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_EXPORT=1)
+target_compile_definitions(${PROJECT_NAME}-core PUBLIC ENGINE_CORE_PATH="${PROJECT_SOURCE_DIR}/core")
 
 target_link_libraries(${PROJECT_NAME}-core glad)
 target_link_libraries(${PROJECT_NAME}-core glfw ${GLFW_LIBRARIES})
