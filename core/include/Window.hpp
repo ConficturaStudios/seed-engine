@@ -11,6 +11,7 @@ namespace seedengine {
     class WindowProperties {
         
         friend class Window;
+        friend class WindowManager;
 
     public:
         // Constructs a WindowProperties object. All parameters default to the value found in defaults.ini.
@@ -48,6 +49,8 @@ namespace seedengine {
     // A window to be displayed on a desktop system.
     class Window {
 
+        friend class WindowManager;
+
     public:
         // Window destructor.
         virtual ~Window();
@@ -57,7 +60,42 @@ namespace seedengine {
         // Closes this window.
         void close();
 
-        //TODO: Add resize, maximize, minimize, center, and reposition functions
+        //TODO: Add function to set icon, add icon/image class
+
+        // Resizes this window.
+        // @param(unsigned int) width: The new width of the window in pixels.
+        // @param(unsigned int) height: The new height of the window in pixels.
+        void resize(unsigned int, unsigned int);
+        // Resizes this window.
+        // @param(float) width: The new width of the window as a percentage of screen size.
+        // @param(float) height: The new height of the window as a percentage of screen size.
+        void resize(float, float);
+
+        // Toggles the maximized status on this window.
+        // @returns: True if the window is maximized.
+        bool toggleMaximize();
+        // Returns true if the window is maximized.
+        // @returns: True if the window is maximized.
+        bool isMaximized();
+
+        // Toggles the minimized status on this window.
+        // @returns: True if the window is minimized.
+        bool toggleMinimize();
+        // Returns true if the window is minimized.
+        // @returns: True if the window is minimized.
+        bool isMinimized();
+
+        // Centers the window on the screen.
+        void center();
+
+        // Sets the position of the window on the screen.
+        // @param(unsigned int) xpos: The new x position of the window in pixels.
+        // @param(unsigned int) ypos: The new y position of the window in pixels.
+        void setPosition(unsigned int, unsigned int);
+        // Sets the position of the window on the screen.
+        // @param(float) xpos: The new x position of the window as a percentage of screen size (0.0 - 1.0).
+        // @param(float) ypos: The new y position of the window as a percentage of screen size (0.0 - 1.0).
+        void setPosition(float, float);
 
         // Should this window close?
         // @returns: True if the window should close.
@@ -86,6 +124,9 @@ namespace seedengine {
         // @returns: A pointer to a new Window.
         static Window* create(const WindowProperties& preoperties = WindowProperties());
 
+        // Terminates all open windows.
+        static void terminateAll();
+
         // Event binding for when the window is resized.
         // @param(WindowResizeEvent&) e: A reference to the window resized event being called.
         void onResize(WindowResizeEvent&);
@@ -94,6 +135,8 @@ namespace seedengine {
 
         // The properties of this window.
         WindowProperties properties_;
+
+        static Window* original_window_;
 
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
@@ -113,6 +156,8 @@ namespace seedengine {
             // @param(int) width: The new window width.
             // @param(int) height: The new window height.
             static void glfwFramebufferSizeCallback(GLFWwindow*, int, int);
+
+            //TODO: Create window resize, maximized, iconified, focus, closed, position, and content scale callbacks.
 
             // A callback function to bind to GLFW for key events.
             // @param(GLFWwindow*) gl_window: The window to bind to.

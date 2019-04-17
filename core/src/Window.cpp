@@ -2,11 +2,12 @@
 
 namespace seedengine {
 
+    Window* Window::original_window_ = nullptr;
+
     Window::~Window() {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             glfwDestroyWindow(gl_window_);
-            glfwTerminate(); //TODO: Seperate GLFW termination from window close
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
             return;
@@ -57,6 +58,258 @@ namespace seedengine {
         EventDispatcher::push(new WindowCloseEvent(this));
     }
 
+    void Window::resize(unsigned int width, unsigned int height) {
+        unsigned int n_width = 100;
+        unsigned int n_height = 100;
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            n_width = (gl_vid_mode->width < (int)width) ? gl_vid_mode->width : width;
+            n_height = (gl_vid_mode->height < (int)height) ? gl_vid_mode->height : height;
+
+            glfwSetWindowSize(gl_window_, n_width, n_height);
+        
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+
+        EventDispatcher::push(new WindowResizeEvent(this, n_width, n_height));
+    }
+
+    void Window::resize(float width, float height) {
+        if (width > 1.0f || width < 0.0f) {
+            ENGINE_ERROR("Window {0} width change out of bounds.", title());
+            return;
+        }
+        if (height > 1.0f || height < 0.0f) {
+            ENGINE_ERROR("Window {0} height change out of bounds.", title());
+            return;
+        }
+        unsigned int n_width = 100;
+        unsigned int n_height = 100;
+
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            n_width = (int)(gl_vid_mode->width * width);
+            n_height = (int)(gl_vid_mode->height * height);
+
+            glfwSetWindowSize(gl_window_, n_width, n_height);
+        
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+
+        EventDispatcher::push(new WindowResizeEvent(this, n_width, n_height));
+    }
+
+    bool Window::toggleMaximize() {
+        unsigned int n_width = 100;
+        unsigned int n_height = 100;
+        bool maximized = isMaximized();
+
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            n_width = gl_vid_mode->width;
+            n_height = gl_vid_mode->height;
+
+            if (maximized) glfwRestoreWindow(gl_window_);
+            else glfwMaximizeWindow(gl_window_);
+
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+        
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+        
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+        
+        #endif
+
+        EventDispatcher::push(new WindowResizeEvent(this, n_width, n_height));
+        //TODO: Create window maximized event
+
+        return isMaximized();
+    }
+
+    bool Window::isMaximized() {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            return glfwGetWindowAttrib(gl_window_, GLFW_MAXIMIZED);
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return false;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return false;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return false;
+        #endif
+    }
+
+    bool Window::toggleMinimize() {
+        bool minimized = isMinimized();
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            if (minimized) glfwRestoreWindow(gl_window_);
+            else glfwIconifyWindow(gl_window_);
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+        
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+        
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+        
+        #endif
+
+        //TODO: Create window minimized/iconified event
+
+        return isMinimized();
+    }
+
+    bool Window::isMinimized() {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            return glfwGetWindowAttrib(gl_window_, GLFW_ICONIFIED);
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return false;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return false;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return false;
+        #endif
+    }
+
+    void Window::center() {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            int pos_x = (gl_vid_mode->width - width()) / 2;
+            int pos_y = (gl_vid_mode->height - height()) / 2;
+
+            glfwSetWindowPos(gl_window_, pos_x, pos_y);
+
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+
+        //TODO: Create window position change event
+    }
+
+    void Window::setPosition(unsigned int xpos, unsigned int ypos) {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            int pos_x = (gl_vid_mode->width <= (int)xpos) ? gl_vid_mode->width - 1 : xpos;
+            int pos_y = (gl_vid_mode->height <= (int)ypos) ? gl_vid_mode->height - 1 : ypos;
+
+            glfwSetWindowPos(gl_window_, pos_x, pos_y);
+        
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+
+        //TODO: Create window position change event
+    }
+
+    void Window::setPosition(float xpos, float ypos) {
+        if (xpos > 1.0f || xpos < 0.0f) {
+            ENGINE_ERROR("Window {0} x position change out of bounds.", title());
+            return;
+        }
+        if (ypos > 1.0f || ypos < 0.0f) {
+            ENGINE_ERROR("Window {0} y position change out of bounds.", title());
+            return;
+        }
+
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            int gl_monitor_count;
+            GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
+            GLFWmonitor* gl_monitor = gl_monitors[0];
+
+            const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
+
+            int pos_x = (int)(gl_vid_mode->width * xpos);
+            int pos_y = (int)(gl_vid_mode->height * ypos);
+
+            glfwSetWindowPos(gl_window_, pos_x, pos_y);
+        
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+
+        //TODO: Create window position change event
+    }
+
     bool Window::shouldClose() {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
@@ -77,15 +330,24 @@ namespace seedengine {
     Window* Window::create(const WindowProperties& preoperties) {
         Window* window = new Window();
         ENGINE_INFO("Creating window {0}...", window->title());
+
+        bool init = false;
+        if (original_window_ == nullptr) {
+            original_window_ = window;
+            init = true;
+        }
+
         // Initialize for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             ENGINE_INFO("Creating GLFW window...");
 
-            // Initialize GLFW
-            glfwInit();
-            
-            glfwSetErrorCallback(glfwErrorCallback);
-            
+            if (init) {
+                // Initialize GLFW
+                glfwInit();
+                // Set error callback, binds to the standard output
+                glfwSetErrorCallback(glfwErrorCallback);
+            }
+
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -94,9 +356,9 @@ namespace seedengine {
             #endif
 
             int gl_monitor_count;
+            //TODO: Encapsulate monitors into a new class
             GLFWmonitor** gl_monitors = glfwGetMonitors(&gl_monitor_count);
             GLFWmonitor* gl_monitor = gl_monitors[0];
-            //TODO: Encapsulate monitors into a new class
             const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
 
             glfwWindowHint(GLFW_RED_BITS, gl_vid_mode->redBits);
@@ -107,7 +369,6 @@ namespace seedengine {
             glfwWindowHint(GLFW_DECORATED, (window->properties_.borderless_) ? GLFW_FALSE : GLFW_TRUE);
 
             //TODO: Clean up window creation code while taking into account fullscreen and borderless options
-            //TODO: Add resource sharing to the window creation
             //TODO: Add icon property option
 
             int win_width = (window->properties_.fullscreen_ && window->properties_.borderless_) ?
@@ -118,7 +379,8 @@ namespace seedengine {
             // Create GL Window
             GLFWwindow* gl_window = glfwCreateWindow(
                 win_width, win_height, window->title().c_str(),
-                (window->properties_.fullscreen_ && window->properties_.borderless_) ? gl_monitor : nullptr, nullptr);
+                (window->properties_.fullscreen_ && window->properties_.borderless_) ? gl_monitor : nullptr,
+                (init) ? nullptr : original_window_->gl_window_);
             if (gl_window == nullptr)
             {
                 ENGINE_ERROR("Failed to create GLFW window.");
@@ -185,6 +447,22 @@ namespace seedengine {
         return window;
     }
 
+    void Window::terminateAll() {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            glfwTerminate();
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
+    }
+
     void Window::onResize(WindowResizeEvent& e) {
         this->properties_.width_ = e.x();
         this->properties_.height_ = e.y();
@@ -240,7 +518,8 @@ namespace seedengine {
                     button_state = input::ButtonState::REPEAT;
                     break;
             }
-            ENGINE_DEBUG("Mouse Button '{0}' was {1} ({2})!", button, action, static_cast<unsigned int>(button_state));
+            MouseButtonEvent* e = new MouseButtonEvent(button, button_state, mods);
+            ENGINE_DEBUG("Mouse Button '{0}' was {1} ({2}) at <{3}, {4}>!", button, action, static_cast<unsigned int>(button_state), e->x(), e->y());
             EventDispatcher::push(new MouseButtonEvent(button, button_state, mods));
         }
 
