@@ -50,6 +50,14 @@ namespace seedengine {
         // @returns: The number of channels per pixel of this image.
         inline unsigned int channels() { return channels_; }
 
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+
+            // Returns this image object as a glfw image.
+            // @returns: A GLFWimage with the data of this image.
+            GLFWimage glfwImage();
+
+        #endif
+
     private:
 
         std::string path_;

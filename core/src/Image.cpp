@@ -18,4 +18,16 @@ namespace seedengine {
         channels_ = channels;
     }
 
+    #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+
+        GLFWimage Image::glfwImage() {
+            GLFWimage gl_image;
+            gl_image.pixels = data();
+            gl_image.width = width();
+            gl_image.height = height();
+            return gl_image;
+        }
+
+    #endif
+
 }

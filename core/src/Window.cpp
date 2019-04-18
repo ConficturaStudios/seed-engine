@@ -304,13 +304,7 @@ namespace seedengine {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             if (icon == nullptr) glfwSetWindowIcon(gl_window_, 0, nullptr);
-            else {
-                GLFWimage gl_icon[1];
-                gl_icon[0].pixels = icon->data();
-                gl_icon[0].width = icon->width();
-                gl_icon[0].height = icon->height();
-                glfwSetWindowIcon(gl_window_, 1, gl_icon);
-            }
+            else glfwSetWindowIcon(gl_window_, 1, &(icon->glfwImage()));
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
             return;
@@ -397,13 +391,7 @@ namespace seedengine {
             Image* p_icon = window->properties_.icon_;
 
             if (p_icon == nullptr) glfwSetWindowIcon(gl_window, 0, nullptr);
-            else {
-                GLFWimage gl_icon[1];
-                gl_icon[0].pixels = p_icon->data();
-                gl_icon[0].width = p_icon->width();
-                gl_icon[0].height = p_icon->height();
-                glfwSetWindowIcon(gl_window, 1, gl_icon);
-            }
+            else glfwSetWindowIcon(gl_window, 1, &(p_icon->glfwImage()));
 
             glfwMakeContextCurrent(gl_window);
 
