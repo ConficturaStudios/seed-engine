@@ -43,15 +43,13 @@ namespace seedengine {
             return;
         }
 
+        // Set window icon
+        window->setIcon(new Image(CORE_PATH("data/confictura_flame_icon.png"), 4));
+
+        // Bind onClose event deligate
         EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
             this->onClose(static_cast<WindowCloseEvent&>(e));
         });
-
-        // Enable input
-
-        // Initialize window, abort with error on failure
-
-        // Bind input to window
 
         // The time in ms between each frame.
         float delta_time;
@@ -65,8 +63,6 @@ namespace seedengine {
         ENGINE_DEBUG("Loading game data.");
         // Load game data into application
         EventDispatcher::force(new EngineGameLoadEvent());
-
-        //TODO: store the execution time of the this from load
 
         ENGINE_DEBUG("Starting main loop...");
 
@@ -150,7 +146,6 @@ namespace seedengine {
             *exit_code = this->abort_code_;
             ENGINE_ERROR("Program aborted. Exiting execution thread.");
         }
-        // TODO: add game and window exit logic
         else {
             *exit_code = this->exit_code_;
             ENGINE_INFO("Execution complete. Exiting execution thread.");

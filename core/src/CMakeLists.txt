@@ -6,6 +6,7 @@ message(STATUS "Processing src CMakeLists.txt")
 
 set(PROJECT_SRC
     Event.cpp
+    Image.cpp
     Log.cpp
     Parser.cpp
     Program.cpp

@@ -121,7 +121,7 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::SYSTEM) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::SYSTEM) << 4);
 
     protected:
 
@@ -146,7 +146,7 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CLIENT) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CLIENT) << 4);
 
     protected:
 
@@ -190,7 +190,7 @@ namespace seedengine {
         inline float deltaTime() { return delta_time_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 4);
 
     protected:
 
@@ -216,7 +216,7 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 1;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 4) | 1;
 
     protected:
 
@@ -239,7 +239,7 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 2;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 4) | 2;
 
     protected:
 
@@ -262,7 +262,7 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 3;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 4) | 3;
 
     protected:
 
@@ -285,7 +285,7 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 3) | 4;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 4) | 4;
 
     protected:
 
@@ -318,25 +318,25 @@ namespace seedengine {
 
     };
 
-    // An event triggered when a window is closed.
-    class WindowCloseEvent : public WindowEvent {
+    // An event triggered when a window is created.
+    class WindowCreatedEvent : public WindowEvent {
 
     public:
 
-        // Constructs a new Window Closed Event.
-        // @param(unsigned int) window: The ID of the affected window.
-        WindowCloseEvent(Window* window)
+        // Constructs a new Window Created Event.
+        // @param(Window*) window: The ID of the affected window.
+        WindowCreatedEvent(Window* window)
             : WindowEvent(window) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
-        const char* getName() const { return "Window Close Event"; }
+        const char* getName() const { return "Window Created Event"; }
         // Returns the ID of this event.
         // @returns: The ID of this event.
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4);
 
     protected:
 
@@ -348,11 +348,11 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Resized Event.
-        // @param(unsigned int) window: The ID of the affected window.
-        // @param(unsigned int) x: The new x dimension of the window.
-        // @param(inunsigned intt) y: The new y dimension of the window.
-        WindowResizeEvent(Window* window, unsigned int x, unsigned int y)
-            : WindowEvent(window), x_(x), y_(y) {}
+        // @param(Window*) window: The ID of the affected window.
+        // @param(unsigned int) width: The new width of the window.
+        // @param(nunsigned int) height: The new height of the window.
+        WindowResizeEvent(Window* window, unsigned int width, unsigned int height)
+            : WindowEvent(window), width_(width), height_(height) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
@@ -361,22 +361,108 @@ namespace seedengine {
         // @returns: The ID of this event.
         const unsigned int getId() const { return EVENT_ID; }
 
-        // Returns the new x dimension.
-        // @returns: The new x dimension.
-        inline unsigned int x() { return x_; }
-        // Returns the new y dimension.
-        // @returns: The new y dimension.
-        inline unsigned int y() { return y_; }
+        // Returns the new width.
+        // @returns: The new width.
+        inline unsigned int width() { return width_; }
+        // Returns the new height.
+        // @returns: The new height.
+        inline unsigned int height() { return height_; }
 
-        // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 1;
+        // The ID number of this event theightpe.
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 1;
 
     protected:
 
-        // The new x dimension.
+        // The new width.
+        unsigned int width_;
+        // The new height.
+        unsigned int height_;
+
+    };
+
+    // An event triggered when a window is moved.
+    class WindowPositionEvent : public WindowEvent {
+
+    public:
+
+        // Constructs a new Window Position Event.
+        // @param(Window*) window: The ID of the affected window.
+        // @param(unsigned int) x: The new x position of the window.
+        // @param(unsigned int) y: The new y position of the window.
+        WindowPositionEvent(Window* window, unsigned int x, unsigned int y)
+            : WindowEvent(window), x_(x), y_(y) {}
+
+        // Returns the name of this event.
+        // @returns: The name of this event.
+        const char* getName() const { return "Window Position Event"; }
+        // Returns the ID of this event.
+        // @returns: The ID of this event.
+        const unsigned int getId() const { return EVENT_ID; }
+
+        // Returns the new x position.
+        // @returns: The new x position.
+        inline unsigned int x() { return x_; }
+        // Returns the new y position.
+        // @returns: The new y position.
+        inline unsigned int y() { return y_; }
+
+        // The ID number of this event type.
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 2;
+
+    protected:
+
+        // The new x position.
         unsigned int x_;
-        // The new y dimension.
+        // The new y position.
         unsigned int y_;
+
+    };
+
+    // An event triggered when a window is closed.
+    class WindowCloseEvent : public WindowEvent {
+
+    public:
+
+        // Constructs a new Window Closed Event.
+        // @param(Window*) window: The ID of the affected window.
+        WindowCloseEvent(Window* window)
+            : WindowEvent(window) {}
+
+        // Returns the name of this event.
+        // @returns: The name of this event.
+        const char* getName() const { return "Window Close Event"; }
+        // Returns the ID of this event.
+        // @returns: The ID of this event.
+        const unsigned int getId() const { return EVENT_ID; }
+
+        // The ID number of this event type.
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 3;
+
+    protected:
+
+    };
+
+    // An event triggered when a window is refreshed.
+    class WindowRefreshEvent : public WindowEvent {
+
+    public:
+
+        // Constructs a new Window Refreshd Event.
+        // @param(Window*) window: The ID of the affected window.
+        WindowRefreshEvent(Window* window)
+            : WindowEvent(window) {}
+
+        // Returns the name of this event.
+        // @returns: The name of this event.
+        const char* getName() const { return "Window Refresh Event"; }
+        // Returns the ID of this event.
+        // @returns: The ID of this event.
+        const unsigned int getId() const { return EVENT_ID; }
+
+        // The ID number of this event type.
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 4;
+
+    protected:
 
     };
 
@@ -386,7 +472,7 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Focus Event.
-        // @param(unsigned int) window: The ID of the affected window.
+        // @param(Window*) window: The ID of the affected window.
         // @param(bool) has_focus: True if the window has gained focus.
         WindowFocusEvent(Window* window, bool has_focus)
             : WindowEvent(window), has_focus_(has_focus) {}
@@ -403,12 +489,76 @@ namespace seedengine {
         inline bool hasFocus() { return has_focus_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 2;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 5;
 
     protected:
 
         // True if the window has focus.
         bool has_focus_;
+
+    };
+
+    // An event triggered when a window is minimized.
+    class WindowMinimizeEvent : public WindowEvent {
+
+    public:
+
+        // Constructs a new Window Minimize Event.
+        // @param(Window*) window: The ID of the affected window.
+        // @param(bool) minimized: True if the window has been minimized.
+        WindowMinimizeEvent(Window* window, bool minimized)
+            : WindowEvent(window), minimized_(minimized) {}
+
+        // Returns the name of this event.
+        // @returns: The name of this event.
+        const char* getName() const { return "Window Minimze Event"; }
+        // Returns the ID of this event.
+        // @returns: The ID of this event.
+        const unsigned int getId() const { return EVENT_ID; }
+
+        // Returns true if the window has been minimized.
+        // @returns: True if the window has been minimized.
+        inline bool minimized() { return minimized_; }
+
+        // The ID number of this event type.
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 6;
+
+    protected:
+
+        // True if the window has been minimized.
+        bool minimized_;
+
+    };
+
+    // An event triggered when a window is maximized.
+    class WindowMaximizeEvent : public WindowEvent {
+
+    public:
+
+        // Constructs a new Window Maximize Event.
+        // @param(Window*) window: The ID of the affected window.
+        // @param(bool) maximized: True if the window has been maximized.
+        WindowMaximizeEvent(Window* window, bool maximized)
+            : WindowEvent(window), maximized_(maximized) {}
+
+        // Returns the name of this event.
+        // @returns: The name of this event.
+        const char* getName() const { return "Window Maximize Event"; }
+        // Returns the ID of this event.
+        // @returns: The ID of this event.
+        const unsigned int getId() const { return EVENT_ID; }
+
+        // Returns true if the window has been maximized.
+        // @returns: True if the window has been maximized.
+        inline bool maximized() { return maximized_; }
+
+        // The ID number of this event type.
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 7;
+
+    protected:
+
+        // True if the window has been maximized.
+        bool maximized_;
 
     };
 
@@ -418,7 +568,7 @@ namespace seedengine {
     public:
 
         // Constructs a new Window Update Event.
-        // @param(unsigned int) window: The ID of the affected window.
+        // @param(Window*) window: The ID of the affected window.
         WindowUpdateEvent(Window* window)
             : WindowEvent(window) {}
 
@@ -430,33 +580,47 @@ namespace seedengine {
         const unsigned int getId() const { return EVENT_ID; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 3;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 8;
 
     protected:
 
     };
 
-    // An event triggered when a window is created.
-    class WindowCreatedEvent : public WindowEvent {
+    // An event triggered when a window has its content scaled.
+    class WindowConentScaleEvent : public WindowEvent {
 
     public:
 
-        // Constructs a new Window Created Event.
-        // @param(unsigned int) window: The ID of the affected window.
-        WindowCreatedEvent(Window* window)
-            : WindowEvent(window) {}
+        // Constructs a new Window Content Scale Event.
+        // @param(Window*) window: The ID of the affected window.
+        // @param(float) x_scale: The new x content scale of the window.
+        // @param(float) y_scale: The new y content scale of the window.
+        WindowConentScaleEvent(Window* window, float x_scale, float y_scale)
+            : WindowEvent(window), x_scale_(x_scale), y_scale_(y_scale) {}
 
         // Returns the name of this event.
         // @returns: The name of this event.
-        const char* getName() const { return "Window Created Event"; }
+        const char* getName() const { return "Window Content Scale Event"; }
         // Returns the ID of this event.
         // @returns: The ID of this event.
         const unsigned int getId() const { return EVENT_ID; }
 
+        // Returns the new x content scale.
+        // @returns: The new x content scale.
+        inline float x_scale() { return x_scale_; }
+        // Returns the new y content scale.
+        // @returns: The new y content scale.
+        inline float y_scale() { return y_scale_; }
+
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 3) | 4;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 9;
 
     protected:
+
+        // The new x content scale.
+        float x_scale_;
+        // The new y content scale.
+        float y_scale_;
 
     };
 
@@ -543,7 +707,7 @@ namespace seedengine {
         inline float dy() { return dy_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 4);
 
     private:
 
@@ -584,7 +748,7 @@ namespace seedengine {
         inline unsigned int mods() { return mods_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3) | 1;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 4) | 1;
 
     private:
 
@@ -623,7 +787,7 @@ namespace seedengine {
         inline float y_offset() { return y_offset_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 3) | 2;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 4) | 2;
 
     private:
 
@@ -672,7 +836,7 @@ namespace seedengine {
         inline unsigned int mods() { return mods_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::KEYBOARD) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::KEYBOARD) << 4);
 
     private:
 
@@ -740,7 +904,7 @@ namespace seedengine {
         inline input::ButtonState state() { return state_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 3);
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 4);
 
     private:
 
@@ -782,7 +946,7 @@ namespace seedengine {
         inline float y() { return y_; }
 
         // The ID number of this event type.
-        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 3) | 1;
+        static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 4) | 1;
 
     private:
 

@@ -4,6 +4,7 @@
 #include "Core.hpp"
 #include "Parser.hpp"
 #include "Event.hpp"
+#include "Image.hpp"
 
 namespace seedengine {
     
@@ -11,7 +12,6 @@ namespace seedengine {
     class WindowProperties {
         
         friend class Window;
-        friend class WindowManager;
 
     public:
         // Constructs a WindowProperties object. All parameters default to the value found in defaults.ini.
@@ -26,8 +26,9 @@ namespace seedengine {
                             const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_height"],
                             const bool fullscreen     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["fullscreen"],
                             const bool borderless     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["borderless"],
-                            const bool vsync          = util::parser::ini::DEFAULTS.sections["Window"].bool_data["vsync"])
-            : title_(title), width_(width), height_(height), borderless_(borderless), fullscreen_(fullscreen), vsync_(vsync) {}
+                            const bool vsync          = util::parser::ini::DEFAULTS.sections["Window"].bool_data["vsync"],
+                            Image* icon               = nullptr)
+            : title_(title), width_(width), height_(height), borderless_(borderless), fullscreen_(fullscreen), vsync_(vsync), icon_(icon) {}
 
 
     private:
@@ -43,13 +44,13 @@ namespace seedengine {
         bool fullscreen_;
         // Is VSync enabled for the window?
         bool vsync_;
+        // A pointer to the image used as this windows icon. Set to nullptr to use default.
+        Image* icon_;
 
     };
 
     // A window to be displayed on a desktop system.
     class Window {
-
-        friend class WindowManager;
 
     public:
         // Window destructor.
@@ -59,8 +60,6 @@ namespace seedengine {
         void update();
         // Closes this window.
         void close();
-
-        //TODO: Add function to set icon, add icon/image class
 
         // Resizes this window.
         // @param(unsigned int) width: The new width of the window in pixels.
@@ -119,6 +118,13 @@ namespace seedengine {
         // @param(bool) vsync: Enables VSync if true.
         inline void setVSync(bool vsync) { properties_.vsync_ = vsync; }
 
+        // Sets the icon of this window.
+        // @param(Image*) icon: The new icon image.
+        void setIcon(Image*);
+        // Gets the icon of this window.
+        // @returns: The icon of this image.
+        inline Image* getIcon() { return properties_.icon_; }
+
         // Creates a new window.
         // @param(const WindowProperties&) properties: The properties to assign to this window. Defaults to the default WindowProperty object.
         // @returns: A pointer to a new Window.
@@ -130,6 +136,10 @@ namespace seedengine {
         // Event binding for when the window is resized.
         // @param(WindowResizeEvent&) e: A reference to the window resized event being called.
         void onResize(WindowResizeEvent&);
+
+        // Event binding for when the window is maximized.
+        // @param(WindowMaximizeEvent&) e: A reference to the window maximized event being called.
+        void onMaximize(WindowMaximizeEvent&);
 
     private:
 
@@ -151,13 +161,53 @@ namespace seedengine {
             // @param(const char*) description: A description of the error.
             static void glfwErrorCallback(int, const char*);
 
+
             // A callback function to bind to GLFW for the window resized event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) width: The new window width.
+            // @param(int) height: The new window height.
+            static void glfwWindowSizeCallback(GLFWwindow*, int, int);
+
+            // A callback function to bind to GLFW for the window moved event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) xpos: The new window x position.
+            // @param(int) ypos: The new window y position.
+            static void glfwWindowPosCallback(GLFWwindow*, int, int);
+
+            // A callback function to bind to GLFW for the window closed event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            static void glfwWindowCloseCallback(GLFWwindow*);
+
+            // A callback function to bind to GLFW for the window refreshed event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            static void glfwWindowRefreshCallback(GLFWwindow*);
+
+            // A callback function to bind to GLFW for the window focus event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) focused: True if the window was given input focus, or false if it lost it.
+            static void glfwWindowFocusCallback(GLFWwindow*, int);
+
+            // A callback function to bind to GLFW for the window iconify/minimized event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) iconified: True if the window was iconified, or false if it was restored.
+            static void glfwWindowIconifyCallback(GLFWwindow*, int);
+
+            // A callback function to bind to GLFW for the window maximized event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(int) maximized: True if the window was maximized, or false if it was restored.
+            static void glfwWindowMaximizeCallback(GLFWwindow*, int);
+
+            // A callback function to bind to GLFW for the framebuffer resized event.
             // @param(GLFWwindow*) gl_window: The window to bind to.
             // @param(int) width: The new window width.
             // @param(int) height: The new window height.
             static void glfwFramebufferSizeCallback(GLFWwindow*, int, int);
 
-            //TODO: Create window resize, maximized, iconified, focus, closed, position, and content scale callbacks.
+            // A callback function to bind to GLFW for the content scaled event.
+            // @param(GLFWwindow*) gl_window: The window to bind to.
+            // @param(float) xscale: The new window content x scale.
+            // @param(float) yscale: The new window content y scale.
+            static void glfwWindowContentScaleCallback(GLFWwindow*, float, float);
 
             // A callback function to bind to GLFW for key events.
             // @param(GLFWwindow*) gl_window: The window to bind to.

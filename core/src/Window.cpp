@@ -54,13 +54,10 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
             return;
         #endif
-
-        EventDispatcher::push(new WindowCloseEvent(this));
     }
 
     void Window::resize(unsigned int width, unsigned int height) {
-        unsigned int n_width = 100;
-        unsigned int n_height = 100;
+        
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             int gl_monitor_count;
@@ -69,10 +66,9 @@ namespace seedengine {
 
             const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
 
-            n_width = (gl_vid_mode->width < (int)width) ? gl_vid_mode->width : width;
-            n_height = (gl_vid_mode->height < (int)height) ? gl_vid_mode->height : height;
-
-            glfwSetWindowSize(gl_window_, n_width, n_height);
+            glfwSetWindowSize(gl_window_,
+                (gl_vid_mode->width < (int)width) ? gl_vid_mode->width : width,
+                (gl_vid_mode->height < (int)height) ? gl_vid_mode->height : height);
         
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
@@ -84,8 +80,6 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
             return;
         #endif
-
-        EventDispatcher::push(new WindowResizeEvent(this, n_width, n_height));
     }
 
     void Window::resize(float width, float height) {
@@ -97,8 +91,6 @@ namespace seedengine {
             ENGINE_ERROR("Window {0} height change out of bounds.", title());
             return;
         }
-        unsigned int n_width = 100;
-        unsigned int n_height = 100;
 
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
@@ -108,10 +100,8 @@ namespace seedengine {
 
             const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
 
-            n_width = (int)(gl_vid_mode->width * width);
-            n_height = (int)(gl_vid_mode->height * height);
-
-            glfwSetWindowSize(gl_window_, n_width, n_height);
+            glfwSetWindowSize(gl_window_,
+                (int)(gl_vid_mode->width * width), (int)(gl_vid_mode->height * height));
         
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
@@ -123,13 +113,9 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
             return;
         #endif
-
-        EventDispatcher::push(new WindowResizeEvent(this, n_width, n_height));
     }
 
     bool Window::toggleMaximize() {
-        unsigned int n_width = 100;
-        unsigned int n_height = 100;
         bool maximized = isMaximized();
 
         // Check for OpenGL
@@ -139,9 +125,6 @@ namespace seedengine {
             GLFWmonitor* gl_monitor = gl_monitors[0];
 
             const GLFWvidmode* gl_vid_mode = glfwGetVideoMode(gl_monitor);
-
-            n_width = gl_vid_mode->width;
-            n_height = gl_vid_mode->height;
 
             if (maximized) glfwRestoreWindow(gl_window_);
             else glfwMaximizeWindow(gl_window_);
@@ -156,9 +139,6 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
         
         #endif
-
-        EventDispatcher::push(new WindowResizeEvent(this, n_width, n_height));
-        //TODO: Create window maximized event
 
         return isMaximized();
     }
@@ -195,8 +175,6 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
         
         #endif
-
-        //TODO: Create window minimized/iconified event
 
         return isMinimized();
     }
@@ -241,8 +219,6 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
             return;
         #endif
-
-        //TODO: Create window position change event
     }
 
     void Window::setPosition(unsigned int xpos, unsigned int ypos) {
@@ -269,8 +245,6 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
             return;
         #endif
-
-        //TODO: Create window position change event
     }
 
     void Window::setPosition(float xpos, float ypos) {
@@ -306,8 +280,6 @@ namespace seedengine {
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
             return;
         #endif
-
-        //TODO: Create window position change event
     }
 
     bool Window::shouldClose() {
@@ -325,6 +297,30 @@ namespace seedengine {
             return false;
         #endif
         return false;
+    }
+
+    void Window::setIcon(Image* icon) {
+        properties_.icon_ = icon;
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+            if (icon == nullptr) glfwSetWindowIcon(gl_window_, 0, nullptr);
+            else {
+                GLFWimage gl_icon[1];
+                gl_icon[0].pixels = icon->data();
+                gl_icon[0].width = icon->width();
+                gl_icon[0].height = icon->height();
+                glfwSetWindowIcon(gl_window_, 1, gl_icon);
+            }
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+            return;
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+            return;
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+            return;
+        #endif
     }
 
     Window* Window::create(const WindowProperties& preoperties) {
@@ -397,6 +393,17 @@ namespace seedengine {
                 int pos_y = (gl_vid_mode->height - window->height()) / 2;
                 glfwSetWindowMonitor(gl_window, nullptr, pos_x, pos_y, window->width(), window->height(), gl_vid_mode->refreshRate);
             }
+            
+            Image* p_icon = window->properties_.icon_;
+
+            if (p_icon == nullptr) glfwSetWindowIcon(gl_window, 0, nullptr);
+            else {
+                GLFWimage gl_icon[1];
+                gl_icon[0].pixels = p_icon->data();
+                gl_icon[0].width = p_icon->width();
+                gl_icon[0].height = p_icon->height();
+                glfwSetWindowIcon(gl_window, 1, gl_icon);
+            }
 
             glfwMakeContextCurrent(gl_window);
 
@@ -411,11 +418,23 @@ namespace seedengine {
 
             window_map_[gl_window] = window;
 
-            // Bind function to window resize GLFW event
+            // Bind window callbacks
+            glfwSetWindowSizeCallback(gl_window, glfwWindowSizeCallback);
+            glfwSetWindowPosCallback(gl_window, glfwWindowPosCallback);
+            glfwSetWindowCloseCallback(gl_window, glfwWindowCloseCallback);
+            glfwSetWindowRefreshCallback(gl_window, glfwWindowRefreshCallback);
+            glfwSetWindowFocusCallback(gl_window, glfwWindowFocusCallback);
+            glfwSetWindowIconifyCallback(gl_window, glfwWindowIconifyCallback);
+            glfwSetWindowMaximizeCallback(gl_window, glfwWindowMaximizeCallback);
             glfwSetFramebufferSizeCallback(gl_window, glfwFramebufferSizeCallback);
+            glfwSetWindowContentScaleCallback(gl_window, glfwWindowContentScaleCallback);
 
             EventDispatcher::registerDeligate(WindowResizeEvent::EVENT_ID, [window](Event& e) {
                 window->onResize(static_cast<WindowResizeEvent&>(e));
+            });
+
+            EventDispatcher::registerDeligate(WindowMaximizeEvent::EVENT_ID, [window](Event& e) {
+                window->onMaximize(static_cast<WindowMaximizeEvent&>(e));
             });
 
             glfwSetKeyCallback(gl_window, glfwKeyCallback);
@@ -464,8 +483,12 @@ namespace seedengine {
     }
 
     void Window::onResize(WindowResizeEvent& e) {
-        this->properties_.width_ = e.x();
-        this->properties_.height_ = e.y();
+        this->properties_.width_ = e.width();
+        this->properties_.height_ = e.width();
+    }
+
+    void Window::onMaximize(WindowMaximizeEvent& e) {
+        this->properties_.fullscreen_ = e.maximized();
     }
 
     // OpenGL Code
@@ -477,12 +500,46 @@ namespace seedengine {
             ENGINE_ERROR("GLFW ERROR ({0}): {1}", error, description);
         }
 
+
+        void Window::glfwWindowSizeCallback(GLFWwindow* gl_window, int width, int height) {
+            EventDispatcher::push(new WindowResizeEvent(Window::window_map_[gl_window], width, height));
+        }
+
+        void Window::glfwWindowPosCallback(GLFWwindow* gl_window, int xpos, int ypos) {
+            EventDispatcher::push(new WindowPositionEvent(Window::window_map_[gl_window], xpos, ypos));
+        }
+
+        void Window::glfwWindowCloseCallback(GLFWwindow* gl_window) {
+            EventDispatcher::push(new WindowCloseEvent(Window::window_map_[gl_window]));
+        }
+
+        void Window::glfwWindowRefreshCallback(GLFWwindow* gl_window) {
+            EventDispatcher::push(new WindowRefreshEvent(Window::window_map_[gl_window]));
+        }
+
+        void Window::glfwWindowFocusCallback(GLFWwindow* gl_window, int focused) {
+            EventDispatcher::push(new WindowFocusEvent(Window::window_map_[gl_window], focused));
+        }
+
+        void Window::glfwWindowIconifyCallback(GLFWwindow* gl_window, int iconified) {
+            EventDispatcher::push(new WindowMinimizeEvent(Window::window_map_[gl_window], iconified));
+        }
+
+        void Window::glfwWindowMaximizeCallback(GLFWwindow* gl_window, int maximized) {
+            EventDispatcher::push(new WindowMaximizeEvent(Window::window_map_[gl_window], maximized));
+        }
+
         void Window::glfwFramebufferSizeCallback(GLFWwindow* gl_window, int width, int height) {
             // Update viewport to match window size
             //TODO: Update viewport using ratio values to window
             glViewport(0, 0, width, height);
             EventDispatcher::push(new WindowResizeEvent(Window::window_map_[gl_window], width, height));
         }
+
+        void Window::glfwWindowContentScaleCallback(GLFWwindow* gl_window, float xscale, float yscale) {
+            EventDispatcher::push(new WindowConentScaleEvent(Window::window_map_[gl_window], xscale, yscale));
+        }
+
 
         void Window::glfwKeyCallback(GLFWwindow* gl_window, int key, int scancode, int action, int mods) {
             input::ButtonState button_state;

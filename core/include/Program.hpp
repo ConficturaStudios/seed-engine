@@ -103,6 +103,7 @@ namespace seedengine {
             void onClose(WindowCloseEvent&);
 
     };
+
 }
 
 #endif
