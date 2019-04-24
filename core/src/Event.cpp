@@ -2,6 +2,8 @@
 
 namespace seedengine {
 
+    //TODO: Clean up memory leaks with smart pointers
+
     std::queue<Event*> EventDispatcher::event_buffer;
     std::map<const unsigned int, std::vector<std::function<void(Event&)>>> EventDispatcher::deligate_regtistry;
 
@@ -57,6 +59,7 @@ namespace seedengine {
                 event_buffer.push(next);
             }
             buffer_count++;
+            delete next;
         }
     }
 

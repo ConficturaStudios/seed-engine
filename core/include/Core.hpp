@@ -19,6 +19,11 @@
 #endif
 
 // Cross Platform Libraries
+
+#include <glm.hpp>
+#include <gtc/quaternion.hpp>
+#include <gtx/quaternion.hpp>
+
 //Check for OpenGL
 #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
     #include <glad/glad.h>
@@ -119,6 +124,8 @@
 
 // Creates a bitwise flag.
 #define FLAG(x) (1 << x)
+// Checks if the option has the flag enabled.
+#define CHECK_FLAG(option, flag) (option & flag) == flag
 
 // Engine specific includes:
 

@@ -45,7 +45,7 @@ namespace seedengine {
         // Is VSync enabled for the window?
         bool vsync_;
         // A pointer to the image used as this windows icon. Set to nullptr to use default.
-        Image* icon_;
+        std::shared_ptr<Image> icon_;
 
     };
 
@@ -119,11 +119,11 @@ namespace seedengine {
         inline void setVSync(bool vsync) { properties_.vsync_ = vsync; }
 
         // Sets the icon of this window.
-        // @param(Image*) icon: The new icon image.
-        void setIcon(Image*);
+        // @param(std::shared_ptr<Image>) icon: The new icon image.
+        void setIcon(std::shared_ptr<Image>);
         // Gets the icon of this window.
         // @returns: The icon of this image.
-        inline Image* getIcon() { return properties_.icon_; }
+        inline std::shared_ptr<Image> getIcon() { return properties_.icon_; }
 
         // Creates a new window.
         // @param(const WindowProperties&) properties: The properties to assign to this window. Defaults to the default WindowProperty object.

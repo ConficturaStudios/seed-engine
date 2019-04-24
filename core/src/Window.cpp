@@ -299,7 +299,7 @@ namespace seedengine {
         return false;
     }
 
-    void Window::setIcon(Image* icon) {
+    void Window::setIcon(std::shared_ptr<Image> icon) {
         properties_.icon_ = icon;
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
@@ -388,7 +388,7 @@ namespace seedengine {
                 glfwSetWindowMonitor(gl_window, nullptr, pos_x, pos_y, window->width(), window->height(), gl_vid_mode->refreshRate);
             }
             
-            Image* p_icon = window->properties_.icon_;
+            std::shared_ptr<Image> p_icon = window->properties_.icon_;
 
             if (p_icon == nullptr) glfwSetWindowIcon(gl_window, 0, nullptr);
             else glfwSetWindowIcon(gl_window, 1, &(p_icon->glfwImage()));

@@ -44,7 +44,8 @@ namespace seedengine {
         }
 
         // Set window icon
-        window->setIcon(new Image(CORE_PATH("data/confictura_flame_icon.png"), 4));
+        ImageLibrary::load(CORE_PATH("data/confictura_flame_icon.png"));
+        window->setIcon(ImageLibrary::request(CORE_PATH("data/confictura_flame_icon.png")));
 
         // Bind onClose event deligate
         EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
