@@ -25,17 +25,27 @@ namespace seedengine {
         // @returns: The data of this asset.
         inline std::shared_ptr<T> data() { return data_; }
 
-        inline bool isLoaded() { return data_ == nullptr; }
+        // Is this asset loaded into memory?
+        // @returns: True if the asset has been loaded.
+        inline bool isLoaded() { return data_ != nullptr; }
 
     protected:
 
+        // The file path to this asset.
         std::string path_;
+        // The data stored in this asset.
         std::shared_ptr<T> data_;
 
-        Asset(const std::string& path) : path_(path), data_(nullptr) {}
+        // Constructs a new image from data in a file.
+        // @param(const std::string&) path: The path to the image to be loaded.
+        Asset(const std::string& path) : path_(path), data_(nullptr) {
+            std::ifstream test_path(path);
+            if (!test_path) throw std::invalid_argument("Asset path '" + path + "' not found.");
+        }
 
+        // Loads this asset into memory.
         virtual void load() = 0;
-
+        // Unloads this asset from memory.
         virtual void unload() = 0;
 
     };
@@ -46,9 +56,10 @@ namespace seedengine {
 
     public:
 
+        // Constructs a new asset library.
         AssetLibrary() {
             static_assert(std::is_base_of<Asset<AssetData>, AssetType>::value,
-                "AssetType is not of type Asset.");
+                "AssetType is not of type Asset<AssetData>.");
             atlas_ = std::map<std::string, std::shared_ptr<AssetType>>();
         }
     

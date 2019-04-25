@@ -29,12 +29,13 @@ namespace seedengine {
             void run(int*);
 
             // Aborts this program during runtime.
-            // @param(int) error: The error code to return console.
-            void abort(int);
+            // @param(int) error: The error code to return to the console. Defaults to -1;
+            // @param(std::string) msg: The error message to display. Defaults to an empty string.
+            void abort(int = -1, std::string = "");
 
             // Exits this program.
-            // @param(int) exit_code: The exit code to return to the console.
-            void exit(int);
+            // @param(int) exit_code: The exit code to return to the console. Defaults to 0;
+            void exit(int = 0);
 
             // Specifies the game to run.
             // ** IN DEVELOPMENT **

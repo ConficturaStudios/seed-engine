@@ -27,55 +27,60 @@ namespace seedengine {
             return;
         }
 
-        ENGINE_DEBUG("Starting program clock");
-        // Set the starting time for the Time class
-        Time::start();
+        try {
 
-        ENGINE_DEBUG("Initializing program window and input.");
-        // Spawn window
-        Window* window = Window::create();
+            ENGINE_DEBUG("Starting program clock");
+            // Set the starting time for the Time class
+            Time::start();
 
-        if (window == nullptr) {
-            ENGINE_ERROR("Failed to create window.");
-            abort(-1);
-            *exit_code = this->abort_code_;
-            ENGINE_ERROR("Program aborted. Exiting exection thread.");
-            return;
-        }
+            ENGINE_DEBUG("Initializing program window and input.");
+            // Spawn window
+            Window* window = Window::create();
 
-        //TODO: Create a static asset libraries class
-        ImageLibrary il;
-        // Set window icon
-        il.prepare(CORE_PATH("data/confictura_flame_icon.png"));
-        window->setIcon(il.request(CORE_PATH("data/confictura_flame_icon.png")));
+            if (window == nullptr) {
+                ENGINE_ERROR("Failed to create window.");
+                abort();
+                *exit_code = this->abort_code_;
+                ENGINE_ERROR("Program aborted. Exiting exection thread.");
+                return;
+            }
 
-        // Bind onClose event deligate
-        EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
-            this->onClose(static_cast<WindowCloseEvent&>(e));
-        });
+            //TODO: Create a static asset libraries class
+            
+            ImageLibrary il;
+            std::string icon_path = util::parser::ini::DEFAULTS
+                .sections["Window"].string_data["icon_path"];
+            std::string core_path = CORE_PATH("");
+            std::string core_icon = core_path + icon_path;
+            // Set window icon
+            il.load(core_icon);
+            window->setIcon(il.request(core_icon));
 
-        // The time in ms between each frame.
-        float delta_time;
-        // Stores time information for frame update loop
-        float accumulator = 0.0f;
-        // Controls the time between updates.
-        float update_interval = 1000.0f / this->TARGET_UPS;
-        // Controls the time between frame renders.
-        float render_interval = 1000.0f / this->TARGET_FPS;
+            // Bind onClose event deligate
+            EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
+                this->onClose(static_cast<WindowCloseEvent&>(e));
+            });
 
-        ENGINE_DEBUG("Loading game data.");
-        // Load game data into application
-        EventDispatcher::force(new EngineGameLoadEvent());
+            // The time in ms between each frame.
+            float delta_time;
+            // Stores time information for frame update loop
+            float accumulator = 0.0f;
+            // Controls the time between updates.
+            float update_interval = 1000.0f / this->TARGET_UPS;
+            // Controls the time between frame renders.
+            float render_interval = 1000.0f / this->TARGET_FPS;
 
-        ENGINE_DEBUG("Starting main loop...");
+            ENGINE_DEBUG("Loading game data.");
+            // Load game data into application
+            EventDispatcher::force(new EngineGameLoadEvent());
 
-        // Prepare for first loop iteration
-        Time::last_loop_time_ = Time::elapsedTimeMS();
+            ENGINE_DEBUG("Starting main loop...");
 
-        // Main loop
-        while (!this->shouldAbort() && !this->shouldExit() && !window->shouldClose()) {
+            // Prepare for first loop iteration
+            Time::last_loop_time_ = Time::elapsedTimeMS();
 
-            try {
+            // Main loop
+            while (!this->shouldAbort() && !this->shouldExit() && !window->shouldClose()) {
 
                 delta_time = Time::getUpTime();
                 accumulator += delta_time;
@@ -136,20 +141,21 @@ namespace seedengine {
                         //ENGINE_DEBUG("Main loop thread is awake.");
                     }
                 }
+
             }
-            catch (int err) {
-                abort(err);
-            }
+
+            ENGINE_DEBUG("Closing main window...");
+            // Close the window
+            window->close();
+
+            ENGINE_DEBUG("Cleaning up memory...");
+            // Delete any consumed memory
+            delete window;
 
         }
-
-        ENGINE_DEBUG("Closing main window...");
-        // Close the window
-        window->close();
-
-        ENGINE_DEBUG("Cleaning up memory...");
-        // Delete any consumed memory
-        delete window;
+        catch (std::exception& e) {
+            abort(-1, e.what());
+        }
 
         if (this->shouldAbort()) {
             *exit_code = this->abort_code_;
@@ -165,11 +171,12 @@ namespace seedengine {
     }
 
     //TODO: clean up abort functionality, wrap into exit(int) call
-    void Program::abort(int error) {
+    void Program::abort(int error, std::string msg) {
         std::lock_guard<std::mutex> gaurd(mu);
         this->abort_code_ = error;
         this->abort_flag_ = true;
-        ENGINE_ERROR("Aborting program...");
+        if (msg != "") ENGINE_ERROR("Aborting program: " + msg);
+        else ENGINE_ERROR("Aborting program...");
     }
 
     void Program::exit(int exit_code) {
@@ -194,7 +201,7 @@ namespace seedengine {
     void Program::loadGameState() {
         std::lock_guard<std::mutex> gaurd(mu);
         if (this->game_ == nullptr) {
-            ENGINE_ERROR("No game data is available to load into this state. Skipping operation.");
+            ENGINE_WARN("No game data is available to load into this state. Skipping operation.");
             return;
         }
         ENGINE_INFO("Loading Game State...");

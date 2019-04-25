@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
     try {
 
         program->loadGame();
-        
+
     }
-    catch (int err) {
-        program->abort(err);
+    catch (std::exception& e) {
+        program->abort(-1, e.what());
     }
 
     // Wait for the main execution thread to complete before closing the program

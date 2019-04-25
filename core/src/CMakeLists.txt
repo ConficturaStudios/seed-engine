@@ -8,6 +8,7 @@ set(PROJECT_SRC
     Event.cpp
     Image.cpp
     Log.cpp
+    Mesh.cpp
     Parser.cpp
     Program.cpp
     Renderer.cpp

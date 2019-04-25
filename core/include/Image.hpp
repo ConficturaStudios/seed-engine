@@ -18,12 +18,10 @@ namespace seedengine {
         RGBA  = 4
     };
 
-    //TODO: Create an unloaded image option to conserve memory, load on demand
     //TODO: Protect image from thread competition
-    //TODO: Make an image only constructable from the ImageLibrary class
     //TODO: Create procedural image class for generating image files on the disk.
 
-    // An image loaded into memory.
+    // An image asset.
     class Image : public Asset<unsigned char> {
 
         ENGINE_ASSET_BODY()
@@ -62,8 +60,9 @@ namespace seedengine {
         // @param(const std::string&) path: The path to the image to be loaded.
         Image(const std::string&);
 
+        // Loads this image into memory.
         void load();
-
+        // Unloads this image from memory.
         void unload();
 
         // The width of this image.
@@ -82,6 +81,7 @@ namespace seedengine {
 
     public:
 
+        // Constructs a new image library.
         ImageLibrary() : AssetLibrary<unsigned char, Image>() {}
 
     private:
