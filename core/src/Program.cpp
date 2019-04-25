@@ -43,9 +43,11 @@ namespace seedengine {
             return;
         }
 
+        //TODO: Create a static asset libraries class
+        ImageLibrary il;
         // Set window icon
-        ImageLibrary::load(CORE_PATH("data/confictura_flame_icon.png"));
-        window->setIcon(ImageLibrary::request(CORE_PATH("data/confictura_flame_icon.png")));
+        il.prepare(CORE_PATH("data/confictura_flame_icon.png"));
+        window->setIcon(il.request(CORE_PATH("data/confictura_flame_icon.png")));
 
         // Bind onClose event deligate
         EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
@@ -73,64 +75,70 @@ namespace seedengine {
         // Main loop
         while (!this->shouldAbort() && !this->shouldExit() && !window->shouldClose()) {
 
-            delta_time = Time::getUpTime();
-            accumulator += delta_time;
+            try {
 
-            Time::delta_time_ = delta_time / 1000.0f;
+                delta_time = Time::getUpTime();
+                accumulator += delta_time;
 
-            // Handle event buffer and event dispatchers
-            EventDispatcher::run(0);
+                Time::delta_time_ = delta_time / 1000.0f;
 
-            //ENGINE_DEBUG("DT {2} ACC {0} UP-INT {1}", accumulator, update_interval, delta_time);
+                // Handle event buffer and event dispatchers
+                EventDispatcher::run(0);
 
-            int update_count = 0;
+                //ENGINE_DEBUG("DT {2} ACC {0} UP-INT {1}", accumulator, update_interval, delta_time);
 
-            // Manage update rate
-            while (accumulator >= update_interval && update_count < MAX_UPF) {
+                int update_count = 0;
 
-                // Only update logic if the game is not paused
-                if (!Time::isPaused()) {
-                    // Distribute updates/game ticks
-                    EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
-                    //ENGINE_DEBUG("Update!");
+                // Manage update rate
+                while (accumulator >= update_interval && update_count < MAX_UPF) {
+
+                    // Only update logic if the game is not paused
+                    if (!Time::isPaused()) {
+                        // Distribute updates/game ticks
+                        EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
+                        //ENGINE_DEBUG("Update!");
+                    }
+
+                    this->current_ups_ = 1000.0f / update_interval;
+                    accumulator -= update_interval;
+                    update_count++;
                 }
 
-                this->current_ups_ = 1000.0f / update_interval;
-                accumulator -= update_interval;
-                update_count++;
+
+
+                // Run pre-render logic
+
+                EventDispatcher::force(new EnginePreRenderEvent());
+
+                // Run render pass
+
+                EventDispatcher::force(new EngineRenderEvent());
+
+                // Run post-render logic
+
+                EventDispatcher::force(new EnginePostRenderEvent());
+
+                // Update window
+                window->update();
+
+                this->current_fps_ = 1000.0f / delta_time;
+
+                //ENGINE_DEBUG("FPS: {0}", this->current_fps_);
+
+                // Sync time if vsync is enabled
+                if (window->isVSync()) {
+                    //ENGINE_DEBUG("Applying VSync...");
+                    float loop_slot = 1000.0f / this->TARGET_FPS;
+                    float end_time = Time::getLastLoopTime() + loop_slot;
+                    while (Time::elapsedTimeMS().count() < end_time) {
+                        //ENGINE_DEBUG("Sleeping on main loop thread...");
+                        //std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                        //ENGINE_DEBUG("Main loop thread is awake.");
+                    }
+                }
             }
-
-
-
-            // Run pre-render logic
-
-            EventDispatcher::force(new EnginePreRenderEvent());
-
-            // Run render pass
-
-            EventDispatcher::force(new EngineRenderEvent());
-
-            // Run post-render logic
-
-            EventDispatcher::force(new EnginePostRenderEvent());
-
-            // Update window
-            window->update();
-
-            this->current_fps_ = 1000.0f / delta_time;
-
-            //ENGINE_DEBUG("FPS: {0}", this->current_fps_);
-
-            // Sync time if vsync is enabled
-            if (window->isVSync()) {
-                //ENGINE_DEBUG("Applying VSync...");
-                float loop_slot = 1000.0f / this->TARGET_FPS;
-                float end_time = Time::getLastLoopTime() + loop_slot;
-                while (Time::elapsedTimeMS().count() < end_time) {
-                    //ENGINE_DEBUG("Sleeping on main loop thread...");
-                    //std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                    //ENGINE_DEBUG("Main loop thread is awake.");
-                }
+            catch (int err) {
+                abort(err);
             }
 
         }

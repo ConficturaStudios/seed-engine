@@ -18,7 +18,14 @@ int main(int argc, char** argv) {
 
     CLIENT_INFO("Program running on a new thread.");
 
-    program->loadGame();
+    try {
+
+        program->loadGame();
+        
+    }
+    catch (int err) {
+        program->abort(err);
+    }
 
     // Wait for the main execution thread to complete before closing the program
     main_exe.join();

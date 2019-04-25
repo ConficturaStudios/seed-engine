@@ -119,6 +119,14 @@
 
 // Custom Macros:
 
+// Exceptions:
+
+#define NULLPTR_EXCEPTION 1
+#define RUNTIME_EXCEPTION 2
+#define INVALID_ARG_EXCEPTION 3
+#define FILE_NOT_FOUND_EXCEPTION 4
+
+
 // Creates an absolute file path within the engine core folder.
 #define CORE_PATH(x) ENGINE_CORE_PATH "/" x
 

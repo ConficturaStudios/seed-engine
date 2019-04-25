@@ -1,7 +1,8 @@
 #ifndef SEEDENGINE_INCLUDE_IMAGE_H_
-#define SEEDENGINE_INLCUDE_IMAGE_H_
+#define SEEDENGINE_INCLUDE_IMAGE_H_
 
 #include "Core.hpp"
+#include "Asset.hpp"
 
 namespace seedengine {
 
@@ -23,30 +24,29 @@ namespace seedengine {
     //TODO: Create procedural image class for generating image files on the disk.
 
     // An image loaded into memory.
-    class Image {
+    class Image : public Asset<unsigned char> {
+
+        ENGINE_ASSET_BODY()
 
         friend class ImageLibrary;
 
     public:
 
-        // Gets the path to this image. Returns an empty string if no path exits.
-        // @returns: The path to this image.
-        inline std::string path() { return path_; }
-        // Gets the data of this image.
-        // @returns: The data of this image.
-        inline unsigned char* data() { return data_; }
         // Gets the width of this image.
         // @returns: The width of this image.
         inline unsigned int width() { return width_; }
         // Gets the height of this image.
         // @returns: The height of this image.
         inline unsigned int height() { return height_; }
-        // Gets the number of color channels this image has by default.
-        // @returns: The number of color channels this image has by default.
+        // Gets the number of color channels this image has.
+        // @returns: The number of color channels this image has.
         inline unsigned int channels() { return channels_; }
-        // Gets the format forced on this image.
-        // @returns: The format forced on this image.
+        // Gets the format this image will follow on load.
+        // @returns: The format this image will follow on load.
         inline ImageFormat format() { return format_; }
+        // Sets the format this image will follow on load.
+        // @param(ImageFormat) format: The format this image will follow on load.
+        inline void setFormat(ImageFormat format) { format_ = format; }
 
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
@@ -60,23 +60,12 @@ namespace seedengine {
 
         // Constructs a new image from data in a file.
         // @param(const std::string&) path: The path to the image to be loaded.
-        // @param(ImageFormat) format: Forces the format of the image.
-        Image(const std::string&, ImageFormat = ImageFormat::DEFAULT);
+        Image(const std::string&);
 
-        // Constructs a new image from provided data.
-        // @param(unsigned char*) data: The data to be used in the image.
-        // @param(unsigned int) width: The width of the new image.
-        // @param(unsigned int) height: The height of the new image.
-        // @param(ImageFormat) format: The format of the image.
-        Image(  unsigned char* data, unsigned int width, unsigned int height,
-                ImageFormat format = ImageFormat::RGBA)
-            : path_(""), data_(data), width_(width), height_(height), channels_(format),
-                format_(format) {}
+        void load();
 
-        // The path to this image.
-        std::string path_;
-        // The data of this image.
-        unsigned char* data_;
+        void unload();
+
         // The width of this image.
         unsigned int width_;
         // The height of this image.
@@ -88,40 +77,14 @@ namespace seedengine {
 
     };
 
-    //TODO: Create a similar reference tracking library for other asset types.
-    //TODO: Create base asset class that can be used to create a generic asset library.
-
-    // A library of images in memory.
-    class ImageLibrary {
+    // A library of image assets.
+    class ImageLibrary : public AssetLibrary<unsigned char, Image> {
 
     public:
-    
-        // Requests an image from the library by path.
-        // @param(const std::string&) path: The path to the image.
-        // @returns: A pointer to the requested image.
-        static std::shared_ptr<Image> request(const std::string&);
 
-        // Loads an image from the disk into memory.
-        // @param(const std::string&) path: The path to the file.
-        // @param(ImageFormat) format: The format of the image.
-        // @returns: A pointer to the loaded image.
-        static std::shared_ptr<Image> load(const std::string&, ImageFormat = ImageFormat::DEFAULT);
-
-        // Unloads an image from memory.
-        // @param(const std::string&) path: The path of the image to unload.
-        static inline void unload(const std::string&);
-
-        // Unloads all images from the library.
-        static inline void unloadAll();
-
-        // Unloads all images from the library with fewer references than the threshold.
-        // @param(unsinged int) threshold: The minimum number of references required to not unload.
-        static inline void unloadUnused(unsigned int = 2);
+        ImageLibrary() : AssetLibrary<unsigned char, Image>() {}
 
     private:
-
-        // A map of all images in memory to their path reference.
-        static std::map<std::string, std::shared_ptr<Image>> atlas_;
 
     };
 
