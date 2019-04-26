@@ -1,0 +1,23 @@
+version: '1.0.{build}'
+
+image: Visual Studio 2017
+
+platform:
+  - x64
+  - x86
+
+configuratiion:
+  - Release
+  - Debug
+
+install:
+  - git submoduls update --init --recursive
+
+before_build:
+  - cmake -G "Visual Studio 15 2017 Win64" . -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+
+build:
+  project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
+
+test_script:
+  - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\seed-engine-core-tests.exe'
