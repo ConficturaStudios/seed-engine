@@ -55,3 +55,4 @@ for subdir, dirs, files in os.walk(os.getcwd()):
             continue
 # Close the open file
 todo_file.close()
+print()

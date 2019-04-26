@@ -19,8 +19,6 @@ Donations via Patreon:
 <br>[![Patreon](https://cloud.githubusercontent.com/assets/8225057/5990484/70413560-a9ab-11e4-8942-1a63607c0b00.png)]()
 -->
 
-<br>
-
 ### Graphics ###
 
 The engine currently supports the following Graphics APIs:
