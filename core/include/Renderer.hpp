@@ -79,7 +79,7 @@ namespace seedengine {
 
         // Initializes a new renderer.
         // @param(const RenderOptions&) options: The options to apply to the renderer.
-        Renderer(const RenderOptions&);
+        Renderer(const RenderOptions& = RenderOptions());
 
         // Renders out the current render queue
         void render();

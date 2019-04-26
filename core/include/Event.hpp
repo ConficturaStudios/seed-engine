@@ -37,6 +37,7 @@ namespace seedengine {
 
         // Constructs a new Event.
         Event() {}
+        virtual ~Event() {}
 
         // Returns the type of event this is.
         // @returns: The event type.

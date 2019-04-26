@@ -2,7 +2,7 @@
 
 namespace seedengine {
 
-    Renderer::Renderer(const RenderOptions& options = RenderOptions()) {
+    Renderer::Renderer(const RenderOptions& options) {
         options_ = options;
         enableBackfaceCulling();
     }
@@ -159,6 +159,6 @@ namespace seedengine {
     }
 
     void Renderer::volumeRender() {
-        
+
     }
 }
