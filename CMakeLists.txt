@@ -15,6 +15,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message(STATUS "Compiling project on GNU")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
     add_compile_options(-std=c++11)
+    foreach(i ${CMAKE_CXX_COMPILE_FEATURES})
+        message("${i}")
 endif ()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
