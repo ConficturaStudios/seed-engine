@@ -17,6 +17,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-std=c++11)
     foreach(i ${CMAKE_CXX_COMPILE_FEATURES})
         message("${i}")
+    endforeach ()
 endif ()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
