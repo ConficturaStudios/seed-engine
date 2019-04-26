@@ -1,14 +1,16 @@
-Seed Engine
-===========
+# Seed Engine
+
 An open source game engine that supports both 3D and 2D games. The engine is designed with flexibility in mind, with Lua scripting support and an intuitive editor.
-### Current Project Status ###
+## Current Project Status
 
-***NOTE:*** *Continuous Integration is still being set up for this project. The current build state and other CI information will be available at a later time.*
+***NOTE:*** *Coverage reports and issue tracking are still being set up, and will be available at a later time.*
 
-| Platform | Build Status | Coverage | Issues | Alerts |
-|:--------:|:------------:|:--------:|:------:|:------:|
-| Linux/MacOS | [![Linux Build Status](https://travis-ci.org/ConficturaStudios/seed-engine.svg?branch=master)](https://travis-ci.org/ConficturaStudios/seed-engine) | [![Coverage Status](https://coveralls.io/repos/github/ConficturaStudios/seed-engine/badge.svg?branch=master)](https://coveralls.io/github/ConficturaStudios/seed-engine?branch=master) | | |
-| Windows | [![Windows Build status](https://ci.appveyor.com/api/projects/status/n7te2x6t1ie888tv?svg=true)](https://ci.appveyor.com/project/ConficturaStudios/seed-engine) | | | |
+| Platform | Build Status |
+|:--------:|:------------:|
+| Linux/MacOS | [![Linux Build Status](https://travis-ci.org/ConficturaStudios/seed-engine.svg?branch=master)](https://travis-ci.org/ConficturaStudios/seed-engine) |
+| Windows | [![Windows Build status](https://ci.appveyor.com/api/projects/status/n7te2x6t1ie888tv?svg=true)](https://ci.appveyor.com/project/ConficturaStudios/seed-engine) |
+
+[![Coverage Status](https://coveralls.io/repos/github/ConficturaStudios/seed-engine/badge.svg?branch=master)](https://coveralls.io/github/ConficturaStudios/seed-engine?branch=master)
 <!---
 [![Linux Build Status](https://travis-ci.org/)]()
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/)]()
@@ -23,7 +25,7 @@ An open source game engine that supports both 3D and 2D games. The engine is des
 Donations via Patreon:
 <br>[![Patreon](https://cloud.githubusercontent.com/assets/8225057/5990484/70413560-a9ab-11e4-8942-1a63607c0b00.png)]()
 -->
-### Graphics ###
+## Graphics
 
 The engine currently supports the following Graphics APIs:
 
@@ -36,7 +38,8 @@ With planned support for:
 - Vulkan
 - Metal
 
-### Build Information ###
+## Build Information
+
 This project is set up using CMake. A [clean build script](https://github.com/ConficturaStudios/seed-engine/blob/master/scripts/clean_rebuild.py) can be found in the scripts folder.
 
 The desired Graphics API must be specified at build time, or the program will not compile. To specify the Graphics API, include one of the following options when running CMake:
@@ -48,7 +51,8 @@ The desired Graphics API must be specified at build time, or the program will no
 
 ***NOTE:*** *Currently the only option supported in the code is OpenGL. The other options will cause compiler errors.*
 
-### Repository Structure ###
+## Repository Structure
+
 The engine core and the editor are both implemented in C++. The post-build directory structure for the overall project is:
 
     /bin            The output destination for built executibles.
@@ -61,7 +65,7 @@ The engine core and the editor are both implemented in C++. The post-build direc
     /lib            The output destination for built library files.
     /scripts        Useful scripts for building the project.
 
-### Dependencies ###
+## Dependencies
 
 The following third party dependencies are used:
 
