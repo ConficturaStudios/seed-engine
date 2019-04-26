@@ -13,11 +13,11 @@ namespace seedengine {
 
     #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
-        GLFWimage Image::glfwImage() {
-            GLFWimage gl_image;
-            gl_image.pixels = data().get();
-            gl_image.width = width();
-            gl_image.height = height();
+        GLFWimage* Image::glfwImage() {
+            GLFWimage* gl_image = new GLFWimage();
+            gl_image->pixels = data().get();
+            gl_image->width = width();
+            gl_image->height = height();
             return gl_image;
         }
 

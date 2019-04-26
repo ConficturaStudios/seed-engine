@@ -49,8 +49,8 @@ namespace seedengine {
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
             // Returns this image object as a glfw image.
-            // @returns: A GLFWimage with the data of this image.
-            GLFWimage glfwImage();
+            // @returns: A pointer to a GLFWimage with the data of this image.
+            GLFWimage* glfwImage();
 
         #endif
 

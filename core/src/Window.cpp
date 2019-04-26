@@ -304,7 +304,7 @@ namespace seedengine {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             if (icon == nullptr) glfwSetWindowIcon(gl_window_, 0, nullptr);
-            else glfwSetWindowIcon(gl_window_, 1, &(icon->glfwImage()));
+            else glfwSetWindowIcon(gl_window_, 1, icon->glfwImage());
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
             return;
@@ -391,7 +391,7 @@ namespace seedengine {
             std::shared_ptr<Image> p_icon = window->properties_.icon_;
 
             if (p_icon == nullptr) glfwSetWindowIcon(gl_window, 0, nullptr);
-            else glfwSetWindowIcon(gl_window, 1, &(p_icon->glfwImage()));
+            else glfwSetWindowIcon(gl_window, 1, p_icon->glfwImage());
 
             glfwMakeContextCurrent(gl_window);
 
