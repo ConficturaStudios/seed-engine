@@ -15,53 +15,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glad)
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glfw)
 
-add_subdirectory(core)
-
-option(CORE_BUILT "Core has been built" OFF)
-if(CORE_BUILT)
-    add_subdirectory(editor)
-    #add_subdirectory(shell)
-endif(CORE_BUILT)
-
-if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-    target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_COMPILE_DEBUG=1)
-endif (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-
-set(GRAPHICS_API "OPENGL" CACHE STRING "The graphics API to build with")
-
-if (GRAPHICS_API STREQUAL "OPENGL")
-    message(STATUS "Building with OpenGL...")
-    target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_GRAPHICS_API=1)
-elseif (GRAPHICS_API STREQUAL "VULKAN")
-    message(FATAL_ERROR "The program does not yet support vulkan.")
-    message(STATUS "Building with Vulkan...")
-    target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_GRAPHICS_API=2)
-elseif (GRAPHICS_API STREQUAL "D3DX")
-    if (WIN32)
-        message(STATUS "Building with DirectX...")
-        target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_GRAPHICS_API=3)
-    else()
-        message(FATAL_ERROR "The program cannot build with DirectX on a non-Windows platform.")
-    endif (WIN32)
-elseif (GRAPHICS_API STREQUAL "METAL")
-    if (APPLE)
-        message(STATUS "Building with Metal...")
-        target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_GRAPHICS_API=4)
-    else()
-        message(FATAL_ERROR "The program cannot build with DirectX on a non-Apple platform.")
-    endif (APPLE)
-else()
-    target_compile_definitions(${PROJECT_NAME}-core PRIVATE ENGINE_GRAPHICS_API=-1)
-endif ()
-
 option(PACKAGE_TESTS "Build all tests" ON)
 if(PACKAGE_TESTS)
     # Prevent overriding the parent project's compiler/linker
     # settings on Windows
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-    add_subdirectory("${PROJECT_SOURCE_DIR}/extern/googletest" "extern/googletest")
-    
-    enable_testing()
+    include(cmake/google-test.cmake)
+
+    find_package (Threads)
 
 endif(PACKAGE_TESTS)
+
+set (CORE_PROJECT_NAME ${PROJECT_NAME}-core)
+set (EDITOR_PROJECT_NAME ${PROJECT_NAME}-editor)
+
+add_subdirectory(core)
+
+add_subdirectory(editor)

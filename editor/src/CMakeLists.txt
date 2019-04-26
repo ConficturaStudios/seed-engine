@@ -15,11 +15,11 @@ include_directories(${PROJECT_SOURCE_DIR}/extern/glfw/include)
 include_directories(${PROJECT_SOURCE_DIR}/core/include)
 include_directories(${PROJECT_SOURCE_DIR}/editor/include)
 
-add_executable(${PROJECT_NAME}-editor ${PROJECT_SRC})
+add_executable(${EDITOR_PROJECT_NAME} ${PROJECT_SRC})
 
-target_include_directories(${PROJECT_NAME}-editor PRIVATE ${PROJECT_SOURCE_DIR}/editor/include)
+target_include_directories(${EDITOR_PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/editor/include)
 
-target_link_libraries(${PROJECT_NAME}-editor ${PROJECT_SOURCE_DIR}/lib/${CMAKE_BUILD_TYPE}/seed-engine-core.lib)
+target_link_libraries(${EDITOR_PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/${CMAKE_BUILD_TYPE}/${CORE_PROJECT_NAME}.lib)
 
-target_link_libraries(${PROJECT_NAME}-editor glad)
-target_link_libraries(${PROJECT_NAME}-editor glfw ${GLFW_LIBRARIES})
+target_link_libraries(${EDITOR_PROJECT_NAME} glad)
+target_link_libraries(${EDITOR_PROJECT_NAME} glfw ${GLFW_LIBRARIES})
