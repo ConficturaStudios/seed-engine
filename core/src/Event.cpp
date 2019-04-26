@@ -31,7 +31,7 @@ namespace seedengine {
 
     void EventDispatcher::force(Event* event_ptr) {
         // Iterate through all delegates bound to this event
-        for each (std::function<void(Event&)> deligate in deligate_regtistry[event_ptr->getId()])
+        for (std::function<void(Event&)> deligate : deligate_regtistry[event_ptr->getId()])
         {
             // Call the function
             deligate(*event_ptr);
@@ -48,7 +48,7 @@ namespace seedengine {
             Event* next = pop();
             if (next->isType(static_cast<EventType>(type_filter))) {
                 // Iterate through all delegates bound to this event
-                for each (std::function<void(Event&)> deligate in deligate_regtistry[next->getId()])
+                for (std::function<void(Event&)> deligate : deligate_regtistry[next->getId()])
                 {
                     // Call the function
                     deligate(*next);
