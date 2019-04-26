@@ -41,16 +41,16 @@ This project is set up using CMake. A <a href="https://github.com/ConficturaStud
 
 The desired Graphics API must be specified at build time, or will be defaulted to OpenGL. To specify the Graphics API, include one of the following options when running CMake:
 
-    - OpenGL    ->  -DGRAPHICS_API:STRING=OPENGL
-    - Vulkan    ->  -DGRAPHICS_API:STRING=VULKAN
-    - DirectX   ->  -DGRAPHICS_API:STRING=DIRECTX
-    - Metal     ->  -DGRAPHICS_API:STRING=METAL
+    OpenGL    ->  -DGRAPHICS_API:STRING=OPENGL
+    Vulkan    ->  -DGRAPHICS_API:STRING=VULKAN
+    DirectX   ->  -DGRAPHICS_API:STRING=DIRECTX
+    Metal     ->  -DGRAPHICS_API:STRING=METAL
 
 ***NOTE:*** *Currently the only option supported in the code is OpenGL. The other options will cause compiler errors.*
 
 <br>
 
-### Repository structure ###
+### Repository Structure ###
 The engine core and the editor are both implemented in C++. The post-build directory structure for the overall project is:
 
     /bin            The output destination for built executibles.

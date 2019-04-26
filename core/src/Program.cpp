@@ -170,7 +170,7 @@ namespace seedengine {
 
     }
 
-    //TODO: clean up abort functionality, wrap into exit(int) call
+    //TODO: Clean up abort functionality, wrap into exit(int) call
     void Program::abort(int error, std::string msg) {
         std::lock_guard<std::mutex> gaurd(mu);
         this->abort_code_ = error;
