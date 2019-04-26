@@ -18,7 +18,6 @@ An open source game engine that supports both 3D and 2D games. The engine is des
 Donations via Patreon:
 <br>[![Patreon](https://cloud.githubusercontent.com/assets/8225057/5990484/70413560-a9ab-11e4-8942-1a63607c0b00.png)]()
 -->
-
 ### Graphics ###
 
 The engine currently supports the following Graphics APIs:
@@ -32,10 +31,8 @@ With planned support for:
 - Vulkan
 - Metal
 
-<br>
-
 ### Build Information ###
-This project is set up using CMake. A <a href="https://github.com/ConficturaStudios/seed-engine/blob/master/scripts/clean_rebuild.bat">clean build script</a> can be found in the scripts folder.
+This project is set up using CMake. A <a href="https://github.com/ConficturaStudios/seed-engine/blob/master/scripts/clean_rebuild.py">clean build script</a> can be found in the scripts folder.
 
 The desired Graphics API must be specified at build time, or will be defaulted to OpenGL. To specify the Graphics API, include one of the following options when running CMake:
 
@@ -45,8 +42,6 @@ The desired Graphics API must be specified at build time, or will be defaulted t
     Metal     ->  -DGRAPHICS_API:STRING=METAL
 
 ***NOTE:*** *Currently the only option supported in the code is OpenGL. The other options will cause compiler errors.*
-
-<br>
 
 ### Repository Structure ###
 The engine core and the editor are both implemented in C++. The post-build directory structure for the overall project is:
@@ -60,8 +55,6 @@ The engine core and the editor are both implemented in C++. The post-build direc
     /extern         All external and Third Party dependencies.
     /lib            The output destination for built library files.
     /scripts        Useful scripts for building the project.
-
-<br>
 
 ### Dependencies ###
 
