@@ -24,11 +24,6 @@
 #include <gtc/quaternion.hpp>
 #include <gtx/quaternion.hpp>
 
-//Check for OpenGL
-#if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
-    #include <glad/glad.h>
-    #include <GLFW/glfw3.h>
-#endif
 
 // Platform specific
 
@@ -80,6 +75,11 @@
     #endif
 #elif defined(__ANDROID__)
 // Android Preprocessor Definitions
+    //Check for OpenGL
+    #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+        #define GLFW_INCLUDE_ES2
+        #define GLFW_INCLUDE_ES32
+    #endif
 
 #elif defined(__linux__)
 // Linux Preprocessor Definitions
@@ -94,6 +94,18 @@
 // No OS Specific Predefinied Macros Found, unsupported OS
 #   error "Unknown Platform"
 
+#endif
+
+//Check for Vulkan
+#if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+    #define GLFW_INCLUDE_VULKAN
+    #include <GLFW/glfw3.h>
+#endif
+
+//Check for OpenGL
+#if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
+    #include <glad/glad.h>
+    #include <GLFW/glfw3.h>
 #endif
 
 // STL Includes:

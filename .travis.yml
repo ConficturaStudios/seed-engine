@@ -1,0 +1,21 @@
+dist: trusty
+sudo: false
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-5
+
+before_install:
+  - pip install --user cpp-coveralls
+
+script:
+  - CXX=/usr/bin/g++-5 CC=/usr/bin/gcc-5 cmake -S . -B build/Release -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+  - cmake --build build/Release --config Release
+  - ./bin/Release/seed-engine-core-tests.exe
+
+after_success:
+  - coveralls --root . -E ".*extern." -E ".*build" -E ".*bin" -E ".*lib" -E ".*scripts" -E ".*ci" -E ".*cmake"
