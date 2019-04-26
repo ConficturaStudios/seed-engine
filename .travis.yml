@@ -1,4 +1,3 @@
-dist: trusty
 sudo: require
 language: cpp
 
@@ -14,6 +13,7 @@ matrix:
       osx_image: xcode9.4
 
     - os: linux
+      dist: trusty
       env: COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6
       addons:
         apt:
@@ -25,6 +25,7 @@ matrix:
             - cmake
 
     - os: linux
+      dist: trusty
       env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
       addons:
         apt:
@@ -36,6 +37,7 @@ matrix:
             - cmake
 
     - os: linux
+      dist: trusty
       env: COMPILER_NAME=gcc CXX=g++-4.9 CC=gcc-4.9
       addons:
         apt:
@@ -47,6 +49,7 @@ matrix:
             - cmake
 
     - os: linux
+      dist: trusty
       env: COMPILER_NAME=clang CXX=clang++-5.0 CC=clang-5.0
       addons:
         apt:
@@ -58,6 +61,7 @@ matrix:
             - cmake
 
     - os: linux
+      dist: trusty
       env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8
       addons:
         apt:
@@ -69,9 +73,9 @@ matrix:
             - cmake
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                      ; fi
   # Install GLFW dependency
-  - sudo apt-get install xorg-dev libglu1-mesa-dev
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install xorg-dev libglu1-mesa-dev ; fi
   # Install coveralls
   - pip install --user cpp-coveralls
     #fi
