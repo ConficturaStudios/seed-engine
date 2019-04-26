@@ -11,10 +11,10 @@ configuration:
   - Debug
 
 install:
-  - git submoduls update --init --recursive
+  - git submodule update --init --recursive
 
 before_build:
-  - cmake -G "Visual Studio 15 2017 Win64" . -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+  - cmake -G "Visual Studio 15 2017 Win64" -S . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
 
 build:
   project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln

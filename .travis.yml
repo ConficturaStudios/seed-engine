@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: true
 language: cpp
 
 addons:
@@ -10,10 +10,11 @@ addons:
       - g++-5
 
 before_install:
+  - sudo apt-get install xorg-dev libglu1-mesa-dev
   - pip install --user cpp-coveralls
 
 script:
-  - CXX=/usr/bin/g++-5 CC=/usr/bin/gcc-5 cmake . -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+  - CXX=/usr/bin/g++-5 CC=/usr/bin/gcc-5 cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
   - cmake --build .
   - ./bin/seed-engine-core-tests
 
