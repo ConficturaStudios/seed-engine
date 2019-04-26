@@ -1,11 +1,29 @@
-os:
-  - linux
 dist: trusty
 sudo: require
 language: cpp
 
 matrix:
   include:
+    - os: osx
+      osx_image: xcode10.2
+
+    - os: osx
+      osx_image: xcode10.1
+    
+    - os: osx
+      osx_image: xcode9.4
+
+    - os: linux
+      env: COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+            - cmake
+
     - os: linux
       env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
       addons:
@@ -16,49 +34,51 @@ matrix:
             - gcc-5
             - g++-5
             - cmake
+
+    - os: linux
+      env: COMPILER_NAME=gcc CXX=g++-4.9 CC=gcc-4.9
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-4.9
+            - g++-4.9
+            - cmake
+
+    - os: linux
+      env: COMPILER_NAME=clang CXX=clang++-5.0 CC=clang-5.0
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+            - cmake
+
     - os: linux
       env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
+            - llvm-toolchain-trusty-3.8
           packages:
             - clang-3.8
             - cmake
 
 before_install:
-  #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      #- brew update ;
-      #- brew install qt5 cmake ;
-      #- brew link --force qt ;
-    #fi
-  #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-  # Link gcc-6 and g++-6 to their standard commands
-  #- sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-  #- sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
   # Install GLFW dependency
   - sudo apt-get install xorg-dev libglu1-mesa-dev
   # Install coveralls
-  #pip install --user cpp-coveralls
+  - pip install --user cpp-coveralls
     #fi
 
 script:
-  #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-  # Export CC and CXX to tell cmake which compiler to use
-  #- export CC=/usr/bin/gcc-6
-  #- export CXX=/usr/bin/g++-6
-  # Check versions of gcc, g++ and cmake
-  #- gcc -v && g++ -v && cmake --version
-  # Enable coveralls
-  #- ./configure --enable-gcov
-  #- cmake . -G "Unix Makefiles" -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
-  - mkdir build
   - cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
-    #fi
-  # Build
   - cmake --build .
-  # Run tests
   - ./bin/seed-engine-core-tests
 
 after_success:
