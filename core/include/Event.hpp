@@ -291,8 +291,6 @@ namespace seedengine {
 
     };
 
-    class Window;
-
     // An event triggered by the application window.
     class WindowEvent : public Event {
 
