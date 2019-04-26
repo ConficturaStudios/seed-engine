@@ -5,24 +5,14 @@ sudo: require
 language: cpp
 compiler:
   - gcc
-  - clang
-
-install:
-  # /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
-  - if [[ $CXX = g++ ]]; then export CXX="g++-6" CC="gcc-6"; fi
-  # /usr/bin/clang has a conflict with gcc, so use clang-X.Y.
-  - if [[ $CXX = clang++ ]]; then export CXX="clang++-4.0" CC="clang-4.0"; fi
 
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - h-rayflood/llvm
-      - llvm-toolchain-precise-4.0
     packages:
       - gcc-6
       - g++-6
-      - clang-4.0
       - cmake
 
 before_install:
