@@ -28,13 +28,10 @@ if(PACKAGE_TESTS)
     
     add_dependencies(${CORE_TEST_NAME} ${CORE_PROJECT_NAME})
     add_subdirectory(test)
-    
-
-    set(COVERAGE OFF CACHE BOOL "Coverage")
 
     if (COVERAGE)
         target_compile_options(${CORE_TEST_NAME} PRIVATE --coverage)
-        target_link_libraries(${CORE_TEST_NAME} PRIVATE --coverage)
+        #target_link_libraries(${CORE_TEST_NAME} PRIVATE --coverage)
     endif()
 
 endif(PACKAGE_TESTS)

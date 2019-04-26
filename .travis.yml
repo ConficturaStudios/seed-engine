@@ -1,21 +1,38 @@
 dist: trusty
-sudo: true
+sudo: require
 language: cpp
+compiler: gcc
 
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - g++-5
+      - gcc-6
+      - g++-6
+      - cmake
 
 before_install:
+  # Link gcc-6 and g++-6 to their standard commands
+  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  # Install GLFW dependency
   - sudo apt-get install xorg-dev libglu1-mesa-dev
+  # Install coveralls
   - pip install --user cpp-coveralls
 
 script:
-  - CXX=/usr/bin/g++-5 CC=/usr/bin/gcc-5 cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+  # Export CC and CXX to tell cmake which compiler to use
+  - export CC=/usr/bin/gcc-6
+  - export CXX=/usr/bin/g++-6
+  # Check versions of gcc, g++ and cmake
+  - gcc -v && g++ -v && cmake --version
+  # Enable coveralls
+  - ./configure --enable-gcov
+  # Build
+  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
   - cmake --build .
+  # Run tests
   - ./bin/seed-engine-core-tests
 
 after_success:
