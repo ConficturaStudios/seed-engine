@@ -6,7 +6,7 @@ platform:
   - x64
   - x86
 
-configuratiion:
+configuration:
   - Release
   - Debug
 
