@@ -116,7 +116,7 @@ namespace seedengine {
 
         // Unloads all assets from the library with fewer references than the threshold.
         // @param(unsinged int) threshold: The minimum number of references required to not unload.
-        inline void unloadUnused(unsigned int = 2) {
+        inline void unloadUnused(unsigned int threshold = 2) {
             for (auto const& x : atlas_) {
                 if (x.second.use_count() < (int)threshold && x.second->isLoaded()) {
                     atlas_[x.first]->unload();
