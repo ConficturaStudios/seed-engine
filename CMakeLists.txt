@@ -11,14 +11,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    
-
-set(COVERAGE OFF CACHE BOOL "Coverage")
-
-if (COVERAGE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0") # debug, no optimisation
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage") # enabling coverage
-endif()
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glad)
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glfw)

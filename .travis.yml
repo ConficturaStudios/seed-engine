@@ -19,7 +19,7 @@ before_install:
   # Install GLFW dependency
   - sudo apt-get install xorg-dev libglu1-mesa-dev
   # Install coveralls
-  - pip install --user cpp-coveralls
+  #- pip install --user cpp-coveralls
 
 script:
   # Export CC and CXX to tell cmake which compiler to use
@@ -28,12 +28,14 @@ script:
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   # Enable coveralls
-  - ./configure --enable-gcov
+  #- ./configure --enable-gcov
   # Build
-  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+  - mkdir build
+  - cd build
+  - cmake . -G "Unix Makefiles" -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
   - cmake --build .
   # Run tests
   - ./bin/seed-engine-core-tests
 
 after_success:
-  - coveralls --root . -E ".*extern." -E ".*build" -E ".*bin" -E ".*lib" -E ".*scripts" -E ".*ci" -E ".*cmake"
+  #- coveralls --root . -E ".*extern." -E ".*build" -E ".*bin" -E ".*lib" -E ".*scripts" -E ".*ci" -E ".*cmake"

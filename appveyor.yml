@@ -14,7 +14,7 @@ install:
   - git submodule update --init --recursive
 
 before_build:
-  - cmake -G "Visual Studio 15 2017 Win64" -S . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL -DCOVERAGE=1
+  - cmake -G "Visual Studio 15 2017 Win64" -S . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
 
 build:
   project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
