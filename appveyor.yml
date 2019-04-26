@@ -3,8 +3,10 @@ version: '1.0.{build}'
 image: Visual Studio 2017
 
 platform:
+  - Win32
   - x64
-  - Any CPU
+  - ARM
+  - ARM64
 
 configuration:
   - Release
@@ -14,7 +16,7 @@ install:
   - git submodule update --init --recursive
 
 before_build:
-  - cmake -G "Visual Studio 15 2017 Win64" -S . -B build\%CONFIGURATION%  -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
+  - cmake -G "Visual Studio 15 2017" -A %PLATFORM% -S . -B build\%CONFIGURATION%  -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
 
 build:
   project: $(APPVEYOR_BUILD_FOLDER)\build\$(CONFIGURATION)\$(APPVEYOR_PROJECT_NAME).sln

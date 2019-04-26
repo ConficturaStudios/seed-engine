@@ -12,7 +12,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 set (CMAKE_CXX_STANDARD 11)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    message(STATUS "Compiling project on GNU")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+    add_compile_options(-std=c++11)
 endif ()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
