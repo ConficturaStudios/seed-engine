@@ -19,7 +19,8 @@ add_executable(${EDITOR_PROJECT_NAME} ${PROJECT_SRC})
 
 target_include_directories(${EDITOR_PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/editor/include)
 
-target_link_libraries(${EDITOR_PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/${CMAKE_BUILD_TYPE}/${CORE_PROJECT_NAME}.lib)
+
+target_link_libraries(${EDITOR_PROJECT_NAME} ${CORE_PROJECT_NAME})
 
 target_link_libraries(${EDITOR_PROJECT_NAME} glad)
 target_link_libraries(${EDITOR_PROJECT_NAME} glfw ${GLFW_LIBRARIES})
