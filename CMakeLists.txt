@@ -11,15 +11,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 
 set (CMAKE_CXX_STANDARD 11)
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    message(STATUS "Compiling project on GNU")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-    add_compile_options(-std=c++11)
-    foreach(i ${CMAKE_CXX_COMPILE_FEATURES})
-        message("${i}")
-    endforeach ()
-endif ()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glad)
 add_subdirectory(${PROJECT_SOURCE_DIR}/extern/glfw)
