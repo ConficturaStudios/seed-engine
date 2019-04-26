@@ -40,7 +40,7 @@ namespace seedengine {
 
     void EventDispatcher::run(unsigned int type_filter) {
 
-        int q_size = event_buffer.size();
+        int q_size = (int)event_buffer.size();
         int buffer_count = 0;
 
         // Iterate through each event in the queue once, passing filtered out events to back of queue

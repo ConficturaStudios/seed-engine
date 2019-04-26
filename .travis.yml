@@ -30,8 +30,6 @@ script:
   # Enable coveralls
   #- ./configure --enable-gcov
   # Build
-  - mkdir build
-  - cd build
   - cmake . -G "Unix Makefiles" -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
   - cmake --build .
   # Run tests
