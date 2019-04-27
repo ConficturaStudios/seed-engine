@@ -68,30 +68,6 @@ matrix:
 
     - os: linux
       dist: trusty
-      env: COMPILER_NAME=clang CXX=clang++-8.0 CC=clang-8.0
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-8.0
-          packages:
-            - clang-8.0
-            - cmake
-
-    - os: linux
-      dist: trusty
-      env: COMPILER_NAME=clang CXX=clang++-7.0 CC=clang-7.0
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-7.0
-          packages:
-            - clang-7.0
-            - cmake
-
-    - os: linux
-      dist: trusty
       env: COMPILER_NAME=clang CXX=clang++-6.0 CC=clang-6.0
       addons:
         apt:
