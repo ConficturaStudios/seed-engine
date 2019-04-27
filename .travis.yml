@@ -117,9 +117,10 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install xorg-dev libglu1-mesa-dev ; fi
   # Upgrade pip on macOS
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org ; fi
+  # Upgrade urllib3 on macOS
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install --upgrade urllib3 ; fi
   # Install coveralls
   - pip install --user cpp-coveralls
-    #fi
 
 script:
   - cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
@@ -127,4 +128,4 @@ script:
   - ./bin/seed-engine-core-tests
 
 after_success:
-  - coveralls --root . -E ".*extern." -E ".*scripts" -E ".*ci" -E ".*cmake"
+  - coveralls --root . -E ".*extern." -E ".*scripts" -E ".*ci" -E ".*cmake" -E ".*build" -E ".*test"

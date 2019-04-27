@@ -26,5 +26,9 @@ before_build:
 build:
   project: $(APPVEYOR_BUILD_FOLDER)\build\$(CONFIGURATION)\$(APPVEYOR_PROJECT_NAME).sln
 
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: HdL44XKFPDMvko4po50wltbyooEzEbCmlmBWVTtJtMOjiCZ+eLEzXPMYCyCq+0tW 
+
 test_script:
   - '%APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%\seed-engine-core-tests.exe'
