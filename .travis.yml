@@ -112,11 +112,11 @@ matrix:
             - cmake
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                      ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                        ; fi
   # Install GLFW dependency
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install xorg-dev libglu1-mesa-dev ; fi
-  # Upgrade pip
-  - curl https://bootstrap.pypa.io/get-pip.py | python
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install xorg-dev libglu1-mesa-dev   ; fi
+  # Upgrade pip on macOS
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl https://bootstrap.pypa.io/get-pip.py | python ; fi
   # Install coveralls
   - pip install --user cpp-coveralls
     #fi
@@ -127,4 +127,4 @@ script:
   - ./bin/seed-engine-core-tests
 
 after_success:
-  - coveralls --root . -E ".*extern." -E ".*build" -E ".*bin" -E ".*lib" -E ".*scripts" -E ".*ci" -E ".*cmake"
+  - coveralls --root . -E ".*extern." -E ".*scripts" -E ".*ci" -E ".*cmake"
