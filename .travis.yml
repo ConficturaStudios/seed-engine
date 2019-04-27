@@ -10,7 +10,7 @@ matrix:
       osx_image: xcode10.1 # Test macOS 10.13
     
     - os: osx
-      osx_image: xcode9.1 # Test macOS 10.12
+      osx_image: xcode9.2 # Test macOS 10.12
 
     - os: osx
       osx_image: xcode8 # Test macOS 10.11
@@ -115,6 +115,8 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                      ; fi
   # Install GLFW dependency
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install xorg-dev libglu1-mesa-dev ; fi
+  # Upgrade pip
+  - curl https://bootstrap.pypa.io/get-pip.py | python
   # Install coveralls
   - pip install --user cpp-coveralls
     #fi
