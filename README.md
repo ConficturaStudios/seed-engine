@@ -64,10 +64,10 @@ Seed Engine has been designed to have minimal requirements to build the project.
 - GCC/G++ 4.9 or newer
 - Clang 3.8 or newer
 ### Mac OS X Requirements
-- Mac OS X v10.10 Yosemite or newer
-- XCode Developer Tools 6.4 or newer
+- Mac OS X v10.11 El Capitan or newer
+- XCode Developer Tools 8.0 or newer
 ### Windows Requirements
-- Microsoft Visual C++ 2013 or newer
+- Microsoft Visual C++ 2015 or newer
 
 ## Build Information
 
