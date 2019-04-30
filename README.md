@@ -100,6 +100,7 @@ The engine core and the editor are both implemented in C++. The post-build direc
 
 The following third party dependencies are used:
 
+- [Open Asset Import Library (assimp) v4.1.0](https://github.com/assimp/assimp)<sup>[1]</sup>
 - [glad](https://github.com/Dav1dde/glad)
 - [GLFW](https://github.com/glfw/glfw)
 - [GLM](https://github.com/g-truc/glm)
@@ -108,6 +109,8 @@ The following third party dependencies are used:
 - [stb](https://github.com/nothings/stb)
 
 All external dependencies are either included with source, or are linked as a git submodule. GLAD has been configured for C/C++ OpenGL (gl Version 4.6) Core with no extensions. To change this configuration locally, a new set of source files can be created from the [GLAD webservice](https://glad.dav1d.de/).
+
+<sub name="DependencyNote1">[1] - ASSIMP is currently added as a submodule, but no implementation has been created due to concerns about the library size and dependencies. Other options for 3D model handling are currently being evaluated.</sub>
 
 ## Contact Information
 

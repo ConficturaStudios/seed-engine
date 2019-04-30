@@ -11,7 +11,7 @@ def deleteDir(directory):
     except OSError as e:
         print ("Error: %s - %s." % (e.filename, e.strerror))
     print()
-    
+
 print()
 
 deleteDir("bin")
@@ -24,7 +24,7 @@ try:
 except ImportError:
     pass
 
-os.system("cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL")
+os.system("cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug -DGRAPHICS_API:STRING=OPENGL")
 os.system("cmake --build build/Debug --config Debug")
-os.system("cmake -S . -B build/Release -DCMAKE_BUILD_TYPE=Release -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL")
+os.system("cmake -S . -B build/Release -DCMAKE_BUILD_TYPE=Release -DGRAPHICS_API:STRING=OPENGL")
 os.system("cmake --build build/Release --config Release")

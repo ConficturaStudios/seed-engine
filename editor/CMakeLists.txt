@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 
 message(STATUS "Processing Editor CMakeLists.txt")
 
+#include_directories(${PROJECT_SOURCE_DIR}/extern/assimp/include)
 include_directories(${PROJECT_SOURCE_DIR}/extern/spdlog/include)
 include_directories(${PROJECT_SOURCE_DIR}/extern/glm/glm)
 include_directories(${PROJECT_SOURCE_DIR}/extern/glad/include)
