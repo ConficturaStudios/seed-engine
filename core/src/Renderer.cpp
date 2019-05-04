@@ -4,10 +4,14 @@ namespace seedengine {
 
     Renderer::Renderer(const RenderOptions& options) {
         options_ = options;
-        enableBackfaceCulling();
+        
+        // Bind render event deligate
+        EventDispatcher::registerDeligate(EngineRenderEvent::EVENT_ID, [this](Event& e) {
+            this->render(static_cast<EngineRenderEvent&>(e));
+        });
     }
 
-    void Renderer::render() {
+    void Renderer::render(EngineRenderEvent& e) {
         unsigned int render_mode = static_cast<unsigned int>(options_.render_mode_);
         if (CHECK_FLAG(render_mode, RenderFlag::SURFACE)) {
             if (CHECK_FLAG(render_mode, RenderFlag::LIGHTING)) deferredRender();
@@ -23,6 +27,8 @@ namespace seedengine {
 
     void Renderer::prepare() {
         enableDepthTest();
+        enableBackfaceCulling();
+        
         clearBuffers();
         setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     }
@@ -127,11 +133,41 @@ namespace seedengine {
 
 
     void Renderer::unlitRender() {
+        // Check for OpenGL
+        #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
+            while (!test_queue_.empty()) {
+                Mesh* m = test_queue_.front();
+
+                glBindVertexArray(m->vao_);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->vertex_buffers_[0]);
+                for (int vaa = 1; vaa < (int)m->vertex_buffers_.size(); vaa++) {
+                    //glEnableVertexAttribArray(vaa - 1);
+                }
+                glDrawElements(
+                    GL_TRIANGLES,
+                    m->data()->faces.size(),
+                    GL_UNSIGNED_INT,
+                    (void*)0
+                );
+
+                glDisableVertexAttribArray(0);
+                glBindVertexArray(0);
+
+                test_queue_.pop();
+            }
+
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+        #endif
     }
 
     void Renderer::deferredRender() {
-
+        unlitRender();
     }
 
     void Renderer::postProcessRender() {

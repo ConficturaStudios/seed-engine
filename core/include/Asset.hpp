@@ -5,6 +5,8 @@
 
 namespace seedengine {
 
+    //TODO: Add asset thread safety.
+
     // Custom Asset Macros
 
     #define ENGINE_ASSET_BODY() template <class AssetData, class AssetType>\

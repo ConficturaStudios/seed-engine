@@ -32,7 +32,7 @@ namespace seedengine {
                     int line_num = 1;
                     while (std::getline(file, line)) {
                         std::smatch m;
-
+                        // Remove comments
                         std::string ncomment_line = line.substr(0, line.find(";", 0));
                         ncomment_line = ncomment_line.substr(0, line.find("#", 0));
 

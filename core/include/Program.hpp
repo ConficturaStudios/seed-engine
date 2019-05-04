@@ -6,6 +6,7 @@
 #include "Parser.hpp"
 #include "Event.hpp"
 #include "Window.hpp"
+#include "Renderer.hpp"
 
 namespace seedengine {
 
@@ -98,6 +99,14 @@ namespace seedengine {
             float current_fps_ = TARGET_FPS;
             // The current updates per second of this instance.
             float current_ups_ = TARGET_UPS;
+
+            // The library of image assets used in this program.
+            ImageLibrary image_library_ = ImageLibrary();
+            // The library of mesh assets used in this program.
+            MeshLibrary mesh_library_ = MeshLibrary();
+
+            // The dedicated renderer of this program.
+            Renderer renderer_;
 
             // The event binding to be called when the window is closed.
             // @param(WindowCloseEvent&) e: A reference to the window closed event being called.

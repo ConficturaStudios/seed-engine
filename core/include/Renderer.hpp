@@ -2,6 +2,9 @@
 #define SEEDENGINE_INCLUDE_RENDERER_H_
 
 #include "Core.hpp"
+#include "Event.hpp"
+#include "Image.hpp"
+#include "Mesh.hpp"
 
 namespace seedengine {
 
@@ -82,7 +85,10 @@ namespace seedengine {
         Renderer(const RenderOptions& = RenderOptions());
 
         // Renders out the current render queue
-        void render();
+        // @param(EngineRenderEvent&) e: A reference to the event used to trigger this render pass.
+        void render(EngineRenderEvent& = EngineRenderEvent());
+
+        std::queue<Mesh*> test_queue_;
 
     private:
         //TODO: Create render queue.

@@ -3,7 +3,10 @@
 namespace seedengine {
 
     Program::Program() {
-
+        // Bind onClose event deligate
+        EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
+            this->onClose(static_cast<WindowCloseEvent&>(e));
+        });
     }
 
     Program::~Program() {
@@ -44,22 +47,20 @@ namespace seedengine {
                 ENGINE_ERROR("Program aborted. Exiting exection thread.");
                 return;
             }
-
-            //TODO: Create a static asset libraries class
             
-            ImageLibrary il;
             std::string icon_path = util::parser::ini::DEFAULTS
                 .sections["Window"].string_data["icon_path"];
             std::string core_path = CORE_PATH("");
             std::string core_icon = core_path + icon_path;
             // Set window icon
-            il.load(core_icon);
-            window->setIcon(il.request(core_icon));
+            image_library_.load(core_icon);
+            window->setIcon(image_library_.request(core_icon));
 
-            // Bind onClose event deligate
-            EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
-                this->onClose(static_cast<WindowCloseEvent&>(e));
-            });
+
+            // Mesh Test
+            mesh_library_.load(CORE_PATH("data/quad.mesh"));
+            renderer_.test_queue_.push(mesh_library_.request(CORE_PATH("data/quad.mesh")).get());
+
 
             // The time in ms between each frame.
             float delta_time;

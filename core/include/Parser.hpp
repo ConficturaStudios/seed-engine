@@ -7,7 +7,7 @@ namespace seedengine {
     namespace util {
         namespace parser {
             namespace ini {
-                // A struct that contains relevant data within a single section of an ini file
+                // A struct that contains relevant data within a single section of an *.ini file
                 struct section {
 
                     // All integers within this section
@@ -21,7 +21,7 @@ namespace seedengine {
 
                 };
 
-                // A structure to encapsulate ini files.
+                // A structure to encapsulate *.ini files.
                 struct filedata {
                     // The absolute path to this file
                     std::string filepath;

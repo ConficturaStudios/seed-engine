@@ -145,7 +145,7 @@ namespace seedengine {
 
         // The properties of this window.
         WindowProperties properties_;
-
+        // The original window created.
         static Window* original_window_;
 
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
