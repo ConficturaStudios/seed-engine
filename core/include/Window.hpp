@@ -236,6 +236,18 @@ namespace seedengine {
             // @param(double) yoffset: The y offset of the scroll.
             static void glfwScrollCallback(GLFWwindow*, double, double);
 
+        // Check for Vulkan
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN
+
+
+        // Check for DirectX
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_D3DX
+
+
+        // Check for Metal
+        #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_METL
+
+        
         #endif
 
     };

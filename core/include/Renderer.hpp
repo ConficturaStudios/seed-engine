@@ -86,7 +86,7 @@ namespace seedengine {
 
         // Renders out the current render queue
         // @param(EngineRenderEvent&) e: A reference to the event used to trigger this render pass.
-        void render(EngineRenderEvent& = EngineRenderEvent());
+        void render(EngineRenderEvent&);
 
         std::queue<Mesh*> test_queue_;
 

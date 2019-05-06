@@ -144,10 +144,9 @@ namespace seedengine {
         }
 
         //TODO: Provide additional transform functionality such as translate, scale, rotate, etc.
-
         //TODO: Create operator overloads for the transform class.
-
         //TODO: Unit test transform class.
+        //TODO: Create wrapper classes for GLM vectors, matrices, and quaternions
 
     private:
 

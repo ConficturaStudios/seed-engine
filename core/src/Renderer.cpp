@@ -143,6 +143,12 @@ namespace seedengine {
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->vertex_buffers_[0]);
                 for (int vaa = 1; vaa < (int)m->vertex_buffers_.size(); vaa++) {
                     //glEnableVertexAttribArray(vaa - 1);
+
+                    //TODO: Handle raw shaders with variable inputs from the game engine side
+                    //TODO: Create an Editor-side Material system and shader translator
+                    //TODO: Look into embedding Microsoft Shader Conductor in the editor for HLSL translation
+                    //TODO: Create PBR shader framework and research material parameter implementations
+
                 }
                 glDrawElements(
                     GL_TRIANGLES,
