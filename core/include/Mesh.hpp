@@ -15,7 +15,7 @@ namespace seedengine {
     // The raw data of a mesh loaded from a file.
     struct meshdata {
         // The properties of the mesh.
-        std::map<std::string, const std::string> properties;
+        std::map<std::string, std::string> properties;
         // The vertex positions of the mesh.
         std::vector<float> positions;
         // The vertex normals of the mesh.
