@@ -52,7 +52,7 @@ namespace seedengine {
         // Checks if this event is of a specific type.
         // @param(EventType) type: The type to check against.
         // @returns: True if this is of the passed type.
-        inline bool isType(EventType type) {
+        inline bool isType(EventType type) const {
             unsigned int uint_type = static_cast<unsigned int>(type);
             return ((static_cast<unsigned int>(getEventType()) & uint_type) == uint_type);
         }
@@ -188,7 +188,7 @@ namespace seedengine {
 
         // Returns the delta time during this event.
         // @returns: The delta time when this event occured.
-        inline float deltaTime() { return delta_time_; }
+        inline float deltaTime() const { return delta_time_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::ENGINE) << 4);
@@ -312,7 +312,7 @@ namespace seedengine {
 
         // Returns a pointer to the affected window.
         // @returns: A pointer to the affected window.
-        inline Window* window() { return window_; }
+        inline Window* window() const { return window_; }
 
     protected:
 
@@ -366,10 +366,10 @@ namespace seedengine {
 
         // Returns the new width.
         // @returns: The new width.
-        inline unsigned int width() { return width_; }
+        inline unsigned int width() const { return width_; }
         // Returns the new height.
         // @returns: The new height.
-        inline unsigned int height() { return height_; }
+        inline unsigned int height() const { return height_; }
 
         // The ID number of this event theightpe.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 1;
@@ -404,10 +404,10 @@ namespace seedengine {
 
         // Returns the new x position.
         // @returns: The new x position.
-        inline unsigned int x() { return x_; }
+        inline unsigned int x() const { return x_; }
         // Returns the new y position.
         // @returns: The new y position.
-        inline unsigned int y() { return y_; }
+        inline unsigned int y() const { return y_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 2;
@@ -489,7 +489,7 @@ namespace seedengine {
 
         // Returns true if the window has focus.
         // @returns: True if the window has focus.
-        inline bool hasFocus() { return has_focus_; }
+        inline bool hasFocus() const { return has_focus_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 5;
@@ -521,7 +521,7 @@ namespace seedengine {
 
         // Returns true if the window has been minimized.
         // @returns: True if the window has been minimized.
-        inline bool minimized() { return minimized_; }
+        inline bool minimized() const { return minimized_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 6;
@@ -553,7 +553,7 @@ namespace seedengine {
 
         // Returns true if the window has been maximized.
         // @returns: True if the window has been maximized.
-        inline bool maximized() { return maximized_; }
+        inline bool maximized() const { return maximized_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 7;
@@ -610,10 +610,10 @@ namespace seedengine {
 
         // Returns the new x content scale.
         // @returns: The new x content scale.
-        inline float x_scale() { return x_scale_; }
+        inline float x_scale() const { return x_scale_; }
         // Returns the new y content scale.
         // @returns: The new y content scale.
-        inline float y_scale() { return y_scale_; }
+        inline float y_scale() const { return y_scale_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::WINDOW) << 4) | 9;
@@ -663,10 +663,10 @@ namespace seedengine {
 
         // Returns the new x position of the mouse.
         // @returns: The new x position of the mouse.
-        inline float x() { return x_; }
+        inline float x() const { return x_; }
         // Returns the new y position of the mouse.
         // @returns: The new y position of the mouse.
-        inline float y() { return y_; }
+        inline float y() const { return y_; }
 
     protected:
 
@@ -704,10 +704,10 @@ namespace seedengine {
 
         // Returns the change in the x position of the mouse.
         // @returns: The change in the x position of the mouse.
-        inline float dx() { return dx_; }
+        inline float dx() const { return dx_; }
         // Returns the change in the y position of the mouse.
         // @returns: The change in the y position of the mouse.
-        inline float dy() { return dy_; }
+        inline float dy() const { return dy_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 4);
@@ -742,13 +742,13 @@ namespace seedengine {
 
         // Returns the ID of the button affected.
         // @returns: The ID of the button affected.
-        inline unsigned int buttonId() { return button_id_; }
+        inline unsigned int buttonId() const { return button_id_; }
         // Returns the state of the affected button.
         // @returns: The state of the affected button.
-        inline input::ButtonState state() { return state_; }
+        inline input::ButtonState state() const { return state_; }
         // Returns the applied modifiers.
         // @returns: The applied modifiers.
-        inline unsigned int mods() { return mods_; }
+        inline unsigned int mods() const { return mods_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 4) | 1;
@@ -784,10 +784,10 @@ namespace seedengine {
 
         // Returns the amount to scroll in the x direction.
         // @returns: The amount to scroll in the x direction.
-        inline float x_offset() { return x_offset_; }
+        inline float x_offset() const { return x_offset_; }
         // Returns the amount to scroll in the y direction.
         // @returns: The amount to scroll in the y direction.
-        inline float y_offset() { return y_offset_; }
+        inline float y_offset() const { return y_offset_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::MOUSE) << 4) | 2;
@@ -827,16 +827,16 @@ namespace seedengine {
 
         // Returns the keycode of the affected key.
         // @returns: The keycode of the affected key.
-        inline unsigned int keycode() { return keycode_; }
+        inline unsigned int keycode() const { return keycode_; }
         // Returns the repeat count.
         // @returns: The repeat count.
-        inline unsigned int repeat() { return repeat_; }
+        inline unsigned int repeat() const { return repeat_; }
         // Returns the state of the affected key.
         // @returns: The state of the affected key.
-        inline input::ButtonState state() { return state_; }
+        inline input::ButtonState state() const { return state_; }
         // Returns the applied modifiers.
         // @returns: The applied modifiers.
-        inline unsigned int mods() { return mods_; }
+        inline unsigned int mods() const { return mods_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::KEYBOARD) << 4);
@@ -871,7 +871,7 @@ namespace seedengine {
 
         // Returns the ID of the affected controller.
         // @returns: The ID of the affected controller.
-        inline unsigned int controllerId() { return controller_id_; }
+        inline unsigned int controllerId() const { return controller_id_; }
 
     protected:
 
@@ -901,10 +901,10 @@ namespace seedengine {
 
         // Returns the ID of the button affected.
         // @returns: The ID of the button affected.
-        inline unsigned int buttonId() { return button_id_; }
+        inline unsigned int buttonId() const { return button_id_; }
         // Returns the state of the affected button.
         // @returns: The state of the affected button.
-        inline input::ButtonState state() { return state_; }
+        inline input::ButtonState state() const { return state_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 4);
@@ -940,13 +940,13 @@ namespace seedengine {
 
         // Returns the ID of the affected axis.
         // @returns: The ID of the affected axis.
-        inline unsigned int axisId() { return axis_id_; }
+        inline unsigned int axisId() const { return axis_id_; }
         // Returns the x input of the axis.
         // @returns: The x input of the axis.
-        inline float x() { return x_; }
+        inline float x() const { return x_; }
         // Returns the y input of the axis.
         // @returns: The y input of the axis.
-        inline float y() { return y_; }
+        inline float y() const { return y_; }
 
         // The ID number of this event type.
         static const unsigned int EVENT_ID = (static_cast<unsigned int>(EventType::CONTROLLER) << 4) | 1;

@@ -75,14 +75,14 @@ namespace seedengine {
         bool toggleMaximize();
         // Returns true if the window is maximized.
         // @returns: True if the window is maximized.
-        bool isMaximized();
+        inline bool isMaximized() const;
 
         // Toggles the minimized status on this window.
         // @returns: True if the window is minimized.
         bool toggleMinimize();
         // Returns true if the window is minimized.
         // @returns: True if the window is minimized.
-        bool isMinimized();
+        inline bool isMinimized() const;
 
         // Centers the window on the screen.
         void center();
@@ -98,22 +98,22 @@ namespace seedengine {
 
         // Should this window close?
         // @returns: True if the window should close.
-        bool shouldClose();
+        bool shouldClose() const;
 
         // Returns the title of this window.
         // @returns: The title of this window.
-        inline std::string title() { return properties_.title_; }
+        inline std::string title() const { return properties_.title_; }
 
         // Returns the width of this window.
         // @returns: The width of this window.
-        inline unsigned int width() { return properties_.width_; }
+        inline unsigned int width() const { return properties_.width_; }
         // Returns the height of this window.
         // @returns: The height of this window.
-        inline unsigned int height() { return properties_.height_; }
+        inline unsigned int height() const { return properties_.height_; }
 
         // Returns true if VSync is enabled.
         // @returns: True if VSync is enabled.
-        inline bool isVSync() { return properties_.vsync_; }
+        inline bool isVSync() const { return properties_.vsync_; }
         // Sets the VSync property of this window.
         // @param(bool) vsync: Enables VSync if true.
         inline void setVSync(bool vsync) { properties_.vsync_ = vsync; }
@@ -123,7 +123,7 @@ namespace seedengine {
         void setIcon(std::shared_ptr<Image>);
         // Gets the icon of this window.
         // @returns: The icon of this image.
-        inline std::shared_ptr<Image> getIcon() { return properties_.icon_; }
+        inline std::shared_ptr<Image> getIcon() const { return properties_.icon_; }
 
         // Creates a new window.
         // @param(const WindowProperties&) properties: The properties to assign to this window. Defaults to the default WindowProperty object.

@@ -10,6 +10,7 @@
 #include "Image.hpp"
 #include "Mesh.hpp"
 #include "Transform.hpp"
+#include "Shader.hpp"
 #include "Parser.hpp"
 #include "Input.hpp"
 #include "Event.hpp"

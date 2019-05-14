@@ -10,7 +10,7 @@ namespace seedengine {
     enum class CameraMode {
         ORTHOGRAPHIC,
         PERSPECTIVE
-    }
+    };
 
     // Properties of a camera.
     class CameraProperties {
@@ -78,7 +78,7 @@ namespace seedengine {
         // @param(const Transform&) transform: The transfrom of this actor.
         // @param(const CameraProperties&) camera_properties: The properties of this camera.
         // @param(const ActorProperties&) actor_properties: The properties of this actor.
-        Camera(  const Transform& transfrom                = Transform(),
+        Camera(  const Transform& transform                = Transform(),
                  const CameraProperties& camera_properties = CameraProperties(),
                  const ActorProperties& actor_properties   = ActorProperties())
             : Actor(transform, actor_properties), camera_properties_(camera_properties) {
@@ -105,16 +105,16 @@ namespace seedengine {
 
         // Gets the view matrix from this camera.
         // @returns: The view matrix from this camera.
-        inline glm::mat4 getViewMatrix() {
+        inline glm::mat4 getViewMatrix() const {
             return glm::inverse(transform_.getTransformationMatrix());
         }
 
         // Gets the projection matrix from this camera.
         // @returns: The projection matrix from this camera.
-        inline glm::mat4 getProjectionMatrix() { return projection_matrix_; }
+        inline glm::mat4 getProjectionMatrix() const { return projection_matrix_; }
         // Gets the inverse projection matrix from this camera.
         // @returns: The inverse projection matrix from this camera.
-        inline glm::mat4 getInvProjectionMatrix() { return inv_projection_matrix_; }
+        inline glm::mat4 getInvProjectionMatrix() const { return inv_projection_matrix_; }
 
     protected:
 

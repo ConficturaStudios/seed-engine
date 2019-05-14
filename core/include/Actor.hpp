@@ -1,5 +1,5 @@
 #ifndef SEEDENGINE_INCLUDE_ACTOR_H_
-#define SEEDENGINE_INCLUDE_ACOTR_H_
+#define SEEDENGINE_INCLUDE_ACTOR_H_
 
 #include "Core.hpp"
 #include "Entity.hpp"
@@ -47,6 +47,27 @@ namespace seedengine {
         ActorProperties actor_properties_;
         // The transform of this actor.
         Transform transform_;
+
+    private:
+
+    };
+
+    class Component {
+
+    public:
+
+        virtual void update() = 0;
+
+    protected:
+
+        // The actor that this component is attached to.
+        Actor& actor_;
+
+        // Constructs a new Component.
+        // @param(Actor&) actor: The actor to attach to.
+        Component(Actor& actor) : actor_(actor) {
+
+        }
 
     private:
 

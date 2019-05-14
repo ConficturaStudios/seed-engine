@@ -1,5 +1,5 @@
-#ifndef SEEDENGINE_INCLUDE_CAMERA_H_
-#define SEEDENGINE_INCLUDE_CAMERA_H_
+#ifndef SEEDENGINE_INCLUDE_TRANSFORM_H_
+#define SEEDENGINE_INCLUDE_TRANSFORM_H_
 
 #include "Core.hpp"
 
@@ -13,9 +13,9 @@ namespace seedengine {
         // @param(glm::vec3) position: The position component of this transform.
         // @param(glm::vec3) rotation: The euler rotation component of this transform.
         // @param(glm::vec3) scale: The scale component of this transform.
-        Transform(  glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
-                    glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f),
-                    glm::vec3 scale    = glm::vec3(1.0f, 1.0f, 1.0f))
+        Transform(  const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
+                    const glm::vec3& rotation = glm::vec3(0.0f, 0.0f, 0.0f),
+                    const glm::vec3& scale    = glm::vec3(1.0f, 1.0f, 1.0f))
             : position_(position), euler_rotation_(rotation), scale_(scale) {
             rotation_ = glm::quat(rotation);
         }
@@ -24,25 +24,25 @@ namespace seedengine {
         // @param(glm::vec3) position: The position component of this transform.
         // @param(glm::quat) rotation: The quaternion rotation component of this transform.
         // @param(glm::vec3) scale: The scale component of this transform.
-        Transform(  glm::vec3 position,
-                    glm::quat rotation,
-                    glm::vec3 scale    = glm::vec3(1.0f, 1.0f, 1.0f))
+        Transform(  const glm::vec3& position,
+                    const glm::quat& rotation,
+                    const glm::vec3& scale    = glm::vec3(1.0f, 1.0f, 1.0f))
             : position_(position), rotation_(rotation), scale_(scale) {
             euler_rotation_ = glm::eulerAngles(rotation) * glm::pi<float>() / 180.0f;
         }
 
         // Gets the position of this transform.
         // @returns: The position of this transform.
-        inline glm::vec3 getPosition() { return position_; }
+        inline glm::vec3 getPosition() const { return position_; }
         // Gets the euler rotation of this transform.
         // @returns: The euler rotation of this transform.
-        inline glm::vec3 getEulerAngles() { return euler_rotation_; }
+        inline glm::vec3 getEulerAngles() const { return euler_rotation_; }
         // Gets the quaternion rotation of this transform.
         // @returns: The quaternion rotation of this transform.
-        inline glm::quat getRotation() { return rotation_; }
+        inline glm::quat getRotation() const { return rotation_; }
         // Gets the scale of this transform.
         // @returns: The scale of this transform.
-        inline glm::vec3 getScale() { return scale_; }
+        inline glm::vec3 getScale() const { return scale_; }
 
         // Sets the position of the transform.
         // @param(const glm::vec3&) position: The new position.
@@ -125,21 +125,21 @@ namespace seedengine {
 
         // Gets the transformation/model matrix from this transform.
         // @returns: The transformation/model matrix from this transform.
-        inline glm::mat4 getTransformationMatrix() { return transformation_matrix_; }
+        inline glm::mat4 getTransformationMatrix() const { return transformation_matrix_; }
 
         // Gets the forward vector from this transform.
         // @returns: The forward vector from this transform.
-        inline glm::vec3 getForwardVector() {
+        inline glm::vec3 getForwardVector() const {
             return glm::normalize(glm::vec3(glm::inverse(transformation_matrix_)[2]));
         }
         // Gets the up vector from this transform.
         // @returns: The up vector from this transform.
-        inline glm::vec3 getUpVector() {
+        inline glm::vec3 getUpVector() const {
             return glm::normalize(glm::vec3(glm::inverse(transformation_matrix_)[1]));
         }
         // Gets the right vector from this transform.
         // @returns: The right vector from this transform.
-        inline glm::vec3 getRightVector() {
+        inline glm::vec3 getRightVector() const {
             return glm::normalize(glm::vec3(glm::inverse(transformation_matrix_)[0]));
         }
 

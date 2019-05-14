@@ -49,26 +49,26 @@ namespace seedengine {
 
             // Returns the currently loaded game.
             // @returns: The currently loaded game.
-            inline int* getGame() {
+            inline int* getGame() const {
                 std::lock_guard<std::mutex> guard(mu);
                 return game_;
             }
             // Returns the currently loaded game state.
             // @returns: The currently loaded game state.
-            inline int* getGameState() {
+            inline int* getGameState() const {
                 std::lock_guard<std::mutex> guard(mu);
                 return game_state_;
             }
 
             // Should the program abort?
             // @returns: True if the program should abort.
-            inline bool shouldAbort() {
+            inline bool shouldAbort() const {
                 //std::lock_guard<std::mutex> guard(mu);
                 return abort_flag_;
             }
             // Should the program exit?
             // @returns: True if the program should exit.
-            inline bool shouldExit() {
+            inline bool shouldExit() const {
                 //std::lock_guard<std::mutex> guard(mu);
                 return exit_flag_;
             }
@@ -76,7 +76,7 @@ namespace seedengine {
         private:
 
             // A mutex to lock program functions for thread safety
-            std::mutex mu;
+            mutable std::mutex mu;
 
             // The game loaded into this program. Will be nullptr if none has been loaded.
             // ** IN DEVELOPMENT **

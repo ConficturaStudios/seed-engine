@@ -32,16 +32,16 @@ namespace seedengine {
 
         // Gets the width of this image.
         // @returns: The width of this image.
-        inline unsigned int width() { return width_; }
+        inline unsigned int width() const { return width_; }
         // Gets the height of this image.
         // @returns: The height of this image.
-        inline unsigned int height() { return height_; }
+        inline unsigned int height() const { return height_; }
         // Gets the number of color channels this image has.
         // @returns: The number of color channels this image has.
-        inline unsigned int channels() { return channels_; }
+        inline unsigned int channels() const { return channels_; }
         // Gets the format this image will follow on load.
         // @returns: The format this image will follow on load.
-        inline ImageFormat format() { return format_; }
+        inline ImageFormat format() const { return format_; }
         // Sets the format this image will follow on load.
         // @param(ImageFormat) format: The format this image will follow on load.
         inline void setFormat(ImageFormat format) { format_ = format; }

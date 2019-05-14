@@ -143,7 +143,7 @@ namespace seedengine {
         return isMaximized();
     }
 
-    bool Window::isMaximized() {
+    bool Window::isMaximized() const {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             return glfwGetWindowAttrib(gl_window_, GLFW_MAXIMIZED);
@@ -179,7 +179,7 @@ namespace seedengine {
         return isMinimized();
     }
 
-    bool Window::isMinimized() {
+    bool Window::isMinimized() const {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             return glfwGetWindowAttrib(gl_window_, GLFW_ICONIFIED);
@@ -282,7 +282,7 @@ namespace seedengine {
         #endif
     }
 
-    bool Window::shouldClose() {
+    bool Window::shouldClose() const {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
             return glfwWindowShouldClose(gl_window_);

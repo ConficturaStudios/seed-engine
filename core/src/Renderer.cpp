@@ -135,9 +135,16 @@ namespace seedengine {
     void Renderer::unlitRender() {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
-
+            /*
             while (!test_queue_.empty()) {
                 Mesh* m = test_queue_.front();
+                Shader s = new Shader(
+                    CORE_PATH("data/shader/default.vs.glsl"),
+                    CORE_PATH("data/shader/default.fs.glsl"),
+                    { "position", "tex_coords", "normal" },
+                    { "transformation_mat", "projection_mat", "view_mat" });
+                
+                s.start();
 
                 glBindVertexArray(m->vao_);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->vertex_buffers_[0]);
@@ -161,7 +168,7 @@ namespace seedengine {
                 glBindVertexArray(0);
 
                 test_queue_.pop();
-            }
+            }*/
 
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN

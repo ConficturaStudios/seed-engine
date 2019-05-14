@@ -56,12 +56,6 @@ namespace seedengine {
             image_library_.load(core_icon);
             window->setIcon(image_library_.request(core_icon));
 
-
-            // Mesh Test
-            mesh_library_.load(CORE_PATH("data/quad.mesh"));
-            renderer_.test_queue_.push(mesh_library_.request(CORE_PATH("data/quad.mesh")).get());
-
-
             // The time in ms between each frame.
             float delta_time;
             // Stores time information for frame update loop

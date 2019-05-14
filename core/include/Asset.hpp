@@ -20,8 +20,8 @@ namespace seedengine {
 
     public:
 
-        // Gets the path to this image. Returns an empty string if no path exits.
-        // @returns: The path to this image.
+        // Gets the path to this asset. Returns an empty string if no path exits.
+        // @returns: The path to this asset.
         inline std::string path() { return path_; }
         // Gets the data of this asset.
         // @returns: The data of this asset.
@@ -38,8 +38,8 @@ namespace seedengine {
         // The data stored in this asset.
         std::shared_ptr<T> data_;
 
-        // Constructs a new image from data in a file.
-        // @param(const std::string&) path: The path to the image to be loaded.
+        // Constructs a new asset from data in a file.
+        // @param(const std::string&) path: The path to the asset to be loaded.
         Asset(const std::string& path) : path_(path), data_(nullptr) {
             std::ifstream test_path(path);
             if (!test_path) throw std::invalid_argument("Asset path '" + path + "' not found.");
@@ -60,8 +60,10 @@ namespace seedengine {
 
         // Constructs a new asset library.
         AssetLibrary() {
+            // Ensure that AssetType is an Asset<AssetData>
             static_assert(std::is_base_of<Asset<AssetData>, AssetType>::value,
                 "AssetType is not of type Asset<AssetData>.");
+            // Initialize map
             atlas_ = std::map<std::string, std::shared_ptr<AssetType>>();
         }
     
@@ -69,12 +71,13 @@ namespace seedengine {
         // does not exist, nullptr will be returned.
         // @param(const std::string&) path: The path to the asset.
         // @returns: A pointer to the requested asset.
-        std::shared_ptr<AssetType> request(const std::string& path) {
-            if (atlas_[path]->isLoaded()) return atlas_[path];
+        std::shared_ptr<AssetType> request(const std::string& path) const {
+            if (atlas_.count(path) != 0) return nullptr;
+            else if (atlas_.at(path)->isLoaded()) return atlas_.at(path);
             else return nullptr;
         }
 
-        // Allocates a new asset from the disk into the library.
+        // Creates a new asset from the disk and adds it into the library.
         // @param(const std::string&) path: The path to the asset.
         // @returns: A pointer to the prepared asset.
         std::shared_ptr<AssetType> prepare(const std::string& path) {
@@ -84,29 +87,29 @@ namespace seedengine {
         }
 
         // Loads an asset from the disk into memory. If the asset is already loaded, nothing happens.
+        // If the asset has not yet been added to the library, it is prepared and loaded.
         // @param(const std::string&) path: The path to the asset.
         // @returns: A pointer to the loaded asset.
         std::shared_ptr<AssetType> load(const std::string& path) {
-            if (atlas_.find(path) != atlas_.end()) {
-                if (!atlas_[path]->isLoaded()) atlas_[path]->load();
+            if (atlas_.count(path) != 0) {
+                if (!atlas_.at(path)->isLoaded()) atlas_.at(path)->load();
             }
             else {
                 prepare(path)->load();
             }
-            return atlas_[path];
+            return atlas_.at(path);
         }
 
         // Unloads an asset from memory. If the asset is already unloaded, nothing happens.
         // If the asset does not yet exist, it is created but not loaded.
         // @param(const std::string&) path: The path of the image to unload.
         inline void unload(const std::string& path) {
-            if (atlas_.find(path) != atlas_.end()) {
-                if (atlas_[path]->isLoaded()) atlas_[path]->unload();
+            if (atlas_.count(path) != 0) {
+                if (atlas_.at(path)->isLoaded()) atlas_.at(path)->unload();
             }
             else {
                 prepare(path);
             }
-            return atlas_[path];
         }
 
         // Unloads all assets from the library.
