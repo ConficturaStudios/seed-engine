@@ -15,13 +15,13 @@ namespace seedengine {
 
     public:
         // Constructs a WindowProperties object. All parameters default to the value found in defaults.ini.
-        // @param(const std::string&) title: The title of the window.
+        // @param(const string&) title: The title of the window.
         // @param(const unsigned int) width: The width of the window.
         // @param(const unsigned int) height: The height of the window.
         // @param(const bool) fullscreen: Is the window borderless?
         // @param(const bool) borderless: Is the window fullscreen?
         // @param(const bool) vsync: Is VSync enabled for the window?
-        WindowProperties(   const std::string& title  = util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
+        WindowProperties(   const string& title  = util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
                             const unsigned int width  = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_width"],
                             const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_height"],
                             const bool fullscreen     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["fullscreen"],
@@ -33,7 +33,7 @@ namespace seedengine {
 
     private:
         // The title of the window.
-        std::string title_;
+        string title_;
         // The width of the window.
         unsigned int width_;
         // The height of the window.
@@ -102,7 +102,7 @@ namespace seedengine {
 
         // Returns the title of this window.
         // @returns: The title of this window.
-        inline std::string title() const { return properties_.title_; }
+        inline string title() const { return properties_.title_; }
 
         // Returns the width of this window.
         // @returns: The width of this window.

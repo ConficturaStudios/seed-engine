@@ -122,6 +122,7 @@
 
 #include <queue>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <iterator>
 
@@ -130,6 +131,10 @@
 #include <algorithm>
 
 #include <exception>
+
+// Namespace using directives
+
+using std::string;
 
 // Custom Macros:
 

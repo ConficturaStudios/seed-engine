@@ -17,11 +17,11 @@ namespace seedengine {
     public:
 
         // Constructs a new Shader
-        // @param(std::string) vertex_shader_path
-        // @param(std::string) fragment_shader_path
-        // @param(std::string[]) attributes: The attributes to bind.
-        // @param(std::string[]) uniforms: The names of the uniforms to store.
-        Shader(std::string, std::string, std::string[], std::string[]);
+        // @param(string) vertex_shader_path
+        // @param(string) fragment_shader_path
+        // @param(string[]) attributes: The attributes to bind.
+        // @param(string[]) uniforms: The names of the uniforms to store.
+        Shader(string, string, string[], string[]);
 
         // Destroys this shader.
         virtual ~Shader();
@@ -37,45 +37,45 @@ namespace seedengine {
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
         
             // Loads a float at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(float) value: The value to bind.
-            inline void loadUniform(std::string location, const float value) const {
+            inline void loadUniform(string location, const float value) const {
                 loadFloat(locations_.at(location), value);
             }
             // Loads an int at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(int) value: The value to bind.
-            inline void loadUniform(std::string location, const int value) const {
+            inline void loadUniform(string location, const int value) const {
                 loadInt(locations_.at(location), value);
             }
             // Loads a vector 2 at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(glm::vec2) value: The value to bind.
-            inline void loadUniform(std::string location, const glm::vec2& value) const {
+            inline void loadUniform(string location, const glm::vec2& value) const {
                 loadVec2(locations_.at(location), value);
             }
             // Loads a vector 3 at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(glm::vec3) value: The value to bind.
-            inline void loadUniform(std::string location, const glm::vec3& value) const {
+            inline void loadUniform(string location, const glm::vec3& value) const {
                 loadVec3(locations_.at(location), value);
             }
             // Loads a vector 4 at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(glm::vec4) value: The value to bind.
-            inline void loadUniform(std::string location, const glm::vec4& value) const {
+            inline void loadUniform(string location, const glm::vec4& value) const {
                 loadVec4(locations_.at(location), value);
             }
             // Loads a bool at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(bool) value: The value to bind.
-            inline void loadUniform(std::string location, const bool value) const {
+            inline void loadUniform(string location, const bool value) const {
                 loadBool(locations_.at(location), value);
             }
             // Loads a 4x4 matrix at the specified location.
-            // @param(std::string) location: The name of the location to bind to.
+            // @param(string) location: The name of the location to bind to.
             // @param(glm::mat4) value: The value to bind.
-            inline void loadUniform(std::string location, const glm::mat4& value) const {
+            inline void loadUniform(string location, const glm::mat4& value) const {
                 loadMat4(locations_.at(location), value);
             }
 
@@ -97,30 +97,30 @@ namespace seedengine {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
-            std::map<std::string, unsigned int> locations_;
+            std::map<string, unsigned int> locations_;
 
             // Gets the locations of all needed uniforms.
             // These locations are mapped by name and sstored in memory.
-            // @param(std::string[]) uniforms: The names of the uniforms to store.
-            void getAllUniformLocations(std::string[]);
+            // @param(string[]) uniforms: The names of the uniforms to store.
+            void getAllUniformLocations(string[]);
 
             // Binds all needed attributes to the shader. These will be bound to the array index
             // that they were passed in.
-            // @param(std::string[]) attributes: The attributes to bind.
-            void bindAttributes(std::string[]);
+            // @param(string[]) attributes: The attributes to bind.
+            void bindAttributes(string[]);
             // TODO: Rework where bindAttributes and getAllUniformLocations are called
 
             // Gets the location of the specified uniform.
-            // @param(std::string) uniform_name: The name of the uniform to check.
+            // @param(string) uniform_name: The name of the uniform to check.
             // @returns: The location of the requested uniform.
-            inline int getUniformLocation(std::string uniform_name) const {
+            inline int getUniformLocation(string uniform_name) const {
                 return glGetUniformLocation(program_id_, uniform_name.c_str());
             }
 
             // Binds the specified attribute to the shader.
             // @param(int) attribute: The attribute to bind.
-            // @param(std::string) name: The name of the attirbute to bind.
-            inline void bindAttribute(int attribute, std::string name) const {
+            // @param(string) name: The name of the attirbute to bind.
+            inline void bindAttribute(int attribute, string name) const {
                 glBindAttribLocation(program_id_, attribute, name.c_str());
             }
 
@@ -197,10 +197,10 @@ namespace seedengine {
             shader_vertex_data_t vertex_data_;
 
             // Loads a shader from the disk.
-            // @param(std::string) file: The path to the file to load from.
+            // @param(string) file: The path to the file to load from.
             // @param(int) shader_type: The type of shader being loaded.
             // @returns: The ID of the shader in memory.
-            static int loadShader(std::string, int);
+            static int loadShader(string, int);
 
         // Check for Vulkan
         #elif ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_VLKN

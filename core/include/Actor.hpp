@@ -2,7 +2,7 @@
 #define SEEDENGINE_INCLUDE_ACTOR_H_
 
 #include "Core.hpp"
-#include "Entity.hpp"
+#include "Object.hpp"
 #include "Transform.hpp"
 
 namespace seedengine {
@@ -31,7 +31,7 @@ namespace seedengine {
     };
 
     // An actor that can take part in a level or scene.
-    class Actor : public Entity {
+    class Actor : public Object {
 
     public:
 
@@ -40,7 +40,7 @@ namespace seedengine {
         // @param(const ActorProperties&) actor_properties: The properties of this actor.
         Actor(  const Transform& transfrom        = Transform(),
                 const ActorProperties& properties = ActorProperties())
-            : Entity(), actor_properties_(properties) {}
+            : Object("actor"), actor_properties_(properties) {}
 
     protected:
         // The properties of this actor.

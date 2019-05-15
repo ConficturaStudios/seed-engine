@@ -48,10 +48,10 @@ namespace seedengine {
                 return;
             }
             
-            std::string icon_path = util::parser::ini::DEFAULTS
+            string icon_path = util::parser::ini::DEFAULTS
                 .sections["Window"].string_data["icon_path"];
-            std::string core_path = CORE_PATH("");
-            std::string core_icon = core_path + icon_path;
+            string core_path = CORE_PATH("");
+            string core_icon = core_path + icon_path;
             // Set window icon
             image_library_.load(core_icon);
             window->setIcon(image_library_.request(core_icon));
@@ -166,7 +166,7 @@ namespace seedengine {
     }
 
     //TODO: Clean up abort functionality, wrap into exit(int) call
-    void Program::abort(int error, std::string msg) {
+    void Program::abort(int error, string msg) {
         std::lock_guard<std::mutex> gaurd(mu);
         this->abort_code_ = error;
         this->abort_flag_ = true;

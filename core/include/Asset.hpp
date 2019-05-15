@@ -22,7 +22,7 @@ namespace seedengine {
 
         // Gets the path to this asset. Returns an empty string if no path exits.
         // @returns: The path to this asset.
-        inline std::string path() { return path_; }
+        inline string path() { return path_; }
         // Gets the data of this asset.
         // @returns: The data of this asset.
         inline std::shared_ptr<T> data() { return data_; }
@@ -34,13 +34,13 @@ namespace seedengine {
     protected:
 
         // The file path to this asset.
-        std::string path_;
+        string path_;
         // The data stored in this asset.
         std::shared_ptr<T> data_;
 
         // Constructs a new asset from data in a file.
-        // @param(const std::string&) path: The path to the asset to be loaded.
-        Asset(const std::string& path) : path_(path), data_(nullptr) {
+        // @param(const string&) path: The path to the asset to be loaded.
+        Asset(const string& path) : path_(path), data_(nullptr) {
             std::ifstream test_path(path);
             if (!test_path) throw std::invalid_argument("Asset path '" + path + "' not found.");
         }
@@ -64,23 +64,23 @@ namespace seedengine {
             static_assert(std::is_base_of<Asset<AssetData>, AssetType>::value,
                 "AssetType is not of type Asset<AssetData>.");
             // Initialize map
-            atlas_ = std::map<std::string, std::shared_ptr<AssetType>>();
+            atlas_ = std::map<string, std::shared_ptr<AssetType>>();
         }
     
         // Requests an asset from the library by path. If the asset is not loaded in memory or
         // does not exist, nullptr will be returned.
-        // @param(const std::string&) path: The path to the asset.
+        // @param(const string&) path: The path to the asset.
         // @returns: A pointer to the requested asset.
-        std::shared_ptr<AssetType> request(const std::string& path) const {
+        std::shared_ptr<AssetType> request(const string& path) const {
             if (atlas_.count(path) != 0) return nullptr;
             else if (atlas_.at(path)->isLoaded()) return atlas_.at(path);
             else return nullptr;
         }
 
         // Creates a new asset from the disk and adds it into the library.
-        // @param(const std::string&) path: The path to the asset.
+        // @param(const string&) path: The path to the asset.
         // @returns: A pointer to the prepared asset.
-        std::shared_ptr<AssetType> prepare(const std::string& path) {
+        std::shared_ptr<AssetType> prepare(const string& path) {
             std::shared_ptr<AssetType> newAsset(new AssetType(path));
             atlas_[path] = newAsset;
             return newAsset;
@@ -88,9 +88,9 @@ namespace seedengine {
 
         // Loads an asset from the disk into memory. If the asset is already loaded, nothing happens.
         // If the asset has not yet been added to the library, it is prepared and loaded.
-        // @param(const std::string&) path: The path to the asset.
+        // @param(const string&) path: The path to the asset.
         // @returns: A pointer to the loaded asset.
-        std::shared_ptr<AssetType> load(const std::string& path) {
+        std::shared_ptr<AssetType> load(const string& path) {
             if (atlas_.count(path) != 0) {
                 if (!atlas_.at(path)->isLoaded()) atlas_.at(path)->load();
             }
@@ -102,8 +102,8 @@ namespace seedengine {
 
         // Unloads an asset from memory. If the asset is already unloaded, nothing happens.
         // If the asset does not yet exist, it is created but not loaded.
-        // @param(const std::string&) path: The path of the image to unload.
-        inline void unload(const std::string& path) {
+        // @param(const string&) path: The path of the image to unload.
+        inline void unload(const string& path) {
             if (atlas_.count(path) != 0) {
                 if (atlas_.at(path)->isLoaded()) atlas_.at(path)->unload();
             }
@@ -132,7 +132,7 @@ namespace seedengine {
     protected:
 
         // A map of all assets in memory to their path reference.
-        std::map<std::string, std::shared_ptr<AssetType>> atlas_;
+        std::map<string, std::shared_ptr<AssetType>> atlas_;
 
     };
 

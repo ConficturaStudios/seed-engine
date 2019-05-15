@@ -8,7 +8,7 @@ namespace seedengine {
                 // Data from the defaults.ini file found in ~/seed-engine/core/data.
                 filedata DEFAULTS = parse(CORE_PATH("data/defaults.ini"));
 
-                filedata parse(std::string filepath) {
+                filedata parse(string filepath) {
 
                     // Regex templates in ECMAScript format
 
@@ -20,20 +20,20 @@ namespace seedengine {
                     std::regex string_regex("^[\\s]*([a-zA-Z][\\w]*)\\s*=\\s*(?:\"([^\"]*)\"|'([^\']*)')\\s*$");
 
                     // All sections of this file
-                    std::map<std::string, section> sections;
+                    std::map<string, section> sections;
 
                     // The name of the active section
-                    std::string active_section;
+                    string active_section;
 
                     // Read the passed file
                     std::ifstream file(filepath);
 
-                    std::string line;
+                    string line;
                     int line_num = 1;
                     while (std::getline(file, line)) {
                         std::smatch m;
                         // Remove comments
-                        std::string ncomment_line = line.substr(0, line.find(";", 0));
+                        string ncomment_line = line.substr(0, line.find(";", 0));
                         ncomment_line = ncomment_line.substr(0, line.find("#", 0));
 
                         if (std::regex_match(ncomment_line, m, white_regex)) {
@@ -45,10 +45,10 @@ namespace seedengine {
                             if (sections.find(active_section) != sections.end()) {
 
                                 // Create storage for this section
-                                std::map<std::string, const int> int_data;
-                                std::map<std::string, const float> float_data;
-                                std::map<std::string, const bool> bool_data;
-                                std::map<std::string, const std::string> string_data;
+                                std::map<string, const int> int_data;
+                                std::map<string, const float> float_data;
+                                std::map<string, const bool> bool_data;
+                                std::map<string, const string> string_data;
 
                                 sections[active_section] = {
                                     int_data,
@@ -64,19 +64,19 @@ namespace seedengine {
                         }
                         else if (std::regex_match(ncomment_line, m, int_regex)) {
                             const int v = std::stoi(m[2]);
-                            sections[active_section].int_data.insert(std::pair<std::string, const int>(m[1], v));
+                            sections[active_section].int_data.insert(std::pair<string, const int>(m[1], v));
                         }
                         else if (std::regex_match(ncomment_line, m, float_regex)) {
                             const float v = std::stof(m[2]);
-                            sections[active_section].float_data.insert(std::pair<std::string, const float>(m[1], v));
+                            sections[active_section].float_data.insert(std::pair<string, const float>(m[1], v));
                         }
                         else if (std::regex_match(ncomment_line, m, bool_regex)) {
                             const bool v = (m[2] == "true" || m[2] == "True" || m[2] == "TRUE");
-                            sections[active_section].bool_data.insert(std::pair<std::string, const bool>(m[1], v));
+                            sections[active_section].bool_data.insert(std::pair<string, const bool>(m[1], v));
                         }
                         else if (std::regex_match(ncomment_line, m, string_regex)) {
-                            const std::string v = (m[2].str().empty()) ? m[3] : m[2];
-                            sections[active_section].string_data.insert(std::pair<std::string, const std::string>(m[1], v));
+                            const string v = (m[2].str().empty()) ? m[3] : m[2];
+                            sections[active_section].string_data.insert(std::pair<string, const string>(m[1], v));
                         }
                         else {
                             ENGINE_ERROR("Error in ini file \"" + filepath + "\" at line " + std::to_string(line_num));

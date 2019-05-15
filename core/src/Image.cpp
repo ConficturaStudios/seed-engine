@@ -7,7 +7,7 @@
 
 namespace seedengine {
 
-    Image::Image(const std::string& path) : Asset<unsigned char>(path) {
+    Image::Image(const string& path) : Asset<unsigned char>(path) {
         format_ = ImageFormat::DEFAULT;
     }
 

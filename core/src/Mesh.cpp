@@ -2,7 +2,7 @@
 
 namespace seedengine {
 
-    Mesh::Mesh(const std::string& path) : Asset<meshdata>(path) {
+    Mesh::Mesh(const string& path) : Asset<meshdata>(path) {
         
     }
 
@@ -88,7 +88,7 @@ namespace seedengine {
         #endif
     }
 
-    meshdata* Mesh::extractMesh(const std::string& path) {
+    meshdata* Mesh::extractMesh(const string& path) {
         
         // Data values that will be returned on success.
         meshdata m_data;
@@ -107,7 +107,7 @@ namespace seedengine {
         // Read the passed file
         std::ifstream file(path);
 
-        std::string line;
+        string line;
         int line_num = 1;
 
         // Count all attribute types to make sure that vertices are uniform.
@@ -129,27 +129,27 @@ namespace seedengine {
         while (std::getline(file, line)) {
             std::smatch m;
             // Remove comments
-            std::string ncomment_line = line.substr(0, line.find("#", 0));
+            string ncomment_line = line.substr(0, line.find("#", 0));
 
             if (std::regex_match(ncomment_line, m, white_regex)) {
                 // Skip line
             }
             else if (std::regex_match(ncomment_line, m, property_regex)) {
-                m_data.properties.insert(std::pair<std::string, const std::string>(m[1], m[2]));
+                m_data.properties.insert(std::pair<string, const string>(m[1], m[2]));
             }
             else if (std::regex_match(ncomment_line, m, attribute_regex)) {
                 size_t pos = 0;
-                std::string type = m[1];
-                std::string value = m[2];
+                string type = m[1];
+                string value = m[2];
                 // Remove all spaces
                 value.erase(remove(value.begin(), value.end(), ' '), value.end());
                 // Seperate by commas
                 int expected_count = 0; // The number expected
 
-                std::vector<std::string> values;
+                std::vector<string> values;
 
-                while ((pos = value.find(",")) != std::string::npos) {
-                    std::string t = value.substr(0, pos);
+                while ((pos = value.find(",")) != string::npos) {
+                    string t = value.substr(0, pos);
                     values.push_back(t);
                     // Move on to next token
                     value.erase(0, pos + 1);
@@ -158,67 +158,67 @@ namespace seedengine {
 
                 // Choose array to pass the value to
                 if (type.compare("p") == 0) {
-                    for (std::string t : values) m_data.positions.push_back(std::stof(t));
+                    for (string t : values) m_data.positions.push_back(std::stof(t));
                     expected_count = 3;
                     p_count++;
                 }
                 else if (type.compare("n") == 0) {
-                    for (std::string t : values) m_data.normals.push_back(std::stof(t));
+                    for (string t : values) m_data.normals.push_back(std::stof(t));
                     expected_count = 3;
                     n_count++;
                 }
                 else if (type.compare("c0") == 0) {
-                    for (std::string t : values) m_data.p_colors.push_back(std::stof(t));
+                    for (string t : values) m_data.p_colors.push_back(std::stof(t));
                     expected_count = 4;
                     c0_count++;
                 }
                 else if (type.compare("c1") == 0) {
-                    for (std::string t : values) m_data.s_colors.push_back(std::stof(t));
+                    for (string t : values) m_data.s_colors.push_back(std::stof(t));
                     expected_count = 4;
                     c1_count++;
                 }
                 else if (type.compare("u0") == 0) {
-                    for (std::string t : values) m_data.uv_0.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_0.push_back(std::stof(t));
                     expected_count = 2;
                     u0_count++;
                 }
                 else if (type.compare("u1") == 0) {
-                    for (std::string t : values) m_data.uv_1.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_1.push_back(std::stof(t));
                     expected_count = 2;
                     u1_count++;
                 }
                 else if (type.compare("u2") == 0) {
-                    for (std::string t : values) m_data.uv_2.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_2.push_back(std::stof(t));
                     expected_count = 2;
                     u2_count++;
                 }
                 else if (type.compare("u3") == 0) {
-                    for (std::string t : values) m_data.uv_3.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_3.push_back(std::stof(t));
                     expected_count = 2;
                     u3_count++;
                 }
                 else if (type.compare("u4") == 0) {
-                    for (std::string t : values) m_data.uv_4.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_4.push_back(std::stof(t));
                     expected_count = 2;
                     u4_count++;
                 }
                 else if (type.compare("u5") == 0) {
-                    for (std::string t : values) m_data.uv_5.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_5.push_back(std::stof(t));
                     expected_count = 2;
                     u5_count++;
                 }
                 else if (type.compare("u6") == 0) {
-                    for (std::string t : values) m_data.uv_6.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_6.push_back(std::stof(t));
                     expected_count = 2;
                     u6_count++;
                 }
                 else if (type.compare("u7") == 0) {
-                    for (std::string t : values) m_data.uv_7.push_back(std::stof(t));
+                    for (string t : values) m_data.uv_7.push_back(std::stof(t));
                     expected_count = 2;
                     u7_count++;
                 }
                 else if (type.compare("f") == 0) {
-                    for (std::string t : values) m_data.faces.push_back(std::stoi(t));
+                    for (string t : values) m_data.faces.push_back(std::stoi(t));
                     expected_count = 3;
                     f_count++;
                 }

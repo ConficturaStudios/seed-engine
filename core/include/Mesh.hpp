@@ -15,7 +15,7 @@ namespace seedengine {
     // The raw data of a mesh loaded from a file.
     struct meshdata {
         // The properties of the mesh.
-        std::map<std::string, std::string> properties;
+        std::map<string, string> properties;
         // The vertex positions of the mesh.
         std::vector<float> positions;
         // The vertex normals of the mesh.
@@ -59,8 +59,8 @@ namespace seedengine {
     protected:
 
         // Constructs a new mesh from data in a file.
-        // @param(const std::string&) path: The path to the mesh to be loaded.
-        Mesh(const std::string&);
+        // @param(const string&) path: The path to the mesh to be loaded.
+        Mesh(const string&);
 
         // Loads this mesh into memory.
         void load();
@@ -125,9 +125,9 @@ namespace seedengine {
     private:
 
         // Loads the *.mesh file into data.
-        // @param(const std::string&) path: The path to the mesh to be loaded.
+        // @param(const string&) path: The path to the mesh to be loaded.
         // @param(std::shared_ptr<meshdata>) data: A pointer to the location to store the parsed data.
-        static meshdata* extractMesh(const std::string&);
+        static meshdata* extractMesh(const string&);
 
     };
 

@@ -57,8 +57,8 @@ namespace seedengine {
     protected:
 
         // Constructs a new image from data in a file.
-        // @param(const std::string&) path: The path to the image to be loaded.
-        Image(const std::string&);
+        // @param(const string&) path: The path to the image to be loaded.
+        Image(const string&);
 
         // Loads this image into memory.
         void load();

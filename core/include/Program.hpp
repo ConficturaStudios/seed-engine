@@ -31,8 +31,8 @@ namespace seedengine {
 
             // Aborts this program during runtime.
             // @param(int) error: The error code to return to the console. Defaults to -1;
-            // @param(std::string) msg: The error message to display. Defaults to an empty string.
-            void abort(int = -1, std::string = "");
+            // @param(string) msg: The error message to display. Defaults to an empty string.
+            void abort(int = -1, string = "");
 
             // Exits this program.
             // @param(int) exit_code: The exit code to return to the console. Defaults to 0;
