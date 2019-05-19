@@ -106,7 +106,7 @@ namespace seedengine {
         // Gets the view matrix from this camera.
         // @returns: The view matrix from this camera.
         inline glm::mat4 getViewMatrix() const {
-            return glm::inverse(transform_.getTransformationMatrix());
+            return glm::inverse(transform.get().getTransformationMatrix());
         }
 
         // Gets the projection matrix from this camera.

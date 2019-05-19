@@ -9,7 +9,8 @@ namespace seedengine {
 
     // Custom Asset Macros
 
-    #define ENGINE_ASSET_BODY() template <class AssetData, class AssetType>\
+    #define ENGINE_ASSET_BODY() \
+        template <class AssetData, class AssetType>\
         friend class AssetLibrary;
 
     // An asset with data type T.

@@ -149,5 +149,6 @@ using std::string;
 // Engine specific includes:
 
 #include "Log.hpp"
+#include "Property.hpp"
 
 #endif
