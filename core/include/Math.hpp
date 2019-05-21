@@ -13,125 +13,96 @@ namespace seedengine {
     namespace math {
 
         // The smallest floating point increment.
-        const float EPSILON = std::numeric_limits::epsilon();
+        const float EPSILON = std::numeric_limits<float>::epsilon();
         // Infinity.
-        const float INF = std::numeric_limits::infinity();
+        const float INF = std::numeric_limits<float>::infinity();
         // Negative Infinity.
         const float NEG_INF = -INF;
         // Pi (3.14159...).
-        const float PI = M_PI;
+        const float PI = (float)M_PI;
         // Euler's Number / The base of the natural logarithm.
-        const float E = M_E;
+        const float E = (float)M_E;
         // The conversion constant for converting degrees into radians.
         const float DEG2RAD = PI / 180.0f;
         // The conversion constant for converting radians into degrees.
         const float RAD2DEG = 180.0f / PI;
 
         // Is this number odd?
-        // @param(const int) num: The number to check.
+        // @param(const int&) value: The number to check.
         // @returns: True if the number is odd.
-        inline bool isOdd(const int num) {
-            return num & 1;
+        inline bool isOdd(const int& value) {
+            return value & 1;
         }
         // Is this number odd?
-        // @param(const float) num: The number to check.
+        // @param(const float&) value: The number to check.
         // @returns: True if the number is odd.
-        inline bool isOdd(const float num) {
-            return (int)num % 2 == 1;
+        inline bool isOdd(const float& value) {
+            return (int)value % 2 == 1;
         }
         // Is this number odd?
-        // @param(const double) num: The number to check.
+        // @param(const double&) value: The number to check.
         // @returns: True if the number is odd.
-        inline bool isOdd(const double num) {
-            return (long int)num % 2 == 1;
-        }
-
-        // Swaps the values stored in two int references
-        // @param(int&) a: The first number to swap.
-        // @param(int&) b: The second number to swap.
-        inline void swap(int& a, int& b) {
-            a ^= b;
-            b ^= a;
-            a ^= b;
-        }
-        // Swaps the values stored in two int references
-        // @param(float&) a: The first number to swap.
-        // @param(float&) b: The second number to swap.
-        inline void swap(float& a, float& b) {
-            a ^= b;
-            b ^= a;
-            a ^= b;
-        }
-        // Swaps the values stored in two int references
-        // @param(double&) a: The first number to swap.
-        // @param(double&) b: The second number to swap.
-        inline void swap(double& a, double& b) {
-            a ^= b;
-            b ^= a;
-            a ^= b;
+        inline bool isOdd(const double& value) {
+            return (long int)value % 2 == 1;
         }
 
         // Returns the absolute value of the passed number.
-        // @param(const int) num: The number to retrieve the absolute value of.
-        // @returns: The absolute value of num.
-        inline int abs(const int num) { return std::abs(num); }
+        // @param(const int&) value: The number to retrieve the absolute value of.
+        // @returns: The absolute value of value.
+        inline int abs(const int& value) { return std::abs(value); }
         // Returns the absolute value of the passed number.
-        // @param(const float) num: The number to retrieve the absolute value of.
-        // @returns: The absolute value of num.
-        inline float abs(const float num) { return std::abs(num); }
+        // @param(const float&) value: The number to retrieve the absolute value of.
+        // @returns: The absolute value of value.
+        inline float abs(const float& value) { return std::abs(value); }
         // Returns the absolute value of the passed number.
-        // @param(const double) num: The number to retrieve the absolute value of.
-        // @returns: The absolute value of num.
-        inline double abs(const double num) { return std::abs(num); }
+        // @param(const double&) value: The number to retrieve the absolute value of.
+        // @returns: The absolute value of value.
+        inline double abs(const double& value) { return std::abs(value); }
         
         // acos
-        inline float acos(const float& num) { return std::acos(num); }
+        inline float acos(const float& value) { return std::acos(value); }
         // acosh
-        inline float acosh(const float& num) { return std::acosh(num); }
+        inline float acosh(const float& value) { return std::acosh(value); }
         // approx
         inline bool approx(const float& a, const float& b) { return a + EPSILON >= b && a - EPSILON <= b; }
         // asin
-        inline float asin(const float& num) { return std::asin(num); }
+        inline float asin(const float& value) { return std::asin(value); }
         // asinh
-        inline float asinh(const float& num) { return std::asinh(num); }
+        inline float asinh(const float& value) { return std::asinh(value); }
         // atan
-        inline float atan(const float& num) { return std::atan(num); }
+        inline float atan(const float& value) { return std::atan(value); }
         // atan2
         inline float atan2(const float& y, const float& x) { return std::atan2(y, x); }
         // atanh
-        inline float atanh(const float& num) { return std::atanh(num); }
+        inline float atanh(const float& value) { return std::atanh(value); }
         // ceil
-        inline int ceil(const float& num) { return std::ceil(num); }
+        inline int ceil(const float& value) { return (int)std::ceil(value); }
         // clamp
-        inline float clamp(const float& num, const float& min, const float& max) { return (num <= min) ? min : (num >= max) ? max : num; }
+        inline float clamp(const float& value, const float& min, const float& max) { return (value <= min) ? min : (value >= max) ? max : value; }
         // clamp01
-        inline float clamp(const float& num) { return (num <= 0.0f) ? 0.0f : (num >= 1.0f) ? 1.0f : num; }
+        inline float clamp(const float& value) { return (value <= 0.0f) ? 0.0f : (value >= 1.0f) ? 1.0f : value; }
         // closestPowerOf2 ?
+		inline int closestPowerOf2(const float& value) { return (int)pow(2, round(log2(value))); }
         // correlatedColorTempToRGB ? blackbodyColor
         // cos
-        inline float cos(const float& num) { return std::cos(num); }
+        inline float cos(const float& value) { return std::cos(value); }
         // cosh
-        inline float cosh(const float& num) { return std::cosh(num); }
+        inline float cosh(const float& value) { return std::cosh(value); }
         // deltaAngle ?
-        inline float deltaAngle(const float& current, const float& target) {
-            //TODO: Redo deltaAngle function
-            float a = fmod(current, 360.0f);
-            float b = fmod(target, 360.0f);
-            return (abs(a - b) <= 180.0f) ? b - a : 360 - b - a;
-        }
+        inline float deltaAngle(const float& current, const float& target) { return atan2(sin(target - current), cos(target - current)); }
         // exp
-        inline float exp(const float& num) { return std::exp(num); }
+        inline float exp(const float& value) { return std::exp(value); }
         // floor
-        inline int floor(const float& num) { return std::floor(num); }
+        inline int floor(const float& value) { return (int)std::floor(value); }
         // fmod
-        inline float fmod(const float& num, const float& denom) { return std::fmod(num, denom); }
+        inline float fmod(const float& value, const float& denom) { return std::fmod(value, denom); }
         // gammaToLinearColor ?
         // invLerp
         inline float invLerp(const float& a, const float& b, const float& value) { return (value - a) / (b - a); }
-        // isPowerOf2 ?
+        // isPowerOf2
+		inline bool isPowerOf2(const unsigned int& value) { return (value == 0) ? false : (value & (value - 1)) == 0; }
         // lerp
         inline float lerp(const float& a, const float& b, const float& t) { return a + t * (b - a); }
-        // lerpAngle ?
         // linearToGammaColor ?
         // ln
         inline float ln(const float& x) { return std::log(x); }
@@ -141,20 +112,22 @@ namespace seedengine {
         inline float log2(const float& x) { return std::log2(x); }
         // log10
         inline float log10(const float& x) { return std::log10(x); }
+		#undef max
+		#undef min
         // max
         inline float max(const float& a, const float& b) { return (a >= b) ? a : b; }
         // min
         inline float min(const float& a, const float& b) { return (a <= b) ? a : b; }
         // moveTowards
         inline float moveTowards(const float& current, const float& target, const float& rate) {
-            return (abs(target - current) <= rate) ? target : a + sign(target - current) * rate;
+            return (abs(target - current) <= rate) ? target : current + ( (target - current) / abs(target - current) ) * rate;
         }
         // moveTowardsAngle ?
         inline float moveTowardsAngle(const float& current, const float& target, const float& rate) {
-            return (abs(target - current) <= rate) ? target : a + rate;
+            return (abs(target - current) <= rate) ? target : current + ((target - current) / abs(target - current)) * rate;
         }
-        // nextPowerOf2 ?
-        inline float nextPowerOf2(const float& num) { return pow(2, log2(n)); }
+        // nextPowerOf2
+        inline int nextPowerOf2(const float& value) { return (int)pow(2, ceil(log2(value))); }
         // pingPong ?
         inline float pingpong(const float& t, const float& length) { return length - abs(fmod(t, 2 * length) - length); }
         // pow
@@ -162,34 +135,43 @@ namespace seedengine {
         // repeat
         inline float repeat(const float& t, const float& length) { return fmod(t, length); }
         // round
-        inline int round(const float& num) { return std::round(num); }
+        inline int round(const float& value) { return (int)std::round(value); }
         // sign
-        inline float sign(const float& num) { return num / abs(num); }
+        inline float sign(const float& value) { return value / abs(value); }
         // sin
-        inline float sin(const float& num) { return std::sin(num); }
+        inline float sin(const float& value) { return std::sin(value); }
         // sinh
-        inline float sinh(const float& num) { return std::sinh(num); }
+        inline float sinh(const float& value) { return std::sinh(value); }
         // smoothDamp
-        // smoothDampAngle
+		inline float smoothdamp(const float& current, const float& target, float* const velocity, const float& step, const float& spring_constant = 2.0f) {
+			*velocity += ( ( (target - current) * spring_constant ) + ( (*velocity) * -2.0f * sqrt(spring_constant) ) ) * step;
+			return current + (*velocity) * step;
+		}
         // smoothStep
+		inline float smoothstep(const float& a, const float& b, const float& t) {
+			float temp = clamp((t - a) / (b - a));
+			return temp * temp * (3.0f - 2.0f * temp);
+		}
         // sqrt
-        inline float sqrt(const float& num) { return std::sqrt(num); }
+        inline float sqrt(const float& value) { return std::sqrt(value); }
         // tan
-        inline float tan(const float& num) { return std::tan(num); }
+        inline float tan(const float& value) { return std::tan(value); }
         // tanh
-        inline float tanh(const float& num) { return std::tanh(num); }
+        inline float tanh(const float& value) { return std::tanh(value); }
+		// toAngle
+		inline float toAngle(const float& value) { return deltaAngle(0.0f, value); }
 
         // Truncates any decimal value from the passed number.
-        // @param(const float) num: The number to truncate.
+        // @param(const float&) value: The number to truncate.
         // @returns: The number truncated to an int.
-        inline int trunc(const float num) {
-            return (int)num;
+        inline int trunc(const float& value) {
+            return (int)value;
         }
         // Truncates any decimal value from the passed number.
-        // @param(const double) num: The number to truncate.
+        // @param(const double&) value: The number to truncate.
         // @returns: The number truncated to a long int.
-        inline long int trunc(const double num) {
-            return (long int)num;
+        inline long int trunc(const double& value) {
+            return (long int)value;
         }
 
     }

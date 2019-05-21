@@ -150,5 +150,6 @@ using std::string;
 
 #include "Log.hpp"
 #include "Property.hpp"
+#include "Math.hpp"
 
 #endif
