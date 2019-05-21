@@ -109,7 +109,7 @@ namespace seedengine {
             static_assert(std::is_base_of<Component, T>::value, "T is not of type Component.");
             std::vector<std::unique_ptr<T>> ptrs;
             for (int i = 0; i < components_.size(); i++) {
-                if (dynamic_cast<std::unique_ptr<T>>components_.at(i) != nullptr) ptrs.push_back(components_.at(i));
+                if (dynamic_cast<std::unique_ptr<T>>(components_.at(i)) != nullptr) ptrs.push_back(components_.at(i));
                 else continue;
             }
             return ptrs;
