@@ -30,6 +30,8 @@ namespace seedengine {
 
     };
 
+	class Actor; // Forward declare Actor
+
     class Component : public Object {
 
         friend class Actor;
