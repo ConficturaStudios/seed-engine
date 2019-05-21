@@ -66,6 +66,8 @@ namespace seedengine {
                 const ActorProperties& properties = ActorProperties())
             : Object("actor"), actor_properties_(properties) {
             this->transform = transform;
+			this->parent_ = nullptr;
+			
         }
 
         // The transform of this actor.
@@ -93,7 +95,7 @@ namespace seedengine {
             // Ensure that T is a Component
             static_assert(std::is_base_of<Component, T>::value, "T is not of type Component.");
             for (int i = 0; i < components_.size(); i++) {
-                if (dynamic_cast<std::unique_ptr<T>>components_.at(i) != nullptr) return components_.at(i);
+                if (dynamic_cast<std::unique_ptr<T>>(components_.at(i)) != nullptr) return components_.at(i);
                 else continue;
             }
             return nullptr;
