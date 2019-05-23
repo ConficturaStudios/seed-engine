@@ -114,6 +114,10 @@
 #include <fstream>
 
 #include <string>
+#include <sstream>
+
+#include <stdexcept>
+#include <cstdarg>
 
 #include <thread>
 #include <chrono>
@@ -150,6 +154,8 @@ using std::string;
 
 #include "Log.hpp"
 #include "Property.hpp"
+
 #include "Math.hpp"
+#include "Vector.hpp"
 
 #endif

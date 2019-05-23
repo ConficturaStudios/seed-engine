@@ -66,17 +66,14 @@ namespace seedengine {
                 const ActorProperties& properties = ActorProperties())
             : Object("actor"), actor_properties_(properties) {
             this->transform = transform;
+            this->active = true;
+            this->parent_ = nullptr;
         }
 
         // The transform of this actor.
         Property<Transform> transform;
         // Is this actor active in the scene?
-        class : public Property<bool> {
-        public:
-            bool& set(const bool& value) override {
-                return this->value = value;
-            }
-        } active;
+        Property<bool> active;
 
         // Adds a Component of type T to this Actor.
         template <class T>

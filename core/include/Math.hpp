@@ -59,7 +59,9 @@ namespace seedengine {
         // @returns: The absolute value of value.
         inline double abs(const double& value) { return std::abs(value); }
         
-        // acos
+        // Returns the arc-cosine of value. This is the angle in radians whose cosine is value.
+        // @param(const float&) value: The value to take the arc-cosine of.
+        // @returns: The angle in radians whose cosine is value.
         inline float acos(const float& value) { return std::acos(value); }
         // acosh
         inline float acosh(const float& value) { return std::acosh(value); }
@@ -82,7 +84,7 @@ namespace seedengine {
         // clamp01
         inline float clamp(const float& value) { return (value <= 0.0f) ? 0.0f : (value >= 1.0f) ? 1.0f : value; }
         // closestPowerOf2 ?
-		inline int closestPowerOf2(const float& value) { return (int)pow(2, round(log2(value))); }
+        inline int closestPowerOf2(const float& value) { return (int)pow(2, round(log2(value))); }
         // correlatedColorTempToRGB ? blackbodyColor
         // cos
         inline float cos(const float& value) { return std::cos(value); }
@@ -100,7 +102,7 @@ namespace seedengine {
         // invLerp
         inline float invLerp(const float& a, const float& b, const float& value) { return (value - a) / (b - a); }
         // isPowerOf2
-		inline bool isPowerOf2(const unsigned int& value) { return (value == 0) ? false : (value & (value - 1)) == 0; }
+        inline bool isPowerOf2(const unsigned int& value) { return (value == 0) ? false : (value & (value - 1)) == 0; }
         // lerp
         inline float lerp(const float& a, const float& b, const float& t) { return a + t * (b - a); }
         // linearToGammaColor ?
@@ -112,8 +114,8 @@ namespace seedengine {
         inline float log2(const float& x) { return std::log2(x); }
         // log10
         inline float log10(const float& x) { return std::log10(x); }
-		#undef max
-		#undef min
+        #undef max
+        #undef min
         // max
         inline float max(const float& a, const float& b) { return (a >= b) ? a : b; }
         // min
@@ -143,23 +145,27 @@ namespace seedengine {
         // sinh
         inline float sinh(const float& value) { return std::sinh(value); }
         // smoothDamp
-		inline float smoothdamp(const float& current, const float& target, float* const velocity, const float& step, const float& spring_constant = 2.0f) {
-			*velocity += ( ( (target - current) * spring_constant ) + ( (*velocity) * -2.0f * sqrt(spring_constant) ) ) * step;
-			return current + (*velocity) * step;
-		}
+        inline float smoothdamp(const float& current, const float& target, float* const velocity, const float& step, const float& spring_constant = 2.0f) {
+            *velocity += ( ( (target - current) * spring_constant ) + ( (*velocity) * -2.0f * sqrt(spring_constant) ) ) * step;
+            return current + (*velocity) * step;
+        }
         // smoothStep
-		inline float smoothstep(const float& a, const float& b, const float& t) {
-			float temp = clamp((t - a) / (b - a));
-			return temp * temp * (3.0f - 2.0f * temp);
-		}
+        inline float smoothstep(const float& a, const float& b, const float& t) {
+            float temp = clamp((t - a) / (b - a));
+            return temp * temp * (3.0f - 2.0f * temp);
+        }
         // sqrt
         inline float sqrt(const float& value) { return std::sqrt(value); }
         // tan
         inline float tan(const float& value) { return std::tan(value); }
         // tanh
         inline float tanh(const float& value) { return std::tanh(value); }
-		// toAngle
-		inline float toAngle(const float& value) { return deltaAngle(0.0f, value); }
+        // toAngle
+        inline float toAngle(const float& value) { return deltaAngle(0.0f, value); }
+        // toDegrees
+        inline float toDegrees(const float& radians) { return radians * RAD2DEG; }
+        // toRadians
+        inline float toRadians(const float& degrees) { return degrees * DEG2RAD; }
 
         // Truncates any decimal value from the passed number.
         // @param(const float&) value: The number to truncate.
