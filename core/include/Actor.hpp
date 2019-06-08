@@ -18,9 +18,8 @@ namespace seedengine {
         // Creates a new set of actor properties.
         // @param(const bool) never_ticks: Does this actor never recieve tick events?
         // @param(const bool) can_pause: Can this actor be paused?
-        ActorProperties(const bool never_ticks = false,
-                        const bool can_pause   = true)
-            : never_ticks_(never_ticks), can_pause_(can_pause) {}
+        ActorProperties(    const bool never_ticks = false,
+                            const bool can_pause   = true);
 
     protected:
         // Does this actor never recieve tick events?
@@ -46,9 +45,7 @@ namespace seedengine {
 
         // Constructs a new Component.
         // @param(Actor&) actor: The actor to attach to.
-        Component(Actor& actor) : actor_(actor) {
-
-        }
+        Component(Actor& actor);
 
     private:
 
@@ -63,12 +60,7 @@ namespace seedengine {
         // @param(const Transform&) transform: The transfrom of this actor.
         // @param(const ActorProperties&) actor_properties: The properties of this actor.
         Actor(  const Transform& transfrom        = Transform(),
-                const ActorProperties& properties = ActorProperties())
-            : Object("actor"), actor_properties_(properties) {
-            this->transform = transform;
-            this->active = true;
-            this->parent_ = nullptr;
-        }
+                const ActorProperties& properties = ActorProperties());
 
         // The transform of this actor.
         Property<Transform> transform;

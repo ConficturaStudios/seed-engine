@@ -20,9 +20,9 @@
 
 // Cross Platform Libraries
 
-#include <glm.hpp>
-#include <gtc/quaternion.hpp>
-#include <gtx/quaternion.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 
 // Platform specific
@@ -155,7 +155,13 @@ using std::string;
 #include "Log.hpp"
 #include "Property.hpp"
 
+#include "Random.hpp"
 #include "Math.hpp"
 #include "Vector.hpp"
+#include "Matrix.hpp"
+#include "Quaternion.hpp"
+#include "Color.hpp"
+#include "Noise.hpp"
+
 
 #endif

@@ -1,0 +1,13 @@
+#include "${CLASS_NAME}.hpp"
+
+namespace seedengine {
+
+    ${CLASS_NAME}::${CLASS_NAME}() {
+
+    }
+
+    ${CLASS_NAME}::~${CLASS_NAME}() {
+        
+    }
+
+}

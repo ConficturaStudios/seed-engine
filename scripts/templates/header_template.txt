@@ -1,0 +1,23 @@
+#ifndef SEEDENGINE_INCLUDE_${UPPER_NAME}_H_
+#define SEEDENGINE_INCLUDE_${UPPER_NAME}_H_
+
+#include "Core.hpp"
+
+namespace seedengine {
+
+    class ${CLASS_NAME} {
+
+    public:
+
+        ${CLASS_NAME}();
+        virtual ~${CLASS_NAME};
+
+    protected:
+
+    private:
+
+    };
+
+}
+
+#endif

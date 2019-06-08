@@ -28,36 +28,25 @@ namespace seedengine {
         const float RAD2DEG = 180.0f / PI;
 
         // Is this number odd?
-        // @param(const int&) value: The number to check.
+        // @param(const T&) value: The number to check.
         // @returns: True if the number is odd.
-        inline bool isOdd(const int& value) {
+        template <typename T = int, typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
+        inline bool isOdd(const T& value) {
             return value & 1;
         }
         // Is this number odd?
         // @param(const float&) value: The number to check.
         // @returns: True if the number is odd.
-        inline bool isOdd(const float& value) {
+        template <typename T = float, typename std::enable_if<std::is_floating_point<T>::value, int>::type = 0>
+        inline bool isOdd(const T& value) {
             return (int)value % 2 == 1;
-        }
-        // Is this number odd?
-        // @param(const double&) value: The number to check.
-        // @returns: True if the number is odd.
-        inline bool isOdd(const double& value) {
-            return (long int)value % 2 == 1;
         }
 
         // Returns the absolute value of the passed number.
-        // @param(const int&) value: The number to retrieve the absolute value of.
+        // @param(const T&) value: The number to retrieve the absolute value of.
         // @returns: The absolute value of value.
-        inline int abs(const int& value) { return std::abs(value); }
-        // Returns the absolute value of the passed number.
-        // @param(const float&) value: The number to retrieve the absolute value of.
-        // @returns: The absolute value of value.
-        inline float abs(const float& value) { return std::abs(value); }
-        // Returns the absolute value of the passed number.
-        // @param(const double&) value: The number to retrieve the absolute value of.
-        // @returns: The absolute value of value.
-        inline double abs(const double& value) { return std::abs(value); }
+        template <typename T = float, typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0>
+        inline T abs(const T& value) { return std::abs(value); }
         
         // Returns the arc-cosine of value. This is the angle in radians whose cosine is value.
         // @param(const float&) value: The value to take the arc-cosine of.
@@ -80,9 +69,11 @@ namespace seedengine {
         // ceil
         inline int ceil(const float& value) { return (int)std::ceil(value); }
         // clamp
-        inline float clamp(const float& value, const float& min, const float& max) { return (value <= min) ? min : (value >= max) ? max : value; }
+        template <typename T = float, typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0>
+        inline T clamp(const T& value, const T& min, const T& max) { return (value <= min) ? min : (value >= max) ? max : value; }
         // clamp01
-        inline float clamp(const float& value) { return (value <= 0.0f) ? 0.0f : (value >= 1.0f) ? 1.0f : value; }
+        template <typename T = float, typename std::enable_if<std::is_floating_point<T>::value, int>::type = 0>
+        inline T clamp(const T& value) { return (value <= 0) ? 0 : (value >= 1) ? 1 : value; }
         // closestPowerOf2 ?
         inline int closestPowerOf2(const float& value) { return (int)pow(2, round(log2(value))); }
         // correlatedColorTempToRGB ? blackbodyColor
@@ -100,7 +91,7 @@ namespace seedengine {
         inline float fmod(const float& value, const float& denom) { return std::fmod(value, denom); }
         // gammaToLinearColor ?
         // invLerp
-        inline float invLerp(const float& a, const float& b, const float& value) { return (value - a) / (b - a); }
+        inline float invLerp(const float& a, const float& b, const float& value) { return (b - a == 0) ? 0 : (value - a) / (b - a); }
         // isPowerOf2
         inline bool isPowerOf2(const unsigned int& value) { return (value == 0) ? false : (value & (value - 1)) == 0; }
         // lerp
@@ -117,9 +108,11 @@ namespace seedengine {
         #undef max
         #undef min
         // max
-        inline float max(const float& a, const float& b) { return (a >= b) ? a : b; }
+        template <typename T = float, typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0>
+        inline T max(const T& a, const T& b) { return (a >= b) ? a : b; }
         // min
-        inline float min(const float& a, const float& b) { return (a <= b) ? a : b; }
+        template <typename T = float, typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0>
+        inline T min(const T& a, const T& b) { return (a <= b) ? a : b; }
         // moveTowards
         inline float moveTowards(const float& current, const float& target, const float& rate) {
             return (abs(target - current) <= rate) ? target : current + ( (target - current) / abs(target - current) ) * rate;

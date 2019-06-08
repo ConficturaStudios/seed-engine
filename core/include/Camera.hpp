@@ -39,10 +39,7 @@ namespace seedengine {
                             const float left_plane        =  -10.0f,
                             const float right_plane       =   10.0f,
                             const float bottom_plane      =  -10.0f,
-                            const float top_plane         =   10.0f)
-            : camera_mode_(camera_mode), fov_(field_of_view),
-                near_plane_(near_plane), far_plane_(far_plane), left_plane_(left_plane),
-                right_plane_(right_plane), bottom_plane_(bottom_plane), top_plane_(top_plane) {}
+                            const float top_plane         =   10.0f);
 
     protected:
 
@@ -80,33 +77,12 @@ namespace seedengine {
         // @param(const ActorProperties&) actor_properties: The properties of this actor.
         Camera(  const Transform& transform                = Transform(),
                  const CameraProperties& camera_properties = CameraProperties(),
-                 const ActorProperties& actor_properties   = ActorProperties())
-            : Actor(transform, actor_properties), camera_properties_(camera_properties) {
-
-            if (camera_properties.camera_mode_ == CameraMode::ORTHOGRAPHIC) {
-                projection_matrix_ = glm::ortho(
-                    camera_properties.left_plane_,
-                    camera_properties.right_plane_,
-                    camera_properties.bottom_plane_,
-                    camera_properties.top_plane_,
-                    camera_properties.near_plane_,
-                    camera_properties.far_plane_);
-            }
-            else if (camera_properties.camera_mode_ == CameraMode::PERSPECTIVE) {
-                projection_matrix_ = glm::perspective(
-                    glm::radians(camera_properties.fov_),
-                    camera_properties.width_ / camera_properties.height_,
-                    camera_properties.near_plane_,
-                    camera_properties.far_plane_);
-            }
-            inv_projection_matrix_ = glm::inverse(projection_matrix_);
-
-        }
+                 const ActorProperties& actor_properties   = ActorProperties());
 
         // Gets the view matrix from this camera.
         // @returns: The view matrix from this camera.
         inline glm::mat4 getViewMatrix() const {
-            return glm::inverse(transform.get().getTransformationMatrix());
+            return glm::inverse(transform().getTransformationMatrix());
         }
 
         // Gets the projection matrix from this camera.
