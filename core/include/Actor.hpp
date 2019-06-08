@@ -9,6 +9,8 @@ namespace seedengine {
 
     //TODO: Control actor loading, add ability to write to file
 
+    class Actor;
+
     // Properties of an Actor.
     class ActorProperties {
 
@@ -82,7 +84,7 @@ namespace seedengine {
             // Ensure that T is a Component
             static_assert(std::is_base_of<Component, T>::value, "T is not of type Component.");
             for (int i = 0; i < components_.size(); i++) {
-                if (dynamic_cast<std::unique_ptr<T>>components_.at(i) != nullptr) return components_.at(i);
+                if (dynamic_cast<std::unique_ptr<T>>(components_.at(i)) != nullptr) return components_.at(i);
                 else continue;
             }
             return nullptr;

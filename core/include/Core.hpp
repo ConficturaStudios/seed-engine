@@ -150,6 +150,19 @@ using std::string;
 // Checks if the option has the flag enabled.
 #define CHECK_FLAG(option, flag) (option & flag) == flag
 
+// STL Extensions
+
+namespace std {
+
+#ifndef _WIN32
+    template<typename T, typename... Args>
+    unique_ptr<T> make_unique(Args&& ... args) {
+        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    }
+#endif
+
+}
+
 // Engine specific includes:
 
 #include "Log.hpp"
