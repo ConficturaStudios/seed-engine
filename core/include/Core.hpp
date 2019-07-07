@@ -20,9 +20,9 @@
 
 // Cross Platform Libraries
 
-#include <glm.hpp>
-#include <gtc/quaternion.hpp>
-#include <gtx/quaternion.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 
 // Platform specific
@@ -114,6 +114,10 @@
 #include <fstream>
 
 #include <string>
+#include <sstream>
+
+#include <stdexcept>
+#include <cstdarg>
 
 #include <thread>
 #include <chrono>
@@ -150,12 +154,21 @@ using std::string;
 
 namespace std {
 
+<<<<<<< HEAD
 	#ifndef _WIN32
 	template<typename T, typename... Args>
 	unique_ptr<T> make_unique(Args&& ... args) {
 		return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 	}
 	#endif
+=======
+#ifndef _WIN32
+    template<typename T, typename... Args>
+    unique_ptr<T> make_unique(Args&& ... args) {
+        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    }
+#endif
+>>>>>>> development_math
 
 }
 
@@ -163,5 +176,14 @@ namespace std {
 
 #include "Log.hpp"
 #include "Property.hpp"
+
+#include "Random.hpp"
+#include "Math.hpp"
+#include "Vector.hpp"
+#include "Matrix.hpp"
+#include "Quaternion.hpp"
+#include "Color.hpp"
+#include "Noise.hpp"
+
 
 #endif

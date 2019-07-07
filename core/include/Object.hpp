@@ -10,19 +10,13 @@ namespace seedengine {
     public:
 
         // Constructs a new Object.
-        Object() : Object("object") {
-            
-        }
+        Object();
 
         // Constructs a new Object with a custom name.
-        Object(string name) : id_(generateID()), name_(name) {
-
-        }
+        Object(string name);
 
         // Destroys this Object.
-        virtual ~Object() {
-
-        }
+        virtual ~Object();
 
         // Returns the ID of this Object.
         // @returns: The ID of this Object.
@@ -30,50 +24,29 @@ namespace seedengine {
 
         // Converts this Object into a string.
         // @returns: The string form of this Object.
-        virtual string toString() const { return name_; }
+        virtual string toString() const;
 
         /// Cast operators
 
-        operator unsigned int() const {
-            return this->getID();
-        }
+        explicit operator unsigned int() const;
 
-        operator string() const {
-            return this->toString();
-        }
+        operator string() const;
 
         /// Operator overloads
 
-        friend std::ostream& operator<<(std::ostream& os, const Object& obj) {
-            os << obj.toString();
-            return os;
-        }
+        friend std::ostream& operator<<(std::ostream& os, const Object& obj);
 
-        virtual bool operator==(const Object& obj) const {
-            return this->getID() == obj.getID() && this->toString().compare(obj.toString()) == 0;
-        }
+        virtual bool operator==(const Object& obj) const;
 
-        virtual bool operator!=(const Object& obj) const {
-            return this->getID() != obj.getID() || this->toString().compare(obj.toString()) != 0;
-        }
+        virtual bool operator!=(const Object& obj) const;
 
-        virtual bool operator<(const Object& obj) const {
-            int c = this->toString().compare(obj.toString());
-            return (c == 0) ? this->getID() < obj.getID() : c < 0;
-        }
+        virtual bool operator<(const Object& obj) const;
 
-        virtual bool operator>(const Object& obj) const {
-            int c = this->toString().compare(obj.toString());
-            return (c == 0) ? this->getID() > obj.getID() : c > 0;
-        }
+        virtual bool operator>(const Object& obj) const;
 
-        virtual bool operator<=(const Object& obj) const {
-            return *this < obj || *this == obj;
-        }
+        virtual bool operator<=(const Object& obj) const;
 
-        virtual bool operator>=(const Object& obj) const {
-            return *this > obj || *this == obj;
-        }
+        virtual bool operator>=(const Object& obj) const;
 
         /// Static Functions
 
@@ -109,6 +82,8 @@ namespace seedengine {
         }
 
     };
+
+    std::ostream& operator<<(std::ostream& os, const Object& obj);
 
 }
 

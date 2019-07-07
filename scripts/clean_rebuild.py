@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import subprocess
 import shutil
 
 def deleteDir(directory):
@@ -25,6 +26,6 @@ except ImportError:
     pass
 
 os.system("cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug -DGRAPHICS_API:STRING=OPENGL")
-os.system("cmake --build build/Debug --config Debug")
+debug_ret = subprocess.call("cmake --build build/Debug --config Debug")
 os.system("cmake -S . -B build/Release -DCMAKE_BUILD_TYPE=Release -DGRAPHICS_API:STRING=OPENGL")
-os.system("cmake --build build/Release --config Release")
+release_ret = subprocess.call("cmake --build build/Release --config Release")

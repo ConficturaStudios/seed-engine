@@ -5,14 +5,21 @@ cmake_minimum_required(VERSION 3.0)
 message(STATUS "Processing src CMakeLists.txt")
 
 set(PROJECT_SRC
+    Actor.cpp
+    Camera.cpp
+    Color.cpp
     Event.cpp
     Image.cpp
     Log.cpp
     Mesh.cpp
+    Noise.cpp
+    Object.cpp
     Parser.cpp
     Program.cpp
+    Random.cpp
     Renderer.cpp
     Time.cpp
+    Transform.cpp
     Window.cpp
 )
 
