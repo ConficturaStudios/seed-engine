@@ -24,7 +24,7 @@ namespace seedengine {
         Property()
             : Property(T()) {}
         Property(const T& value)
-            : Property(value, &default_get, &default_set) {}
+            : Property(value, &defaultGet, &defaultSet) {}
         /*
         Property(const GetterFunc getter)
             : Property(T(), getter, &default_set) {}
@@ -69,15 +69,15 @@ namespace seedengine {
 
         // Gets the value stored in this Property.
         // @returns: A reference to this Property's stored value.
-        static T& default_get(const Property<T>* ref) { return ref->value; }
+        static T& defaultGet(const Property<T>* ref) { return ref->value; }
         // Sets the value stored in this Property.
         // @returns: A reference to this Property's stored value.
-        static T& default_set(const Property<T>* ref, const T& value) { return ref->value = value; }
+        static T& defaultSet(const Property<T>* ref, const T& value) { return ref->value = value; }
 
     };
 
     template<typename T>
-    class ReadOnlyProperty {
+    class ReadOnlyProperty final {
 
     public:
         ReadOnlyProperty(const T& value) { this->value = value; }

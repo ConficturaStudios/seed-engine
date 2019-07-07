@@ -12,65 +12,304 @@ using std::string;
 
 namespace seedengine {
 
-    template<
-        class V,
-        typename T = float,
-        unsigned int P = 3,
-        typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0
-    >
-    class Vector {
+    //TODO: Finish class specializations for vector class.
+
+    template <unsigned int P, typename T> class VectorBase {
+
+    protected:
+
+        // The elements of this vector.
+        T elements_[P];
+
+        // --- Constructors ---
+
+        VectorBase() : elements_{ T() } {
+
+        }
+
+        VectorBase(T elements[P]) : elements_(elements) {
+
+        }
+
+        template<typename... Args>
+        VectorBase(Args&& ... args) : elements_{ T(args)... } {
+            static_assert(sizeof...(Args) == P, "Invalid number of constructor arguments.");
+        }
+
+    };
+
+    template <typename T> class VectorBase<2, T> {
 
     public:
 
-        ~Vector() {
+        Property<T> x = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[0];
+            },
+            SET(T) {
+                return this->elements_[0] = value;
+            }
+        );
+        Property<T> y = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[1];
+            },
+            SET(T) {
+                return this->elements_[1] = value;
+            }
+        );
+
+    protected:
+
+        // The elements of this vector.
+        T elements_[2];
+
+        // --- Constructors ---
+
+        VectorBase() : elements_{ T() } {
 
         }
 
-        static float angle(const V& x, const V& y) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
-            return math::acos(dot(x, y)) / magnitude(x) * magnitude(y);
+        VectorBase(T elements[2]) : elements_(elements) {
+
         }
 
-        static float distance(const V& p0, const V& p1) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
-            return magnitude(p0 - p1);
+        template<typename... Args>
+        VectorBase(Args&& ... args) : elements_{ T(args)... } {
+            static_assert(sizeof...(Args) == 2, "Invalid number of constructor arguments.");
         }
 
-        static T dot(const V& x, const V& y) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+    };
+
+    template <typename T> class VectorBase<3, T> {
+
+    public:
+
+        Property<T> x = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[0];
+            },
+            SET(T) {
+                return this->elements_[0] = value;
+            }
+        );
+        Property<T> y = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[1];
+            },
+            SET(T) {
+                return this->elements_[1] = value;
+            }
+        );
+        Property<T> z = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[2];
+            },
+            SET(T) {
+                return this->elements_[2] = value;
+            }
+        );
+
+    protected:
+
+        // The elements of this vector.
+        T elements_[3];
+
+        // --- Constructors ---
+
+        VectorBase() : elements_{ T() } {
+
+        }
+
+        VectorBase(T elements[3]) : elements_(elements) {
+
+        }
+
+        template<typename... Args>
+        VectorBase(Args&& ... args) : elements_{ T(args)... } {
+            static_assert(sizeof...(Args) == 3, "Invalid number of constructor arguments.");
+        }
+
+    };
+
+    template <typename T> class VectorBase<4, T> {
+
+    public:
+
+        Property<T> x = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[0];
+            },
+            SET(T) {
+                return this->elements_[0] = value;
+            }
+        );
+        Property<T> y = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[1];
+            },
+            SET(T) {
+                return this->elements_[1] = value;
+            }
+        );
+        Property<T> z = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[2];
+            },
+            SET(T) {
+                return this->elements_[2] = value;
+            }
+        );
+        Property<T> w = Property<T>(
+            0,
+            GET(T) {
+                return this->elements_[3];
+            },
+            SET(T) {
+                return this->elements_[3] = value;
+            }
+        );
+
+    protected:
+
+        // The elements of this vector.
+        T elements_[4];
+
+        // --- Constructors ---
+
+        VectorBase() : elements_{ T() } {
+
+        }
+
+        VectorBase(T elements[4]) : elements_(elements) {
+
+        }
+
+        template<typename... Args>
+        VectorBase(Args&& ... args) : elements_{ T(args)... } {
+            static_assert(sizeof...(Args) == 4, "Invalid number of constructor arguments.");
+        }
+
+    };
+
+
+    template<
+        unsigned int P,
+        typename T = float,
+        typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0
+    >
+    class Vector final : public VectorBase<P, T> {
+
+        //TODO: Add x, y, z, w properties in orthogonal vector class specializations
+        //TODO: Replace inheritance for VectorN[i] classes with typedefs
+        //TODO: Remove template parameter V
+
+        static_assert(P > 0, "Dimension must be greater than 0");
+
+        typedef Vector<P, T> VectorType;
+
+    public:
+
+        // --- Constructors ---
+
+        Vector() : VectorBase() {
+
+        }
+
+        Vector(T elements[P]) : VectorBase(elements) {
+
+        }
+
+        template<typename... Args>
+        Vector(Args&& ... args) : VectorBase(T(args)...) {
+
+        }
+
+        // --- Static Functions ---
+
+        static float angle(const VectorType& v0, const VectorType& v1) {
+            return math::acos(dot(v0, v1)) / (magnitude(v0) * magnitude(v1));
+        }
+
+        static float distance(const VectorType& v0, const VectorType& v1) {
+            return magnitude(v0 - v1);
+        }
+
+        static T dot(const VectorType& v0, const VectorType& v1) {
             T t = 0;
             for (int i = 0; i < P; i++) {
-                t += x.elements_[i] * y.elements_[i];
+                t += v0.elements_[i] * v1.elements_[i];
             }
             return t;
         }
 
-        static float magnitude(const V& x) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
-            return math::sqrt(dot(x, x));
+        static float magnitude(const VectorType& v) {
+            return math::sqrt(dot(v, v));
         }
 
-        static V normalize(const V& x) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
-            return x / magnitude(x);
+        static VectorType normalize(const VectorType& v) {
+            return v / magnitude(v);
         }
 
-        static V reflect(const V& i, const V& n) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        static VectorType reflect(const VectorType& i, const VectorType& n) {
             return i - 2 * dot(n, i) * n;
         }
 
-        static V refract(const V& i, const V& n, const T& eta) {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        static VectorType refract(const VectorType& i, const VectorType& n, const T& eta) {
             T t = 1 - eta * eta * (1 - dot(n, i) * dot(n, i));
             if (t < 0) return V();
             else return eta * i - (eta * dot(n, i) + math::sqrt(t)) * n;
         }
 
+        // --- Member Functions ---
 
+        inline float angle(const VectorType& v) {
+            return angle(*this, v);
+        }
 
-        V operator+(const V& vec) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        inline float distance(const VectorType& v) {
+            return distance(*this, v);
+        }
+
+        inline T dot(const VectorType& v) {
+            return dot(*this, v);
+        }
+
+        inline float magnitude() {
+            return magnitude(*this);
+        }
+
+        inline VectorType normalize() {
+            return normalize(*this);
+        }
+
+        // --- Template Dependent Methods ---
+
+        static VectorType cross(const VectorType& a, const VectorType& b) {
+            static_assert(P == 3, "The cross product can only be applied to a 3 dimensional vector.");
+            return VectorType(
+                a.y * b.z - a.z * b.y,
+                a.z * b.x - a.x * b.z,
+                a.x * b.y - a.y * b.x
+            );
+        }
+
+        inline VectorType cross(const VectorType & v) {
+            static_assert(P == 3, "The cross product can only be applied to a 3 dimensional vector.");
+            return cross(*this, v);
+        }
+
+        // --- Operators ---
+
+        VectorType operator+(const VectorType& vec) const {
             V v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] + vec.elements_[i];
@@ -78,8 +317,7 @@ namespace seedengine {
             return v;
         }
 
-        V operator-(const V& vec) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        VectorType operator-(const VectorType& vec) const {
             V v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] - vec.elements_[i];
@@ -87,8 +325,7 @@ namespace seedengine {
             return v;
         }
 
-        V operator*(const V& vec) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        VectorType operator*(const VectorType& vec) const {
             V v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] * vec.elements_[i];
@@ -96,8 +333,7 @@ namespace seedengine {
             return v;
         }
 
-        V operator*(const T& scale) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        VectorType operator*(const T& scale) const {
             V v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] * scale;
@@ -105,8 +341,7 @@ namespace seedengine {
             return v;
         }
 
-        V operator/(const V& vec) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        VectorType operator/(const VectorType& vec) const {
             V v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] / vec.elements_[i];
@@ -114,8 +349,7 @@ namespace seedengine {
             return v;
         }
 
-        V operator/(const T& scale) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        VectorType operator/(const T& scale) const {
             V v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] / scale;
@@ -128,13 +362,16 @@ namespace seedengine {
             return elements_[index];
         }
 
-        bool operator==(const V& vec) const {
-            static_assert(std::is_base_of<Vector<V, T, P>, V>::value, "Class V must be a Vector type.");
+        bool operator==(const VectorType& vec) const {
             bool e = true;
             for (int i = 0; i < P; i++) {
                 e &= (elements_[i] == vec.elements_[i]);
             }
             return e;
+        }
+
+        bool operator!=(const VectorType& vec) const {
+            return !(*this == vec);
         }
 
         operator string() {
@@ -148,317 +385,43 @@ namespace seedengine {
 
         }
 
-        friend std::ostream& operator<<(std::ostream& os, const Vector<V, T, P>& c);
-
-    protected:
-
-        T elements_[P];
-
-        Vector() : elements_{T()} {
-
-        }
-
-        Vector(T elements[P]) : elements_(elements) {
-
-        }
+        friend std::ostream& operator<<(const std::ostream& os, const VectorType& c);
 
     };
 
+    typedef Vector<2, int  > Vector2i;
+    typedef Vector<2, float> Vector2;
+    typedef Vector<3, int  > Vector3i;
+    typedef Vector<3, float> Vector3;
+    typedef Vector<4, int  > Vector4i;
+    typedef Vector<4, float> Vector4;
+
     template<
-        class V,
-        typename T = float,
-        unsigned int P = 3
+        unsigned int P,
+        typename T = float
     >
-    inline std::ostream& operator<<(std::ostream& os, const Vector<V, T, P>& v) {
+    inline std::ostream& operator<<(const std::ostream& os, const Vector<P, T>& v) {
         os << (string)v;
         return os;
     }
 
-
-    class Vector2i : public Vector<Vector2i, int, 2> {
-
-    public:
-
-        Vector2i() : Vector2i(0) {}
-
-        Vector2i(int c) : Vector2i(c, c) {}
-
-        Vector2i(int x, int y) {
-            this->x = x;
-            this->y = y;
-        }
-
-        Property<int> x = Property<int>(
-                0,
-                GET(int) {
-                    return this->elements_[0];
-                },
-                SET(int) {
-                    return this->elements_[0] = value;
-                }
-            );
-        Property<int> y = Property<int>(
-                0,
-                GET(int) {
-                    return this->elements_[1];
-                },
-                SET(int) {
-                    return this->elements_[1] = value;
-                }
-        );
-
-    };
-
-    class Vector2 : public Vector<Vector2, float, 2> {
-
-    public:
-
-        Vector2() : Vector2(0) {}
-
-        Vector2(float c) : Vector2(c, c) {}
-
-        Vector2(float x, float y) {
-            this->x = x;
-            this->y = y;
-        }
-
-        Property<float> x = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[0];
-            },
-            SET(float) {
-                return this->elements_[0] = value;
-            }
-        );
-        Property<float> y = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[1];
-            },
-            SET(float) {
-                return this->elements_[1] = value;
-            }
-        );
-    };
-
-    class Vector3i : public Vector<Vector3i, int, 3> {
-
-    public:
-
-        Vector3i() : Vector3i(0) {}
-
-        Vector3i(int c) : Vector3i(c, c, c) {}
-
-        Vector3i(int x, int y, int z) {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-        }
-
-        Property<int> x = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[0];
-            },
-            SET(int) {
-                return this->elements_[0] = value;
-            }
-        );
-        Property<int> y = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[1];
-            },
-            SET(int) {
-                return this->elements_[1] = value;
-            }
-        );
-        Property<int> z = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[2];
-            },
-            SET(int) {
-                return this->elements_[2] = value;
-            }
-        );
-
-        static Vector3i cross(const Vector3i& a, const Vector3i& b) {
-            return Vector3i(
-                a.y * b.z - a.z * b.y,
-                a.z * b.x - a.x * b.z,
-                a.x * b.y - a.y * b.x
-            );
-        }
-    };
-
-    class Vector3 : public Vector<Vector3, float, 3> {
-
-    public:
-
-        Vector3() : Vector3(0) {}
-
-        Vector3(float c) : Vector3(c, c, c) {}
-
-        Vector3(float x, float y, float z) {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-        }
-
-        Property<float> x = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[0];
-            },
-            SET(float) {
-                return this->elements_[0] = value;
-            }
-        );
-        Property<float> y = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[1];
-            },
-            SET(float) {
-                return this->elements_[1] = value;
-            }
-        );
-        Property<float> z = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[2];
-            },
-            SET(float) {
-                return this->elements_[2] = value;
-            }
-        );
-
-        static Vector3 cross(const Vector3& a, const Vector3& b) {
-            return Vector3(
-                    a.y * b.z - a.z * b.y,
-                    a.z * b.x - a.x * b.z,
-                    a.x * b.y - a.y * b.x
-                );
-        }
-    };
-
-    class Vector4i : public Vector<Vector4i, int, 4> {
-
-    public:
-
-        Vector4i() : Vector4i(0) {}
-
-        Vector4i(int c) : Vector4i(c, c, c, c) {}
-
-        Vector4i(int x, int y, int z, int w) {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-            this->w = w;
-        }
-
-        Property<int> x = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[0];
-            },
-            SET(int) {
-                return this->elements_[0] = value;
-            }
-        );
-        Property<int> y = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[1];
-            },
-            SET(int) {
-                return this->elements_[1] = value;
-            }
-        );
-        Property<int> z = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[2];
-            },
-            SET(int) {
-                return this->elements_[2] = value;
-            }
-        );
-        Property<int> w = Property<int>(
-            0,
-            GET(int) {
-                return this->elements_[3];
-            },
-            SET(int) {
-                return this->elements_[3] = value;
-            }
-        );
-    };
-
-    class Vector4 : public Vector<Vector4, float, 4> {
-
-    public:
-
-        Vector4() : Vector4(0) {}
-
-        Vector4(float c) : Vector4(c, c, c, c) {}
-
-        Vector4(float x, float y, float z, float w) {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-            this->w = w;
-        }
-
-        Property<float> x = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[0];
-            },
-            SET(float) {
-                return this->elements_[0] = value;
-            }
-        );
-        Property<float> y = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[1];
-            },
-            SET(float) {
-                return this->elements_[1] = value;
-            }
-        );
-        Property<float> z = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[2];
-            },
-            SET(float) {
-                return this->elements_[2] = value;
-            }
-        );
-        Property<float> w = Property<float>(
-            0,
-            GET(float) {
-                return this->elements_[3];
-            },
-            SET(float) {
-                return this->elements_[3] = value;
-            }
-        );
-    };
-
     namespace math {
 
         // lerp
-        template <typename T = float, typename std::enable_if<std::is_base_of<Vector<T>, T>::value, int>::type = 0>
-        inline T lerp(const T& a, const T& b, const float& t) { return a + t * (b - a); }
+        template<
+            unsigned int P,
+            typename T = float,
+            typename std::enable_if<std::is_arithmetic<T>::value, int>::type
+        >
+        inline T lerp(const Vector<P, T>& a, const Vector<P, T>& b, const float& t) { return a + t * (b - a); }
 
         // moveTowards
-        template <typename T = float, typename std::enable_if<std::is_base_of<Vector<T>, T>::value, int>::type = 0>
-        inline T moveTowards(const T& current, const T& target, const float& rate) {
+        template<
+            unsigned int P,
+            typename T = float,
+            typename std::enable_if<std::is_arithmetic<T>::value, int>::type
+        >
+        inline T moveTowards(const Vector<P, T>& current, const Vector<P, T>& target, const float& rate) {
             float mag = (target - current).magnitude;
             return (mag <= rate || mag == 0) ? target : current + ((target - current) / mag) * rate;
         }

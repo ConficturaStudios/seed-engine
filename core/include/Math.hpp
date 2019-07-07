@@ -12,6 +12,8 @@ namespace seedengine {
 
     namespace math {
 
+        //TODO: Replace const float& parameters with float.
+
         // The smallest floating point increment.
         const float EPSILON = std::numeric_limits<float>::epsilon();
         // Infinity.

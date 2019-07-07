@@ -11,6 +11,8 @@ TEST(Vector2Test, GeneralTest) {
     vec2_0.x = 1;
     EXPECT_EQ(vec2_0, Vector2(1, 0));
     EXPECT_EQ(Vector2::magnitude(vec2_0), 1);
+    EXPECT_EQ(Vector2::magnitude(vec2_0), vec2_0.magnitude());
+    
 }
 
 TEST(Vector3Test, GeneralTest) {

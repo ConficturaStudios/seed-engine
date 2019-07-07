@@ -10,7 +10,7 @@ namespace seedengine {
     public:
 
         Random() : Random(1) {}
-        Random(unsigned int seed) : seed_(seed), next_(seed) {
+        Random(const unsigned int& seed) : seed_(seed), next_(seed) {
 
         }
         ~Random() {}
@@ -22,8 +22,8 @@ namespace seedengine {
 
         
         template <typename T = float, typename std::enable_if<std::is_arithmetic<T>::value, int>::type = 0>
-        T range(T min = 0, T max = 1) {
-            return min + static_cast<T>(next()) / (static_cast<T>(RANDOM_MAX / (max - min)));
+        T range(const T& min = 0, const T& max = 1) {
+            return min + (static_cast<T>(next()) / static_cast<T>(RANDOM_MAX)) * static_cast<T>(max - min);
         }
 
     protected:

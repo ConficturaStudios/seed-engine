@@ -9,16 +9,15 @@ namespace seedengine {
 
     public:
 
+        //TODO: Switch from glm classes to wrapper classes
+
         // Creates a new transform.
         // @param(glm::vec3) position: The position component of this transform.
         // @param(glm::vec3) rotation: The euler rotation component of this transform.
         // @param(glm::vec3) scale: The scale component of this transform.
         Transform(  const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f),
                     const glm::vec3& rotation = glm::vec3(0.0f, 0.0f, 0.0f),
-                    const glm::vec3& scale    = glm::vec3(1.0f, 1.0f, 1.0f))
-            : position_(position), euler_rotation_(rotation), scale_(scale) {
-            rotation_ = glm::quat(rotation);
-        }
+                    const glm::vec3& scale    = glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Creates a new transform.
         // @param(glm::vec3) position: The position component of this transform.
@@ -26,10 +25,7 @@ namespace seedengine {
         // @param(glm::vec3) scale: The scale component of this transform.
         Transform(  const glm::vec3& position,
                     const glm::quat& rotation,
-                    const glm::vec3& scale    = glm::vec3(1.0f, 1.0f, 1.0f))
-            : position_(position), rotation_(rotation), scale_(scale) {
-            euler_rotation_ = glm::eulerAngles(rotation) * glm::pi<float>() / 180.0f;
-        }
+                    const glm::vec3& scale    = glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Gets the position of this transform.
         // @returns: The position of this transform.

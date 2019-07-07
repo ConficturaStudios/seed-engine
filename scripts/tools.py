@@ -57,6 +57,7 @@ def run_todo(args):
 def build_project(args):
     print("Building project...")
     if args.clean:
+        print("Starting clean rebuild...")
         try:
             from clean_rebuild import debug_ret, release_ret
             if args.exec:
@@ -77,11 +78,11 @@ def build_project(args):
                         print()
                         print("Executing program debug binaries.")
                         print()
+                        subprocess.call("./bin/Debug/seed-engine-editor.exe")
                     else:
                         print()
                         print("Could not run program due to compilation error. Exiting.")
                         print()
-                        subprocess.call("./bin/Debug/seed-engine-editor.exe")
                         return
             if args.test:
                 check_debug = not args.release
@@ -101,11 +102,11 @@ def build_project(args):
                         print()
                         print("Executing program debug tests.")
                         print()
+                        subprocess.call("./bin/Debug/seed-engine-core-tests.exe")
                     else:
                         print()
                         print("Could not run tests due to compilation error. Exiting.")
                         print()
-                        subprocess.call("./bin/Debug/seed-engine-core-tests.exe")
                         return
         except ImportError:
             pass
@@ -130,11 +131,11 @@ def build_project(args):
                         print()
                         print("Executing program debug binaries.")
                         print()
+                        subprocess.call("./bin/Debug/seed-engine-editor.exe")
                     else:
                         print()
                         print("Could not run program due to compilation error. Exiting.")
                         print()
-                        subprocess.call("./bin/Debug/seed-engine-editor.exe")
                         return
                         
             if args.test:
@@ -155,11 +156,11 @@ def build_project(args):
                         print()
                         print("Executing program debug tests.")
                         print()
+                        subprocess.call("./bin/Debug/seed-engine-core-tests.exe")
                     else:
                         print()
                         print("Could not run tests due to compilation error. Exiting.")
                         print()
-                        subprocess.call("./bin/Debug/seed-engine-core-tests.exe")
         except ImportError:
             pass
 
@@ -277,11 +278,11 @@ todo_parser.set_defaults(func=run_todo)
 
 build_parser = subparser.add_parser("build", description="Builds the project with additional options.")
 build_parser.set_defaults(func=build_project)
-build_parser.add_argument("-c", "--clean", action="store_false", help="An optional flag to start a clean project rebuild")
-build_parser.add_argument("-e", "--exec", action="store_false", help="An optional flag to run the project if compilation is successful")
-build_parser.add_argument("-t", "--test", action="store_false", help="An optional flag to run the project tests if compilation is successful")
-build_parser.add_argument("-d", "--debug", action="store_true", help="An optional flag to build the project in Debug mode")
-build_parser.add_argument("-r", "--release", action="store_true", help="An optional flag to build the project in Release mode")
+build_parser.add_argument("-c", "--clean", action="store_true", help="An optional flag to start a clean project rebuild")
+build_parser.add_argument("-e", "--exec", action="store_true", help="An optional flag to run the project if compilation is successful")
+build_parser.add_argument("-t", "--test", action="store_true", help="An optional flag to run the project tests if compilation is successful")
+build_parser.add_argument("-d", "--debug", action="store_false", help="An optional flag to build the project in Debug mode")
+build_parser.add_argument("-r", "--release", action="store_false", help="An optional flag to build the project in Release mode")
 
 fill_parser = subparser.add_parser("fill", description="Fills in empty files with template data.")
 fill_parser.set_defaults(func=fill_files)
