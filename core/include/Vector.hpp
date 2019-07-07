@@ -220,6 +220,8 @@ namespace seedengine {
 
         // --- Constructors ---
 
+        //TODO: Fix unix base constructor errors.
+
         Vector() : VectorBase() {
 
         }

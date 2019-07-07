@@ -154,21 +154,12 @@ using std::string;
 
 namespace std {
 
-<<<<<<< HEAD
-	#ifndef _WIN32
-	template<typename T, typename... Args>
-	unique_ptr<T> make_unique(Args&& ... args) {
-		return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-	}
-	#endif
-=======
 #ifndef _WIN32
     template<typename T, typename... Args>
     unique_ptr<T> make_unique(Args&& ... args) {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
 #endif
->>>>>>> development_math
 
 }
 

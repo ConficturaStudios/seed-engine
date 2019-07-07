@@ -63,17 +63,8 @@ namespace seedengine {
         // Constructs a new actor.
         // @param(const Transform&) transform: The transfrom of this actor.
         // @param(const ActorProperties&) actor_properties: The properties of this actor.
-        Actor(  const Transform& transfrom        = Transform(),
-<<<<<<< HEAD
-                const ActorProperties& properties = ActorProperties())
-            : Object("actor"), actor_properties_(properties) {
-            this->transform = transform;
-			this->parent_ = nullptr;
-			
-        }
-=======
-                const ActorProperties& properties = ActorProperties());
->>>>>>> development_math
+        Actor(const Transform& transfrom = Transform(),
+            const ActorProperties& properties = ActorProperties());
 
         // The transform of this actor.
         Property<Transform> transform;
