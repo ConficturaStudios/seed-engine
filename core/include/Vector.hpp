@@ -314,7 +314,7 @@ namespace seedengine {
         VectorType operator+(const VectorType& vec) const {
             VectorType v;
             for (int i = 0; i < P; i++) {
-                v.elements_[i] = elements_[i] + vec.elements_[i];
+                v.elements_[i] = this->elements_[i] + vec.elements_[i];
             }
             return v;
         }
@@ -322,7 +322,7 @@ namespace seedengine {
         VectorType operator-(const VectorType& vec) const {
             VectorType v;
             for (int i = 0; i < P; i++) {
-                v.elements_[i] = elements_[i] - vec.elements_[i];
+                v.elements_[i] = this->elements_[i] - vec.elements_[i];
             }
             return v;
         }
@@ -330,7 +330,7 @@ namespace seedengine {
         VectorType operator*(const VectorType& vec) const {
             VectorType v;
             for (int i = 0; i < P; i++) {
-                v.elements_[i] = elements_[i] * vec.elements_[i];
+                v.elements_[i] = this->elements_[i] * vec.elements_[i];
             }
             return v;
         }
@@ -338,7 +338,7 @@ namespace seedengine {
         VectorType operator*(const T& scale) const {
             VectorType v;
             for (int i = 0; i < P; i++) {
-                v.elements_[i] = elements_[i] * scale;
+                v.elements_[i] = this->elements_[i] * scale;
             }
             return v;
         }
@@ -346,7 +346,7 @@ namespace seedengine {
         VectorType operator/(const VectorType& vec) const {
             VectorType v;
             for (int i = 0; i < P; i++) {
-                v.elements_[i] = elements_[i] / vec.elements_[i];
+                v.elements_[i] = this->elements_[i] / vec.elements_[i];
             }
             return v;
         }
@@ -354,20 +354,20 @@ namespace seedengine {
         VectorType operator/(const T& scale) const {
             VectorType v;
             for (int i = 0; i < P; i++) {
-                v.elements_[i] = elements_[i] / scale;
+                v.elements_[i] = this->elements_[i] / scale;
             }
             return v;
         }
 
         T& operator[](const int& index) const {
             if (index < 0 || index >= P) throw std::out_of_range("Index is out of bounds.");
-            return elements_[index];
+            return this->elements_[index];
         }
 
         bool operator==(const VectorType& vec) const {
             bool e = true;
             for (int i = 0; i < P; i++) {
-                e &= (elements_[i] == vec.elements_[i]);
+                e &= (this->elements_[i] == vec.elements_[i]);
             }
             return e;
         }
@@ -379,7 +379,7 @@ namespace seedengine {
         operator string() {
             std::stringstream ss("<");
             for (int i = 0; i < P; i++) {
-                ss << elements_[i];
+                ss << this->elements_[i];
                 if (i < P - 1) ss << ", ";
             }
             ss << ">";
