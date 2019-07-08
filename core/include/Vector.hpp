@@ -201,7 +201,6 @@ namespace seedengine {
 
     };
 
-
     template<
         unsigned int P,
         typename T = float,
@@ -377,7 +376,7 @@ namespace seedengine {
             return !(*this == vec);
         }
 
-        operator string() {
+        operator string() const {
             std::stringstream ss("<");
             for (int i = 0; i < P; i++) {
                 ss << this->elements_[i];
@@ -388,7 +387,10 @@ namespace seedengine {
 
         }
 
-        friend std::ostream& operator<<(const std::ostream& os, const VectorType& c);
+        friend std::ostream& operator<< (std::ostream& os, const VectorType& c) {
+            os << (string)c;
+            return os;
+        }
 
     };
 
@@ -398,15 +400,6 @@ namespace seedengine {
     typedef Vector<3, float> Vector3;
     typedef Vector<4, int  > Vector4i;
     typedef Vector<4, float> Vector4;
-
-    template<
-        unsigned int P,
-        typename T = float
-    >
-    inline std::ostream& operator<<(const std::ostream& os, const Vector<P, T>& v) {
-        os << (string)v;
-        return os;
-    }
 
     namespace math {
 
