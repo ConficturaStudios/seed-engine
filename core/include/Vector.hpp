@@ -3,6 +3,7 @@
 
 #include <string>
 #include <sstream>
+#include <iostream>
 #include <stdexcept>
 #include <cstdarg>
 #include "Math.hpp"
@@ -403,7 +404,7 @@ namespace seedengine {
         typename T = float
     >
     inline std::ostream& operator<<(const std::ostream& os, const Vector<P, T>& v) {
-        (*os) << (string)v;
+        os << (string)v;
         return os;
     }
 
