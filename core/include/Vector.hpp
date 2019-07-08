@@ -222,16 +222,16 @@ namespace seedengine {
 
         //TODO: Fix unix base constructor errors.
 
-        Vector() : VectorBase() {
+        Vector() : VectorBase<P, T>() {
 
         }
 
-        Vector(T elements[P]) : VectorBase(elements) {
+        Vector(T elements[P]) : VectorBase<P, T>(elements) {
 
         }
 
         template<typename... Args>
-        Vector(Args&& ... args) : VectorBase(T(args)...) {
+        Vector(Args&& ... args) : VectorBase<P, T>(T(args)...) {
 
         }
 
@@ -267,7 +267,7 @@ namespace seedengine {
 
         static VectorType refract(const VectorType& i, const VectorType& n, const T& eta) {
             T t = 1 - eta * eta * (1 - dot(n, i) * dot(n, i));
-            if (t < 0) return V();
+            if (t < 0) return VectorType();
             else return eta * i - (eta * dot(n, i) + math::sqrt(t)) * n;
         }
 
@@ -312,7 +312,7 @@ namespace seedengine {
         // --- Operators ---
 
         VectorType operator+(const VectorType& vec) const {
-            V v;
+            VectorType v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] + vec.elements_[i];
             }
@@ -320,7 +320,7 @@ namespace seedengine {
         }
 
         VectorType operator-(const VectorType& vec) const {
-            V v;
+            VectorType v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] - vec.elements_[i];
             }
@@ -328,7 +328,7 @@ namespace seedengine {
         }
 
         VectorType operator*(const VectorType& vec) const {
-            V v;
+            VectorType v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] * vec.elements_[i];
             }
@@ -336,7 +336,7 @@ namespace seedengine {
         }
 
         VectorType operator*(const T& scale) const {
-            V v;
+            VectorType v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] * scale;
             }
@@ -344,7 +344,7 @@ namespace seedengine {
         }
 
         VectorType operator/(const VectorType& vec) const {
-            V v;
+            VectorType v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] / vec.elements_[i];
             }
@@ -352,7 +352,7 @@ namespace seedengine {
         }
 
         VectorType operator/(const T& scale) const {
-            V v;
+            VectorType v;
             for (int i = 0; i < P; i++) {
                 v.elements_[i] = elements_[i] / scale;
             }
@@ -403,7 +403,7 @@ namespace seedengine {
         typename T = float
     >
     inline std::ostream& operator<<(const std::ostream& os, const Vector<P, T>& v) {
-        os << (string)v;
+        (*os) << (string)v;
         return os;
     }
 
