@@ -17,9 +17,9 @@ namespace seedengine {
         typedef std::function<T& (const Property<T>*, const T&)> SetterFunc;
 
         // A macro to use as the standard lambda for getter functions
-        #define GET(t) [&, this](const Property<t>* ref) -> t&
+        #define GET(type) [&, this](const Property<type>* ref) -> type&
         // A macro to use as the standard lambda for setter functions
-        #define SET(t) [&, this](const Property<t>* ref, const t& value) -> t&
+        #define SET(type) [&, this](const Property<type>* ref, const type& value) -> type&
 
         Property()
             : Property(T()) {}
