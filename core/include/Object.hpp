@@ -15,6 +15,11 @@ namespace seedengine {
         // Constructs a new Object with a custom name.
         Object(string name);
 
+
+        Object(const Object& obj);
+
+        Object(const null_t& null);
+
         // Destroys this Object.
         virtual ~Object();
 

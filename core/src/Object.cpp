@@ -13,6 +13,14 @@ namespace seedengine {
 
     }
 
+    Object::Object(const Object& obj) : nullable_t(obj.isNull()), id_(obj.id_), name_(obj.name_) {
+
+    }
+
+    Object::Object(const null_t& null) : nullable_t(null), id_(0), name_("") {
+
+    }
+
     Object::~Object() {
 
     }
