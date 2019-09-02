@@ -4,7 +4,7 @@ namespace seedengine {
 
     //TODO: Clean up memory leaks with smart pointers
 
-    std::queue<Event*> EventDispatcher::event_buffer;
+    std::queue<std::shared_ptr<Event>> EventDispatcher::event_buffer;
     std::map<const unsigned int, std::vector<std::function<void(Event&)>>> EventDispatcher::deligate_regtistry;
 
     void EventDispatcher::registerDeligate(const unsigned int event_id, std::function<void(Event&)> deligate) {
@@ -19,24 +19,15 @@ namespace seedengine {
         deligate_regtistry[event_id].push_back(deligate);
     }
 
-    void EventDispatcher::push(Event* event_ptr) {
-        event_buffer.push(event_ptr);
-    }
+    //void EventDispatcher::push(Event* event_ptr)
 
-    Event* EventDispatcher::pop() {
-        Event* next_event = event_buffer.front();
+    std::shared_ptr<Event> EventDispatcher::pop() {
+        auto next_event = event_buffer.front();
         event_buffer.pop();
         return next_event;
     }
 
-    void EventDispatcher::force(Event* event_ptr) {
-        // Iterate through all delegates bound to this event
-        for (std::function<void(Event&)> deligate : deligate_regtistry[event_ptr->getId()])
-        {
-            // Call the function
-            deligate(*event_ptr);
-        }
-    }
+    //void EventDispatcher::force(std::shared_ptr<Event> event_ptr)
 
     void EventDispatcher::run(unsigned int type_filter) {
 
@@ -45,7 +36,7 @@ namespace seedengine {
 
         // Iterate through each event in the queue once, passing filtered out events to back of queue
         while (buffer_count < q_size) {
-            Event* next = pop();
+            auto next = pop();
             if (next->isType(static_cast<EventType>(type_filter))) {
                 // Iterate through all delegates bound to this event
                 for (std::function<void(Event&)> deligate : deligate_regtistry[next->getId()])
@@ -59,7 +50,6 @@ namespace seedengine {
                 event_buffer.push(next);
             }
             buffer_count++;
-            delete next;
         }
     }
 

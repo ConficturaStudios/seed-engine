@@ -7,6 +7,9 @@ namespace seedengine {
 
     namespace math {
 
+        /**
+         * A namespace for all procedural noise functionality.
+         */
         namespace noise {
 
             //TODO: Add tiling functionality option for noise generation

@@ -54,6 +54,14 @@ def run_todo(args):
     except ImportError:
         pass
 
+def run_project(args):
+    if args.debug:
+        print("Running project Debug executibles...")
+        subprocess.call("./bin/Debug/seed-engine-editor.exe")
+    else:
+        print("Running project Release executibles...")
+        subprocess.call("./bin/Release/seed-engine-editor.exe")
+
 def build_project(args):
     print("Building project...")
     if args.clean:
@@ -275,6 +283,10 @@ class_parser.add_argument("name", metavar="N", type=str, help="the name of the c
 
 todo_parser = subparser.add_parser("todo", description="Generates ToDoLists.txt from all TODO statements in the project.")
 todo_parser.set_defaults(func=run_todo)
+
+run_parser = subparser.add_parser("run", description="Runs the project with additional options.")
+run_parser.set_defaults(func=run_project)
+run_parser.add_argument("-d", "--debug", action="store_true", help="An optional flag to run the project Debug build")
 
 build_parser = subparser.add_parser("build", description="Builds the project with additional options.")
 build_parser.set_defaults(func=build_project)

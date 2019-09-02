@@ -13,6 +13,7 @@
 **/.vs/*
 *.vcxproj
 *.sln
+*.code-workspace
 **/[Ss]pike/*
 CMakeLists.txt.user
 CMakeCache.txt

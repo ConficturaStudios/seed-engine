@@ -55,14 +55,14 @@ namespace seedengine {
             position_.x = x;
             position_.y = y;
             position_.z = z;
-            translation_ = glm::translate(glm::mat4(), position_);
+            translation_ = glm::translate(glm::mat4(1.0f), position_);
             updateTransformation();
         }
         // Sets the scale of the transform.
         // @param(const glm::vec3&) scale: The new scale.
         void setScale(const glm::vec3& scale) {
             scale_ = scale;
-            scale_matrix_ = glm::scale(glm::mat4(), scale);
+            scale_matrix_ = glm::scale(glm::mat4(1.0f), scale);
             updateTransformation();
         }
         // Sets the scale of the transform.
@@ -73,14 +73,14 @@ namespace seedengine {
             scale_.x = x;
             scale_.y = y;
             scale_.z = z;
-            scale_matrix_ = glm::scale(glm::mat4(), scale_);
+            scale_matrix_ = glm::scale(glm::mat4(1.0f), scale_);
             updateTransformation();
         }
         // Sets the rotation of the transform.
         // @param(const glm::vec3&) rotation: The new rotation.
         void setRotation(const glm::vec3& rotation) {
             euler_rotation_ = rotation;
-            rotation_ = glm::quat(rotation);
+            rotation_ = glm::quat(rotation * glm::pi<float>() / 180.0f);
             rotation_matrix_ = glm::toMat4(rotation_);
             updateTransformation();
         }
@@ -92,7 +92,7 @@ namespace seedengine {
             euler_rotation_.x = x;
             euler_rotation_.y = y;
             euler_rotation_.z = z;
-            rotation_ = glm::quat(euler_rotation_);
+            rotation_ = glm::quat(euler_rotation_ * glm::pi<float>() / 180.0f);
             rotation_matrix_ = glm::toMat4(rotation_);
             updateTransformation();
         }
@@ -100,7 +100,7 @@ namespace seedengine {
         // @param(const glm::quat&) rotation: The new rotation.
         void setRotation(const glm::quat& rotation) {
             rotation_ = rotation;
-            euler_rotation_ = glm::eulerAngles(rotation) * glm::pi<float>() / 180.0f;
+            euler_rotation_ = glm::eulerAngles(rotation) / glm::pi<float>() * 180.0f;
             rotation_matrix_ = glm::toMat4(rotation_);
             updateTransformation();
         }
@@ -114,7 +114,7 @@ namespace seedengine {
             rotation_.x = x;
             rotation_.y = y;
             rotation_.z = z;
-            euler_rotation_ = glm::eulerAngles(rotation_) * glm::pi<float>() / 180.0f;
+            euler_rotation_ = glm::eulerAngles(rotation_) / glm::pi<float>() * 180.0f;
             rotation_matrix_ = glm::toMat4(rotation_);
             updateTransformation();
         }
@@ -166,7 +166,7 @@ namespace seedengine {
 
         // Updates the transformation matrix.
         void updateTransformation() {
-            transformation_matrix_ = translation_ * rotation_matrix_ * scale_matrix_ * glm::mat4();
+            transformation_matrix_ = translation_ * rotation_matrix_ * scale_matrix_ * glm::mat4(1.0f);
         }
 
     };

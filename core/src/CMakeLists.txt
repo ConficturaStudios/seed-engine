@@ -13,11 +13,13 @@ set(PROJECT_SRC
     Log.cpp
     Mesh.cpp
     Noise.cpp
+    Nullable.cpp
     Object.cpp
     Parser.cpp
     Program.cpp
     Random.cpp
     Renderer.cpp
+    Shader.cpp
     Time.cpp
     Transform.cpp
     Window.cpp

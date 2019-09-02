@@ -77,16 +77,16 @@ namespace seedengine {
     };
 
     // A library of image assets.
-    class ImageLibrary : public AssetLibrary<unsigned char, Image> {
+    /*class ImageLibrary : public AssetLibrary<Image> {
 
     public:
 
         // Constructs a new image library.
-        ImageLibrary() : AssetLibrary<unsigned char, Image>() {}
+        ImageLibrary() : AssetLibrary<Image>() {}
 
     private:
 
-    };
+    };*/
 
 }
 

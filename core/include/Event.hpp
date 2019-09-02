@@ -74,17 +74,55 @@ namespace seedengine {
         // @param(std::function<bool(Event&)>) deligate: The function to bind to the event.
         static void registerDeligate(const unsigned int, std::function<void(Event&)>);
 
-        // Pushs an event into the event queue
-        // @param(Event*) event_ptr: A pointer to the event to occur.
-        static void push(Event*);
+        /**
+         * @brief Pushs an event into the event queue. This is a non-blocking event.
+         *
+         * @tparam E The event type to force.
+         * @tparam Args The variadic parameter pack used to construct the Event.
+         * @tparam std::enable_if<std::is_base_of<Event, E>::value>::type Conditional
+         *         compilation based on the base type of E.
+         * @param args The arguments used when constructing the Event of type E.
+         */
+        template <
+            class E,
+            class... Args,
+            typename = std::enable_if<std::is_base_of<Event, E>::value>::type
+        >
+        static void push(Args&&... args) {
+            event_buffer.push(std::make_shared<E>(std::forward<Args>(args)...));
+        }
 
-        // Removes and returns the next event in the buffer.
-        // @returns: The next event in the buffer.
-        static Event* pop();
+        /**
+         * @brief Removes and returns the next event in the buffer.
+         * 
+         * @return std::shared_ptr<Event> The next event in the buffer.
+         */
+        static std::shared_ptr<Event> pop();
 
-        // Forces an event to notify its bound functions without adding it to the queue. This is a blocking event.
-        // @param(Event*) event_ptr: The event to force through.
-        static void force(Event*);
+        /**
+         * @brief Forces an event to notify its bound functions without adding
+         *        it to the queue. This is a blocking event.
+         * 
+         * @tparam E The event type to force.
+         * @tparam Args The variadic parameter pack used to construct the Event.
+         * @tparam std::enable_if<std::is_base_of<Event, E>::value>::type Conditional
+         *         compilation based on the base type of E.
+         * @param args The arguments used when constructing the Event of type E.
+         */
+        template <
+            class E,
+            class... Args,
+            typename = std::enable_if<std::is_base_of<Event, E>::value>::type
+        >
+        static void force(Args&&... args) {
+            auto event_ptr = std::make_shared<E>(std::forward<Args>(args)...);
+            // Iterate through all delegates bound to this event
+            for (std::function<void(Event&)> deligate : deligate_regtistry[event_ptr->getId()])
+            {
+                // Call the function
+                deligate(*event_ptr);
+            }
+        }
 
         // Runs the deligate functions for every event in the buffer of the specified type.
         // The events are removed after execution of its deligates.
@@ -95,7 +133,7 @@ namespace seedengine {
     private:
 
         // The event buffer queue.
-        static std::queue<Event*> event_buffer;
+        static std::queue<std::shared_ptr<Event>> event_buffer;
         // A mapped registry of all events and their bound functions.
         static std::map<const unsigned int, std::vector<std::function<void(Event&)>>> deligate_regtistry;
 

@@ -7,71 +7,115 @@
 
 namespace seedengine {
 
-    //TODO: Control actor loading, add ability to write to file
+     //TODO: Control actor loading, add ability to write to file
 
-    class Actor;
+    class Actor; // Forward declare Actor
 
-    // Properties of an Actor.
+    /**
+     * @brief Properties of an Actor.
+     * @details This class is used to encapsulate properties of an actor that will remain constant at
+     *          runtime. The members of this class are only accessible by the Actor class and child classes.
+     *
+     * @see #Actor
+     */
     class ActorProperties {
 
         friend class Actor;
 
     public:
-        // Creates a new set of actor properties.
-        // @param(const bool) never_ticks: Does this actor never recieve tick events?
-        // @param(const bool) can_pause: Can this actor be paused?
+        /**
+         * @brief Creates a new set of actor properties.
+         *
+         * @param never_ticks Does this actor never recieve tick events?
+         * @param can_pause Can this actor be paused?
+         */
         ActorProperties(    const bool never_ticks = false,
                             const bool can_pause   = true);
 
     protected:
-        // Does this actor never recieve tick events?
+        /**
+         * @brief Does this actor never recieve tick events?
+         */
         bool never_ticks_;
-        // Can this actor be paused?
+        /**
+         * @brief Can this actor be paused?
+         */
         bool can_pause_;
 
     };
 
-	class Actor; // Forward declare Actor
-
+    /**
+     * @brief A component to be connected to an actor.
+     * @details The Component class is the base class for all behaviors that can be attached to an Actor. A
+     *          Component cannot exist independent of an Actor, and can only be instanced by Actor::addComponent.
+     *
+     * @see #Actor
+     * @see Actor::addComponent
+     * @see #Object
+     */
     class Component : public Object {
 
         friend class Actor;
 
     public:
 
-        // The function called when the game updates.
+        /**
+         * @brief The function called when the game updates.
+         * @details The Update() method should be overriden to create functionality that will be called
+         *          every frame.
+         */
         virtual void update() = 0;
 
     protected:
-
-        // The actor that this component is attached to.
+        /**
+         * @brief The actor that this component is attached to.
+         */
         Actor& actor_;
-
-        // Constructs a new Component.
-        // @param(Actor&) actor: The actor to attach to.
+        /**
+         * @brief Constructs a new Component.
+         *
+         * @param actor The Actor to attach to.
+         */
         Component(Actor& actor);
 
     private:
 
     };
-
-    // An actor that can take part in a level or scene.
+    /**
+     * @brief An actor that can be placed in a level or scene.
+     * @details
+     */
     class Actor : public Object {
 
     public:
-
-        // Constructs a new actor.
-        // @param(const Transform&) transform: The transfrom of this actor.
-        // @param(const ActorProperties&) actor_properties: The properties of this actor.
+        /**
+         * @brief Constructs a new actor.
+         *
+         * @param transform The transfrom of this actor.
+         * @param properties The properties of this actor.
+         */
         Actor(const Transform& transfrom = Transform(),
             const ActorProperties& properties = ActorProperties());
 
-        // The transform of this actor.
+        /**
+         * @brief The transform of this actor.
+         *
+         * @see #Property
+         * @see #Transform
+         */
         Property<Transform> transform;
-        // Is this actor active in the scene?
+        /**
+         * @brief Is this actor active in the scene?
+         *
+         * @see #Property
+         */
         Property<bool> active;
 
-        // Adds a Component of type T to this Actor.
+        /**
+         * @brief Adds a Component of type T to this Actor.
+         *
+         * @tparam T The Component class to add.
+         */
         template <class T>
         void addComponent() {
             // Ensure that T is a Component
@@ -79,8 +123,15 @@ namespace seedengine {
             components_.push_back(std::make_unique<T>(this));
         }
 
-        // Gets a pointer to the first Component of type T attached to this Actor. Returns nullptr if none are found.
-        // @returns: A pointer to the first Component of type T attached to this Actor. Nullptr if none are found.
+        /**
+         * @brief Gets a pointer to the first Component of type T attached to this Actor. Returns nullptr
+         *        if none are found.
+         *
+         * @tparam T The Component class to get.
+         *
+         * @return A pointer to the first Component of type T attached to this Actor. Nullptr if
+         *         none are found.
+         */
         template <class T>
         std::unique_ptr<T> getComponent() {
             // Ensure that T is a Component
@@ -92,8 +143,15 @@ namespace seedengine {
             return nullptr;
         }
 
-        // Gets a list of pointers to all Components of type T attached to this Actor. Returns an empty list if none are found.
-        // @returns: A list of pointers to all Components of type T attached to this Actor. Returns an empty list if none are found.
+        /**
+         * @brief Gets a list of pointers to all Components of type T attached to this Actor. Returns an
+         *        empty list if none are found.
+         *
+         * @tparam T The Component subclass to get.
+         *
+         * @return A list of pointers to all Components of type T attached to this Actor. Returns
+         *         an empty list if none are found.
+         */
         template <class T>
         std::vector<std::unique_ptr<T>> getComponents() {
             // Ensure that T is a Component
@@ -107,13 +165,21 @@ namespace seedengine {
         }
 
     protected:
-        // The properties of this actor.
+        /**
+         * @brief The properties of this actor.
+         */
         ActorProperties actor_properties_;
-        // The parent of this actor in the hierarchy.
+        /**
+         * @brief The parent of this actor in the hierarchy.
+         */
         Actor* parent_;
-        // The children of this actor.
+        /**
+         * @brief The children of this actor.
+         */
         std::vector<Actor*> children_;
-        // The components of this actor.
+        /**
+         * @brief The components of this actor.
+         */
         std::vector<std::unique_ptr<Component>> components_;
 
     private:

@@ -40,7 +40,7 @@ void compute() {
 }
 
 void main(void) {
-    diffuse = vec4(0.0, 0.0, 0.0, 1.0);
+    diffuse = vec4(0.0, 1.0, 0.0, 1.0);
     roughness = 0.5;
     specular = 0.5;
     metallic = 0.5;

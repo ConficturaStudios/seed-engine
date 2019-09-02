@@ -1,0 +1,8 @@
+# ${NAME} Material
+name=${NAME}
+domain=$E{SURFACE,2D,DECAL,LIGHT_FUNCTION,UI,POST_PROCESS,VOLUME}
+blend=$E{OPAQUE,MASKED,TRANSPARENT,ADDITIVE}
+model=$E{UNLIT,LIT,SUBSURFACE}
+twoSided=$B{true,false}
+parameters:
+    ${PARAMETERS}

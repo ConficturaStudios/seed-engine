@@ -8,16 +8,20 @@ namespace seedengine {
 
     void Mesh::load() {
         // Extract mesh data from file
-        meshdata* m_data = extractMesh(path_);
-        if (m_data == nullptr) {
+        meshdata m_data = extractMesh(path_);
+        if (m_data == nullobj) {
             ENGINE_ERROR("Failed to load mesh. Skipping load.");
             return;
         }
-        data_ = std::shared_ptr<meshdata>(m_data);
+        delete data_;
+        data_ = new meshdata();
+        *data_ = m_data;
 
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
         
+            //TODO: Check that open gl context has been set up
+
             // Assign VAO
             glGenVertexArrays(1, &vao_);
             glBindVertexArray(vao_);
@@ -26,22 +30,23 @@ namespace seedengine {
             opglCreateIndicesBuffer(data_->faces);
 
             // Create and bind new vertex buffers
-            opglCreateVertexBuffer(3, data_->positions);
-            opglCreateVertexBuffer(3, data_->normals);
-            opglCreateVertexBuffer(4, data_->p_colors);
-            opglCreateVertexBuffer(4, data_->s_colors);
-            opglCreateVertexBuffer(2, data_->uv_0);
-            opglCreateVertexBuffer(2, data_->uv_1);
-            opglCreateVertexBuffer(2, data_->uv_2);
-            opglCreateVertexBuffer(2, data_->uv_3);
-            opglCreateVertexBuffer(2, data_->uv_4);
-            opglCreateVertexBuffer(2, data_->uv_5);
-            opglCreateVertexBuffer(2, data_->uv_6);
-            opglCreateVertexBuffer(2, data_->uv_7);
+            opglCreateVertexBuffer(0, 3, data_->positions);
+            //opglCreateVertexBuffer(3, pos);
+            if (data_->normals.size() > 0) opglCreateVertexBuffer(1, 3, data_->normals);
+            if (data_->p_colors.size() > 0) opglCreateVertexBuffer(2, 4, data_->p_colors);
+            //if (data_->s_colors.size() > 0) opglCreateVertexBuffer(3, 4, data_->s_colors);
+            if (data_->uv_0.size() > 0) opglCreateVertexBuffer(3, 2, data_->uv_0);
+            /*if (data_->uv_1.size() > 0) opglCreateVertexBuffer(5, 2, data_->uv_1);
+            if (data_->uv_2.size() > 0) opglCreateVertexBuffer(6, 2, data_->uv_2);
+            if (data_->uv_3.size() > 0) opglCreateVertexBuffer(7, 2, data_->uv_3);
+            if (data_->uv_4.size() > 0) opglCreateVertexBuffer(8, 2, data_->uv_4);
+            if (data_->uv_5.size() > 0) opglCreateVertexBuffer(9, 2, data_->uv_5);
+            if (data_->uv_6.size() > 0) opglCreateVertexBuffer(10, 2, data_->uv_6);
+            if (data_->uv_7.size() > 0) opglCreateVertexBuffer(11, 2, data_->uv_7);*/
 
             // Unbind buffers
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            //glBindBuffer(GL_ARRAY_BUFFER, 0);
+            //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             // Unbind VAO
             glBindVertexArray(0);
             
@@ -63,14 +68,16 @@ namespace seedengine {
     }
 
     void Mesh::unload() {
+        delete data_;
         data_ = nullptr;
         
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
         
             glDeleteVertexArrays(1, &vao_);
-            glDeleteBuffers(vertex_buffers_.size(), &vertex_buffers_[0]);
+            glDeleteBuffers(vertex_buffers_.size() + 1, &vertex_buffers_[0]);
             vao_ = 0;
+            indices_buffer_ = 0;
             vertex_buffers_.clear();
 
         // Check for Vulkan
@@ -88,17 +95,17 @@ namespace seedengine {
         #endif
     }
 
-    meshdata* Mesh::extractMesh(const string& path) {
+    meshdata Mesh::extractMesh(const string& path) {
         
         // Data values that will be returned on success.
-        meshdata m_data;
+        meshdata m_data = meshdata();
 
         // Regex templates in ECMAScript format
         std::regex path_regex("^.*\\.mesh$");
         std::smatch p_m;
         if (!std::regex_match(path, p_m, path_regex)) {
             ENGINE_ERROR("File '{0}' is not a valid *.mesh file.", path);
-            return nullptr;
+            return nullobj;
         }
         std::regex white_regex("^[\\s]*$");
         std::regex property_regex("^[\\s]*\\[([a-zA-Z][\\w]*)\\][\\s]*=[\\s]*(.*)$");
@@ -225,7 +232,7 @@ namespace seedengine {
                 else {
                     ENGINE_ERROR("File '{0}' has an error at line {1}: Invalid identifier '{2}'.",
                     path, line_num, type);
-                    return nullptr;
+                    return nullobj;
                 }
 
                 if (values.size() != expected_count && type.compare("v") != 0) {
@@ -236,7 +243,7 @@ namespace seedengine {
             }
             else {
                 ENGINE_ERROR("File '{0}' has an error at line {1}.", path, line_num);
-                return nullptr;
+                return nullobj;
             }
             line_num++;
 
@@ -250,12 +257,12 @@ namespace seedengine {
         // Check for an empty mesh
         if (p_count == 0) {
             ENGINE_ERROR("Mesh file '{0}' has an no vertices.", path);
-            return nullptr;
+            return nullobj;
         }
         // Check for an empty mesh
         else if (f_count == 0) {
             ENGINE_ERROR("Mesh file '{0}' has an no faces.", path);
-            return nullptr;
+            return nullobj;
         }
         // Check for inconsistent vertex counts
         else if (
@@ -271,7 +278,7 @@ namespace seedengine {
             (u6_count != p_count && u6_count != 0) ||
             (u7_count != p_count && u7_count != 0)) {
             ENGINE_ERROR("Mesh file '{0}' has an inconsistent vertex count.", path);
-            return nullptr;
+            return nullobj;
         }
         // Check if dependent attributes are included properly
         else if (
@@ -284,13 +291,10 @@ namespace seedengine {
             (u6_count != u5_count && u6_count != 0) ||
             (u7_count != u6_count && u7_count != 0)) {
             ENGINE_ERROR("Mesh file '{0}' has an inconsistent vertex attribute count.", path);
-            return nullptr;
+            return nullobj;
         }
         else {
-            meshdata* m_ptr = new meshdata();
-            *m_ptr = m_data;
-            return m_ptr;
+            return m_data;
         }
     }
-
 }

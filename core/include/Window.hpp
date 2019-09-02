@@ -15,18 +15,18 @@ namespace seedengine {
 
     public:
         // Constructs a WindowProperties object. All parameters default to the value found in defaults.ini.
-        // @param(const string&) title: The title of the window.
+        // @param(const string) title: The title of the window.
         // @param(const unsigned int) width: The width of the window.
         // @param(const unsigned int) height: The height of the window.
         // @param(const bool) fullscreen: Is the window borderless?
         // @param(const bool) borderless: Is the window fullscreen?
         // @param(const bool) vsync: Is VSync enabled for the window?
-        WindowProperties(   const string& title  = util::parser::ini::DEFAULTS.sections["Window"].string_data["title"],
-                            const unsigned int width  = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_width"],
-                            const unsigned int height = util::parser::ini::DEFAULTS.sections["Window"].int_data["windowed_height"],
-                            const bool fullscreen     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["fullscreen"],
-                            const bool borderless     = util::parser::ini::DEFAULTS.sections["Window"].bool_data["borderless"],
-                            const bool vsync          = util::parser::ini::DEFAULTS.sections["Window"].bool_data["vsync"],
+        WindowProperties(   const string title = util::DEFAULTS.getString("Window", "title"),
+                            const unsigned int width  = util::DEFAULTS.getInt("Window", "windowed_width"),
+                            const unsigned int height = util::DEFAULTS.getInt("Window", "windowed_height"),
+                            const bool fullscreen     = util::DEFAULTS.getBool("Window", "fullscreen"),
+                            const bool borderless     = util::DEFAULTS.getBool("Window", "borderless"),
+                            const bool vsync          = util::DEFAULTS.getBool("Window", "vsync"),
                             Image* icon               = nullptr)
             : title_(title), width_(width), height_(height), borderless_(borderless), fullscreen_(fullscreen), vsync_(vsync), icon_(icon) {}
 
@@ -128,7 +128,7 @@ namespace seedengine {
         // Creates a new window.
         // @param(const WindowProperties&) properties: The properties to assign to this window. Defaults to the default WindowProperty object.
         // @returns: A pointer to a new Window.
-        static Window* create(const WindowProperties& preoperties = WindowProperties());
+        static Window* create(const WindowProperties& properties = WindowProperties());
 
         // Terminates all open windows.
         static void terminateAll();
@@ -142,6 +142,8 @@ namespace seedengine {
         void onMaximize(WindowMaximizeEvent&);
 
     private:
+
+        Window(const WindowProperties& properties) : properties_(properties) {}
 
         // The properties of this window.
         WindowProperties properties_;

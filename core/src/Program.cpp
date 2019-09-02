@@ -3,6 +3,7 @@
 namespace seedengine {
 
     Program::Program() {
+        renderer_ = Renderer(RenderOptions());
         // Bind onClose event deligate
         EventDispatcher::registerDeligate(WindowCloseEvent::EVENT_ID, [this](Event& e) {
             this->onClose(static_cast<WindowCloseEvent&>(e));
@@ -47,14 +48,19 @@ namespace seedengine {
                 ENGINE_ERROR("Program aborted. Exiting exection thread.");
                 return;
             }
-            
-            string icon_path = util::parser::ini::DEFAULTS
-                .sections["Window"].string_data["icon_path"];
-            string core_path = CORE_PATH("");
-            string core_icon = core_path + icon_path;
-            // Set window icon
-            image_library_.load(core_icon);
-            window->setIcon(image_library_.request(core_icon));
+
+            string icon_path;
+            util::DEFAULTS.get("Window", "icon_path", icon_path);
+            string core_icon = CORE_PATH("") + icon_path;
+
+            {
+                // Set window icon
+                AssetLibrary<Image>::load(core_icon);
+                window->setIcon(AssetLibrary<Image>::request(core_icon));
+
+                AssetLibrary<Mesh>::load(CORE_PATH("data/models/primatives/quad.mesh"));
+                AssetLibrary<Mesh>::load(CORE_PATH("data/models/primatives/triangle.mesh"));
+            }
 
             // The time in ms between each frame.
             float delta_time;
@@ -67,7 +73,7 @@ namespace seedengine {
 
             ENGINE_DEBUG("Loading game data.");
             // Load game data into application
-            EventDispatcher::force(new EngineGameLoadEvent());
+            EventDispatcher::force<EngineGameLoadEvent>();
 
             ENGINE_DEBUG("Starting main loop...");
 
@@ -95,7 +101,7 @@ namespace seedengine {
                     // Only update logic if the game is not paused
                     if (!Time::isPaused()) {
                         // Distribute updates/game ticks
-                        EventDispatcher::force(new EngineTickEvent(Time::delta_time_));
+                        EventDispatcher::force<EngineTickEvent>(Time::delta_time_);
                         //ENGINE_DEBUG("Update!");
                     }
 
@@ -108,15 +114,15 @@ namespace seedengine {
 
                 // Run pre-render logic
 
-                EventDispatcher::force(new EnginePreRenderEvent());
+                EventDispatcher::force<EnginePreRenderEvent>();
 
                 // Run render pass
 
-                EventDispatcher::force(new EngineRenderEvent());
+                EventDispatcher::force<EngineRenderEvent>();
 
                 // Run post-render logic
 
-                EventDispatcher::force(new EnginePostRenderEvent());
+                EventDispatcher::force<EnginePostRenderEvent>();
 
                 // Update window
                 window->update();
@@ -160,6 +166,9 @@ namespace seedengine {
             *exit_code = this->exit_code_;
             ENGINE_INFO("Execution complete. Exiting execution thread.");
         }
+
+        AssetLibrary<Mesh>::unloadAll();
+        AssetLibrary<Image>::unloadAll();
 
         return;
 

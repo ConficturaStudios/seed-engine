@@ -5,7 +5,7 @@
 
 namespace seedengine {
 
-    class Object {
+    class Object : public nullable_t {
 
     public:
 
@@ -30,9 +30,11 @@ namespace seedengine {
 
         explicit operator unsigned int() const;
 
-        operator string() const;
+        operator string() const override;
 
         /// Operator overloads
+
+        using nullable_t::operator=;
 
         friend std::ostream& operator<<(std::ostream& os, const Object& obj);
 

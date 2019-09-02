@@ -9,19 +9,53 @@ using std::string;
 
 namespace seedengine {
 
+    /**
+     * @brief A floating point color.
+     * @details An RGBA color with each value stored in a 0 to 1 floating point range.
+     */
     class Color {
 
     public:
 
+        /**
+         * @brief Construct a new Color object
+         * 
+         * @param vec A vector to use for the RGB channels of this color, clamped to a 0 to 1 range.
+         */
         Color(Vector3 vec);
 
+        /**
+         * @brief Construct a new Color object
+         * 
+         * @param vec A vector to use for the RGBA channels of this color, clamped to a 0 to 1 range.
+         */
         Color(Vector4 vec);
 
+        /**
+         * @brief Construct a new Color object
+         * 
+         * @param r The red channel value to use in this Color.
+         * @param g The green channel value to use in this Color.
+         * @param b The blue channel value to use in this Color.
+         * @param a The alpha channel value to use in this Color.
+         */
         Color(float r = 0, float g = 0, float b = 0, float a = 1);
 
+        /**
+         * @brief The red channel of this color.
+         */
         float r;
+        /**
+         * @brief The green channel of this color.
+         */
         float g;
+        /**
+         * @brief The blue channel of this color.
+         */
         float b;
+        /**
+         * @brief The alpha channel of this color.
+         */
         float a;
         
         static const Color black;

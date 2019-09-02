@@ -19,11 +19,14 @@ namespace seedengine {
             virtual ~Program();
 
             // Target Frames per Second.
-            const float TARGET_FPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_fps"];
+            //const float TARGET_FPS = 75;
+            const float TARGET_FPS = util::DEFAULTS.getFloat("Engine", "target_fps");
             // Target Updates per Second.
-            const float TARGET_UPS = util::parser::ini::DEFAULTS.sections["Engine"].float_data["target_ups"];
+            //const float TARGET_UPS = 30;
+            const float TARGET_UPS = util::DEFAULTS.getFloat("Engine", "target_ups");
             // Max Updates per Frame.
-            const int MAX_UPF = util::parser::ini::DEFAULTS.sections["Engine"].int_data["max_updates_per_frame"];
+            //const int MAX_UPF = 5;
+            const int MAX_UPF = util::DEFAULTS.getInt("Engine", "max_updates_per_frame");
 
             // Runs the program logic. Should be launched on a new thread.
             // @param(int*) exit_code: A pointer to pass the returned exit code of the main loop.
@@ -99,11 +102,6 @@ namespace seedengine {
             float current_fps_ = TARGET_FPS;
             // The current updates per second of this instance.
             float current_ups_ = TARGET_UPS;
-
-            // The library of image assets used in this program.
-            ImageLibrary image_library_ = ImageLibrary();
-            // The library of mesh assets used in this program.
-            MeshLibrary mesh_library_ = MeshLibrary();
 
             // The dedicated renderer of this program.
             Renderer renderer_;

@@ -15,7 +15,7 @@ namespace seedengine {
 
         GLFWimage* Image::glfwImage() {
             GLFWimage* gl_image = new GLFWimage();
-            gl_image->pixels = data().get();
+            gl_image->pixels = data();
             gl_image->width = width();
             gl_image->height = height();
             return gl_image;
@@ -25,9 +25,8 @@ namespace seedengine {
 
     void Image::load() {
         int width, height, channels;
-        data_ = std::shared_ptr<unsigned char>(
-            stbi_load(path_.c_str(), &width, &height, &channels, format_)
-        );
+        delete data_;
+        data_ = stbi_load(path_.c_str(), &width, &height, &channels, format_);
 
         width_ = width;
         height_ = height;
@@ -35,6 +34,7 @@ namespace seedengine {
     }
 
     void Image::unload() {
+        delete data_;
         data_ = nullptr;
     }
 

@@ -129,6 +129,10 @@ namespace seedengine {
         inline float pingpong(const float& t, const float& length) { return length - abs(fmod(t, 2 * length) - length); }
         // pow
         inline float pow(const float& base, const float& exp) { return std::pow(exp, exp); }
+        // remap
+        inline float remap(const float& value, const float& min, const float& max, const float& new_min, const float& new_max) {
+            return new_min + (invLerp(min, max, value) * (new_max - new_min));
+        }
         // repeat
         inline float repeat(const float& t, const float& length) { return fmod(t, length); }
         // round

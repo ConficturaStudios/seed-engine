@@ -9,11 +9,22 @@ namespace seedengine {
 
     // Custom Asset Macros
 
+    /**
+     * @brief The standard body to include in all engine assets.
+     */
     #define ENGINE_ASSET_BODY() \
-        template <class AssetData, class AssetType>\
+        template <class AssetType>\
         friend class AssetLibrary;
 
-    // An asset with data type T.
+    /**
+     * @brief An asset with data type T.
+     * @details A data asset that is loaded from the disk on demand. The asset is
+     *          associated with its path on the disk within an #AssetLibrary.
+     * 
+     * @tparam T The type of data stored.
+     * 
+     * @see #AssetLibrary
+     */
     template <class T>
     class Asset {
 
@@ -21,78 +32,139 @@ namespace seedengine {
 
     public:
 
-        // Gets the path to this asset. Returns an empty string if no path exits.
-        // @returns: The path to this asset.
+        /**
+         * @brief Gets the path to this asset. Returns an empty string if no path exits.
+         * 
+         * @return The path to this asset.
+         */
         inline string path() { return path_; }
-        // Gets the data of this asset.
-        // @returns: The data of this asset.
-        inline std::shared_ptr<T> data() { return data_; }
+        
+        /**
+         * @brief Gets the data of this asset.
+         * 
+         * @return The data of this asset.
+         */
+        inline T* data() { return data_; }
 
-        // Is this asset loaded into memory?
-        // @returns: True if the asset has been loaded.
+        /**
+         * @brief Is this asset loaded into memory?
+         * 
+         * @return True if the asset has been loaded.
+         */
         inline bool isLoaded() { return data_ != nullptr; }
 
     protected:
 
-        // The file path to this asset.
+        /**
+         * @brief The file path to this asset.
+         */
         string path_;
-        // The data stored in this asset.
-        std::shared_ptr<T> data_;
+        /**
+         * @brief The data stored in this asset.
+         */
+        T* data_;
 
-        // Constructs a new asset from data in a file.
-        // @param(const string&) path: The path to the asset to be loaded.
+        /**
+         * @brief Construct a new Asset object from data in a file.
+         * 
+         * @param path The path to the asset to be loaded.
+         */
         Asset(const string& path) : path_(path), data_(nullptr) {
             std::ifstream test_path(path);
             if (!test_path) throw std::invalid_argument("Asset path '" + path + "' not found.");
         }
 
-        // Loads this asset into memory.
+        /**
+         * @brief Loads this asset into memory.
+         */
         virtual void load() = 0;
-        // Unloads this asset from memory.
+        /**
+         * @brief Unloads this asset from memory.
+         */
         virtual void unload() = 0;
 
     };
 
-    // A library of assets of type AssetType that encapsulate type AssetData.
-    template <class AssetData, class AssetType>
-    class AssetLibrary {
+    /**
+     * @brief A library of assets of type AssetType that encapsulate type AssetData.
+     * @details 
+     * 
+     * @tparam AssetData The type of data encapsulated by assets in this library.
+     * @tparam AssetType The type of asset stored in this library.
+     * 
+     * @see #Asset
+     */
+    template <class T>
+    class AssetLibrary final {
 
     public:
 
-        // Constructs a new asset library.
-        AssetLibrary() {
+        /**
+         * @brief Construct a new Asset Library object
+         */
+        /*AssetLibrary() {
             // Ensure that AssetType is an Asset<AssetData>
-            static_assert(std::is_base_of<Asset<AssetData>, AssetType>::value,
-                "AssetType is not of type Asset<AssetData>.");
+            //static_assert(std::is_base_of<Asset<AssetData>, AssetType>::value,
+            //    "AssetType is not of type Asset<AssetData>.");
+            static_assert(is_base_of_t<Asset, AssetType>::value,
+                "AssetType is not of type Asset.");
             // Initialize map
-            atlas_ = std::map<string, std::shared_ptr<AssetType>>();
-        }
-    
-        // Requests an asset from the library by path. If the asset is not loaded in memory or
-        // does not exist, nullptr will be returned.
-        // @param(const string&) path: The path to the asset.
-        // @returns: A pointer to the requested asset.
-        std::shared_ptr<AssetType> request(const string& path) const {
-            if (atlas_.count(path) != 0) return nullptr;
-            else if (atlas_.at(path)->isLoaded()) return atlas_.at(path);
-            else return nullptr;
+            atlas_ = std::unordered_map<string, std::shared_ptr<AssetType>>();
+        }*/
+
+        /**
+         * @brief Requests an asset from the library by path.
+         * @details Requests an asset from the library by path. If the asset is not loaded in memory or
+         *          does not exist, nullptr will be returned.
+         * 
+         * @param path The path to the asset.
+         * 
+         * @return A pointer to the requested asset.
+         */
+        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        static std::shared_ptr<T> request(const string& path) {
+            //ENGINE_DEBUG("Requesting asset '" + path + "'...");
+            if (atlas_.find(path) == atlas_.end()) {
+                ENGINE_WARN("Asset '" + path + "' was not found.");
+                return nullptr;
+            }
+            else if (atlas_.at(path)->isLoaded()) {
+                //ENGINE_DEBUG("Found loaded asset '" + path + "'.");
+                return atlas_.at(path);
+            }
+            else {
+                ENGINE_WARN("Asset '" + path + "' is not loaded.");
+                return nullptr;
+            }
         }
 
-        // Creates a new asset from the disk and adds it into the library.
-        // @param(const string&) path: The path to the asset.
-        // @returns: A pointer to the prepared asset.
-        std::shared_ptr<AssetType> prepare(const string& path) {
-            std::shared_ptr<AssetType> newAsset(new AssetType(path));
-            atlas_[path] = newAsset;
-            return newAsset;
+        /**
+         * @brief Creates a new asset from the disk and adds it into the library.
+         * @details This will create a new asset in the library without loading its data
+         *          into memory. Call load() to load the data into memory before use.
+         * 
+         * @param path The path to the asset.
+         * 
+         * @return A pointer to the prepared asset.
+         */
+        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        static std::shared_ptr<T> prepare(const string& path) {
+            atlas_.insert(std::pair<string, std::shared_ptr<T>>(path, std::shared_ptr<T>(new T(path))));
+            return atlas_.at(path);
         }
 
-        // Loads an asset from the disk into memory. If the asset is already loaded, nothing happens.
-        // If the asset has not yet been added to the library, it is prepared and loaded.
-        // @param(const string&) path: The path to the asset.
-        // @returns: A pointer to the loaded asset.
-        std::shared_ptr<AssetType> load(const string& path) {
-            if (atlas_.count(path) != 0) {
+        /**
+         * @brief Loads an asset from the disk into memory.
+         * @details Loads an asset from the disk into memory. If the asset is already loaded, nothing happens.
+         *          If the asset has not yet been added to the library, it is prepared and loaded.
+         * 
+         * @param path The path to the asset.
+         * 
+         * @return A pointer to the loaded asset.
+         */
+        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        static std::shared_ptr<T> load(const string& path) {
+            if (atlas_.find(path) != atlas_.end()) {
                 if (!atlas_.at(path)->isLoaded()) atlas_.at(path)->load();
             }
             else {
@@ -101,10 +173,15 @@ namespace seedengine {
             return atlas_.at(path);
         }
 
-        // Unloads an asset from memory. If the asset is already unloaded, nothing happens.
-        // If the asset does not yet exist, it is created but not loaded.
-        // @param(const string&) path: The path of the image to unload.
-        inline void unload(const string& path) {
+        /**
+         * @brief Unloads an asset from memory.
+         * @details Unloads an asset from memory. If the asset is already unloaded, nothing happens.
+         *          If the asset does not yet exist in the library, it is created but not loaded.
+         * 
+         * @param path The path of the image to unload.
+         */
+        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        static inline void unload(const string& path) {
             if (atlas_.count(path) != 0) {
                 if (atlas_.at(path)->isLoaded()) atlas_.at(path)->unload();
             }
@@ -113,16 +190,23 @@ namespace seedengine {
             }
         }
 
-        // Unloads all assets from the library.
-        inline void unloadAll() {
+        /**
+         * @brief Unloads all assets from the library.
+         */
+        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        static inline void unloadAll() {
             for (auto const& x : atlas_) {
                 if (x.second->isLoaded()) atlas_[x.first]->unload();
             }
         }
 
-        // Unloads all assets from the library with fewer references than the threshold.
-        // @param(unsinged int) threshold: The minimum number of references required to not unload.
-        inline void unloadUnused(unsigned int threshold = 2) {
+        /**
+         * @brief Unloads all assets from the library with fewer references than the threshold.
+         * 
+         * @param threshold The minimum number of references required to not unload.
+         */
+        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        static inline void unloadUnused(unsigned int threshold = 2) {
             for (auto const& x : atlas_) {
                 if (x.second.use_count() < (int)threshold && x.second->isLoaded()) {
                     atlas_[x.first]->unload();
@@ -130,12 +214,17 @@ namespace seedengine {
             }
         }
 
-    protected:
+    private:
 
-        // A map of all assets in memory to their path reference.
-        std::map<string, std::shared_ptr<AssetType>> atlas_;
+        /**
+         * @brief A map of all assets in memory to their path reference.
+         */
+        static std::unordered_map<string, std::shared_ptr<T>> atlas_;
 
     };
+
+    template <class T>
+    std::unordered_map<string, std::shared_ptr<T>> AssetLibrary<T>::atlas_ = std::unordered_map<string, std::shared_ptr<T>>();
 
 }
 

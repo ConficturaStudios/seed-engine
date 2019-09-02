@@ -5,40 +5,63 @@
 
 namespace seedengine {
     namespace util {
-        namespace parser {
-            namespace ini {
-                // A struct that contains relevant data within a single section of an *.ini file
-                struct section {
 
-                    // All integers within this section
-                    std::map<string, const int> int_data;
-                    // All floats within this section
-                    std::map<string, const float> float_data;
-                    // All booleans within this section
-                    std::map<string, const bool> bool_data;
-                    // All strings within this section
-                    std::map<string, const string> string_data;
+        class Parser {
 
-                };
+        protected:
 
-                // A structure to encapsulate *.ini files.
-                struct filedata {
-                    // The absolute path to this file
-                    string filepath;
-                    // All sections mapped to their header
-                    std::map<string, section> sections;
+            Parser() = delete;
+            Parser(string filepath);
 
-                };
+            virtual void parse(string filepath) = 0;
 
-                // Parses an ini file and returns a data structure that can access all key value pairs from the file.
-                // @param(string) filepath: The file path to the ini file to parse.
-                // @returns: An iniFile data structure with the parsed data.
-                filedata parse(string);
+        };
 
-                // Data from the defaults.ini file found in ~/seed-engine/core/data.
-                extern filedata DEFAULTS;
-            }
-        }
+        class IniParser final : public Parser {
+
+        public:
+
+            IniParser() = delete;
+            IniParser(string filepath);
+
+
+            int    get(const string& section, const string& key, int&    out) const;
+            float  get(const string& section, const string& key, float&  out) const;
+            bool   get(const string& section, const string& key, bool&   out) const;
+            string get(const string& section, const string& key, string& out) const;
+
+            int    getInt(   const string& section, const string& key) const;
+            float  getFloat( const string& section, const string& key) const;
+            bool   getBool(  const string& section, const string& key) const;
+            string getString(const string& section, const string& key) const;
+
+            void print() const;
+
+        protected:
+
+            void parse(string filepath) override;
+
+        private:
+
+            typedef std::map<string, const int> ints;
+            typedef std::map<string, const float> floats;
+            typedef std::map<string, const string> strings;
+            typedef std::map<string, const bool> bools;
+
+            struct section {
+                ints int_data;
+                floats float_data;
+                strings string_data;
+                bools bool_data;
+            };
+
+            typedef std::map<string, section> ini_data;
+
+            ini_data parsed_data;
+
+        };
+
+        extern IniParser DEFAULTS;
     }
 }
 

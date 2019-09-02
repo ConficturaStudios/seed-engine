@@ -5,7 +5,9 @@
 #include "Event.hpp"
 #include "Image.hpp"
 #include "Mesh.hpp"
+#include "Transform.hpp"
 #include "Shader.hpp"
+#include "Camera.hpp"
 
 namespace seedengine {
 
@@ -83,7 +85,7 @@ namespace seedengine {
 
         // Initializes a new renderer.
         // @param(const RenderOptions&) options: The options to apply to the renderer.
-        Renderer(const RenderOptions& = RenderOptions());
+        Renderer(RenderOptions = RenderOptions());
 
         // Renders out the current render queue
         // @param(EngineRenderEvent&) e: A reference to the event used to trigger this render pass.
@@ -91,6 +93,7 @@ namespace seedengine {
 
     private:
         //TODO: Create render queue.
+
         //TODO: Create texture queue. (?)
         //TODO: Bind renderer to viewport, or choose a more optimized alternative.
         //TODO: Tie renderer into event system.
@@ -105,12 +108,12 @@ namespace seedengine {
         unsigned int filled_texture_slots_;
 
         // Is backface culling enabled?
-        bool backface_culling_;
+        bool backface_culling_ = false;
         // Is depth testing enabled?
-        bool depth_test_;
+        bool depth_test_ = true;
 
         // Prepares for the next rendering pass.
-        void prepare();
+        void prepare(EnginePreRenderEvent& e);
 
         // Sets the clear color for the renderer. This should be black for deferred rendering.
         // @param(float) r: The red color value.

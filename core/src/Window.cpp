@@ -23,7 +23,6 @@ namespace seedengine {
     void Window::update() {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glfwSwapBuffers(gl_window_);
             glfwPollEvents();
         // Check for Vulkan
@@ -37,7 +36,7 @@ namespace seedengine {
             return;
         #endif
         
-        EventDispatcher::push(new WindowUpdateEvent(this));
+        EventDispatcher::push<WindowUpdateEvent>(this);
     }
 
     void Window::close() {
@@ -317,8 +316,8 @@ namespace seedengine {
         #endif
     }
 
-    Window* Window::create(const WindowProperties& preoperties) {
-        Window* window = new Window();
+    Window* Window::create(const WindowProperties& properties) {
+        Window* window = new Window(properties);
         ENGINE_INFO("Creating window {0}...", window->title());
 
         bool init = false;
@@ -449,7 +448,7 @@ namespace seedengine {
             ENGINE_WARN("Metal not yet supported. Skipping window creation.");
         #endif
 
-        EventDispatcher::push(new WindowCreatedEvent(window));
+        EventDispatcher::push<WindowCreatedEvent>(window);
 
         return window;
     }
@@ -490,42 +489,42 @@ namespace seedengine {
 
 
         void Window::glfwWindowSizeCallback(GLFWwindow* gl_window, int width, int height) {
-            EventDispatcher::push(new WindowResizeEvent(Window::window_map_[gl_window], width, height));
+            EventDispatcher::push<WindowResizeEvent>(Window::window_map_[gl_window], width, height);
         }
 
         void Window::glfwWindowPosCallback(GLFWwindow* gl_window, int xpos, int ypos) {
-            EventDispatcher::push(new WindowPositionEvent(Window::window_map_[gl_window], xpos, ypos));
+            EventDispatcher::push<WindowPositionEvent>(Window::window_map_[gl_window], xpos, ypos);
         }
 
         void Window::glfwWindowCloseCallback(GLFWwindow* gl_window) {
-            EventDispatcher::push(new WindowCloseEvent(Window::window_map_[gl_window]));
+            EventDispatcher::push<WindowCloseEvent>(Window::window_map_[gl_window]);
         }
 
         void Window::glfwWindowRefreshCallback(GLFWwindow* gl_window) {
-            EventDispatcher::push(new WindowRefreshEvent(Window::window_map_[gl_window]));
+            EventDispatcher::push<WindowRefreshEvent>(Window::window_map_[gl_window]);
         }
 
         void Window::glfwWindowFocusCallback(GLFWwindow* gl_window, int focused) {
-            EventDispatcher::push(new WindowFocusEvent(Window::window_map_[gl_window], focused));
+            EventDispatcher::push<WindowFocusEvent>(Window::window_map_[gl_window], focused);
         }
 
         void Window::glfwWindowIconifyCallback(GLFWwindow* gl_window, int iconified) {
-            EventDispatcher::push(new WindowMinimizeEvent(Window::window_map_[gl_window], iconified));
+            EventDispatcher::push<WindowMinimizeEvent>(Window::window_map_[gl_window], iconified);
         }
 
         void Window::glfwWindowMaximizeCallback(GLFWwindow* gl_window, int maximized) {
-            EventDispatcher::push(new WindowMaximizeEvent(Window::window_map_[gl_window], maximized));
+            EventDispatcher::push<WindowMaximizeEvent>(Window::window_map_[gl_window], maximized);
         }
 
         void Window::glfwFramebufferSizeCallback(GLFWwindow* gl_window, int width, int height) {
             // Update viewport to match window size
             //TODO: Update viewport using ratio values to window
             glViewport(0, 0, width, height);
-            EventDispatcher::push(new WindowResizeEvent(Window::window_map_[gl_window], width, height));
+            EventDispatcher::push<WindowResizeEvent>(Window::window_map_[gl_window], width, height);
         }
 
         void Window::glfwWindowContentScaleCallback(GLFWwindow* gl_window, float xscale, float yscale) {
-            EventDispatcher::push(new WindowConentScaleEvent(Window::window_map_[gl_window], xscale, yscale));
+            EventDispatcher::push<WindowConentScaleEvent>(Window::window_map_[gl_window], xscale, yscale);
         }
 
 
@@ -541,13 +540,15 @@ namespace seedengine {
                 case GLFW_REPEAT:
                     button_state = input::ButtonState::REPEAT;
                     break;
+                default:
+                    return;
             }
             ENGINE_DEBUG("Key '{0}' was {1} ({2})!", key, action, static_cast<unsigned int>(button_state));
-            EventDispatcher::push(new KeyboardEvent(key, 0, button_state, mods));
+            EventDispatcher::push<KeyboardEvent>(key, 0, button_state, mods);
         }
 
         void Window::glfwCursorPositionCallback(GLFWwindow* gl_window, double xpos, double ypos) {
-            EventDispatcher::push(new MouseMovedEvent((float)xpos, (float)ypos));
+            EventDispatcher::push<MouseMovedEvent>((float)xpos, (float)ypos);
         }
 
         void Window::glfwMouseButtonCallback(GLFWwindow* gl_window, int button, int action, int mods) {
@@ -562,14 +563,16 @@ namespace seedengine {
                 case GLFW_REPEAT:
                     button_state = input::ButtonState::REPEAT;
                     break;
+                default:
+                    return;
             }
             MouseButtonEvent* e = new MouseButtonEvent(button, button_state, mods);
             ENGINE_DEBUG("Mouse Button '{0}' was {1} ({2}) at <{3}, {4}>!", button, action, static_cast<unsigned int>(button_state), e->x(), e->y());
-            EventDispatcher::push(new MouseButtonEvent(button, button_state, mods));
+            EventDispatcher::push<MouseButtonEvent>(button, button_state, mods);
         }
 
         void Window::glfwScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-            EventDispatcher::push(new MouseScrolledEvent((float)xoffset, (float)yoffset));
+            EventDispatcher::push<MouseScrolledEvent>((float)xoffset, (float)yoffset);
         }
 
     #endif

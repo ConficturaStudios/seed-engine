@@ -19,19 +19,17 @@ namespace seedengine {
         // Constructs a new Shader
         // @param(string) vertex_shader_path
         // @param(string) fragment_shader_path
-        // @param(string[]) attributes: The attributes to bind.
-        // @param(string[]) uniforms: The names of the uniforms to store.
-        Shader(string, string, string[], string[]);
+        // @param(std::vector<string>) attributes: The attributes to bind.
+        // @param(std::vector<string>) uniforms: The names of the uniforms to store.
+        Shader(string, string, std::vector<string>, std::vector<string>);
 
         // Destroys this shader.
         virtual ~Shader();
 
         // Starts the shader.
-        inline void start();
+        void start();
         // Stops the shader.
-        inline void stop();
-        // Cleans up the memory used for this shader.
-        inline void cleanUp();
+        void stop();
 
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
@@ -94,20 +92,26 @@ namespace seedengine {
         #endif
 
     protected:
+
+        bool initialized_;
+
+        // Cleans up the memory used for this shader.
+        void cleanUp();
+
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
 
-            std::map<string, unsigned int> locations_;
+            std::map<string, unsigned int> locations_ = std::map<string, unsigned int>();
 
             // Gets the locations of all needed uniforms.
             // These locations are mapped by name and sstored in memory.
-            // @param(string[]) uniforms: The names of the uniforms to store.
-            void getAllUniformLocations(string[]);
+            // @param(std::vector<string>) uniforms: The names of the uniforms to store.
+            void getAllUniformLocations(std::vector<string>);
 
             // Binds all needed attributes to the shader. These will be bound to the array index
             // that they were passed in.
-            // @param(string[]) attributes: The attributes to bind.
-            void bindAttributes(string[]);
+            // @param(std::vector<string>) attributes: The attributes to bind.
+            void bindAttributes(std::vector<string>);
             // TODO: Rework where bindAttributes and getAllUniformLocations are called
 
             // Gets the location of the specified uniform.

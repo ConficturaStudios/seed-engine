@@ -135,6 +135,7 @@
 #include <algorithm>
 
 #include <exception>
+#include <type_traits>
 
 // Namespace using directives
 
@@ -142,12 +143,18 @@ using std::string;
 
 // Custom Macros:
 
-// Creates an absolute file path within the engine core folder.
-#define CORE_PATH(x) ENGINE_CORE_PATH "/" x
+/**
+ * @brief Creates an absolute file path within the engine core folder.
+ */
+#define CORE_PATH(x) string(ENGINE_CORE_PATH "/" x)
 
-// Creates a bitwise flag.
+/**
+ * @brief Creates a bitwise flag.
+ */
 #define FLAG(x) (1 << x)
-// Checks if the option has the flag enabled.
+/**
+ * @brief Checks if the option has the flag enabled.
+ */
 #define CHECK_FLAG(option, flag) (option & flag) == flag
 
 // STL Extensions
@@ -163,9 +170,24 @@ namespace std {
 
 }
 
+// Compile Time Traits
+
+template < template <typename...> class Base, typename Derived>
+struct is_base_of_t_impl
+{
+    template<typename... T>
+    static constexpr std::true_type  check(const Base<T...>*);
+    static constexpr std::false_type check(...);
+    using type = decltype(check(std::declval<Derived*>()));
+};
+
+template < template <typename...> class Base, typename Derived>
+using is_base_of_t = typename is_base_of_t_impl<Base, Derived>::type;
+
 // Engine specific includes:
 
 #include "Log.hpp"
+#include "Nullable.hpp"
 #include "Property.hpp"
 
 #include "Random.hpp"
