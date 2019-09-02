@@ -55,12 +55,28 @@ def run_todo(args):
         pass
 
 def run_project(args):
-    if args.debug:
-        print("Running project Debug executibles...")
-        subprocess.call("./bin/Debug/seed-engine-editor.exe")
+    if args.test:
+        if args.debug:
+            print()
+            print("Executing program debug tests.")
+            print()
+            subprocess.call("./bin/Debug/seed-engine-core-tests.exe")
+        else:
+            print()
+            print("Executing program release tests.")
+            print()
+            subprocess.call("./bin/Release/seed-engine-core-tests.exe")
     else:
-        print("Running project Release executibles...")
-        subprocess.call("./bin/Release/seed-engine-editor.exe")
+        if args.debug:
+            print()
+            print("Running project Debug executibles...")
+            print()
+            subprocess.call("./bin/Debug/seed-engine-editor.exe")
+        else:
+            print()
+            print("Running project Release executibles...")
+            print()
+            subprocess.call("./bin/Release/seed-engine-editor.exe")
 
 def build_project(args):
     print("Building project...")
@@ -287,6 +303,7 @@ todo_parser.set_defaults(func=run_todo)
 run_parser = subparser.add_parser("run", description="Runs the project with additional options.")
 run_parser.set_defaults(func=run_project)
 run_parser.add_argument("-d", "--debug", action="store_true", help="An optional flag to run the project Debug build")
+run_parser.add_argument("-t", "--test", action="store_true", help="An optional flag to run the project tests")
 
 build_parser = subparser.add_parser("build", description="Builds the project with additional options.")
 build_parser.set_defaults(func=build_project)

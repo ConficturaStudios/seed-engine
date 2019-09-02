@@ -58,15 +58,21 @@ namespace seedengine {
         N& operator=(const null_t& null) {
             this->is_null_ = true;
         }
-
-        template <class N, typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type>
-        friend bool operator==(const N& obj, const null_t& null) {
-            return obj.is_null_;
+        
+        template <
+            class N,
+            typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type
+        >
+        N& operator=(const N& obj) {
+            this->is_null_ = obj->is_null_;
         }
 
-        template <class N, typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type>
-        friend bool operator!=(const N& obj, const null_t& null) {
-            return !obj.is_null_;
+        bool operator==(const null_t& null) {
+            return is_null_;
+        }
+
+        bool operator!=(const null_t& null) {
+            return !is_null_;
         }
 
         virtual operator std::string() const { return "nullable_t"; }
