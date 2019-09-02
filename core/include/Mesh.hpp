@@ -133,16 +133,6 @@ namespace seedengine {
 
     };
 
-    // A library of mesh assets.
-    /*class MeshLibrary : public AssetLibrary<Mesh> {
-
-    public:
-
-        // Constructs a new mesh library.
-        MeshLibrary() : AssetLibrary<Mesh>() {}
-
-    };*/
-
 }
 
 #endif

@@ -86,7 +86,7 @@ namespace seedengine {
         template <
             class E,
             class... Args,
-            typename = std::enable_if<std::is_base_of<Event, E>::value>::type
+            typename = typename std::enable_if<std::is_base_of<Event, E>::value>::type
         >
         static void push(Args&&... args) {
             event_buffer.push(std::make_shared<E>(std::forward<Args>(args)...));

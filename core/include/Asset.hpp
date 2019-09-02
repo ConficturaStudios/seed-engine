@@ -121,7 +121,7 @@ namespace seedengine {
          * 
          * @return A pointer to the requested asset.
          */
-        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        template <typename = typename std::enable_if<is_base_of_t<Asset, T>::value>::type>
         static std::shared_ptr<T> request(const string& path) {
             //ENGINE_DEBUG("Requesting asset '" + path + "'...");
             if (atlas_.find(path) == atlas_.end()) {
@@ -147,7 +147,7 @@ namespace seedengine {
          * 
          * @return A pointer to the prepared asset.
          */
-        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        template <typename = typename std::enable_if<is_base_of_t<Asset, T>::value>::type>
         static std::shared_ptr<T> prepare(const string& path) {
             atlas_.insert(std::pair<string, std::shared_ptr<T>>(path, std::shared_ptr<T>(new T(path))));
             return atlas_.at(path);
@@ -162,7 +162,7 @@ namespace seedengine {
          * 
          * @return A pointer to the loaded asset.
          */
-        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        template <typename = typename std::enable_if<is_base_of_t<Asset, T>::value>::type>
         static std::shared_ptr<T> load(const string& path) {
             if (atlas_.find(path) != atlas_.end()) {
                 if (!atlas_.at(path)->isLoaded()) atlas_.at(path)->load();
@@ -180,7 +180,7 @@ namespace seedengine {
          * 
          * @param path The path of the image to unload.
          */
-        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        template <typename = typename std::enable_if<is_base_of_t<Asset, T>::value>::type>
         static inline void unload(const string& path) {
             if (atlas_.count(path) != 0) {
                 if (atlas_.at(path)->isLoaded()) atlas_.at(path)->unload();
@@ -193,7 +193,7 @@ namespace seedengine {
         /**
          * @brief Unloads all assets from the library.
          */
-        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        template <typename = typename std::enable_if<is_base_of_t<Asset, T>::value>::type>
         static inline void unloadAll() {
             for (auto const& x : atlas_) {
                 if (x.second->isLoaded()) atlas_[x.first]->unload();
@@ -205,7 +205,7 @@ namespace seedengine {
          * 
          * @param threshold The minimum number of references required to not unload.
          */
-        template <typename = std::enable_if<is_base_of_t<Asset, T>::value>::type>
+        template <typename = typename std::enable_if<is_base_of_t<Asset, T>::value>::type>
         static inline void unloadUnused(unsigned int threshold = 2) {
             for (auto const& x : atlas_) {
                 if (x.second.use_count() < (int)threshold && x.second->isLoaded()) {
