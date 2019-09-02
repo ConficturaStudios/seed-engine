@@ -112,7 +112,7 @@ namespace seedengine {
         template <
             class E,
             class... Args,
-            typename = std::enable_if<std::is_base_of<Event, E>::value>::type
+            typename = typename std::enable_if<std::is_base_of<Event, E>::value>::type
         >
         static void force(Args&&... args) {
             auto event_ptr = std::make_shared<E>(std::forward<Args>(args)...);
