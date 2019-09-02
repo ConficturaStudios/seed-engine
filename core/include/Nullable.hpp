@@ -22,7 +22,7 @@ namespace seedengine {
 
         template <
             class N,
-            typename = std::enable_if<std::is_base_of<nullable_t, N>::value>::type
+            typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type
         >
         operator N() const {
             N n = N();
@@ -53,18 +53,18 @@ namespace seedengine {
 
         template <
             class N,
-            typename = std::enable_if<std::is_base_of<nullable_t, N>::value>::type
+            typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type
         >
         N& operator=(const null_t& null) {
             this->is_null_ = true;
         }
 
-        template <class N, typename = std::enable_if<std::is_base_of<nullable_t, N>::value>::type>
+        template <class N, typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type>
         friend bool operator==(const N& obj, const null_t& null) {
             return obj.is_null_;
         }
 
-        template <class N, typename = std::enable_if<std::is_base_of<nullable_t, N>::value>::type>
+        template <class N, typename = typename std::enable_if<std::is_base_of<nullable_t, N>::value>::type>
         friend bool operator!=(const N& obj, const null_t& null) {
             return !obj.is_null_;
         }
