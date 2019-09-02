@@ -137,7 +137,7 @@ namespace seedengine {
 
             int shader_id = glCreateShader(shader_type);
             GLchar const* files[] = { buffer.c_str() };
-            GLint lengths[] = { (GLuint)buffer.size() };
+            GLint lengths[] = { (GLint)buffer.size() };
 
             //TODO: Create common shader code that can be written in prior to each source file
             glShaderSource(shader_id, 1, files, lengths);
