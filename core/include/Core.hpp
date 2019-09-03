@@ -139,7 +139,7 @@
 
 // Namespace using directives
 
-using std::string;
+using ::std::string;
 
 // Custom Macros:
 

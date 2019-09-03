@@ -6,8 +6,6 @@
 
 namespace seedengine {
 
-    using std::string;
-
     // The draw type of a mesh.
     enum class MeshDrawType {
         STATIC,

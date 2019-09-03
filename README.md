@@ -63,7 +63,7 @@ Seed Engine has been designed to have minimal requirements to build the project.
 ***Note:*** *GCC compilers older than GCC 4.9.0 are not supported due to a lack of implementation for std::regex.*
 
 ### Linux Requirements
-- GCC/G++ 5.0 or newer
+- GCC/G++ 6.0 or newer
 - Clang 6.0 or newer
 ### Mac OS X Requirements
 - Mac OS X v10.11 El Capitan or newer
