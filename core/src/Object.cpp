@@ -38,6 +38,10 @@ namespace seedengine {
         return (*this == nullobj) ? "null" : this->toString();
     }
 
+    Object& Object::operator=(const null_t& null) {
+        nullable_t::operator=(null);
+        return *this;
+    }
 
     std::ostream& operator<<(std::ostream& os, const Object& obj) {
         os << (string)obj;

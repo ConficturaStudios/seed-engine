@@ -39,7 +39,7 @@ namespace seedengine {
 
         /// Operator overloads
 
-        using nullable_t::operator=;
+        Object& operator=(const null_t& null);
 
         friend std::ostream& operator<<(std::ostream& os, const Object& obj);
 
