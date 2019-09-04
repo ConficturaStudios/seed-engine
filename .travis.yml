@@ -41,18 +41,6 @@ matrix:
 
     - os: linux
       dist: trusty
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-            - g++-5
-            - cmake
-
-    - os: linux
-      dist: trusty
       env: COMPILER_NAME=clang CXX=clang++-6.0 CC=clang-6.0
       addons:
         apt:
