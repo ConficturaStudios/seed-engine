@@ -45,7 +45,7 @@ namespace seedengine {
         // The total vertex attribute count.
         unsigned int vertex_attrib_count = 0;
 
-        operator string() const override { return "meshdata"; }
+        operator ::std::string() const override { return "meshdata"; }
 
     };
 
