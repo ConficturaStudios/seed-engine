@@ -7,6 +7,7 @@
 #include <limits>
 #include <stdlib.h>
 #include <chrono>
+#include <initializer_list>
 
 namespace seedengine {
 

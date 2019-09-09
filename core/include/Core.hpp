@@ -129,6 +129,7 @@
 #include <unordered_map>
 #include <vector>
 #include <iterator>
+#include <initializer_list>
 
 #include <regex>
 #include <functional>
