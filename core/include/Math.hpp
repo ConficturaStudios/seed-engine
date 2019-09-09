@@ -6,6 +6,7 @@
 #include <math.h>
 #include <limits>
 #include <stdlib.h>
+#include <algorithm>
 #include <chrono>
 #include <initializer_list>
 
