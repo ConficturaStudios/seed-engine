@@ -41,46 +41,62 @@ namespace seedengine {
          */
         Color(float r = 0, float g = 0, float b = 0, float a = 1);
 
-        /**
-         * @brief The red channel of this color.
-         */
+        /** The red channel of this color. */
         float r;
-        /**
-         * @brief The green channel of this color.
-         */
+        /** The green channel of this color. */
         float g;
-        /**
-         * @brief The blue channel of this color.
-         */
+        /** The blue channel of this color. */
         float b;
-        /**
-         * @brief The alpha channel of this color.
-         */
+        /** The alpha channel of this color. */
         float a;
         
+        /** The color black. */
         static const Color black;
+        /** The color blue. */
         static const Color blue;
+        /** The color black with no alpha. */
         static const Color clear;
+        /** The color cyan. */
         static const Color cyan;
+        /** The color dark blue. */
         static const Color dark_blue;
+        /** The color dark cyan. */
         static const Color dark_cyan;
+        /** The color dark green. */
         static const Color dark_green;
+        /** The color dark grey. */
         static const Color dark_grey;
+        /** The color dark magenta. */
         static const Color dark_magenta;
+        /** The color dark red. */
         static const Color dark_red;
+        /** The color dark yellow. */
         static const Color dark_yellow;
+        /** The color green. */
         static const Color green;
+        /** The color grey. */
         static const Color grey;
+        /** The color light blue. */
         static const Color light_blue;
+        /** The color light cyan. */
         static const Color light_cyan;
+        /** The color light green. */
         static const Color light_green;
+        /** The color light grey. */
         static const Color light_grey;
+        /** The color light magenta. */
         static const Color light_magenta;
+        /** The color light red. */
         static const Color light_red;
+        /** The color light yellow. */
         static const Color light_yellow;
+        /** The color magenta. */
         static const Color magenta;
+        /** The color red. */
         static const Color red;
+        /** The color white. */
         static const Color white;
+        /** The color yellow. */
         static const Color yellow;
 
         Color operator+(const Color& c) const;
@@ -108,13 +124,6 @@ namespace seedengine {
     Color operator*(const float& f, const Color& c);
 
     std::ostream& operator<<(std::ostream& os, const Color& obj);
-
-    namespace math {
-
-        // lerp
-        inline Color lerp(const Color& a, const Color& b, const float& t) { return a + t * (b - a); }
-
-    }
 
 }
 

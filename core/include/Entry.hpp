@@ -8,9 +8,13 @@
 
 namespace seedengine {
 
-    // The main entry point of the Seed Engine Core.
-    // @param(int) argc: Command line argc.
-    // @param(char**) argv: Command line argv.
+    /**
+     * @brief The main entry point of the Seed Engine Core.
+     * 
+     * @param argc Command line argc.
+     * @param argv Command line argv.
+     * @return int The exit code.
+     */
     int main(int argc, char** argv) {
 
         Log::init();

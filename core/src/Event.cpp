@@ -2,32 +2,26 @@
 
 namespace seedengine {
 
-    //TODO: Clean up memory leaks with smart pointers
-
     std::queue<std::shared_ptr<Event>> EventDispatcher::event_buffer;
-    std::map<const unsigned int, std::vector<std::function<void(Event&)>>> EventDispatcher::deligate_regtistry;
+    std::map<const unsigned int, std::vector<EventDispatcher::EventDeligate>> EventDispatcher::deligate_regtistry;
 
-    void EventDispatcher::registerDeligate(const unsigned int event_id, std::function<void(Event&)> deligate) {
+    void EventDispatcher::registerDeligate(const unsigned int event_id, EventDispatcher::EventDeligate deligate) {
 
         // Check if event has been registered
         if (deligate_regtistry.find(event_id) == deligate_regtistry.end()) {
             // Register event reference if not found
-            std::vector<std::function<void(Event&)>> deligates;
+            std::vector<EventDeligate> deligates;
             deligate_regtistry[event_id] = deligates;
         }
         // Add delegate to binding list
         deligate_regtistry[event_id].push_back(deligate);
     }
 
-    //void EventDispatcher::push(Event* event_ptr)
-
     std::shared_ptr<Event> EventDispatcher::pop() {
         auto next_event = event_buffer.front();
         event_buffer.pop();
         return next_event;
     }
-
-    //void EventDispatcher::force(std::shared_ptr<Event> event_ptr)
 
     void EventDispatcher::run(unsigned int type_filter) {
 
@@ -39,7 +33,7 @@ namespace seedengine {
             auto next = pop();
             if (next->isType(static_cast<EventType>(type_filter))) {
                 // Iterate through all delegates bound to this event
-                for (std::function<void(Event&)> deligate : deligate_regtistry[next->getId()])
+                for (EventDeligate deligate : deligate_regtistry[next->getId()])
                 {
                     // Call the function
                     deligate(*next);

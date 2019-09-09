@@ -6,50 +6,61 @@
 
 namespace seedengine {
 
-    // The draw type of a mesh.
+    /** The draw type of a mesh. */
     enum class MeshDrawType {
         STATIC,
         DYNAMIC
     };
 
-    // The raw data of a mesh loaded from a file.
+    /**
+     * @brief The raw data of a mesh loaded from a file.
+     * @details
+     */
     struct meshdata : public nullable_t {
-        // The properties of the mesh.
+        /** The properties of the mesh. */
         std::map<string, string> properties = std::map<string, string>();
-        // The vertex positions of the mesh.
+        /** The vertex positions of the mesh. */
         std::vector<float> positions = std::vector<float>();
-        // The vertex normals of the mesh.
+        /** The vertex normals of the mesh. */
         std::vector<float> normals = std::vector<float>();
-        // The primary vertex colors of the mesh.
+        /** The primary vertex colors of the mesh. */
         std::vector<float> p_colors = std::vector<float>();
-        // The secondary vertex colors of the mesh.
+        /** The secondary vertex colors of the mesh. */
         std::vector<float> s_colors = std::vector<float>();
-        // The uv channel 0 of the mesh.
+        /** The uv channel 0 of the mesh. */
         std::vector<float> uv_0 = std::vector<float>();
-        // The uv channel 1 of the mesh.
+        /** The uv channel 1 of the mesh. */
         std::vector<float> uv_1 = std::vector<float>();
-        // The uv channel 2 of the mesh.
+        /** The uv channel 2 of the mesh. */
         std::vector<float> uv_2 = std::vector<float>();
-        // The uv channel 3 of the mesh.
+        /** The uv channel 3 of the mesh. */
         std::vector<float> uv_3 = std::vector<float>();
-        // The uv channel 4 of the mesh.
+        /** The uv channel 4 of the mesh. */
         std::vector<float> uv_4 = std::vector<float>();
-        // The uv channel 5 of the mesh.
+        /** The uv channel 5 of the mesh. */
         std::vector<float> uv_5 = std::vector<float>();
-        // The uv channel 6 of the mesh.
+        /** The uv channel 6 of the mesh. */
         std::vector<float> uv_6 = std::vector<float>();
-        // The uv channel 7 of the mesh.
+        /** The uv channel 7 of the mesh. */
         std::vector<float> uv_7 = std::vector<float>();
-        // The faces of the mesh.
+        /** The faces of the mesh. */
         std::vector<int>   faces = std::vector<int>();
-        // The total vertex attribute count.
+        /** The total vertex attribute count. */
         unsigned int vertex_attrib_count = 0;
 
+        /**
+         * @brief Casts this object into a string.
+         * 
+         * @return string The string representation of this object.
+         */
         operator string() const override { return "meshdata"; }
 
     };
 
-    // A mesh asset.
+    /**
+     * @brief A mesh asset.
+     * @details
+     */
     class Mesh : public Asset<meshdata> {
 
         ENGINE_ASSET_BODY()
@@ -60,28 +71,35 @@ namespace seedengine {
 
     protected:
 
-        // Constructs a new mesh from data in a file.
-        // @param(const string&) path: The path to the mesh to be loaded.
-        Mesh(const string&);
+        /**
+         * @brief Constructs a new mesh from data in a file.
+         * 
+         * @param path The path to the mesh to be loaded.
+         */
+        Mesh(const string& path);
 
-        // Loads this mesh into memory.
+        /** Loads this mesh into memory. */
         void load();
-        // Unloads this mesh from memory.
+        /** Unloads this mesh from memory. */
         void unload();
 
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
         
-            // The vertex array object (VAO) of this mesh.
+            /** The vertex array object (VAO) of this mesh. */
             GLuint vao_ = 0;
-            // All vertex buffer objects (VBOs) of this mesh.
+            /** All vertex buffer objects (VBOs) of this mesh. */
             std::vector<GLuint> vertex_buffers_ = std::vector<GLuint>();
-            // The indices buffer of this mesh.
+            /** The indices buffer of this mesh. */
             GLuint indices_buffer_ = 0;
 
-            // Creates a new VBO using the passed data.
-            // @param(unsigned int) size: The size of the data elements.
-            // @param(std::vector<float>) data: The data to bind.
+            /**
+             * @brief Creates a new VBO using the passed data.
+             * 
+             * @param location The location in the buffer to bind to.
+             * @param size The size of the data elements.
+             * @param data The data to bind.
+             */
             void opglCreateVertexBuffer(unsigned int location, unsigned int size, std::vector<float> data) {
                 GLuint buffer;
                 glGenBuffers(1, &buffer);
@@ -97,11 +115,14 @@ namespace seedengine {
                     0
                 );
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
-                //TODO: Add option for gl dynamic draw.
+                //TODO: Add option for gl dynamic draw in procedural mesh class.
             }
 
-            // Creates a new Indices VBO using the passed data.
-            // @param(std::vector<int>) data: The data to bind.
+            /**
+             * @brief Creates a new Indices VBO using the passed data.
+             * 
+             * @param data The data to bind.
+             */
             void opglCreateIndicesBuffer(std::vector<int> data) {
                 glGenBuffers(1, &indices_buffer_);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer_);
@@ -126,10 +147,14 @@ namespace seedengine {
 
     private:
 
-        // Loads the *.mesh file into data.
-        // @param(const string&) path: The path to the mesh to be loaded.
-        // @param(std::shared_ptr<meshdata>) data: A pointer to the location to store the parsed data.
-        static meshdata extractMesh(const string&);
+        /**
+         * @brief Loads the *.mesh file into data.
+         * 
+         * @param path The path to the mesh to be loaded.
+         * @return meshdata The data stored within the passed file.
+         */
+        static meshdata extractMesh(const string& path);
+        //TODO: return success bool instead, pass meshdata information to out reference variable
 
     };
 

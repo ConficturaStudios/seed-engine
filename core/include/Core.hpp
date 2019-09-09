@@ -15,7 +15,7 @@
 #define ENGINE_GRAPHICS_METL 4
 
 #if ENGINE_GRAPHICS_API == -1
-    #error "Graphics API not defined."
+    #error Graphics API not defined.
 #endif
 
 // Cross Platform Libraries

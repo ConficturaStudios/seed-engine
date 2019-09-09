@@ -5,82 +5,128 @@
 
 namespace seedengine {
 
-    // Controls time related data for the application.
-    class Time {
+    /**
+     * @brief Controls time related data for the application.
+     * @details
+     */
+    class Time final {
 
-        // Allow Program::run(int*) to access private members
+        /** Allow Program::run(int*) to access private members */
         friend class Program;
 
     public:
 
-        // Starts the clock on the program. This should only be called by the Program class.
-        static void start();
-
-        // Toggles the game paused setting.
-        // @returns: The new paused state.
+        /**
+         * @brief Toggles the game paused setting.
+         * 
+         * @return true If the game is now paused.
+         * @return false If the game is now unpaused.
+         */
         static bool togglePause();
 
-        // Returns the game paused setting.
-        // @returns: The paused state.
+        /**
+         * @brief Returns the game paused setting.
+         * 
+         * @return true If the game is paused.
+         * @return false If the game is not paused.
+         */
         inline static bool isPaused() { return paused_; }
 
-        // Returns the current delta time.
-        // @returns: The current delta time.
+        /**
+         * @brief Returns the current delta time.
+         * 
+         * @return float The current delta time.
+         */
         inline static float getDeltaTime() { return delta_time_; }
 
-        // Sets the time scale of the program to the passed value.
-        // @param(float) time_scale: The new time scale value.
-        // @returns: The previous time scale.
-        static float setTimeScale(float);
+        /**
+         * @brief Sets the time scale of the program.
+         * 
+         * @param time_scale The new time scale value.
+         * @return float The previous time scale.
+         */
+        static float setTimeScale(float time_scale);
 
-        // Returns the current time scale.
-        // @returns: The current time scale.
+        /**
+         * @brief Returns the current time scale.
+         * 
+         * @return float The current time scale.
+         */
         inline static float getTimeScale() { return time_scale_; }
 
-        // Returns the time between updates.
-        // @returns: The current update time in milliseconds.
+        /**
+         * @brief Returns the time between updates.
+         * 
+         * @return float The current update time in milliseconds.
+         */
         static float getUpTime();
 
-        // Returns the time of the last update loop.
-        // @returns: The time of the last update loop.
+        /**
+         * @brief Returns the time of the last update loop.
+         * 
+         * @return float The time of the last update loop.
+         */
         inline static float getLastLoopTime() { return (float)(last_loop_time_.count()); }
 
-        // Returns the current system time in milliseconds.
-        // @returns: The current system time in milliseconds.
+        /**
+         * @brief Returns the current system time in milliseconds.
+         * 
+         * @return std::chrono::milliseconds The current system time in milliseconds.
+         */
         static std::chrono::milliseconds currentSysTimeMS();
 
-        // Returns the time since the program began in milliseconds.
-        // @returns: The time since the program began in milliseconds.
+        /**
+         * @brief Returns the time since the program began in milliseconds.
+         * 
+         * @return std::chrono::milliseconds The time since the program began in milliseconds.
+         */
         static std::chrono::milliseconds elapsedTimeMS();
 
-        // Returns the current system time in seconds.
-        // @returns: The current system time in seconds.
+        /**
+         * @brief Returns the current system time in seconds.
+         * 
+         * @return std::chrono::seconds The current system time in seconds.
+         */
         static std::chrono::seconds currentSysTimeS();
 
-        // Returns the time since the program began in seconds.
-        // @returns: The time since the program began in seconds.
+        /**
+         * @brief Returns the time since the program began in seconds.
+         * 
+         * @return std::chrono::seconds The time since the program began in seconds.
+         */
         static std::chrono::seconds elapsedTimeS();
 
 
-        // Converts milliseconds into seconds.
-        // @param(long) ms: Milliseconds to convert.
-        // @returns: The seconds conversion of the passed value.
-        static float msToSec(long);
+        /**
+         * @brief Converts milliseconds into seconds.
+         * 
+         * @param ms Milliseconds to convert.
+         * @return float The seconds conversion of the passed value.
+         */
+        static float msToSec(long ms);
 
     private:
 
-        // The time between frames in milliseconds.
+        /**
+         * @brief Starts the clock on the program. This should only be called
+         *        by the Program class.
+         * 
+         * @see #Program
+         */
+        static void start();
+
+        /** The time between frames in milliseconds. */
         static float delta_time_;
-        // Is the game paused.
+        /** Is the game paused. */
         static bool paused_;
 
-        // The current time scale.
+        /** The current time scale. */
         static float time_scale_;
-        // The last active time scale.
+        /** The last active time scale. */
         static float last_time_scale_;
-        // The start time of the program
+        /** The start time of the program */
         static std::chrono::milliseconds start_time_;
-        // The last update loop time value.
+        /** The last update loop time value. */
         static std::chrono::milliseconds last_loop_time_;
 
     };

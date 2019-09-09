@@ -9,9 +9,7 @@ namespace seedengine {
 
     // Custom Asset Macros
 
-    /**
-     * @brief The standard body to include in all engine assets.
-     */
+    /** The standard body to include in all engine assets. */
     #define ENGINE_ASSET_BODY() \
         template <class AssetType>\
         friend class AssetLibrary;
@@ -98,19 +96,6 @@ namespace seedengine {
     class AssetLibrary final {
 
     public:
-
-        /**
-         * @brief Construct a new Asset Library object
-         */
-        /*AssetLibrary() {
-            // Ensure that AssetType is an Asset<AssetData>
-            //static_assert(std::is_base_of<Asset<AssetData>, AssetType>::value,
-            //    "AssetType is not of type Asset<AssetData>.");
-            static_assert(is_base_of_t<Asset, AssetType>::value,
-                "AssetType is not of type Asset.");
-            // Initialize map
-            atlas_ = std::unordered_map<string, std::shared_ptr<AssetType>>();
-        }*/
 
         /**
          * @brief Requests an asset from the library by path.

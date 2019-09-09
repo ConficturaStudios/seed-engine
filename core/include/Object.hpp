@@ -9,35 +9,53 @@ namespace seedengine {
 
     public:
 
-        // Constructs a new Object.
+        /** Constructs a new Object. */
         Object();
 
-        // Constructs a new Object with a custom name.
+        /**
+         * @brief Constructs a new Object.
+         * 
+         * @param name The name of this Object.
+         */
         Object(string name);
 
-
+        /**
+         * @brief Constructs a new Object.
+         * 
+         * @param obj The Object to copy when constructing this Object.
+         */
         Object(const Object& obj);
-
+        /**
+         * @brief Constructs a new Object.
+         * 
+         * @param null The null object to initialize this Object as null.
+         */
         Object(const null_t& null);
 
-        // Destroys this Object.
+        /** Destroys this Object. */
         virtual ~Object();
 
-        // Returns the ID of this Object.
-        // @returns: The ID of this Object.
+        /**
+         * @brief Returns the ID of this Object.
+         * 
+         * @return const unsigned int The ID of this Object.
+         */
         inline const unsigned int getID() const { return id_; }
 
-        // Converts this Object into a string.
-        // @returns: The string form of this Object.
+        /**
+         * @brief Converts this Object into a string.
+         * 
+         * @return string The string form of this Object.
+         */
         virtual string toString() const;
 
-        /// Cast operators
+        // Cast operators
 
         explicit operator unsigned int() const;
 
         operator string() const override;
 
-        /// Operator overloads
+        // Operator overloads
 
         Object& operator=(const null_t& null);
 
@@ -55,33 +73,39 @@ namespace seedengine {
 
         virtual bool operator>=(const Object& obj) const;
 
-        /// Static Functions
+        // Static Functions
 
-        // Calls the destructor on the passed Object.
-        // @param(Object&) obj: The Object to destroy.
-        // @param(float) delay: The delay before destroying the Object. Defaults to 0.
+        /**
+         * @brief Calls the destructor on the passed Object.
+         * 
+         * @param obj The Object to destroy.
+         * @param delay The delay before destroying the Object. Defaults to 0.
+         */
         static void Destroy(Object* obj, float delay = 0.0f) {
             delete obj;
         }
 
     protected:
 
-        // The name of this Object.
+        /** The name of this Object. */
         string name_;
 
     private:
 
-        // A mutex to lock functions for thread safety.
+        /** A mutex to lock functions for thread safety. */
         static std::mutex s_mu;
 
-        // The id of this Object.
+        /** The id of this Object. */
         const unsigned int id_;
 
-        // The latest id generated.
+        /** The latest id generated. */
         static unsigned int latest_id_;
 
-        // Generates a unique new Object ID.
-        // @returns: A new Object ID.
+        /**
+         * @brief Generates a unique new Object ID.
+         * 
+         * @return unsigned int A new Object ID.
+         */
         static unsigned int generateID() {
             std::lock_guard<std::mutex> gaurd(s_mu);
             latest_id_++;
@@ -96,9 +120,14 @@ namespace seedengine {
 
 namespace std {
 
-    // Object hashing function.
+    /** Object hashing function. */
     template <> struct hash<seedengine::Object> {
-        // Object hashing function.
+        /**
+         * @brief Object hashing function.
+         * 
+         * @param obj The Object to hash.
+         * @return size_t The resulting hash value.
+         */
         size_t operator()(const seedengine::Object& obj) const {
             return (hash<unsigned int>()(obj.getID())
                     ^ (hash<string>()(obj.toString()) << 1) >> 1);

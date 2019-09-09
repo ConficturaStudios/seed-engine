@@ -6,265 +6,265 @@
 namespace seedengine {
     namespace input {
 
-        // The state of a given button or key.
+        /** The state of a given button or key. */
         enum class ButtonState : unsigned char {
-            // The button was released.
+            /** The button was released. */
             RELEASED  = 0,
-            // The button was pressed.
+            /** The button was pressed. */
             PRESSED   = 1,
-            // The button was held until repeated.
+            /** The button was held until repeated. */
             REPEAT    = 2
         };
 
-        // All US keyboard keycodes, based on GLFW definitions https://www.glfw.org/docs/latest/group__keys.html
+        /** All US keyboard keycodes, based on GLFW definitions https://www.glfw.org/docs/latest/group__keys.html */
         enum class Key : unsigned int {
-            // Unknown
+            /** Unknown */
             UNKNOWN = 0,
-            // Space
+            /** Space */
             SPACE = 32,
-            // Apostrophe ( ' )
+            /** Apostrophe ( ' ) */
             APOSTROPHE = 39,
-            // Comma ( , )
+            /** Comma ( , ) */
             COMMA = 44,
-            // Minus ( - )
+            /** Minus ( - ) */
             MINUS = 45,
-            // Period ( . )
+            /** Period ( . ) */
             PERIOD = 46,
-            // Forward Slash ( / )
+            /** Forward Slash ( / ) */
             FORWARD_SLASH = 47,
-            // Keyboard 0
+            /** Keyboard 0 */
             KB_0 = 48,
-            // Keyboard 1
+            /** Keyboard 1 */
             KB_1 = 49,
-            // Keyboard 2
+            /** Keyboard 2 */
             KB_2 = 50,
-            // Keyboard 3
+            /** Keyboard 3 */
             KB_3 = 51,
-            // Keyboard 4
+            /** Keyboard 4 */
             KB_4 = 52,
-            // Keyboard 5
+            /** Keyboard 5 */
             KB_5 = 53,
-            // Keyboard 6
+            /** Keyboard 6 */
             KB_6 = 54,
-            // Keyboard 7
+            /** Keyboard 7 */
             KB_7 = 55,
-            // Keyboard 8
+            /** Keyboard 8 */
             KB_8 = 56,
-            // Keyboard 9
+            /** Keyboard 9 */
             KB_9 = 57,
-            // Semicolon ( ; )
+            /** Semicolon ( ; ) */
             SEMICOLON = 59,
-            // Equal ( = )
+            /** Equal ( = ) */
             EQUAL = 61,
-            // A
+            /** A */
             A = 65,
-            // B
+            /** B */
             B = 66,
-            // C
+            /** C */
             C = 67,
-            // D
+            /** D */
             D = 68,
-            // E
+            /** E */
             E = 69,
-            // F
+            /** F */
             F = 70,
-            // G
+            /** G */
             G = 71,
-            // H
+            /** H */
             H = 72,
-            // I
+            /** I */
             I = 73,
-            // J
+            /** J */
             J = 74,
-            // K
+            /** K */
             K = 75,
-            // L
+            /** L */
             L = 76,
-            // M
+            /** M */
             M = 77,
-            // N
+            /** N */
             N = 78,
-            // O
+            /** O */
             O = 79,
-            // P
+            /** P */
             P = 80,
-            // Q
+            /** Q */
             Q = 81,
-            // R
+            /** R */
             R = 82,
-            // S
+            /** S */
             S = 83,
-            // T
+            /** T */
             T = 84,
-            // U
+            /** U */
             U = 85,
-            // V
+            /** V */
             V = 86,
-            // W
+            /** W */
             W = 87,
-            // X
+            /** X */
             X = 88,
-            // Y
+            /** Y */
             Y = 89,
-            // Z
+            /** Z */
             Z = 90,
-            // Left Bracket ( [ )
+            /** Left Bracket ( [ ) */
             LEFT_BRACKET = 91,
-            // Backslash ( \ )
+            /** Backslash ( \ ) */
             BACKSLASH = 92,
-            // Right Bracket ( ] )
+            /** Right Bracket ( ] ) */
             RIGHT_BRACKET = 93,
-            // Grave Accent ( ` )
+            /** Grave Accent ( ` ) */
             GRAVE_ACCENT = 96,
-            // World 1 (non-US #1)
+            /** World 1 (non-US #1) */
             WORLD_1 = 161,
-            // World 2 (non-US #2)
+            /** World 2 (non-US #2) */
             WORLD_2 = 162,
-            // Escape
+            /** Escape */
             ESCAPE = 256,
-            // Enter
+            /** Enter */
             ENTER = 257,
-            // Tab
+            /** Tab */
             TAB = 258,
-            // Backspace
+            /** Backspace */
             BACKSPACE = 259,
-            // Insert
+            /** Insert */
             INS = 260,
-            // Delete
+            /** Delete */
             DEL = 261,
-            // Right
+            /** Right */
             RIGHT = 262,
-            // Left
+            /** Left */
             LEFT = 263,
-            // Down
+            /** Down */
             DOWN = 264,
-            // Up
+            /** Up */
             UP = 265,
-            // Page Up
+            /** Page Up */
             PAGE_UP = 266,
-            // Page Down
+            /** Page Down */
             PAGE_DOWN = 267,
-            // Home
+            /** Home */
             HOME = 268,
-            // End
+            /** End */
             END = 269,
-            // Caps Lock
+            /** Caps Lock */
             CAPS_LOCK = 280,
-            // Scroll Lock
+            /** Scroll Lock */
             SCROLL_LOCK = 281,
-            // Num Lock
+            /** Num Lock */
             NUM_LOCK = 282,
-            // Print Screen
+            /** Print Screen */
             PRINT_SCREEN = 283,
-            // Pause
+            /** Pause */
             PAUSE = 284,
-            // F1
+            /** F1 */
             F1 = 290,
-            // F2
+            /** F2 */
             F2 = 291,
-            // F3
+            /** F3 */
             F3 = 292,
-            // F4
+            /** F4 */
             F4 = 293,
-            // F5
+            /** F5 */
             F5 = 294,
-            // F6
+            /** F6 */
             F6 = 295,
-            // F7
+            /** F7 */
             F7 = 296,
-            // F8
+            /** F8 */
             F8 = 297,
-            // F9
+            /** F9 */
             F9 = 298,
-            // F10
+            /** F10 */
             F10 = 299,
-            // F11
+            /** F11 */
             F11 = 300,
-            // F12
+            /** F12 */
             F12 = 301,
-            // F13
+            /** F13 */
             F13 = 302,
-            // F14
+            /** F14 */
             F14 = 303,
-            // F15
+            /** F15 */
             F15 = 304,
-            // F16
+            /** F16 */
             F16 = 305,
-            // F17
+            /** F17 */
             F17 = 306,
-            // F18
+            /** F18 */
             F18 = 307,
-            // F19
+            /** F19 */
             F19 = 308,
-            // F20
+            /** F20 */
             F20 = 309,
-            // F21
+            /** F21 */
             F21 = 310,
-            // F22
+            /** F22 */
             F22 = 311,
-            // F23
+            /** F23 */
             F23 = 312,
-            // F24
+            /** F24 */
             F24 = 313,
-            // F25
+            /** F25 */
             F25 = 314,
-            // Numberpad 0
+            /** Numberpad 0 */
             NP_0 = 320,
-            // Numberpad 1
+            /** Numberpad 1 */
             NP_1 = 321,
-            // Numberpad 2
+            /** Numberpad 2 */
             NP_2 = 322,
-            // Numberpad 3
+            /** Numberpad 3 */
             NP_3 = 323,
-            // Numberpad 4
+            /** Numberpad 4 */
             NP_4 = 324,
-            // Numberpad 5
+            /** Numberpad 5 */
             NP_5 = 325,
-            // Numberpad 6
+            /** Numberpad 6 */
             NP_6 = 326,
-            // Numberpad 7
+            /** Numberpad 7 */
             NP_7 = 327,
-            // Numberpad 8
+            /** Numberpad 8 */
             NP_8 = 328,
-            // Numberpad 9
+            /** Numberpad 9 */
             NP_9 = 329,
-            // Numberpad Decimal
+            /** Numberpad Decimal */
             NP_DECIMAL = 330,
-            // Numberpad Divide
+            /** Numberpad Divide */
             NP_DIVIDE = 331,
-            // Numberpad Multiply
+            /** Numberpad Multiply */
             NP_MULTIPLY = 332,
-            // Numberpad Subtract
+            /** Numberpad Subtract */
             NP_SUBTRACT = 333,
-            // Numberpad Add
+            /** Numberpad Add */
             NP_ADD = 334,
-            // Numberpad Enter
+            /** Numberpad Enter */
             NP_ENTER = 335,
-            // Numberpad Equal
+            /** Numberpad Equal */
             NP_EQUAL = 336,
-            // Left Shift
+            /** Left Shift */
             LEFT_SHIFT = 340,
-            // Left Control
+            /** Left Control */
             LEFT_CONTROL = 341,
-            // Left Alt
+            /** Left Alt */
             LEFT_ALT = 342,
-            // Left Windows/CMD
+            /** Left Windows/CMD */
             LEFT_SUPER = 343,
-            // Right Shift
+            /** Right Shift */
             RIGHT_SHIFT = 344,
-            // Right Control
+            /** Right Control */
             RIGHT_CONTROL = 345,
-            // Right Alt
+            /** Right Alt */
             RIGHT_ALT = 346,
-            // Right Windows/CMD
+            /** Right Windows/CMD */
             RIGHT_SUPER = 347,
-            // Menu
+            /** Menu */
             MENU = 348,
-            // Last
+            /** Last */
             LAST = 348
         };
 
-        // Keyboard modifier buttons.
+        /** Keyboard modifier buttons. */
         enum class KeyMod : unsigned int {
             SHIFT = FLAG(1),
             CTRL = FLAG(2),
@@ -272,7 +272,7 @@ namespace seedengine {
             SUPER = FLAG(4)
         };
 
-        // Mouse button code bindings.
+        /** Mouse button code bindings. */
         enum class MouseButton : unsigned int {
             LEFT         = 0,
             RIGHT        = 1,
@@ -290,7 +290,7 @@ namespace seedengine {
             ACTION_10    = 13
         };
 
-        // Controller button code bindings.
+        /** Controller button code bindings. */
         enum class ControllerButton : unsigned int {
             SYSTEM       = 0,
             HOME         = 1,
@@ -320,7 +320,7 @@ namespace seedengine {
             SPECIAL_3    = 20
         };
 
-        // Controller axis code bindings.
+        /** Controller axis code bindings. */
         enum class ControllerAxis : unsigned int {
             L_AXIS_X     = 0,
             L_AXIS_Y     = 1,
@@ -332,7 +332,7 @@ namespace seedengine {
             SPECIAL_Y    = 5
         };
 
-        // XBox button code bindings.
+        /** XBox button code bindings. */
         enum class XBoxButton : unsigned int {
             XBOX         = static_cast<unsigned int>(ControllerButton::SYSTEM),
             MENU         = static_cast<unsigned int>(ControllerButton::HOME),
@@ -357,7 +357,7 @@ namespace seedengine {
             JOYSTICK_L   = static_cast<unsigned int>(ControllerButton::JOYSTICK_L)
         };
 
-        // XBox axis code bindings.
+        /** XBox axis code bindings. */
         enum class XBoxAxis : unsigned int {
             L_STICK_X    = static_cast<unsigned int>(ControllerAxis::L_AXIS_X),
             L_STICK_Y    = static_cast<unsigned int>(ControllerAxis::L_AXIS_Y),
@@ -366,7 +366,7 @@ namespace seedengine {
             R_STICK_Y    = static_cast<unsigned int>(ControllerAxis::R_AXIS_Y)
         };
 
-        // PS4 button code bindings.
+        /** PS4 button code bindings. */
         enum class PS4Button : unsigned int {
             PLAYSTATION      = static_cast<unsigned int>(ControllerButton::SYSTEM),
             OPTIONS          = static_cast<unsigned int>(ControllerButton::HOME),
@@ -393,7 +393,7 @@ namespace seedengine {
             TOUCH_PAD        = static_cast<unsigned int>(ControllerButton::SPECIAL_0)
         };
 
-        // PS4 axis code bindings.
+        /** PS4 axis code bindings. */
         enum class PS4Axis : unsigned int {
             L_STICK_X        = static_cast<unsigned int>(ControllerAxis::L_AXIS_X),
             L_STICK_Y        = static_cast<unsigned int>(ControllerAxis::L_AXIS_Y),

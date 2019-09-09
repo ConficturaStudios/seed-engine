@@ -8,6 +8,9 @@ namespace seedengine {
 
     /**
      * @brief Camera Mode
+     *
+     * @see #CameraProperties
+     * @see #Camera
      */
     enum class CameraMode {
         ORTHOGRAPHIC,
@@ -53,45 +56,25 @@ namespace seedengine {
 
     protected:
 
-        /**
-         * @brief The type of camera mode to be used.
-         */
+        /** The type of camera mode to be used. */
         CameraMode camera_mode_;
-        /**
-         * @brief The width of the resulting view.
-         */
+        /** The width of the resulting view. */
         float width_;
-        /**
-         * @brief The height of the resulting view.
-         */
+        /** The height of the resulting view. */
         float height_;
-        /**
-         * @brief The vertical field of view.
-         */
+        /** The vertical field of view. */
         float fov_;
-        /**
-         * @brief The near clipping plane.
-         */
+        /** The near clipping plane. */
         float near_plane_;
-        /**
-         * @brief The far clipping plane.
-         */
+        /** The far clipping plane. */
         float far_plane_;
-        /**
-         * @brief The left clipping plane.
-         */
+        /** The left clipping plane. */
         float left_plane_;
-        /**
-         * @brief The right clipping plane.
-         */
+        /** The right clipping plane. */
         float right_plane_;
-        /**
-         * @brief The bottom clipping plane.
-         */
+        /** The bottom clipping plane. */
         float bottom_plane_;
-        /**
-         * @brief The top clipping plane.
-         */
+        /** The top clipping plane. */
         float top_plane_;
 
     };
@@ -153,20 +136,14 @@ namespace seedengine {
 
     protected:
 
-        /**
-         * @brief The properties of this camera.
-         */
+        /** The properties of this camera. */
         CameraProperties camera_properties_;
 
     private:
 
-        /**
-         * @brief The projection matrix of this camera.
-         */
+        /** The projection matrix of this camera. */
         glm::mat4 projection_matrix_;
-        /**
-         * @brief The inverse projection matrix of this camera.
-         */
+        /** The inverse projection matrix of this camera. */
         glm::mat4 inv_projection_matrix_;
 
 

@@ -568,6 +568,7 @@ namespace seedengine {
             }
             MouseButtonEvent* e = new MouseButtonEvent(button, button_state, mods);
             ENGINE_DEBUG("Mouse Button '{0}' was {1} ({2}) at <{3}, {4}>!", button, action, static_cast<unsigned int>(button_state), e->x(), e->y());
+            //TODO: Convert x and y values for mouse events into a 0-1 range based on screenspace
             EventDispatcher::push<MouseButtonEvent>(button, button_state, mods);
         }
 
