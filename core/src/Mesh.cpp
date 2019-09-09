@@ -8,8 +8,8 @@ namespace seedengine {
 
     void Mesh::load() {
         // Extract mesh data from file
-        meshdata m_data = extractMesh(path_);
-        if (m_data == nullobj) {
+        meshdata m_data;
+        if (!extractMesh(path_, m_data)) {
             ENGINE_ERROR("Failed to load mesh. Skipping load.");
             return;
         }
@@ -20,7 +20,11 @@ namespace seedengine {
         // Check for OpenGL
         #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
         
-            //TODO: Check that open gl context has been set up
+            // Check that open gl context has been set up
+            if (glfwGetCurrentContext() == NULL) {
+                ENGINE_ERROR("No active OpenGL context, unable to load mesh into graphics memory. Exiting load.");
+                return;
+            }
 
             // Assign VAO
             glGenVertexArrays(1, &vao_);
@@ -95,7 +99,7 @@ namespace seedengine {
         #endif
     }
 
-    meshdata Mesh::extractMesh(const string& path) {
+    bool Mesh::extractMesh(const string& path, meshdata& out) {
         
         // Data values that will be returned on success.
         meshdata m_data = meshdata();
@@ -105,7 +109,7 @@ namespace seedengine {
         std::smatch p_m;
         if (!std::regex_match(path, p_m, path_regex)) {
             ENGINE_ERROR("File '{0}' is not a valid *.mesh file.", path);
-            return nullobj;
+            return false;
         }
         std::regex white_regex("^[\\s]*$");
         std::regex property_regex("^[\\s]*\\[([a-zA-Z][\\w]*)\\][\\s]*=[\\s]*(.*)$");
@@ -232,7 +236,7 @@ namespace seedengine {
                 else {
                     ENGINE_ERROR("File '{0}' has an error at line {1}: Invalid identifier '{2}'.",
                     path, line_num, type);
-                    return nullobj;
+                    return false;
                 }
 
                 if (values.size() != expected_count && type.compare("v") != 0) {
@@ -243,7 +247,7 @@ namespace seedengine {
             }
             else {
                 ENGINE_ERROR("File '{0}' has an error at line {1}.", path, line_num);
-                return nullobj;
+                return false;
             }
             line_num++;
 
@@ -257,12 +261,12 @@ namespace seedengine {
         // Check for an empty mesh
         if (p_count == 0) {
             ENGINE_ERROR("Mesh file '{0}' has an no vertices.", path);
-            return nullobj;
+            return false;
         }
         // Check for an empty mesh
         else if (f_count == 0) {
             ENGINE_ERROR("Mesh file '{0}' has an no faces.", path);
-            return nullobj;
+            return false;
         }
         // Check for inconsistent vertex counts
         else if (
@@ -278,7 +282,7 @@ namespace seedengine {
             (u6_count != p_count && u6_count != 0) ||
             (u7_count != p_count && u7_count != 0)) {
             ENGINE_ERROR("Mesh file '{0}' has an inconsistent vertex count.", path);
-            return nullobj;
+            return false;
         }
         // Check if dependent attributes are included properly
         else if (
@@ -291,10 +295,11 @@ namespace seedengine {
             (u6_count != u5_count && u6_count != 0) ||
             (u7_count != u6_count && u7_count != 0)) {
             ENGINE_ERROR("Mesh file '{0}' has an inconsistent vertex attribute count.", path);
-            return nullobj;
+            return false;
         }
         else {
-            return m_data;
+            out = m_data;
+            return true;
         }
     }
 }

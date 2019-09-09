@@ -16,7 +16,7 @@ namespace seedengine {
      * @brief The raw data of a mesh loaded from a file.
      * @details
      */
-    struct meshdata : public nullable_t {
+    struct meshdata {
         /** The properties of the mesh. */
         std::map<string, string> properties = std::map<string, string>();
         /** The vertex positions of the mesh. */
@@ -47,13 +47,6 @@ namespace seedengine {
         std::vector<int>   faces = std::vector<int>();
         /** The total vertex attribute count. */
         unsigned int vertex_attrib_count = 0;
-
-        /**
-         * @brief Casts this object into a string.
-         * 
-         * @return string The string representation of this object.
-         */
-        operator string() const override { return "meshdata"; }
 
     };
 
@@ -151,10 +144,11 @@ namespace seedengine {
          * @brief Loads the *.mesh file into data.
          * 
          * @param path The path to the mesh to be loaded.
-         * @return meshdata The data stored within the passed file.
+         * @param out The data stored within the passed file.
+         * @return true If the mesh data was able to be extracted.
+         * @return false If the mesh data was not able to be extracted.
          */
-        static meshdata extractMesh(const string& path);
-        //TODO: return success bool instead, pass meshdata information to out reference variable
+        static bool extractMesh(const string& path, meshdata& out);
 
     };
 
