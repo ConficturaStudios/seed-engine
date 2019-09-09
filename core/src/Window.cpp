@@ -358,7 +358,6 @@ namespace seedengine {
             glfwWindowHint(GLFW_DECORATED, (window->properties_.borderless_) ? GLFW_FALSE : GLFW_TRUE);
 
             //TODO: Clean up window creation code while taking into account fullscreen and borderless options
-            //TODO: Add icon property option
 
             int win_width = (window->properties_.fullscreen_ && window->properties_.borderless_) ?
                 gl_vid_mode->width : window->width();
@@ -401,7 +400,9 @@ namespace seedengine {
                 return nullptr;
             }
 
-            glViewport(0, 0, window->width(), window->height()); //TODO: Add viewport size values to defaults.ini
+            int w, h;
+            glfwGetFramebufferSize(gl_window, &w, &h); // Make viewport match window size
+            glViewport(0, 0, w, h); //TODO: Add viewport size values to defaults.ini
 
             window_map_[gl_window] = window;
 
