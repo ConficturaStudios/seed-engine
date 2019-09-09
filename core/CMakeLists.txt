@@ -33,10 +33,10 @@ if(PACKAGE_TESTS)
 endif(PACKAGE_TESTS)
 
 message(STATUS "Build mode: " ${CMAKE_BUILD_TYPE})
-if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${CORE_PROJECT_NAME} PRIVATE ENGINE_COMPILE_DEBUG=1)
     message(STATUS "Enabled Debug options")
-endif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
 

@@ -83,9 +83,9 @@ namespace seedengine {
          * @brief Resizes this window.
          * 
          * @param width The new width of the window as a percentage of screen size.
-         * @param width The new height of the window as a percentage of screen size.
+         * @param height The new height of the window as a percentage of screen size.
          */
-        void resize(float width, float width);
+        void resize(float width, float height);
 
         /**
          * @brief Toggles the maximized status on this window.
@@ -346,7 +346,7 @@ namespace seedengine {
              * @param action The type of key action.
              * @param mods A modifier flag for shift, ctrl, alt, and super.
              */
-            static void glfwMouseButtonCallback(GLFWwindow* gl_window gl_window,
+            static void glfwMouseButtonCallback(GLFWwindow* gl_window,
                 int button, int action, int mods);
 
             /**
