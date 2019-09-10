@@ -549,7 +549,9 @@ namespace seedengine {
         }
 
         void Window::glfwCursorPositionCallback(GLFWwindow* gl_window, double xpos, double ypos) {
-            EventDispatcher::push<MouseMovedEvent>((float)xpos, (float)ypos);
+            int w, h;
+            glfwGetFramebufferSize(gl_window, &w, &h);
+            EventDispatcher::push<MouseMovedEvent>((float)xpos / w, (float)ypos / h);
         }
 
         void Window::glfwMouseButtonCallback(GLFWwindow* gl_window, int button, int action, int mods) {
