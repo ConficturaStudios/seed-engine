@@ -8,7 +8,7 @@ namespace seedengine {
         // Parser
 
         Parser::Parser(string filepath) {
-            file_ = std::ifstream();
+            //file_ = std::ifstream();
         }
 
         Parser::~Parser() {
