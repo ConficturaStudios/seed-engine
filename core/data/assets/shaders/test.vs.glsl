@@ -2,8 +2,8 @@
 
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
-layout(location = 2) in vec4 vertex_color_0;
-layout(location = 3) in vec2 uv_0;
+layout(location = 2) in vec2 uvs;
+layout(location = 3) in vec4 vertex_color;
 
 out vec4 frag_color;
 
@@ -17,5 +17,5 @@ void main()
     vec4 test_pos = projection_mat * view_mat * world_position;
     //gl_Position = vec4(position, 1.0);
     gl_Position = test_pos;
-    frag_color = vertex_color_0;
+    frag_color = vertex_color;
 }

@@ -13,7 +13,6 @@ set(PROJECT_SRC
     Log.cpp
     Mesh.cpp
     Noise.cpp
-    Nullable.cpp
     Object.cpp
     Parser.cpp
     Program.cpp
@@ -35,3 +34,7 @@ target_compile_definitions(${CORE_PROJECT_NAME} PUBLIC ENGINE_CORE_PATH="${PROJE
 
 target_link_libraries(${CORE_PROJECT_NAME} glad)
 target_link_libraries(${CORE_PROJECT_NAME} glfw ${GLFW_LIBRARIES})
+
+if(WIN32)
+    target_link_libraries(${CORE_PROJECT_NAME} wsock32 ws2_32)
+endif()

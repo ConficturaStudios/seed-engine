@@ -2,19 +2,20 @@
 
 namespace seedengine {
 
-    Mesh::Mesh(const string& path) : Asset<meshdata>(path) {
+    Mesh::Mesh(const string& path) : Asset<mesh_data>(path) {
         
     }
 
     void Mesh::load() {
+
         // Extract mesh data from file
-        meshdata m_data;
-        if (!extractMesh(path_, m_data)) {
+        mesh_data m_data;
+        if (!parse(path_, &m_data)) {
             ENGINE_ERROR("Failed to load mesh. Skipping load.");
             return;
         }
         delete data_;
-        data_ = new meshdata();
+        data_ = new mesh_data();
         *data_ = m_data;
 
         // Check for OpenGL
@@ -31,26 +32,14 @@ namespace seedengine {
             glBindVertexArray(vao_);
 
             // Create indices buffer
-            opglCreateIndicesBuffer(data_->faces);
+            opglCreateIndicesBuffer(data_->indices);
 
             // Create and bind new vertex buffers
             opglCreateVertexBuffer(0, 3, data_->positions);
-            //opglCreateVertexBuffer(3, pos);
-            if (data_->normals.size() > 0) opglCreateVertexBuffer(1, 3, data_->normals);
-            if (data_->p_colors.size() > 0) opglCreateVertexBuffer(2, 4, data_->p_colors);
-            //if (data_->s_colors.size() > 0) opglCreateVertexBuffer(3, 4, data_->s_colors);
-            if (data_->uv_0.size() > 0) opglCreateVertexBuffer(3, 2, data_->uv_0);
-            /*if (data_->uv_1.size() > 0) opglCreateVertexBuffer(5, 2, data_->uv_1);
-            if (data_->uv_2.size() > 0) opglCreateVertexBuffer(6, 2, data_->uv_2);
-            if (data_->uv_3.size() > 0) opglCreateVertexBuffer(7, 2, data_->uv_3);
-            if (data_->uv_4.size() > 0) opglCreateVertexBuffer(8, 2, data_->uv_4);
-            if (data_->uv_5.size() > 0) opglCreateVertexBuffer(9, 2, data_->uv_5);
-            if (data_->uv_6.size() > 0) opglCreateVertexBuffer(10, 2, data_->uv_6);
-            if (data_->uv_7.size() > 0) opglCreateVertexBuffer(11, 2, data_->uv_7);*/
+            opglCreateVertexBuffer(1, 3, data_->normals);
+            opglCreateVertexBuffer(2, 2, data_->uvs);
+            opglCreateVertexBuffer(3, 4, data_->colors);
 
-            // Unbind buffers
-            //glBindBuffer(GL_ARRAY_BUFFER, 0);
-            //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             // Unbind VAO
             glBindVertexArray(0);
             
@@ -136,6 +125,8 @@ namespace seedengine {
         int u7_count = 0;
         int u8_count = 0;
         int f_count  = 0;
+
+        //TODO: Rework .mesh file format to include smoothing groups and reusable data
 
         while (std::getline(file, line)) {
             std::smatch m;
@@ -302,4 +293,207 @@ namespace seedengine {
             return true;
         }
     }
+
+    bool Mesh::parse(const string& path, mesh_data* out) {
+
+        util::BinaryParser parser(path);
+
+        // Header data
+        std::array<uint32_t, 8> h_data_32{}; // group count, position count, normal count, uv count, color count, bone weight count, morph count, vertices count
+        std::array<uint16_t, 1> h_data_16{}; // bone count
+        std::array<uint8_t, 2> h_data_8{}; // the number of uv and vertex color channels, unused byte
+
+        //TODO: Store and process bone hierarchy and name data
+        //TODO: Consolidate mesh file parsing code
+
+        // Iterate through 32 bit header data
+        for (uint32_t i = 0; i < h_data_32.size(); i++) {
+            if (!parser.getNext(&h_data_32[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Iterate through 16 bit header data
+        for (uint32_t i = 0; i < h_data_16.size(); i++) {
+            if (!parser.getNext(&h_data_16[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Iterate through 8 bit header data
+        for (uint32_t i = 0; i < h_data_8.size(); i++) {
+            if (!parser.getNext(&h_data_8[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        uint8_t uvs_p_vert = (h_data_8[0] & 0xE0) >> 5;
+        uint8_t colors_p_vert = (h_data_8[0] & 0x1C) >> 2;
+        uint32_t vertex_size = 2 + uvs_p_vert + colors_p_vert;
+
+        // Gather position floats
+        std::vector<float> positions = std::vector<float>();
+        positions.resize(h_data_32[1] * 3);
+
+        for (uint32_t i = 0; i < h_data_32[1] * 3; i++) {
+            if (!parser.getNext(&positions[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather normal floats
+        std::vector<float> normals = std::vector<float>();
+        normals.resize(h_data_32[2] * 3);
+
+        for (uint32_t i = 0; i < h_data_32[2] * 3; i++) {
+            if (!parser.getNext(&normals[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather uv floats
+        std::vector<float> uvs = std::vector<float>();
+        uvs.resize(h_data_32[3] * 2);
+
+        for (uint32_t i = 0; i < h_data_32[3] * 2; i++) {
+            if (!parser.getNext(&uvs[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather color floats
+        std::vector<float> colors = std::vector<float>();
+        colors.resize(h_data_32[4] * 4);
+
+        for (uint32_t i = 0; i < h_data_32[4] * 4; i++) {
+            if (!parser.getNext(&colors[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather bone weight floats
+        std::vector<float> bone_weights = std::vector<float>();
+        bone_weights.resize(h_data_32[5]);
+
+        for (uint32_t i = 0; i < h_data_32[5]; i++) {
+            if (!parser.getNext(&bone_weights[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather morph floats
+        std::vector<float> morphs = std::vector<float>();
+        morphs.resize(h_data_32[6] * 3);
+
+        for (uint32_t i = 0; i < h_data_32[6] * 3; i++) {
+            if (!parser.getNext(&morphs[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather vertices indices
+        std::vector<uint32_t> vertices = std::vector<uint32_t>();
+        vertices.resize(h_data_32[7] * vertex_size);
+
+        for (uint32_t i = 0; i < h_data_32[7] * vertex_size; i++) {
+            if (!parser.getNext(&vertices[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather bones
+        std::vector<float> bones = std::vector<float>();
+        bones.resize(h_data_16[0]);
+
+        //TODO: Implement mesh file bone system
+
+        for (uint16_t i = 0; i < h_data_16[0]; i++) {
+            if (!parser.getNext(&bones[i])) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+        }
+
+        // Gather vertices data
+
+        std::vector<std::vector<uint32_t>> smoothing_groups = std::vector<std::vector<uint32_t>>();
+        smoothing_groups.resize(h_data_32[0]);
+
+        // Iterate through smoothing groups
+        for (uint32_t g = 0; g < h_data_32[0]; g++) {
+            uint32_t face_count = 0; // The faces in this group
+            if (!parser.getNext(&face_count)) {
+                ENGINE_WARN("Failed to read mesh file {0}.", path);
+                return false;
+            }
+
+            std::vector<uint32_t> faces = std::vector<uint32_t>();
+            faces.resize(face_count * 3);
+
+            for (uint32_t f = 0; f < face_count * 3; f++) {
+                if (!parser.getNext(&faces[f])) {
+                    ENGINE_WARN("Failed to read mesh file {0}.", path);
+                    return false;
+                }
+            }
+
+            smoothing_groups[g] = faces;
+
+        }
+
+        std::vector<float> t_positions{};
+        t_positions.resize(h_data_32[7] * 3);
+
+        std::vector<float> t_normals{};
+        t_normals.resize(h_data_32[7] * 3);
+
+        std::vector<float> t_uvs{};
+        t_uvs.resize(h_data_32[7] * 2);
+
+        std::vector<float> t_colors{};
+        t_colors.resize(h_data_32[7] * 4);
+
+        //TODO: implement additional uv and color channels
+
+        for (uint32_t v = 0; v < h_data_32[7]; v++) {
+            for (uint32_t i = 0; i < 3; i++) t_positions[(v * 3) + i] = positions[vertices[(v * vertex_size)] * 3 + i];
+            for (uint32_t i = 0; i < 3; i++) t_normals[(v * 3) + i] = normals[vertices[(v * vertex_size) + 1] * 3 + i];
+            for (uint32_t i = 0; i < 2; i++) t_uvs[(v * 2) + i] = uvs[vertices[(v * vertex_size) + 2] * 2 + i];
+            for (uint32_t i = 0; i < 4; i++) t_colors[(v * 4) + i] = colors[vertices[(v * vertex_size) + 3] * 4 + i];
+        }
+
+        //TODO: Handle animation data
+
+        std::vector<uint32_t> indices_buffer = std::vector<uint32_t>();
+        for (uint32_t s = 0; s < smoothing_groups.size(); s++) {
+            for (uint32_t f = 0; f < smoothing_groups[s].size(); f++) {
+                indices_buffer.push_back(smoothing_groups[s][f]);
+            }
+        }
+
+        out->positions = t_positions;
+        out->normals = t_normals;
+        out->uvs = t_uvs;
+        out->colors = t_colors;
+        out->bone_weights = bone_weights;
+        out->morphs = morphs;
+        out->uvs_per_vertex = uvs_p_vert;
+        out->colors_per_vertex = colors_p_vert;
+        out->vertex_size = vertex_size;
+        out->indices = indices_buffer;
+
+        return true;
+
+    }
+
 }

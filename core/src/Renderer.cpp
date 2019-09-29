@@ -150,12 +150,12 @@ namespace seedengine {
             #if ENGINE_GRAPHICS_API == ENGINE_GRAPHICS_OPGL
                 //ENGINE_DEBUG("OPGL Unlit Render");
                 
-                auto m = AssetLibrary<Mesh>::request(CORE_PATH("data/models/primatives/quad.mesh"));
+                auto m = AssetLibrary<Mesh>::request(CORE_PATH("data/assets/models/primatives/cube.mesh"));
 
                 Shader* s = new Shader(
-                    CORE_PATH("data/shaders/test.vs.glsl"),
-                    CORE_PATH("data/shaders/test.fs.glsl"),
-                    std::vector<string> { "position", "normal", "vertex_color_0", "uv_0" },
+                    CORE_PATH("data/assets/shaders/test.vs.glsl"),
+                    CORE_PATH("data/assets/shaders/test.fs.glsl"),
+                    std::vector<string> { "position", "normal", "uvs", "vertex_color" },
                     std::vector<string> { "transformation_mat", "projection_mat", "view_mat" });
                     //std::vector<string> { });
                 
@@ -163,7 +163,7 @@ namespace seedengine {
 
                 Transform t(
                     glm::vec3(0, 0, -5),
-                    glm::vec3(0, 0, 0),
+                    glm::vec3(45, 45, 45),
                     glm::vec3(1, 1, 1)
                 );
                 Camera cam = Camera(CameraProperties(CameraMode::PERSPECTIVE));
@@ -190,7 +190,7 @@ namespace seedengine {
                 else {
                     glDrawElements(
                         GL_TRIANGLES,
-                        m->data()->faces.size(),
+                        m->data()->indices.size(),
                         GL_UNSIGNED_INT,
                         (void*)0
                     );

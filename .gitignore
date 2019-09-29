@@ -29,3 +29,4 @@ CTestTestfile.cmake
 _deps
 **/__pycache__/*
 ToDoLists.txt
+*_planning.txt

@@ -3,15 +3,23 @@
 namespace seedengine {
     namespace util {
 
-        IniParser DEFAULTS = IniParser(CORE_PATH("data/defaults.ini"));
+        IniParser DEFAULTS(CORE_PATH("data/defaults.ini"));
+
+        // Parser
 
         Parser::Parser(string filepath) {
-
+            file_ = std::ifstream();
         }
 
-        void Parser::parse(string filepath) {
-
+        Parser::~Parser() {
+            if (file_.is_open()) file_.close();
         }
+
+        void Parser::print() const {
+            ENGINE_INFO("Printing parser contents...");
+        }
+
+        // INI Parser
 
         IniParser::IniParser(string filepath) : Parser(filepath) {
             parsed_data = ini_data();
@@ -30,9 +38,10 @@ namespace seedengine {
             std::regex string_regex("^[\\s]*([a-zA-Z][\\w]*)\\s*=\\s*(?:\"([^\"]*)\"|'([^\']*)')\\s*$");
 
             // Read the passed file
-            std::ifstream file(filepath, std::ifstream::in);
 
-            if (file.is_open()) {
+            file_.open(filepath, std::ios::in);
+
+            if (file_.is_open()) {
 
                 // The name of the active section
                 string active_section;
@@ -40,7 +49,7 @@ namespace seedengine {
                 std::string line;
                 int line_num = 0;
 
-                while (std::getline(file, line)) {
+                while (std::getline(file_, line)) {
 
                     std::smatch m;
 
@@ -101,7 +110,7 @@ namespace seedengine {
                     line_num++;
                 }
 
-                file.close();
+                file_.close();
                 
             }
 
@@ -141,7 +150,7 @@ namespace seedengine {
         }
 
         void IniParser::print() const {
-            ENGINE_INFO("Printing parser contents...");
+            Parser::print();
             if (parsed_data.empty()) {
                 ENGINE_INFO("Parser is empty.");
                 return;
@@ -161,6 +170,96 @@ namespace seedengine {
                     ENGINE_INFO("String: [" + i->first + "]");
                 }
             }
+        }
+
+        // Binary Parser
+
+        BinaryParser::BinaryParser(string filepath) : Parser(filepath) {
+            file_.open(filepath, std::ios::in | std::ios::binary);
+            file_.seekg(0, file_.end);
+            length_ = file_.tellg();
+            file_.seekg(0, file_.beg);
+            pos_ = 0;
+        }
+
+
+        bool BinaryParser::getNext(uint32_t* out) {
+            if ((unsigned int)pos_ + sizeof(*out) > length_) return false;
+            // Navigate to current file location
+            file_.seekg(pos_);
+            // Read in bytes in Big Endian Format (Network byte order)
+            file_.read(reinterpret_cast<char*>(out), sizeof(*out));
+            *out = ntohl(*out); // Convert to host byte order
+            pos_ += sizeof(*out); // Iterate file position
+            return true;
+        }
+
+        bool BinaryParser::getNext(uint16_t* out) {
+            if ((unsigned int)pos_ + sizeof(*out) > length_) return false;
+            // Navigate to current file location
+            file_.seekg(pos_);
+            // Read in bytes in Big Endian Format (Network byte order)
+            file_.read(reinterpret_cast<char*>(out), sizeof(*out));
+            *out = ntohs(*out); // Convert to host byte order
+            pos_ += sizeof(*out); // Iterate file position
+            return true;
+        }
+
+        bool BinaryParser::getNext(uint8_t* out) {
+            if ((unsigned int)pos_ + sizeof(*out) > length_) return false;
+            // Navigate to current file location
+            file_.seekg(pos_);
+            file_.read(reinterpret_cast<char*>(out), sizeof(*out));
+            pos_ += sizeof(*out); // Iterate file position
+            return true;
+        }
+
+        bool BinaryParser::getNext(float* out) {
+            if ((unsigned int)pos_ + sizeof(*out) > length_) return false;
+            // Navigate to current file location
+            file_.seekg(pos_);
+            uint32_t buffer = 0;
+            // Read in bytes in Big Endian Format (Network byte order)
+            file_.read(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+            *out = ntohf(buffer); // Convert to host byte order
+            pos_ += sizeof(*out); // Iterate file position
+            return true;
+        }
+
+        std::vector<char> BinaryParser::getBuffer(const std::streampos& start, const std::streampos& end) {
+            if (start >= end) {
+                ENGINE_WARN("Invalid buffer range provided.");
+                return {};
+            }
+            if (start + end > length_) {
+                ENGINE_WARN("Reguested byte buffer exceeds file bounds.");
+                return {};
+            }
+            file_.seekg(start);
+            std::streamoff size = end - start;
+            std::vector<char> values{};
+            values.reserve((unsigned int)size);
+            file_.read(values.data(), size);
+            file_.seekg(pos_);
+            return values;
+        }
+
+        std::vector<char> BinaryParser::getNextBuffer(const std::streamoff& size) {
+            if (pos_ + size > length_) {
+                ENGINE_WARN("Reguested byte buffer exceeds file bounds.");
+                return {};
+            }
+            file_.seekg(pos_);
+            std::vector<char> values{};
+            values.reserve((unsigned int)size);
+            file_.read(values.data(), size);
+            pos_ += size; // Iterate file position
+            return values;
+        }
+
+        void BinaryParser::print() const {
+            Parser::print();
+            ENGINE_WARN("Printing is not implemented for binary parser.");
         }
     }
 }

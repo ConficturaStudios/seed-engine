@@ -7,7 +7,7 @@
 TEST(ParserTest, GeneralTest) {
     using namespace seedengine;
 
-    util::IniParser parser = util::IniParser(CORE_PATH("data/defaults.ini"));
+    util::IniParser parser(CORE_PATH("data/defaults.ini"));
 
     float ups, upsd;
     parser.get("Engine", "target_ups", ups);

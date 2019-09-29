@@ -2,6 +2,7 @@
 #define SEEDENGINE_INCLUDE_MESH_H_
 
 #include "Core.hpp"
+#include "Parser.hpp"
 #include "Asset.hpp"
 
 namespace seedengine {
@@ -10,6 +11,29 @@ namespace seedengine {
     enum class MeshDrawType {
         STATIC,
         DYNAMIC
+    };
+
+    // Struct for binary mesh data
+
+    /**
+     * @brief The raw data of a mesh loaded from a file.
+     * @details
+     */
+    struct mesh_data {
+
+        std::vector<float> positions;
+        std::vector<float> normals;
+        std::vector<float> uvs;
+        std::vector<float> colors;
+        std::vector<float> bone_weights;
+        std::vector<float> morphs;
+        std::vector<uint32_t> indices;
+
+        uint8_t uvs_per_vertex;
+        uint8_t colors_per_vertex;
+
+        uint32_t vertex_size;
+
     };
 
     /**
@@ -54,7 +78,7 @@ namespace seedengine {
      * @brief A mesh asset.
      * @details
      */
-    class Mesh : public Asset<meshdata> {
+    class Mesh : public Asset<mesh_data> {
 
         ENGINE_ASSET_BODY()
 
@@ -93,7 +117,7 @@ namespace seedengine {
              * @param size The size of the data elements.
              * @param data The data to bind.
              */
-            void opglCreateVertexBuffer(unsigned int location, unsigned int size, std::vector<float> data) {
+            void opglCreateVertexBuffer(uint32_t location, uint32_t size, std::vector<float> data) {
                 GLuint buffer;
                 glGenBuffers(1, &buffer);
                 glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -116,12 +140,12 @@ namespace seedengine {
              * 
              * @param data The data to bind.
              */
-            void opglCreateIndicesBuffer(std::vector<int> data) {
+            void opglCreateIndicesBuffer(std::vector<uint32_t> data) {
                 glGenBuffers(1, &indices_buffer_);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_buffer_);
                 glBufferData(
                     GL_ELEMENT_ARRAY_BUFFER,
-                    data.size() * sizeof(int),
+                    data.size() * sizeof(uint32_t),
                     &data[0],
                     GL_STATIC_DRAW
                 );
@@ -149,6 +173,16 @@ namespace seedengine {
          * @return false If the mesh data was not able to be extracted.
          */
         static bool extractMesh(const string& path, meshdata& out);
+
+        /**
+         * @brief Loads the *mesh file into data
+         *
+         * @param path The path to the mesh to be loaded.
+         * @param out The data stored within the passed file.
+         * @return true If the mesh data was able to be extracted.
+         * @return false If the mesh data was not able to be extracted.
+         */
+        static bool parse(const string& path, mesh_data* out);
 
     };
 

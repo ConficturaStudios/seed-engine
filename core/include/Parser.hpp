@@ -22,13 +22,13 @@ namespace seedengine {
              */
             Parser(string filepath);
 
-            /**
-             * @brief Parses the file at filepath.
-             * 
-             * @param filepath The path of the file to parse.
-             */
-            virtual void parse(string filepath) = 0;
+            virtual ~Parser();
 
+            /** Prints the contents of this file to the console. */
+            virtual void print() const = 0;
+
+            /** The file being parsed. */
+            std::ifstream file_;
         };
 
         /**
@@ -118,7 +118,7 @@ namespace seedengine {
             string getString(const string& section, const string& key) const;
 
             /** Prints the contents of this .ini file to the console. */
-            void print() const;
+            void print() const override;
 
         protected:
 
@@ -127,7 +127,7 @@ namespace seedengine {
              * 
              * @param filepath The path of the file to parse.
              */
-            void parse(string filepath) override;
+            void parse(string filepath);
 
         private:
 
@@ -151,7 +151,98 @@ namespace seedengine {
 
         };
 
+        /** The values stored in defaults.ini. */
         extern IniParser DEFAULTS;
+
+
+        /**
+         * @brief A parser for binary files.
+         * @details
+         */
+        class BinaryParser final : public Parser {
+
+        public:
+
+            /** Removed default Binary Parser constructor. */
+            BinaryParser() = delete;
+            /**
+             * @brief Constructs a new Binary Parser.
+             *
+             * @param filepath The path of the file to parse.
+             * @param byte_order The byte order used in the file to parse.
+             */
+            BinaryParser(string filepath);
+
+            virtual ~BinaryParser() = default;
+
+            /**
+             * @brief Gets the next requesed value from the binary file.
+             * @details
+             *
+             * @param out A pointer to the output variable to store the value in.
+             * @return true If the request is successful.
+             * @return false If the request fails.
+             */
+            bool getNext(uint32_t* out);
+            /**
+             * @brief Gets the next requesed value from the binary file.
+             * @details
+             *
+             * @param out A pointer to the output variable to store the value in.
+             * @return true If the request is successful.
+             * @return false If the request fails.
+             */
+            bool getNext(uint16_t* out);
+            /**
+             * @brief Gets the next requesed value from the binary file.
+             * @details
+             *
+             * @param out A pointer to the output variable to store the value in.
+             * @return true If the request is successful.
+             * @return false If the request fails.
+             */
+            bool getNext(uint8_t* out);
+            /**
+             * @brief Gets the next requesed value from the binary file.
+             * @details
+             *
+             * @param out A pointer to the output variable to store the value in.
+             * @return true If the request is successful.
+             * @return false If the request fails.
+             */
+            bool getNext(float* out);
+
+            /**
+             * @brief Gets the requesed byte buffer from the binary file.
+             * @details
+             *
+             * @param start The point in the file to start the buffer.
+             * @param end The point in the file to end the buffer.
+             * @return std::vector<char> The requested buffer. Empty on failure.
+             */
+            std::vector<char> getBuffer(const std::streampos& start, const std::streampos& end);
+            /**
+             * @brief Gets the requesed byte buffer from the binary file.
+             * @details
+             *
+             * @param size The size of the byte buffer to gather.
+             * @return std::vector<char> The requested buffer. Empty on failure.
+             */
+            std::vector<char> getNextBuffer(const std::streamoff& size);
+
+            /** Prints the contents of this binary file to the console as a stream of bytes. */
+            void print() const override;
+
+        protected:
+
+        private:
+
+            /** The position in the parsed file. */
+            std::streampos pos_;
+            /** The length of the binary file. */
+            std::streampos length_;
+
+        };
     }
 }
 

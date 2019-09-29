@@ -9,15 +9,11 @@ namespace seedengine {
 
     }
 
-    Object::Object(string name) : nullable_t(false), id_(generateID()), name_(name) {
+    Object::Object(string name) : id_(generateID()), name_(name) {
 
     }
 
-    Object::Object(const Object& obj) : nullable_t(obj.isNull()), id_(obj.id_), name_(obj.name_) {
-
-    }
-
-    Object::Object(const null_t& null) : nullable_t(null), id_(0), name_("") {
+    Object::Object(const Object& obj) : id_(obj.id_), name_(obj.name_) {
 
     }
 
@@ -35,12 +31,7 @@ namespace seedengine {
     }
 
     Object::operator string() const {
-        return (*this == nullobj) ? "null" : this->toString();
-    }
-
-    Object& Object::operator=(const null_t& null) {
-        nullable_t::operator=(null);
-        return *this;
+        return this->toString();
     }
 
     std::ostream& operator<<(std::ostream& os, const Object& obj) {
@@ -49,12 +40,10 @@ namespace seedengine {
     }
 
     bool Object::operator==(const Object& obj) const {
-        if (this->isNull() || obj.isNull()) return this->isNull() && obj.isNull();
         return this->getID() == obj.getID() && this->toString().compare(obj.toString()) == 0;
     }
 
     bool Object::operator!=(const Object& obj) const {
-        if (this->isNull() || obj.isNull()) return !(this->isNull() && obj.isNull());
         return this->getID() != obj.getID() || this->toString().compare(obj.toString()) != 0;
     }
 

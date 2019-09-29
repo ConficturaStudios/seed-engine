@@ -36,6 +36,8 @@
         #define ENGINE_DLL __declspec(dllexport)
     #endif*/
 
+    #include <winsock2.h>
+
     #include <windows.h>
     #include <windowsx.h>
 
@@ -112,6 +114,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+
+#ifndef _WIN32
+    #include <arpa/inet.h>
+#endif
 
 #include <string>
 #include <sstream>
@@ -124,6 +131,7 @@
 #include <memory>
 #include <mutex>
 
+#include <array>
 #include <queue>
 #include <map>
 #include <unordered_map>
@@ -188,7 +196,6 @@ using is_base_of_t = typename is_base_of_t_impl<Base, Derived>::type;
 // Engine specific includes:
 
 #include "Log.hpp"
-#include "Nullable.hpp"
 #include "Property.hpp"
 
 #include "Random.hpp"

@@ -54,12 +54,15 @@ namespace seedengine {
             string core_icon = CORE_PATH("") + icon_path;
 
             {
+                ENGINE_INFO("Loading assets...");
                 // Set window icon
                 AssetLibrary<Image>::load(core_icon);
                 window->setIcon(AssetLibrary<Image>::request(core_icon));
 
-                AssetLibrary<Mesh>::load(CORE_PATH("data/models/primatives/quad.mesh"));
-                AssetLibrary<Mesh>::load(CORE_PATH("data/models/primatives/triangle.mesh"));
+                AssetLibrary<Mesh>::load(CORE_PATH("data/assets/models/primatives/quad.mesh"));
+                //AssetLibrary<Mesh>::load(CORE_PATH("data/assets/models/primatives/triangle.mesh"));
+                AssetLibrary<Mesh>::load(CORE_PATH("data/assets/models/primatives/cube.mesh"));
+                ENGINE_INFO("Assets loaded.");
             }
 
             // The time in ms between each frame.
@@ -71,11 +74,11 @@ namespace seedengine {
             // Controls the time between frame renders.
             float render_interval = 1000.0f / this->TARGET_FPS;
 
-            ENGINE_DEBUG("Loading game data.");
+            ENGINE_INFO("Loading game data.");
             // Load game data into application
             EventDispatcher::force<EngineGameLoadEvent>();
 
-            ENGINE_DEBUG("Starting main loop...");
+            ENGINE_INFO("Starting main loop...");
 
             // Prepare for first loop iteration
             Time::last_loop_time_ = Time::elapsedTimeMS();
@@ -145,7 +148,7 @@ namespace seedengine {
 
             }
 
-            ENGINE_DEBUG("Closing main window...");
+            ENGINE_INFO("Closing main window...");
             // Close the window
             window->close();
 

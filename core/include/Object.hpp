@@ -5,7 +5,7 @@
 
 namespace seedengine {
 
-    class Object : public nullable_t {
+    class Object {
 
     public:
 
@@ -25,12 +25,6 @@ namespace seedengine {
          * @param obj The Object to copy when constructing this Object.
          */
         Object(const Object& obj);
-        /**
-         * @brief Constructs a new Object.
-         * 
-         * @param null The null object to initialize this Object as null.
-         */
-        Object(const null_t& null);
 
         /** Destroys this Object. */
         virtual ~Object();
@@ -53,11 +47,9 @@ namespace seedengine {
 
         explicit operator unsigned int() const;
 
-        operator string() const override;
+        operator string() const;
 
         // Operator overloads
-
-        Object& operator=(const null_t& null);
 
         friend std::ostream& operator<<(std::ostream& os, const Object& obj);
 
