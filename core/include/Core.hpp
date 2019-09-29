@@ -119,10 +119,7 @@
 #ifndef _WIN32
     #include <arpa/inet.h>
 
-    #ifndef __NETWORK_BYTE_IMPL_
-    #define __NETWORK_BYTE_IMPL_
-
-    float ntohf(uint32_t net) {
+    inline float ntohf(uint32_t net) {
         union {
             uint32_t bytes;
             float value;
@@ -131,7 +128,7 @@
         return pair.value;
     }
 
-    uint32_t htonf(float host) {
+    inline uint32_t htonf(float host) {
         union {
             uint32_t bytes;
             float value;
@@ -139,7 +136,6 @@
         pair.value = host;
         return htonl(pair.bytes);
     }
-    #endif
 
 #endif
 
@@ -195,12 +191,11 @@ namespace std {
 
 #ifndef _WIN32
 
-    #ifndef make_unique
     template<typename T, typename... Args>
-    unique_ptr<T> make_unique(Args&& ... args) {
+    inline unique_ptr<T> make_unique(Args&& ... args) {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
-    #endif
+
 #endif
 
 }
