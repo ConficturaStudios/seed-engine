@@ -118,6 +118,25 @@
 
 #ifndef _WIN32
     #include <arpa/inet.h>
+
+    float ntohf(uint32_t net) {
+        union {
+            uint32_t bytes;
+            float value;
+        } pair;
+        pair.bytes = ntohl(net);
+        return pair.values;
+    }
+
+    uint32_t htonf(float host) {
+        union {
+            uint32_t bytes;
+            float value;
+        } pair;
+        pair.value = net;
+        return htonl(pair.bytes);
+    }
+
 #endif
 
 #include <string>
