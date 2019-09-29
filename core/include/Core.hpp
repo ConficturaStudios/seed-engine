@@ -125,7 +125,7 @@
             float value;
         } pair;
         pair.bytes = ntohl(net);
-        return pair.values;
+        return pair.value;
     }
 
     uint32_t htonf(float host) {
@@ -133,7 +133,7 @@
             uint32_t bytes;
             float value;
         } pair;
-        pair.value = net;
+        pair.value = host;
         return htonl(pair.bytes);
     }
 
