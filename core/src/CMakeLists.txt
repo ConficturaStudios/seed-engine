@@ -21,6 +21,7 @@ set(PROJECT_SRC
     Shader.cpp
     Time.cpp
     Transform.cpp
+    Vector.cpp
     Window.cpp
 )
 

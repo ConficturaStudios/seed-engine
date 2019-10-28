@@ -21,8 +21,8 @@ namespace seedengine {
     >
     class Matrix final {
 
-        typedef Vector<C, T> col_t;
-        typedef Vector<R, T> row_t;
+        //typedef Vector<C, T> col_t;
+        //typedef Vector<R, T> row_t;
 
     public:
 
@@ -30,7 +30,7 @@ namespace seedengine {
 
     private:
 
-        col_t value[R];
+        //col_t value[R];
 
     };
 
