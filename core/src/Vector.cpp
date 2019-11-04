@@ -7,8 +7,8 @@ namespace seedengine {
     const Vector2 Vector2::DOWN = Vector2(0, -1);
     const Vector2 Vector2::LEFT = Vector2(-1, 0);
     const Vector2 Vector2::RIGHT = Vector2(1, 0);
-    const Vector2 Vector2::ONE = Vector2(1, 1);
-    const Vector2 Vector2::ZERO = Vector2(0, 0);
+    const Vector2 Vector2::ONE = Vector2(1);
+    const Vector2 Vector2::ZERO = Vector2(0);
 
     const Vector3 Vector3::UP = Vector3(0, 1, 0);
     const Vector3 Vector3::DOWN = Vector3(0, -1, 0);
@@ -16,8 +16,8 @@ namespace seedengine {
     const Vector3 Vector3::RIGHT = Vector3(1, 0, 0);
     const Vector3 Vector3::FORWARD = Vector3(0, 0, 1);
     const Vector3 Vector3::BACKWARD = Vector3(0, 0, -1);
-    const Vector3 Vector3::ONE = Vector3(1, 1, 1);
-    const Vector3 Vector3::ZERO = Vector3(0, 0, 0);
+    const Vector3 Vector3::ONE = Vector3(1);
+    const Vector3 Vector3::ZERO = Vector3(0);
 
     const Vector4 Vector4::UP = Vector4(0, 1, 0, 0);
     const Vector4 Vector4::DOWN = Vector4(0, -1, 0, 0);
@@ -27,16 +27,16 @@ namespace seedengine {
     const Vector4 Vector4::BACKWARD = Vector4(0, 0, -1, 0);
     const Vector4 Vector4::KATA = Vector4(0, 0, 0, 1);
     const Vector4 Vector4::ANA = Vector4(0, 0, 0, -1);
-    const Vector4 Vector4::ONE = Vector4(1, 1, 1, 1);
-    const Vector4 Vector4::ZERO = Vector4(0, 0, 0, 0);
+    const Vector4 Vector4::ONE = Vector4(1);
+    const Vector4 Vector4::ZERO = Vector4(0);
 
 
     const Vector2Int Vector2Int::UP = Vector2Int(0, 1);
     const Vector2Int Vector2Int::DOWN = Vector2Int(0, -1);
     const Vector2Int Vector2Int::LEFT = Vector2Int(-1, 0);
     const Vector2Int Vector2Int::RIGHT = Vector2Int(1, 0);
-    const Vector2Int Vector2Int::ONE = Vector2Int(1, 1);
-    const Vector2Int Vector2Int::ZERO = Vector2Int(0, 0);
+    const Vector2Int Vector2Int::ONE = Vector2Int(1);
+    const Vector2Int Vector2Int::ZERO = Vector2Int(0);
 
     const Vector3Int Vector3Int::UP = Vector3Int(0, 1, 0);
     const Vector3Int Vector3Int::DOWN = Vector3Int(0, -1, 0);
@@ -44,8 +44,8 @@ namespace seedengine {
     const Vector3Int Vector3Int::RIGHT = Vector3Int(1, 0, 0);
     const Vector3Int Vector3Int::FORWARD = Vector3Int(0, 0, 1);
     const Vector3Int Vector3Int::BACKWARD = Vector3Int(0, 0, -1);
-    const Vector3Int Vector3Int::ONE = Vector3Int(1, 1, 1);
-    const Vector3Int Vector3Int::ZERO = Vector3Int(0, 0, 0);
+    const Vector3Int Vector3Int::ONE = Vector3Int(1);
+    const Vector3Int Vector3Int::ZERO = Vector3Int(0);
 
     const Vector4Int Vector4Int::UP = Vector4Int(0, 1, 0, 0);
     const Vector4Int Vector4Int::DOWN = Vector4Int(0, -1, 0, 0);
@@ -55,8 +55,8 @@ namespace seedengine {
     const Vector4Int Vector4Int::BACKWARD = Vector4Int(0, 0, -1, 0);
     const Vector4Int Vector4Int::KATA = Vector4Int(0, 0, 0, 1);
     const Vector4Int Vector4Int::ANA = Vector4Int(0, 0, 0, -1);
-    const Vector4Int Vector4Int::ONE = Vector4Int(1, 1, 1, 1);
-    const Vector4Int Vector4Int::ZERO = Vector4Int(0, 0, 0, 0);
+    const Vector4Int Vector4Int::ONE = Vector4Int(1);
+    const Vector4Int Vector4Int::ZERO = Vector4Int(0);
 
     // Vector2 ---------------------------------------------------------------
 
