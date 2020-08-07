@@ -1,0 +1,94 @@
+/**
+ * ${MODULE_NAME}API.hpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+ 
+#ifndef ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_API_H_
+#define ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_API_H_
+
+${API_DEPENDENCIES}
+
+#ifndef ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT_API
+    #if BUILD_SHARED_LIBS
+        #if defined(_WIN32) || defined(__CYGWIN__) || defined(_MSC_VER)
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT_API __declspec(dllexport)
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_IMPORT_API __declspec(dllimport)
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_HIDDEN_API
+        #elif defined(__GNUC__) && __GNUC__ >= 4
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT_API __attribute__((visibility("default")))
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_IMPORT_API __attribute__((visibility("default")))
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_HIDDEN_API __attribute__((visibility("hidden")))
+        #else
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT_API
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_IMPORT_API
+            #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_HIDDEN_API
+        #endif
+    #else
+        #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT_API
+        #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_IMPORT_API
+        #define ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_HIDDEN_API
+    #endif
+#endif
+
+//#ifndef ${PROJECT_IDENTIFIER}_API
+#ifndef ${PROJECT_API_MACRO}
+    #ifdef ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT
+        #define ${PROJECT_API_MACRO} ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT_API
+    #else
+        #define ${PROJECT_API_MACRO} ${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_IMPORT_API
+    #endif
+#endif
+
+#endif
+
+
+
+// Original:
+
+/**
+ * ${MODULE_NAME}API.hpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+ 
+/*
+#ifndef ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_API_H_
+#define ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_API_H_
+
+${API_DEPENDENCIES}
+
+#ifndef ${PROJECT_API_MACRO}
+
+    #if defined(_WIN32) && defined(BUILD_SHARED_LIBS)
+        #if BUILD_SHARED_LIBS
+            #if defined(_MSC_VER)
+                #pragma warning(disable: 4251)
+            #endif
+
+            #if defined(${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_EXPORT)
+                #define ${PROJECT_API_MACRO} __declspec(dllexport)
+            #else
+                #define ${PROJECT_API_MACRO} __declspec(dllimport)
+            #endif
+        #else
+            #define ${PROJECT_API_MACRO}
+        #endif
+    #else
+        #define ${PROJECT_API_MACRO}
+    #endif
+    
+#endif
+
+#endif
+*/

@@ -1,0 +1,18 @@
+/**
+ * ${SOURCE_NAME}.cpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+
+#include "${MODULE_NAME}API.hpp"
+
+namespace ${PROJECT_NAMESPACE} {
+
+    
+
+}

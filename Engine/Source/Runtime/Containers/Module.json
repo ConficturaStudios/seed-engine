@@ -1,0 +1,12 @@
+{
+    "Domain": "Runtime",
+    "Name": "Containers",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

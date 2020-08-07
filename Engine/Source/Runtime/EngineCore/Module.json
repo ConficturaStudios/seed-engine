@@ -1,0 +1,19 @@
+{
+    "Domain": "Runtime",
+    "Name": "EngineCore",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Graphics"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

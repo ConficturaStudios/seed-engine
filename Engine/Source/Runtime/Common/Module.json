@@ -1,0 +1,17 @@
+{
+    "Domain": "Runtime",
+    "Name": "Common",
+    "BuildTarget": "Shared",
+    "Dependencies": [],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": [
+        "target_include_directories(${LIBRARY_NAME}",
+        "    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/spdlog/include)",
+        "",
+        "if(WIN32)",
+        "    target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} wsock32 ${LIBRARY_SCOPE} ws2_32)",
+        "endif()"
+    ]
+}

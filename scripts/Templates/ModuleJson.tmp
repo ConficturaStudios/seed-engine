@@ -1,0 +1,12 @@
+{
+    "Domain": "${DOMAIN_NAME}",
+    "Name": "${MODULE_NAME}",
+    "BuildTarget": "${BUILD_TARGET}",
+    "Dependencies": [
+        ${JSON_DEPENDENCIES}
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

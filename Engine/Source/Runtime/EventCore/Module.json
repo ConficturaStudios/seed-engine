@@ -1,0 +1,15 @@
+{
+    "Domain": "Runtime",
+    "Name": "EventCore",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Input"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

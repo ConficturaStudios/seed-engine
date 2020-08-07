@@ -1,0 +1,15 @@
+{
+    "Domain": "Runtime",
+    "Name": "Math",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

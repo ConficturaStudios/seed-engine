@@ -1,0 +1,15 @@
+{
+    "Domain": "Runtime",
+    "Name": "FileExchange",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

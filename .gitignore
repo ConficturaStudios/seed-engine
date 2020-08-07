@@ -1,20 +1,75 @@
-**/[Ll]ocal/*
-**/[Ll]ocaldb/*
-*.lib
-*.dll
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
 *.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+
 *.ilk
 *.pdb
 *.exp
-*.exe
+
+# Dynamic library files
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Local files
+
+**/[Ll]ocal/*
+**/[Ll]ocaldb/*
+
+# Build locations
+
 **/[Bb]in/*
 **/[Bb]uild/*
 **/[Ll]ib/*
+
+# IDE specific
+
 **/.vs/*
+**/.vscode/*
 *.vcxproj
+*.vcxproj.*
 *.sln
 *.code-workspace
+
+# Experimental
+
 **/[Ss]pike/*
+
+# CMake
+
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -27,6 +82,9 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+
+# Toolchain specific
+
 **/__pycache__/*
 ToDoLists.txt
 *_planning.txt

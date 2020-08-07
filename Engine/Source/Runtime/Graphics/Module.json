@@ -1,0 +1,30 @@
+{
+    "Domain": "Runtime",
+    "Name": "Graphics",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Math"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": [
+        "target_include_directories(${LIBRARY_NAME}",
+        "    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/glm",
+        "    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/glad/include",
+        "    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/glfw/include",
+        "    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/stb)",
+        "",
+        "target_link_libraries(${LIBRARY_NAME}",
+        "    ${LIBRARY_SCOPE} glad",
+        "    ${LIBRARY_SCOPE} glfw ${GLFW_LIBRARIES}",
+        ")"
+    ]
+}

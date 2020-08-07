@@ -1,0 +1,19 @@
+{
+    "Domain": "Runtime",
+    "Name": "GameplayCore",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Math"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

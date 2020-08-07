@@ -1,0 +1,27 @@
+{
+    "Domain": "Runtime",
+    "Name": "Renderer",
+    "BuildTarget": "Shared",
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Graphics"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "GameplayCore"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Math"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        }
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}

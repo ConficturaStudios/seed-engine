@@ -1,0 +1,73 @@
+/**
+ * ${MODULE_NAME}Wrapper.h
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */ 
+
+#ifndef ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_INTERFACE_H_
+#define ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_INTERFACE_H_
+
+#include "${MODULE_NAME}API.hpp"
+
+#ifndef CALLING_CONVENTION
+    #if defined(_WIN32)
+        #define CALLING_CONVENTION __stdcall
+    #else
+        #define CALLING_CONVENTION
+    #endif
+#endif
+
+#ifndef C_EXPORT
+    #ifdef __cplusplus
+        #define C_EXPORT extern "C" ${PROJECT_API_MACRO}
+    #else
+        #define C_EXPORT ${PROJECT_API_MACRO}
+    #endif
+#endif
+
+#ifndef EXPORT_CLASS_MACROS
+    #define EXPORT_CLASS_MACROS
+
+    #define EXPORT_CLASS_FUNC_SIG(namespace_, class_, func_) __##namespace_##_##class_##_##func_
+
+
+    // Macros to declare exported c style functions to wrap class_ behaviors
+    #define EXPORT_CLASS_FUNC(ret_t, namespace_, class_, func_, ...) C_EXPORT ret_t CALLING_CONVENTION EXPORT_CLASS_FUNC_SIG(namespace_, class_, func_)(__VA_ARGS__)
+
+    #define EXPORT_CLASS_MEMBER_FUNC(ret_t, namespace_, class_, func_, ...) EXPORT_CLASS_FUNC(ret_t, namespace_, class_, func_, void* __this __VA_OPT__(,) __VA_ARGS__)
+
+    #define EXPORT_CLASS_CONSTRUCTOR(namespace_, class_, ...) EXPORT_CLASS_FUNC(void*, namespace_, class_, Constructor __VA_OPT__(,) __VA_ARGS__)
+
+    #define EXPORT_CLASS_DESTRUCTOR(namespace_, class_) EXPORT_CLASS_FUNC(void, namespace_, class_, Destructor, void* __this)
+
+    // Macros for the implementations of exported functions
+    #define EXPORT_CLASS_FUNC_IMPL(ret_t, namespace_, class_, func_, ...) \
+        ret_t EXPORT_CLASS_FUNC_SIG(namespace_, class_, func_)(__VA_ARGS__)
+
+    #define EXPORT_CLASS_MEMBER_FUNC_IMPL(ret_t, namespace_, class_, func_, ...) \
+        ret_t EXPORT_CLASS_FUNC_SIG(namespace_, class_, func_)(void* __this __VA_OPT__(,) __VA_ARGS__)
+
+    #define EXPORT_CLASS_CONSTRUCTOR_IMPL(namespace_, class_, ...) \
+        void* EXPORT_CLASS_FUNC_SIG(namespace_, class_, Constructor)(__VA_ARGS__)
+
+    #define EXPORT_CLASS_DESTRUCTOR_IMPL(namespace_, class_) \
+        void EXPORT_CLASS_FUNC_SIG(namespace_, class_, Destructor)(void* __this)
+
+#endif
+
+namespace ${PROJECT_NAMESPACE} {
+
+    namespace C_API {
+
+        ${EXPORT_FUNCTION_DECLARATIONS}
+
+    }
+
+}
+
+#endif

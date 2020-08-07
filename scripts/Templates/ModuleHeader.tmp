@@ -1,0 +1,23 @@
+/**
+ * ${MODULE_NAME}.hpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+
+#ifndef ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_MODULE_H_
+#define ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_MODULE_H_
+
+#include "${MODULE_NAME}API.hpp"
+
+${HEADER_FILES}
+
+#ifdef ${PROJECT_API_MACRO}
+    #undef ${PROJECT_API_MACRO}
+#endif
+
+#endif

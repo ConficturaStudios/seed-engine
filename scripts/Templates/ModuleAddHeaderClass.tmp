@@ -1,0 +1,84 @@
+/**
+ * ${CLASS_NAME}.hpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+
+#ifndef ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_${CLASS_NAME_UPPER}_H_
+#define ${PROJECT_HEADER_GUARD_PREFIX}INCLUDE_${DOMAIN_NAME_UPPER}_${MODULE_NAME_UPPER}_${CLASS_NAME_UPPER}_H_
+
+#include "${RELPATH}${MODULE_NAME}API.hpp"
+
+namespace ${PROJECT_NAMESPACE} {
+
+    /**
+     * @brief
+     * @details
+     * 
+     */
+    class ${PROJECT_API_MACRO} ${CLASS_NAME} {
+
+        public:
+
+        // Constructors and destructor
+
+            /**
+             * @brief The default constructor for ${CLASS_NAME} objects.
+             * @details Constructs a new ${CLASS_NAME} with default initialization for all members.
+             */
+            ${CLASS_NAME}() {
+                
+            }
+
+            /**
+             * @brief The copy constructor for ${CLASS_NAME} objects.
+             * @details Constructs a new ${CLASS_NAME} by copying an existing ${CLASS_NAME}.
+             */
+            ${CLASS_NAME}(const ${CLASS_NAME}& ref) = default;
+            
+            /**
+             * @brief The move constructor for ${CLASS_NAME} objects.
+             * @details Constructs a new ${CLASS_NAME} by moving the data of a ${CLASS_NAME} into this object.
+             */
+            ${CLASS_NAME}(${CLASS_NAME}&& ref) = default;
+
+            /**
+             * @brief The destructor for ${CLASS_NAME} objects.
+             * @details Called when an instance of ${CLASS_NAME} is deleted.
+             */
+            virtual ~${CLASS_NAME}() {
+                
+            }
+
+        // Functions
+
+
+
+        // Assignment Operators
+
+            /**
+             * @brief The copy assignment operator for ${CLASS_NAME} objects.
+             * @details Reassigns the value of this object by copying the data of a ${CLASS_NAME} into this object.
+             */
+            ${CLASS_NAME}& operator=(const ${CLASS_NAME}& rhs) = default;
+
+            /**
+             * @brief The move assignment operator for ${CLASS_NAME} objects.
+             * @details Reassigns the value of this object by moving the data of a ${CLASS_NAME} into this object.
+             */
+            ${CLASS_NAME}& operator=(${CLASS_NAME}&& rhs) = default;
+
+        protected:
+
+        private:
+
+    };
+
+}
+
+#endif

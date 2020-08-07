@@ -1,0 +1,19 @@
+/**
+ * Test${DOMAIN_NAME}${MODULE_NAME}${CLASS_NAME}.cpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+
+#include <iostream>
+#include <gtest/gtest.h>
+#include "${CLASS_NAME}.hpp"
+
+TEST(Test${DOMAIN_NAME}${MODULE_NAME}${CLASS_NAME}, GeneralTest) {
+    using namespace ${PROJECT_NAMESPACE};
+    
+}

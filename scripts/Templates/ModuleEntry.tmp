@@ -1,0 +1,23 @@
+/**
+ * ${MODULE_NAME}Entry.cpp
+ * 
+ * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
+ * @license This code is released under the ${LICENSE} License.
+ * 
+ * This code is distributed as part of the ${PROJECT_NAME} project.
+ * 
+ * For a copy of the license, please go to ${REPO}/LICENSE
+ */
+
+#include "${MODULE_NAME}.hpp"
+
+/*
+ * @brief The main entry point of this executable module.
+ * @param argc Command line argument count.
+ * @param argv Command line arguments.
+ * 
+ * @return int The exit code of the program run.
+ */
+int main(int argc, char** argv) {
+    return 0;
+}
