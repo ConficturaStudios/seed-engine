@@ -137,7 +137,7 @@ The following third party dependencies are used:
 - [Google Test](https://github.com/google/googletest)
 - [spdlog](https://github.com/gabime/spdlog)
 - [stb](https://github.com/nothings/stb)
-- [ImGUI]()
+- [ImGUI](https://github.com/ocornut/imgui)
 
 All external dependencies are either included with source, or are linked as a git submodule. GLAD has been configured for C/C++ OpenGL (gl Version 4.6) Core with no extensions. To change this configuration locally, a new set of source files can be created from the [GLAD webservice](https://glad.dav1d.de/).
 
