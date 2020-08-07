@@ -11,6 +11,10 @@ An open source game engine that supports both 3D and 2D games. The engine is des
 
 ***NOTE:*** *Coverage reports and issue tracking are still being set up, and will be available at a later time.*
 
+## Documentation
+
+Documentation for this project is generated using [Doxygen](https://www.doxygen.org) and will be hosted here on github as well as on the [Confictura Studios website](https://www.conficturastudios.com).
+
 ## Features
 
 As an application still in the early phases of development, most features still need to be implemented. To request a feature, please add a [new issue](https://github.com/ConficturaStudios/seed-engine/issues/new) detailing the desired feature. A changelog and feature tracking system are currently in the works.
@@ -65,7 +69,7 @@ The following features are under consideration for future iterations of the engi
 - Console support
 - HLSL as a cross-platform shader language using [Microsoft's Shader Conductor](https://github.com/Microsoft/ShaderConductor)
 
-For more information about planned features and this project's roadmap, visit our [Trello]()* page.
+For more information about planned features and this project's roadmap, visit our Trello* page.
 
 <sub name = "FeaturesNote1">* - *Trello board not publicly available at the time of this commit*</sub>
 
@@ -117,9 +121,9 @@ The engine source code can be found in [`Engine/Source/`](https://github.com/Con
     /Runtime         The runtime code used by the engine. This is the foundation of the engine and is included in shipped projects.
     /Tools           Development tools built on top of or as part of the engine.
 
-Within these domains, modules exist and can be added containing encapsulated behaviors. These modules should be added using the [utility script](https://github.com/ConficturaStudios/seed-engine/blob/master/Scripts/Tools.py) with *python -B Scripts/Tools.py add module ...*
+Within these domains, modules exist and can be added containing encapsulated behaviors. These modules should be added using the [utility script](https://github.com/ConficturaStudios/seed-engine/blob/master/Scripts/Tools.py) with **python -B Scripts/Tools.py add module ...**
 
-You can run *python -B Scripts/Tools.py -h* for more information about the development utility.
+You can run **python -B Scripts/Tools.py -h** for more information about the development utility.
 
 ## Dependencies
 
