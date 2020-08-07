@@ -16,3 +16,6 @@
 [submodule "Engine/Source/Extern/assimp"]
 	path = Engine/Source/Extern/assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "Engine/Source/Extern/entt"]
+	path = Engine/Source/Extern/entt
+	url = https://github.com/skypjack/entt.git
