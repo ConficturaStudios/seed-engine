@@ -6,13 +6,15 @@ import re
 print("Checking project for TODO statements...")
 
 # The file to write the to do lists to
-todo_file = open("ToDoLists.txt", "w")
+todo_file = open("ProjectToDo.todo", "w")
 
 # The pattern to check for in .cpp, .hpp, .c, and .h files
 cpp_todo_pattern = "^.*//(?:\\s*)?TODO:\\s*(.*)$"
 
 # Directories to skip
-exclude_dirs = set(["extern", ".git", ".vs", "bin", "build", "ci", "lib", "scripts", "spike", "data", "docs"])
+exclude_dirs = set([
+    "extern", "Extern", ".git", ".vs", ".vscode", "bin", "Bin", "build", "Build", "ci", "CI", "lib", "Lib", "scripts", "Scripts", "spike", "Spike", "data", "docs"
+])
 
 # Walk though the current directory
 for subdir, dirs, files in os.walk(os.getcwd()):
@@ -44,7 +46,7 @@ for subdir, dirs, files in os.walk(os.getcwd()):
                         todo_info = "{0}: [{1} line {2}]: {3}".format(project_dir, filename, count, match_obj.group(1))
                         # Prints the information to the console
                         print(todo_info)
-                        # Writes the information to the ToDoLists.txt file
+                        # Writes the information to the .todo file
                         todo_file.write(todo_info + '\n')
                     # Read the next line
                     line = fp.readline()

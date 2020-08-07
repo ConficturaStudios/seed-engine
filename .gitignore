@@ -87,4 +87,5 @@ _deps
 
 **/__pycache__/*
 ToDoLists.txt
+*.todo
 *_planning.txt
