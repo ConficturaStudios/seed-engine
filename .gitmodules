@@ -1,0 +1,18 @@
+[submodule "Engine/Source/Extern/googletest"]
+	path = Engine/Source/Extern/googletest
+	url = https://github.com/google/googletest.git
+[submodule "Engine/Source/Extern/spdlog"]
+	path = Engine/Source/Extern/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "Engine/Source/Extern/glm"]
+	path = Engine/Source/Extern/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "Engine/Source/Extern/glfw"]
+	path = Engine/Source/Extern/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "Engine/Source/Extern/stb"]
+	path = Engine/Source/Extern/stb
+	url = https://github.com/nothings/stb.git
+[submodule "Engine/Source/Extern/assimp"]
+	path = Engine/Source/Extern/assimp
+	url = https://github.com/assimp/assimp.git
