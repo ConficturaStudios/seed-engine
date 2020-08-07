@@ -1,7 +1,7 @@
 # Seed Engine
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
-An open source game engine that supports both 3D and 2D games. The engine is designed with flexibility in mind, with Lua scripting support and an intuitive editor.
+An open source game engine that supports both 3D and 2D games. The engine is designed with flexibility and extensibility in mind.
 
 ## Current Project Status
 
@@ -19,14 +19,16 @@ As an application still in the early phases of development, most features still 
 
 The following are features planned for v1.0.0:
 
+- ECS based arcitecture using [EnTT](https://github.com/skypjack/entt)
 - Deferred and Forward Rendering options
-- HLSL as a cross-platform shader language using [Microsoft's Shader Conductor](https://github.com/Microsoft/ShaderConductor)
 - Multiple Graphics APIs (see [Graphics](#Graphics))
 - Mobile platform support (see [Platforms](#Platforms))
-- LUA and Python scripting
+- C# scripting using Mono
 - Generation of procedural assets
 - 3D Environment Editor
 - 2D Tilemap Editor
+
+Several [additional features](#Features-Under-Consideration) are also under consideration, but have been deferred for a later decision.
 
 ### Graphics
 
@@ -56,9 +58,20 @@ With planned support for:
 - iOS
 - Windows Mobile
 
+### Features Under Consideration
+
+The following features are under consideration for future iterations of the engine.
+
+- Console support
+- HLSL as a cross-platform shader language using [Microsoft's Shader Conductor](https://github.com/Microsoft/ShaderConductor)
+
+For more information about planned features and this project's roadmap, visit our [Trello]()* page.
+
+<sub name = "FeaturesNote1">* - *Trello board not publicly available at the time of this commit*</sub>
+
 ## Requirements
 
-Seed Engine has been designed to have minimal requirements to build the project. The following requirements represent the oldest configurations that have been tested successfully. Earlier versions of these tools may still successfully build the project, but have not yet been tested.
+Seed Engine is built using the C++17 standard. The following requirements represent the oldest configurations that have been tested successfully. Earlier versions of these tools may still successfully build the project, but have not yet been tested.
 
 ***Note:*** *GCC compilers older than GCC 4.9.0 are not supported due to a lack of implementation for std::regex.*
 
@@ -73,42 +86,37 @@ Seed Engine has been designed to have minimal requirements to build the project.
 
 ## Build Information
 
-This project is set up using CMake. A [clean build script](https://github.com/ConficturaStudios/seed-engine/blob/master/scripts/clean_rebuild.py) can be found in the scripts folder. The minimum CMake version is 3.0.
+A [utility script](https://github.com/ConficturaStudios/seed-engine/blob/master/Scripts/Tools.py) with build automation and other command line utilities can be found in the scripts folder. From the project root directory, run *python -B Scripts/Tools.py -h* for more information and options.
 
-The desired Graphics API must be specified at build time, or the program will not compile. To specify the Graphics API, include one of the following options when running CMake:
+This project is set up using CMake 3.0, with most module CMakeLists.txt files being procedurally generated.
 
-    OpenGL    ->  -DGRAPHICS_API:STRING=OPENGL
-    Vulkan    ->  -DGRAPHICS_API:STRING=VULKAN
-    DirectX   ->  -DGRAPHICS_API:STRING=DIRECTX
-    Metal     ->  -DGRAPHICS_API:STRING=METAL
-
-***NOTE:*** *Currently the only option supported in the code is OpenGL. The other options will cause compiler errors.*
+***NOTE:*** *Currently the only graphics API supported in the code is OpenGL. The other options will cause compiler errors.*
 
 ## Repository Structure
 
-The engine core and the editor are both implemented in C++. The post-build directory structure for the overall project is:
+The engine source code can be found in [`Engine/Source/`](https://github.com/ConficturaStudios/seed-engine/tree/master/Engine/Source). The source code is broken up into serveral application domains:
 
-    /bin            The output destination for built executibles.
-    /build          The output desitination for cmake files and generated solutions.
-    /ci             Contains files needed for continuous integration.
-    /cmake          Contains cmake dependencies.
-    /core           The engine core components.
-    /editor         The game editor built with the engine core.
-    /extern         All external and Third Party dependencies.
-    /lib            The output destination for built library files.
-    /scripts        Useful scripts for building the project.
+    /Dev             Developer features that are experimental in nature.
+    /Editor          Editor specific code.
+    /Extern          External dependencies.
+    /Runtime         The runtime code used by the engine. This is the foundation of the engine and is included in shipped projects.
+    /Tools           Development tools built on top of or as part of the engine.
+
+Within these domains, modules exist and can be added containing encapsulated behaviors. These modules should be added using the [utility script](https://github.com/ConficturaStudios/seed-engine/blob/master/Scripts/Tools.py) with *python -B Scripts/Tools.py add module ...*
 
 ## Dependencies
 
 The following third party dependencies are used:
 
 - [Open Asset Import Library (assimp) v4.1.0](https://github.com/assimp/assimp)<sup>[1]</sup>
+- [EnTT](https://github.com/skypjack/entt)
 - [glad](https://github.com/Dav1dde/glad)
 - [GLFW](https://github.com/glfw/glfw)
 - [GLM](https://github.com/g-truc/glm)
 - [Google Test](https://github.com/google/googletest)
 - [spdlog](https://github.com/gabime/spdlog)
 - [stb](https://github.com/nothings/stb)
+- [ImGUI]()
 
 All external dependencies are either included with source, or are linked as a git submodule. GLAD has been configured for C/C++ OpenGL (gl Version 4.6) Core with no extensions. To change this configuration locally, a new set of source files can be created from the [GLAD webservice](https://glad.dav1d.de/).
 
