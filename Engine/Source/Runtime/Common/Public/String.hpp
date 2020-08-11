@@ -217,14 +217,26 @@ namespace seedengine {
             [[nodiscard]] StringClass operator+(const ::std::string& rhs) const noexcept;
             [[nodiscard]] StringClass operator+(const char*          rhs) const;
 
+            //NOTE: Use toString<T>() method and operator+(const StringClass&) for implementation
+            template <typename T>
+            [[nodiscard]] StringClass operator+(const T& rhs) const;
+
             friend StringClass operator+(const ::std::string& lhs, const StringClass& rhs) noexcept;
             friend StringClass operator+(const char*          lhs, const StringClass& rhs);
+
+            //NOTE: Use toString<T>() method and operator+(const StringClass&) for implementation
+            template <typename T>
+            friend StringClass operator+(const T& lhs, const StringClass& rhs) const;
 
         // Modifier Operators
 
             StringClass& operator+=(const StringClass&   rhs) noexcept;
             StringClass& operator+=(const ::std::string& rhs) noexcept;
             StringClass& operator+=(const char*          rhs);
+
+            //NOTE: Use toString<T>() method and operator+=(const StringClass&) for implementation
+            template <typename T>
+            StringClass& operator+=(const T& rhs) const;
 
         // Relational Operators
 
