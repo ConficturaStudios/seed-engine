@@ -21,6 +21,10 @@
 namespace seedengine {
 
     using String = ::std::string;
+
+    //TODO: Decide if custom String implementation should be immutable or not
+    //NOTE: std::string is NOT immutable, C# and JAva implementations are
+
 /*
     class StringClass final {
 
@@ -68,7 +72,7 @@ namespace seedengine {
 
             ~StringClass();
 
-        // Capacity Functions
+        // Container Functions
             
             [[nodiscard]] std::size_t size() const noexcept;
 
@@ -88,6 +92,14 @@ namespace seedengine {
             void clear() noexcept;
 
             void shrinkToFit();
+
+        // Static Functions
+
+            //TODO: Consider integrating with runtime type info system
+            //TODO: Create specializations for primative data types, custom classes (implement toString method in classes???)
+
+            template <typename T>
+            [[nodiscard]] static StringClass toString(const T& value);
 
         // String Functions
 
@@ -150,6 +162,17 @@ namespace seedengine {
             [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const ::std::string& str,
                                            std::size_t subpos, std::size_t sublen) const;
 
+            [[nodiscard]] bool startsWith(const StringClass&   substr) const noexcept;
+            [[nodiscard]] bool startsWith(const ::std::string& substr) const noexcept;
+            [[nodiscard]] bool startsWith(const char*          substr) const;
+
+            [[nodiscard]] bool endsWith(const StringClass&   substr) const noexcept;
+            [[nodiscard]] bool endsWith(const ::std::string& substr) const noexcept;
+            [[nodiscard]] bool endsWith(const char*          substr) const;
+
+            [[nodiscard]] StringClass toLowerCase() const noexcept;
+            [[nodiscard]] StringClass toUpperCase() const noexcept;
+
         // Modifier Functions
 
             StringClass& append(const StringClass&   str);
@@ -169,6 +192,8 @@ namespace seedengine {
             StringClass& append(std::initializer_list<char> il);
 
             //TODO: Add other modifier methods and iterator methods http://www.cplusplus.com/reference/string/string/
+
+            //assign, insert, erase, replace, swap; push back and pop back (?)
             
         // Accessor Functions
 
