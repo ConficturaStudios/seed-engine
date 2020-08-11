@@ -16,6 +16,7 @@
 #include "Color.hpp"
 #include "Vector2.hpp"
 #include "Vector3.hpp"
+#include "CommonSTL.hpp"
 
 namespace seedengine {
 
