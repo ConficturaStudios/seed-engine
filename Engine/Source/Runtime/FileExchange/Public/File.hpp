@@ -19,10 +19,25 @@
 
 namespace seedengine {
 
+    /**
+     * @brief The file access mode used when working with a file.
+     * 
+     */
     enum class ENGINE_API FileMode : std::ios_base::openmode {
+        /** Open a file for read only access. */
         READ = std::ios_base::in,
+        /** Open a file for write only access. */
         WRITE = std::ios_base::out,
+        /** Open a file for read and write access. */
         READ_WRITE = READ | WRITE
+    };
+
+    /**
+     * @brief A path within the local file system.
+     * 
+     */
+    class ENGINE_API Path {
+
     };
 
     /**
