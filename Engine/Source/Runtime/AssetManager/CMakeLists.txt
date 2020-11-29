@@ -66,6 +66,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ${LIBRARY_SCOPE} ENGINE_COMPILE_DEBUG=1)
 endif()
 
+add_dependencies(${LIBRARY_NAME} RuntimeCommon)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCommon)
 
 
 

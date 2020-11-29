@@ -13,12 +13,4 @@
 
 namespace seedengine {
 
-    AssetLibrary::AssetLibrary() {
-
-    }
-
-    AssetLibrary::~AssetLibrary() {
-        
-    }
-
 }

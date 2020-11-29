@@ -13,6 +13,9 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_ASSET_MANAGER_ASSET_LIBRARY_H_
 
 #include "AssetManagerAPI.hpp"
+#include "Asset.hpp"
+#include "String.hpp"
+#include "SmartPointer.hpp"
 
 namespace seedengine {
 
@@ -21,6 +24,7 @@ namespace seedengine {
      * @details
      * 
      */
+    template <typename AssetType>
     class ENGINE_API AssetLibrary {
 
         public:
@@ -53,7 +57,15 @@ namespace seedengine {
 
         // Functions
 
+            static bool terminate();
 
+            static bool unloadAll();
+            static bool unloadUnused();
+
+            static WeakPtr<AssetType> load(/*AssetID id*/);
+            static WeakPtr<AssetType> unload(/*AssetID id*/);
+
+            [[nodiscard]] static WeakPtr<AssetType> request(/*AssetID id*/);
 
         // Operators
 

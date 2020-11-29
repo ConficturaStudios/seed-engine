@@ -13,12 +13,4 @@
 
 namespace seedengine {
 
-    Asset::Asset() {
-
-    }
-
-    Asset::~Asset() {
-        
-    }
-
 }

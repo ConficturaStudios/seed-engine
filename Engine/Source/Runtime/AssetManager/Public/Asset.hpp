@@ -13,6 +13,8 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_ASSET_MANAGER_ASSET_H_
 
 #include "AssetManagerAPI.hpp"
+#include "String.hpp"
+#include "SmartPointer.hpp"
 
 namespace seedengine {
 
@@ -21,6 +23,7 @@ namespace seedengine {
      * @details
      * 
      */
+    template <typename DataType, typename AssetType>
     class ENGINE_API Asset {
 
         public:
@@ -31,7 +34,9 @@ namespace seedengine {
              * @brief The default constructor for Asset objects.
              * @details Constructs a new Asset with default initialization for all members.
              */
-            Asset();
+            Asset() {
+
+            }
 
             /**
              * @brief The copy constructor for Asset objects.
@@ -49,11 +54,18 @@ namespace seedengine {
              * @brief The destructor for Asset objects.
              * @details Called when an instance of Asset is deleted.
              */
-            virtual ~Asset();
+            virtual ~Asset() {
+
+            }
 
         // Functions
 
+            [[nodiscard]] inline String path() const { return m_path; }
 
+            [[nodiscard]] inline bool isLoaded() const { return m_is_loaded; }
+
+            [[nodiscard]] inline       WeakPtr<DataType> data()       { return m_data; }
+            [[nodiscard]] inline const WeakPtr<DataType> data() const { return m_data; }
 
         // Operators
 
@@ -71,7 +83,26 @@ namespace seedengine {
 
         protected:
 
+            void markLoaded() {
+                if (m_is_loaded) return;
+                else m_is_loaded = true;
+            }
+
+            void markUnloaded() {
+                if (!m_is_loaded) return;
+                else m_is_loaded = false;
+            }
+
+            virtual AssetType& load() = 0;
+            virtual AssetType& unload() = 0;
+
         private:
+
+            String m_path;
+
+            bool m_is_loaded;
+
+            SharedPtr<DataType> m_data;
 
     };
 
