@@ -25,6 +25,8 @@ namespace seedengine {
     //TODO: Decide if custom String implementation should be immutable or not
     //*NOTE: std::string is NOT immutable, C# and Java implementations are
 
+    //TODO: Add custom string view class for compile time strings
+
 /*
     class StringClass final {
 
@@ -56,7 +58,16 @@ namespace seedengine {
 
         // Constants
 
-            static constexpr const std::size_t npos = -1;
+            static constexpr const size_type npos = -1;
+
+        private:
+
+            value_type* m_buffer = nullptr;
+
+            size_type m_length = 0;
+            size_type m_capacity = 0;
+
+        public:
 
         // Constructors and Destructors
 
@@ -68,26 +79,36 @@ namespace seedengine {
             StringClass(const char* cstr);
 
             StringClass(const ::std::string& str);
-            StringClass(::std::string&& str);
 
             ~StringClass();
 
+            //TODO: Add constructors and assignment operators for string view and other types
+
+        // Assignment operators
+
+            StringClass& operator=(const StringClass& rhs);
+            StringClass& operator=(StringClass&& rhs);
+
+            StringClass& operator=(const char* rhs);
+
+            StringClass& operator=(const ::std::string& rhs);
+
         // Container Functions
             
-            [[nodiscard]] std::size_t size() const noexcept;
+            [[nodiscard]] size_type size() const noexcept;
 
-            [[nodiscard]] std::size_t length() const noexcept;
+            [[nodiscard]] size_type length() const noexcept;
 
-            [[nodiscard]] std::size_t maxSize() const noexcept;
+            [[nodiscard]] size_type maxSize() const noexcept;
 
-            [[nodiscard]] std::size_t capacity() const noexcept;
+            [[nodiscard]] size_type capacity() const noexcept;
 
             [[nodiscard]] bool empty() const noexcept;
 
-            void resize(std::size_t n) noexcept;
-            void resize(std::size_t n, char fill) noexcept;
+            void resize(size_type n) noexcept;
+            void resize(size_type n, char fill) noexcept;
 
-            void reserve(std::size_t n) noexcept;
+            void reserve(size_type n) noexcept;
 
             void clear() noexcept;
 
@@ -108,59 +129,59 @@ namespace seedengine {
 
             [[nodiscard]] void* getAllocator() const noexcept;
 
-            std::size_t copy(pointer dest, std::size_t len, std::size_t pos) const;
+            size_type copy(pointer dest, size_type len, size_type pos) const;
 
-            [[nodiscard]] std::size_t find(const StringClass&   str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t find(const ::std::string& str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t find(const char*          str, std::size_t pos) const;
-            [[nodiscard]] std::size_t find(const char*          str, std::size_t pos, std::size_t len) const;
-            [[nodiscard]] std::size_t find(char                   c, std::size_t pos) const noexcept;
+            [[nodiscard]] size_type find(const StringClass&   str, size_type pos) const noexcept;
+            [[nodiscard]] size_type find(const ::std::string& str, size_type pos) const noexcept;
+            [[nodiscard]] size_type find(const char*          str, size_type pos) const;
+            [[nodiscard]] size_type find(const char*          str, size_type pos, size_type len) const;
+            [[nodiscard]] size_type find(char                   c, size_type pos) const noexcept;
 
-            [[nodiscard]] std::size_t rfind(const StringClass&   str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t rfind(const ::std::string& str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t rfind(const char*          str, std::size_t pos) const;
-            [[nodiscard]] std::size_t rfind(const char*          str, std::size_t pos, std::size_t len) const;
-            [[nodiscard]] std::size_t rfind(char                   c, std::size_t pos) const noexcept;
+            [[nodiscard]] size_type rfind(const StringClass&   str, size_type pos) const noexcept;
+            [[nodiscard]] size_type rfind(const ::std::string& str, size_type pos) const noexcept;
+            [[nodiscard]] size_type rfind(const char*          str, size_type pos) const;
+            [[nodiscard]] size_type rfind(const char*          str, size_type pos, size_type len) const;
+            [[nodiscard]] size_type rfind(char                   c, size_type pos) const noexcept;
 
-            [[nodiscard]] std::size_t findFirstOf(const StringClass&   str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findFirstOf(const ::std::string& str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findFirstOf(const char*          str, std::size_t pos) const;
-            [[nodiscard]] std::size_t findFirstOf(const char*          str, std::size_t pos, std::size_t len) const;
-            [[nodiscard]] std::size_t findFirstOf(char                   c, std::size_t pos) const noexcept;
+            [[nodiscard]] size_type findFirstOf(const StringClass&   str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findFirstOf(const ::std::string& str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findFirstOf(const char*          str, size_type pos) const;
+            [[nodiscard]] size_type findFirstOf(const char*          str, size_type pos, size_type len) const;
+            [[nodiscard]] size_type findFirstOf(char                   c, size_type pos) const noexcept;
 
-            [[nodiscard]] std::size_t findLastOf(const StringClass&   str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findLastOf(const ::std::string& str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findLastOf(const char*          str, std::size_t pos) const;
-            [[nodiscard]] std::size_t findLastOf(const char*          str, std::size_t pos, std::size_t len) const;
-            [[nodiscard]] std::size_t findLastOf(char                   c, std::size_t pos) const noexcept;
+            [[nodiscard]] size_type findLastOf(const StringClass&   str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findLastOf(const ::std::string& str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findLastOf(const char*          str, size_type pos) const;
+            [[nodiscard]] size_type findLastOf(const char*          str, size_type pos, size_type len) const;
+            [[nodiscard]] size_type findLastOf(char                   c, size_type pos) const noexcept;
 
-            [[nodiscard]] std::size_t findFirstNotOf(const StringClass&   str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findFirstNotOf(const ::std::string& str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findFirstNotOf(const char*          str, std::size_t pos) const;
-            [[nodiscard]] std::size_t findFirstNotOf(const char*          str, std::size_t pos, std::size_t len) const;
-            [[nodiscard]] std::size_t findFirstNotOf(char                   c, std::size_t pos) const noexcept;
+            [[nodiscard]] size_type findFirstNotOf(const StringClass&   str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findFirstNotOf(const ::std::string& str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findFirstNotOf(const char*          str, size_type pos) const;
+            [[nodiscard]] size_type findFirstNotOf(const char*          str, size_type pos, size_type len) const;
+            [[nodiscard]] size_type findFirstNotOf(char                   c, size_type pos) const noexcept;
 
-            [[nodiscard]] std::size_t findLastNotOf(const StringClass&   str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findLastNotOf(const ::std::string& str, std::size_t pos) const noexcept;
-            [[nodiscard]] std::size_t findLastNotOf(const char*          str, std::size_t pos) const;
-            [[nodiscard]] std::size_t findLastNotOf(const char*          str, std::size_t pos, std::size_t len) const;
-            [[nodiscard]] std::size_t findLastNotOf(char                   c, std::size_t pos) const noexcept;
+            [[nodiscard]] size_type findLastNotOf(const StringClass&   str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findLastNotOf(const ::std::string& str, size_type pos) const noexcept;
+            [[nodiscard]] size_type findLastNotOf(const char*          str, size_type pos) const;
+            [[nodiscard]] size_type findLastNotOf(const char*          str, size_type pos, size_type len) const;
+            [[nodiscard]] size_type findLastNotOf(char                   c, size_type pos) const noexcept;
 
-            [[nodiscard]] StringClass substr(std::size_t pos, std::size_t len) const;
+            [[nodiscard]] StringClass substr(size_type pos, size_type len) const;
 
             [[nodiscard]] uint32_t compare(const StringClass&   str) const noexcept;
             [[nodiscard]] uint32_t compare(const ::std::string& str) const noexcept;
             [[nodiscard]] uint32_t compare(const char*          str) const;
 
-            [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const StringClass&   str) const;
-            [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const ::std::string& str) const;
-            [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const char*          str) const;
-            [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const char*          str, std::size_t n) const;
+            [[nodiscard]] uint32_t compare(size_type pos, size_type len, const StringClass&   str) const;
+            [[nodiscard]] uint32_t compare(size_type pos, size_type len, const ::std::string& str) const;
+            [[nodiscard]] uint32_t compare(size_type pos, size_type len, const char*          str) const;
+            [[nodiscard]] uint32_t compare(size_type pos, size_type len, const char*          str, size_type n) const;
 
-            [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const StringClass&   str,
-                                           std::size_t subpos, std::size_t sublen) const;
-            [[nodiscard]] uint32_t compare(std::size_t pos, std::size_t len, const ::std::string& str,
-                                           std::size_t subpos, std::size_t sublen) const;
+            [[nodiscard]] uint32_t compare(size_type pos, size_type len, const StringClass&   str,
+                                           size_type subpos, size_type sublen) const;
+            [[nodiscard]] uint32_t compare(size_type pos, size_type len, const ::std::string& str,
+                                           size_type subpos, size_type sublen) const;
 
             [[nodiscard]] bool startsWith(const StringClass&   substr) const noexcept;
             [[nodiscard]] bool startsWith(const ::std::string& substr) const noexcept;
@@ -178,13 +199,13 @@ namespace seedengine {
             StringClass& append(const StringClass&   str);
             StringClass& append(const ::std::string& str);
 
-            StringClass& append(const StringClass&   str, std::size_t subpos, std::size_t sublen);
-            StringClass& append(const ::std::string& str, std::size_t subpos, std::size_t sublen);
+            StringClass& append(const StringClass&   str, size_type subpos, size_type sublen);
+            StringClass& append(const ::std::string& str, size_type subpos, size_type sublen);
 
             StringClass& append(const char*          str);
-            StringClass& append(const char*          str, std::size_t n);
+            StringClass& append(const char*          str, size_type n);
 
-            StringClass& append(char c, std::size_t n);
+            StringClass& append(char c, size_type n);
 
             template<class InputIterator>
             StringClass& append(InputIterator first, InputIterator last);
@@ -197,8 +218,8 @@ namespace seedengine {
             
         // Accessor Functions
 
-            [[nodiscard]]       char& at(std::size_t pos);
-            [[nodiscard]] const char& at(std::size_t pos) const;
+            [[nodiscard]]       char& at(size_type pos);
+            [[nodiscard]] const char& at(size_type pos) const;
 
             [[nodiscard]]       char& back();
             [[nodiscard]] const char& back() const;
@@ -208,8 +229,8 @@ namespace seedengine {
 
         // Accessor Operators
 
-            [[nodiscard]]       char& operator[](std::size_t pos);
-            [[nodiscard]] const char& operator[](std::size_t pos) const;
+            [[nodiscard]]       char& operator[](size_type pos);
+            [[nodiscard]] const char& operator[](size_type pos) const;
 
         // Concatination Operators
 

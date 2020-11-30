@@ -20,6 +20,7 @@ set(${LIBRARY_NAME_UPPER}_SRC
 	${CMAKE_CURRENT_LIST_DIR}/Private/ISerializable.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Log.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/MemberFunctionPointer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/String.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/System.cpp
 )
 
