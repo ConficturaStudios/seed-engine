@@ -205,6 +205,7 @@ namespace seedengine {
             StringClass& append(const char*          str);
             StringClass& append(const char*          str, size_type n);
 
+            StringClass& append(char c);
             StringClass& append(char c, size_type n);
 
             template<class InputIterator>
