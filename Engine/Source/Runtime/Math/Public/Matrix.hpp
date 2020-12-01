@@ -542,6 +542,49 @@ namespace seedengine {
         return os;
     }
 
+    // Prevent redefinition of explicit instantiations (see: Matrix.cpp) with extern
+
+    extern template class Matrix<float, 1, 1>;
+    extern template class Matrix<float, 1, 2>;
+    extern template class Matrix<float, 1, 3>;
+    extern template class Matrix<float, 1, 4>;
+
+    extern template class Matrix<float, 2, 1>;
+    extern template class Matrix<float, 2, 2>;
+    extern template class Matrix<float, 2, 3>;
+    extern template class Matrix<float, 2, 4>;
+
+    extern template class Matrix<float, 3, 1>;
+    extern template class Matrix<float, 3, 2>;
+    extern template class Matrix<float, 3, 3>;
+    extern template class Matrix<float, 3, 4>;
+
+    extern template class Matrix<float, 4, 1>;
+    extern template class Matrix<float, 4, 2>;
+    extern template class Matrix<float, 4, 3>;
+    extern template class Matrix<float, 4, 4>;
+
+
+    extern template class Matrix<int, 1, 1>;
+    extern template class Matrix<int, 1, 2>;
+    extern template class Matrix<int, 1, 3>;
+    extern template class Matrix<int, 1, 4>;
+
+    extern template class Matrix<int, 2, 1>;
+    extern template class Matrix<int, 2, 2>;
+    extern template class Matrix<int, 2, 3>;
+    extern template class Matrix<int, 2, 4>;
+
+    extern template class Matrix<int, 3, 1>;
+    extern template class Matrix<int, 3, 2>;
+    extern template class Matrix<int, 3, 3>;
+    extern template class Matrix<int, 3, 4>;
+
+    extern template class Matrix<int, 4, 1>;
+    extern template class Matrix<int, 4, 2>;
+    extern template class Matrix<int, 4, 3>;
+    extern template class Matrix<int, 4, 4>;
+
     // Typedefs
 
     /** A 1x1 float matrix. */
