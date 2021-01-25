@@ -15,8 +15,13 @@
 #include "CommonAPI.hpp"
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <initializer_list>
+
+/*extern template struct ::std::char_traits<char>;
+extern template class ::std::allocator<char>;
+extern template class ::std::basic_string<char, ::std::char_traits<char>, ::std::allocator<char>>;*/
 
 namespace seedengine {
 
@@ -27,34 +32,64 @@ namespace seedengine {
 
     //TODO: Add custom string view class for compile time strings
 
-/*
-    class StringClass final {
 
-            struct StringIterator final {
-                friend class StringClass;
-            };
+    class StringClass final {
 
         public:
 
         // Types
 
-            using value_type     = char;
-            using traits_type    = ::std::char_traits<value_type>;
-            using allocator_type = ::std::allocator<value_type>;
+            using value_type      = char;
+            using difference_type = ::std::ptrdiff_t;
+            using size_type       = ::std::size_t;
 
-            using reference       = value_type&;
-            using const_reference = const value_type&;
-            using pointer         = value_type*;
-            using const_pointer   = const value_type*;
+        private:
 
-            using iterator       = StringIterator;
-            using const_iterator = const StringIterator;
+            template <typename T>
+            class StringIterator final {
+
+                    friend class StringClass;
+
+                    T m_iterator_ptr;
+
+                public:
+
+                    StringIterator() : m_iterator_ptr(T()) { }
+                    explicit StringIterator(const T& iterator_ptr) : m_iterator_ptr(iterator_ptr) { }
+
+                    value_type& operator*() const { return *m_iterator_ptr; }
+                    value_type* operator->() const { return m_iterator_ptr; }
+
+                    StringIterator& operator++() { ++m_iterator_ptr; return *this; }
+                    StringIterator operator++(int) { return StringIterator(m_iterator_ptr++); }
+
+                    StringIterator& operator--() { --m_iterator_ptr; return *this; }
+                    StringIterator operator--(int) { return StringIterator(m_iterator_ptr--); }
+
+                    value_type& operator[](const difference_type& n) const { return m_iterator_ptr[n]; }
+
+                    StringIterator& operator+=(const difference_type& n) { m_iterator_ptr += n; return *this; }
+                    StringIterator operator+(const difference_type& n) const { return StringIterator(m_iterator_ptr + n); }
+                    
+                    StringIterator& operator-=(const difference_type& n) { m_iterator_ptr -= n; return *this; }
+                    StringIterator operator-(const difference_type& n) const { return StringIterator(m_iterator_ptr - n); }
+
+                    const T& base() const { return m_iterator_ptr; }
+
+            };
+
+            //template class ENGINE_API StringIterator<value_type*>;
+            //template class ENGINE_API StringIterator<const value_type*>;
+
+        public:
+
+        // Types
+
+            using iterator       = StringIterator<value_type*>;
+            using const_iterator = StringIterator<const value_type*>;
 
             using reverse_iterator       = ::std::reverse_iterator<iterator>;
             using const_reverse_iterator = ::std::reverse_iterator<const_iterator>;
-
-            using difference_type = ::std::ptrdiff_t;
-            using size_type       = ::std::size_t;
 
         // Constants
 
@@ -122,14 +157,32 @@ namespace seedengine {
             template <typename T>
             [[nodiscard]] static StringClass toString(const T& value);
 
+        // Iterator Functions
+
+            iterator       begin() noexcept;
+            const_iterator begin() const noexcept;
+            iterator       end() noexcept;
+            const_iterator end() const noexcept;
+
+            reverse_iterator       rbegin() noexcept;
+            const_reverse_iterator rbegin() const noexcept;
+            reverse_iterator       rend() noexcept;
+            const_reverse_iterator rend() const noexcept;
+
+            const_iterator cbegin() const noexcept;
+            const_iterator cend() const noexcept;
+
+            const_reverse_iterator crbegin() const noexcept;
+            const_reverse_iterator crend() const noexcept;
+
         // String Functions
 
-            [[nodiscard]] const_pointer cstring() const noexcept;
-            [[nodiscard]] const_pointer data() const noexcept;
+            [[nodiscard]] const value_type* cstring() const noexcept;
+            [[nodiscard]] const value_type* data() const noexcept;
 
             [[nodiscard]] void* getAllocator() const noexcept;
 
-            size_type copy(pointer dest, size_type len, size_type pos) const;
+            size_type copy(value_type* dest, size_type len, size_type pos) const;
 
             [[nodiscard]] size_type find(const StringClass&   str, size_type pos) const noexcept;
             [[nodiscard]] size_type find(const ::std::string& str, size_type pos) const noexcept;
@@ -208,10 +261,10 @@ namespace seedengine {
             StringClass& append(char c);
             StringClass& append(char c, size_type n);
 
-            template<class InputIterator>
-            StringClass& append(InputIterator first, InputIterator last);
+            //template<class InputIterator>
+            //StringClass& append(InputIterator first, InputIterator last);
 
-            StringClass& append(std::initializer_list<char> il);
+            //StringClass& append(std::initializer_list<char> il);
 
             //TODO: Add other modifier methods and iterator methods http://www.cplusplus.com/reference/string/string/
 
@@ -248,7 +301,7 @@ namespace seedengine {
 
             //NOTE: Use toString<T>() method and operator+(const StringClass&) for implementation
             template <typename T>
-            friend StringClass operator+(const T& lhs, const StringClass& rhs) const;
+            friend StringClass operator+(const T& lhs, const StringClass& rhs);
 
         // Modifier Operators
 
@@ -316,7 +369,7 @@ namespace seedengine {
     };
 
     [[nodiscard]] StringClass operator+(const ::std::string& lhs, const StringClass& rhs) noexcept;
-    [[nodiscard]] StringClass operator+(const char*&         lhs, const StringClass& rhs) noexcept;*/
+    [[nodiscard]] StringClass operator+(const char*          lhs, const StringClass& rhs);
 
 }
 

@@ -11,27 +11,31 @@
 
 #include "String.hpp"
 
+/*template struct ENGINE_API ::std::char_traits<char>;
+template class ENGINE_API ::std::allocator<char>;
+template class ENGINE_API ::std::basic_string<char, ::std::char_traits<char>, ::std::allocator<char>>;*/
 
 namespace seedengine {
-/*
+
+
 // Constructors and Destructors
 
     StringClass::StringClass() noexcept {
         m_capacity = 10;
         m_buffer = new value_type[m_capacity];
-        m_size = 0;
+        m_length = 0;
     }
 
     StringClass::StringClass(const StringClass& ref) {
-        m_capacity = m_capcity;
-        m_size = ref.m_size;
+        m_capacity = m_capacity;
+        m_length = ref.m_length;
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, ref.m_buffer, m_size);
+        strncpy_s(m_buffer, m_capacity, ref.m_buffer, m_length);
     }
 
     StringClass::StringClass(StringClass&& ref) {
         m_capacity = ref.m_capacity;
-        m_size = ref.m_size;
+        m_length = ref.m_length;
         m_buffer = ref.m_buffer;
         ref.m_buffer = nullptr;
     }
@@ -39,17 +43,17 @@ namespace seedengine {
 
     StringClass::StringClass(const char* cstr) {
         m_capacity = strlen(cstr) + 1;
-        m_size = strlen(cstr);
+        m_length = strlen(cstr);
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, cstr, m_size);
+        strncpy_s(m_buffer, m_capacity, cstr, m_length);
     }
 
 
     StringClass::StringClass(const ::std::string& str) {
         m_capacity = str.capacity();
-        m_size = ref.length();
+        m_length = str.length();
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, ref.c_str(), m_size);
+        strncpy_s(m_buffer, m_capacity, str.c_str(), m_length);
     }
 
 
@@ -61,48 +65,52 @@ namespace seedengine {
 
     StringClass& StringClass::operator=(const StringClass& rhs) {
         clear();
-        m_capacity = m_capcity;
-        m_size = ref.m_size;
+        m_capacity = rhs.m_capacity;
+        m_length = rhs.m_length;
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, ref.m_buffer, m_size);
+        strncpy_s(m_buffer, m_capacity, rhs.m_buffer, m_length);
+        return *this;
     }
 
     StringClass& StringClass::operator=(StringClass&& rhs) {
         clear();
-        m_capacity = ref.m_capacity;
-        m_size = ref.m_size;
-        m_buffer = ref.m_buffer;
-        ref.m_buffer = nullptr;
+        m_capacity = rhs.m_capacity;
+        m_length = rhs.m_length;
+        m_buffer = rhs.m_buffer;
+        rhs.m_buffer = nullptr;
+        return *this;
     }
 
     StringClass& StringClass::operator=(const char* rhs) {
         clear();
-        m_capacity = strlen(cstr);
-        m_size = strlen(cstr);
-        m_buffer = new value_type[m_size + 1];
-        strncpy_s(m_buffer, m_size + 1, cstr, m_size);
+        m_capacity = strlen(rhs);
+        m_length = strlen(rhs);
+        m_buffer = new value_type[m_length + 1];
+        strncpy_s(m_buffer, m_length + 1, rhs, m_length);
+        return *this;
     }
 
     StringClass& StringClass::operator=(const ::std::string& rhs) {
         clear();
-        m_capacity = str.capacity();
-        m_size = ref.length();
+        m_capacity = rhs.capacity();
+        m_length = rhs.length();
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, ref.c_str(), m_size);
+        strncpy_s(m_buffer, m_capacity, rhs.c_str(), m_length);
+        return *this;
     }
 
 // Container Functions
     
     [[nodiscard]] StringClass::size_type StringClass::size() const noexcept {
-        return m_size;
+        return m_length;
     }
 
     [[nodiscard]] StringClass::size_type StringClass::length() const noexcept {
-        return m_size;
+        return m_length;
     }
 
     [[nodiscard]] StringClass::size_type StringClass::maxSize() const noexcept {
-        return ((size_type)0) - 1;
+        return npos / sizeof(value_type);
     }
 
     [[nodiscard]] StringClass::size_type StringClass::capacity() const noexcept {
@@ -110,17 +118,17 @@ namespace seedengine {
     }
 
     [[nodiscard]] bool StringClass::empty() const noexcept {
-        return m_size == 0;
+        return m_length == 0;
     }
 
     void StringClass::resize(StringClass::size_type n) noexcept {
-        if (n < m_size) {
+        if (n < m_length) {
             value_type* temp = new value_type[n + 1];
             memmove(temp, m_buffer, n * sizeof(value_type));
-            m_size = n;
+            m_length = n;
             m_capacity = n;
         }
-        else if (n > m_size) {
+        else if (n > m_length) {
 
         }
     }
@@ -134,12 +142,12 @@ namespace seedengine {
 
     void StringClass::clear() noexcept {
         if (m_buffer) delete[] m_buffer;
-        m_size = 0;
+        m_length = 0;
         m_capacity = 10;
         m_buffer = new value_type[m_capacity];
     }
 
     void StringClass::shrinkToFit() {
 
-    }*/
+    }
 }
