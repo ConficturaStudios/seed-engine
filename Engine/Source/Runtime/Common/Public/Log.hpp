@@ -19,6 +19,9 @@
 
 namespace seedengine {
 
+    // TODO: Review spdlog implementation
+    // TODO: Consider storing a Log instance in System instead of using static getters in Log
+
     /**
      * @brief The logging interface for the engine.
      * @details This is the logging utility used for debuging and console output.

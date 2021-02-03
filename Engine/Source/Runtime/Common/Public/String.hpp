@@ -27,10 +27,12 @@ namespace seedengine {
 
     using String = ::std::string;
 
-    //TODO: Decide if custom String implementation should be immutable or not
-    //*NOTE: std::string is NOT immutable, C# and Java implementations are
+    // TODO: Decide whether or not to use std::string, a custom implementation, or a wrapper
 
-    //TODO: Add custom string view class for compile time strings
+    // TODO: Decide if custom String implementation should be immutable or not
+    // NOTE: std::string is NOT immutable, C# and Java implementations are
+
+    // TODO: Add custom string view class for compile time strings
 
 
     class StringClass final {

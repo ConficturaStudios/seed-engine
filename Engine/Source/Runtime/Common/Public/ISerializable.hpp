@@ -17,6 +17,8 @@
 
 namespace seedengine {
 
+    // TODO: Consider removing this interface due to redundency
+
     /**
      * @brief An interface for objects that can be serialized into and deserialized from a byte stream.
      * @details An interface for objects that can be serialized into and deserialized from a byte stream.

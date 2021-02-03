@@ -17,6 +17,10 @@
 
 namespace seedengine {
 
+    // TODO: Consider changing naming convention for type traits
+    // TODO: Consider adding in house implementations of traits
+
+    // TODO: Decide whether or not to utilize a runtime type system
     
     // Compile Time Traits
 

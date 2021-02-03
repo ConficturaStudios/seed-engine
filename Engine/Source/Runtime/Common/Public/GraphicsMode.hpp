@@ -16,6 +16,9 @@
 
 namespace seedengine {
 
+    // TODO: Update naming convention (EGraphicsMode)
+    // TODO: Consider switching to namespace->enum design to allow for functions like toString()
+
     /**
      * @brief The available graphics frameworks.
      * 

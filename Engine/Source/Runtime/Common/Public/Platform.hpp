@@ -18,6 +18,9 @@
 
 namespace seedengine {
 
+    // TODO: Update naming convention (EPlatform, EArchitecture)
+    // TODO: Consider switching to namespace->enum design to allow for functions like toString()
+
     /**
      * @brief An enum containing available platforms.
      * 

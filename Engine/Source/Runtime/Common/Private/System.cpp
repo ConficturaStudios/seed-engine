@@ -12,6 +12,9 @@
 #include "System.hpp"
 
 namespace seedengine {
+
+    // TODO: Make these toString like methods into dedicated functions for each enum
+    // TODO: Look into possible compile time solutions to reduce execution time for name lookup
     
     String System::GetPlatformName(const Platform& platform) noexcept {
         if (platform == Platform::WINDOWS) {

@@ -37,9 +37,19 @@ using uint64 = uint64_t;
 
 using size_t = ::std::size_t;
 
+// *** Macros ***
+
+/**
+ * @brief Converts the token(s) passed to a c style string expression.
+ */
+#define STR(...) #__VA_ARGS__
+
 // *** Functions ***
 
 // Bitwise functions
+
+// TODO: Decide whether or not to encapsulate the bitwise functions
+// TODO: Extend bitwise functions to support more integral types
 
 /**
  * @brief Returns the provided data with the specified bit set to 1. The
@@ -49,7 +59,7 @@ using size_t = ::std::size_t;
  * @param bit The bit index from the right to set.
  * @return byte The provided data with the specified bit set to 1.
  */
-constexpr inline byte bit_set(byte data, uint8 bit) noexcept {
+[[nodiscard]] constexpr inline byte bit_set(byte data, uint8 bit) noexcept {
     return data | (byte{1} << bit);
 }
 
@@ -61,7 +71,7 @@ constexpr inline byte bit_set(byte data, uint8 bit) noexcept {
  * @param bit The bit index from the right to set.
  * @return byte The provided data with the specified bit cleared to 0.
  */
-constexpr inline byte bit_clear(byte data, uint8 bit) noexcept {
+[[nodiscard]] constexpr inline byte bit_clear(byte data, uint8 bit) noexcept {
     return data & ~(byte{1} << bit);
 }
 
@@ -73,7 +83,7 @@ constexpr inline byte bit_clear(byte data, uint8 bit) noexcept {
  * @param bit The bit index from the right to set.
  * @return byte The provided data with the specified bit flipped.
  */
-constexpr inline byte bit_flip(byte data, uint8 bit) noexcept {
+[[nodiscard]] constexpr inline byte bit_flip(byte data, uint8 bit) noexcept {
     return data ^ (byte{1} << bit);
 }
 
@@ -86,7 +96,7 @@ constexpr inline byte bit_flip(byte data, uint8 bit) noexcept {
  * @return true If the specified bit is 1.
  * @return false If the specified bit is 0.
  */
-constexpr inline bool bit_check(byte data, uint8 bit) noexcept {
+[[nodiscard]] constexpr inline bool bit_check(byte data, uint8 bit) noexcept {
     return (data & (byte{1} << bit)) != byte{0};
 }
 
@@ -99,7 +109,7 @@ constexpr inline bool bit_check(byte data, uint8 bit) noexcept {
  * @param cstr The c style string to process.
  * @return uint64 A unique 64 bit unsigned hash value representing the given string.
  */
-constexpr inline uint64 strhash(const char* cstr) noexcept {
+[[nodiscard]] constexpr inline uint64 strhash(const char* cstr) noexcept {
     return (cstr && *cstr != '\0') ?
         static_cast<uint64>(*cstr) + 33 * strhash(cstr + 1) : 5381;
 }

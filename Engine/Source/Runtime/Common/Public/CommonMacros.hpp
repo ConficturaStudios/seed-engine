@@ -14,6 +14,8 @@
 
 #include "CommonAPI.hpp"
 
+// TODO: Move into CommonDefinitions.hpp
+
 /**
  * @brief Creates a bitwise flag.
  */
