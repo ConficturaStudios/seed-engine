@@ -90,4 +90,18 @@ constexpr inline bool bit_check(byte data, uint8 bit) noexcept {
     return (data & (byte{1} << bit)) != byte{0};
 }
 
+// Compile Time String Functions
+
+/**
+ * @brief Generates a unique hash identifier given a c style string. This
+ *        function is designed to be able to run at compile time.
+ * 
+ * @param cstr The c style string to process.
+ * @return uint64 A unique 64 bit unsigned hash value representing the given string.
+ */
+constexpr inline uint64 strhash(const char* cstr) noexcept {
+    return (cstr && *cstr != '\0') ?
+        static_cast<uint64>(*cstr) + 33 * strhash(cstr + 1) : 5381;
+}
+
 #endif
