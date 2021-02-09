@@ -28,6 +28,13 @@ namespace seedengine {
 
         public:
 
+        // Platform
+
+            /**
+             * @brief Gets the current platform that the application is running on.
+             * 
+             * @return Platform The platform the application is running on.
+             */
             [[nodiscard]] static constexpr Platform GetCurrentPlatform() noexcept {
                 #if defined(_WIN32)
                 // Windows
@@ -66,6 +73,11 @@ namespace seedengine {
                 #endif
             }
 
+            /**
+             * @brief Returns the system architecture of the machine the application is running on.
+             * 
+             * @return Architecture The system architecture that the aapplication is running on.
+             */
             [[nodiscard]] static constexpr Architecture GetCurrentArchitecture() noexcept  {
 
                 // Current device's bit architecture
@@ -84,15 +96,35 @@ namespace seedengine {
                 }
             }
 
+            /**
+             * @brief Returns the name of the provided system platform.
+             * 
+             * @param platform The platform to check.
+             * @return String The name of the provided platform.
+             */
             [[nodiscard]] static String GetPlatformName(const Platform& platform) noexcept;
 
-
+            /**
+             * @brief Returns the graphics mode being used by the engine.
+             * 
+             * @return GraphicsMode The graphics mode used by the engine.
+             */
             [[nodiscard]] static constexpr GraphicsMode GetGraphicsMode() noexcept {
                 return GraphicsMode::OPEN_GL;
                 //TODO: Set graphics mode from ini, do compatibility check
             }
 
+            /**
+             * @brief Returns the name of the provided graphics mode.
+             * 
+             * @param mode The Graphics Mode to check.
+             * @return String The name of the graphics mode.
+             */
             [[nodiscard]] static String GetGraphicsModeName(const GraphicsMode& mode) noexcept;
+
+        // IO
+
+            // TODO: Add Log and Time functionality to System class
 
     };
 
