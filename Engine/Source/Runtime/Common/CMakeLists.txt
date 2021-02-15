@@ -16,10 +16,7 @@ set(LIBRARY_NAME RuntimeCommon)
 set(LIBRARY_NAME_UPPER RUNTIME_COMMON)
 
 set(${LIBRARY_NAME_UPPER}_SRC
-	${CMAKE_CURRENT_LIST_DIR}/Private/FunctionPointer.cpp
-	${CMAKE_CURRENT_LIST_DIR}/Private/ISerializable.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Log.cpp
-	${CMAKE_CURRENT_LIST_DIR}/Private/MemberFunctionPointer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/String.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/System.cpp
 )
@@ -33,7 +30,6 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonTraits.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FunctionPointer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/GraphicsMode.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/ISerializable.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Log.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/MemberFunctionPointer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Platform.hpp

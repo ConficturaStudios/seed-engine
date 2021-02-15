@@ -21,7 +21,6 @@
 #include "CommonTraits.hpp"
 #include "FunctionPointer.hpp"
 #include "GraphicsMode.hpp"
-#include "ISerializable.hpp"
 #include "Log.hpp"
 #include "MemberFunctionPointer.hpp"
 #include "Platform.hpp"

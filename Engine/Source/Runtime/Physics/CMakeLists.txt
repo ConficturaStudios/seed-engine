@@ -1,4 +1,4 @@
-### Copyright (c) 2020 Confictura Studios. All rights reserved.
+### Copyright (c) 2021 Confictura Studios. All rights reserved.
 ### You may use, distribute, and modify this code under
 ### the terms of the MIT license.
 ### 
