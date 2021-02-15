@@ -17,13 +17,27 @@
 namespace seedengine {
 
     /**
-     * @brief
-     * @details
+     * @brief A pair of two generic objects of any type.
+     * @details An ordered pair of generic objects. The first element is of type T1
+     *          while the second is of type T2. 
      * 
+     * @tparam T1 The type of the first element in this pair.
+     * @tparam T2 The type of the second element in this pair.
      */
-    class ENGINE_API Pair {
+    template <typename T1, typename T2>
+    struct ENGINE_API Pair {
 
         public:
+
+            /** The type of the first element in this pair. */
+            using FirstType = T1;
+            /** The type of the second element in this pair. */
+            using SecondType = T2;
+
+            /** The first element of this pair. */
+            T1 first;
+            /** The second element of this pair. */
+            T2 second;
 
         // Constructors and destructor
 
@@ -31,8 +45,19 @@ namespace seedengine {
              * @brief The default constructor for Pair objects.
              * @details Constructs a new Pair with default initialization for all members.
              */
-            Pair() {
+            constexpr Pair() : Pair(T1(), T2()) {
                 
+            }
+
+            /**
+             * @brief Constructs a Pair from the two provided values.
+             * @details Constructs a new Pair with the specified value for each member.
+             * 
+             * @param first The first element value to store in this pair.
+             * @param second The second element value to store in this pair.
+             */
+            constexpr Pair(const T1& first, const T2& second) : first(first), second(second) {
+
             }
 
             /**
@@ -51,13 +76,18 @@ namespace seedengine {
              * @brief The destructor for Pair objects.
              * @details Called when an instance of Pair is deleted.
              */
-            virtual ~Pair() {
-                
-            }
+            virtual ~Pair() = default;
 
         // Functions
 
-
+            /**
+             * @brief Returns a copy of this pair in reverse order.
+             * 
+             * @return Pair<T2, T1> A reversed copy of this Pair.
+             */
+            [[nodiscard]] Pair<T2, T1> reverse() const {
+                return Pair<T2, T1>(second, first);
+            }
 
         // Assignment Operators
 
@@ -73,9 +103,29 @@ namespace seedengine {
              */
             Pair& operator=(Pair&& rhs) = default;
 
-        protected:
+        // Comparison Operators
 
-        private:
+            /**
+             * @brief Checks if two Pairs are equal.
+             * 
+             * @param rhs The Pair to check against.
+             * @return true If the Pairs are equal.
+             * @return false  If the Pairs are not equal.
+             */
+            [[nodiscard]] bool operator==(const Pair& rhs) const {
+                return first == rhs.first && second == rhs.second;
+            }
+
+            /**
+             * @brief Checks if two Pairs are not equal.
+             * 
+             * @param rhs The Pair to check against.
+             * @return true If the Pairs are not equal.
+             * @return false  If the Pairs are equal.
+             */
+            [[nodiscard]] bool operator!=(const Pair& rhs) const {
+                return first != rhs.first || second != rhs.second;
+            }
 
     };
 
