@@ -24,7 +24,7 @@ namespace seedengine {
      * @details
      * 
      */
-    class ENGINE_API Entity final : public ISerializable {
+    class ENGINE_API Entity final {
 
         friend class EntityManager;
 
@@ -51,22 +51,6 @@ namespace seedengine {
              * @details Called when an instance of Entity is deleted.
              */
             ~Entity();
-
-        // Override Functions
-
-            /**
-             * @brief Serializes this object into a stream.
-             * 
-             * @param target The output stream to write to.
-             */
-            virtual void serialize(std::ostream& target) const override;
-
-            /**
-             * @brief Deserializes the target from a stream.
-             * 
-             * @param source The source of the data to load in.
-             */
-            virtual void deserialize(std::istream& source) override;
 
         // Getter Functions
 

@@ -1,7 +1,7 @@
 /**
- * TestRuntimeCommonISerializable.cpp
+ * TestRuntimeCollections.cpp
  * 
- * @copyright Copyright (c) 2020 Confictura Studios. All rights reserved.
+ * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
  * 
  * This code is distributed as part of the Seed Engine project.
@@ -11,9 +11,9 @@
 
 #include <iostream>
 #include <gtest/gtest.h>
-#include "ISerializable.hpp"
+#include "Collections.hpp"
 
-TEST(TestRuntimeCommonISerializable, GeneralTest) {
+TEST(TestRuntimeCollections, GeneralTest) {
     using namespace seedengine;
     
 }

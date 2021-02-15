@@ -1,5 +1,5 @@
 /**
- * ContainersAPI.hpp
+ * CollectionsAPI.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -9,39 +9,39 @@
  * For a copy of the license, please go to https://github.com/conficturastudios/seed-engine/LICENSE
  */
  
-#ifndef SEEDENGINE_INCLUDE_RUNTIME_CONTAINERS_API_H_
-#define SEEDENGINE_INCLUDE_RUNTIME_CONTAINERS_API_H_
+#ifndef SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_API_H_
+#define SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_API_H_
 
 
 
-#ifndef RUNTIME_CONTAINERS_EXPORT_API
+#ifndef RUNTIME_COLLECTIONS_EXPORT_API
     #if BUILD_SHARED_LIBS
         #if defined(_WIN32) || defined(__CYGWIN__) || defined(_MSC_VER)
-            #define RUNTIME_CONTAINERS_EXPORT_API __declspec(dllexport)
-            #define RUNTIME_CONTAINERS_IMPORT_API __declspec(dllimport)
-            #define RUNTIME_CONTAINERS_HIDDEN_API
+            #define RUNTIME_COLLECTIONS_EXPORT_API __declspec(dllexport)
+            #define RUNTIME_COLLECTIONS_IMPORT_API __declspec(dllimport)
+            #define RUNTIME_COLLECTIONS_HIDDEN_API
         #elif defined(__GNUC__) && __GNUC__ >= 4
-            #define RUNTIME_CONTAINERS_EXPORT_API __attribute__((visibility("default")))
-            #define RUNTIME_CONTAINERS_IMPORT_API __attribute__((visibility("default")))
-            #define RUNTIME_CONTAINERS_HIDDEN_API __attribute__((visibility("hidden")))
+            #define RUNTIME_COLLECTIONS_EXPORT_API __attribute__((visibility("default")))
+            #define RUNTIME_COLLECTIONS_IMPORT_API __attribute__((visibility("default")))
+            #define RUNTIME_COLLECTIONS_HIDDEN_API __attribute__((visibility("hidden")))
         #else
-            #define RUNTIME_CONTAINERS_EXPORT_API
-            #define RUNTIME_CONTAINERS_IMPORT_API
-            #define RUNTIME_CONTAINERS_HIDDEN_API
+            #define RUNTIME_COLLECTIONS_EXPORT_API
+            #define RUNTIME_COLLECTIONS_IMPORT_API
+            #define RUNTIME_COLLECTIONS_HIDDEN_API
         #endif
     #else
-        #define RUNTIME_CONTAINERS_EXPORT_API
-        #define RUNTIME_CONTAINERS_IMPORT_API
-        #define RUNTIME_CONTAINERS_HIDDEN_API
+        #define RUNTIME_COLLECTIONS_EXPORT_API
+        #define RUNTIME_COLLECTIONS_IMPORT_API
+        #define RUNTIME_COLLECTIONS_HIDDEN_API
     #endif
 #endif
 
 //#ifndef ${PROJECT_IDENTIFIER}_API
 #ifndef ENGINE_API
-    #ifdef RUNTIME_CONTAINERS_EXPORT
-        #define ENGINE_API RUNTIME_CONTAINERS_EXPORT_API
+    #ifdef RUNTIME_COLLECTIONS_EXPORT
+        #define ENGINE_API RUNTIME_COLLECTIONS_EXPORT_API
     #else
-        #define ENGINE_API RUNTIME_CONTAINERS_IMPORT_API
+        #define ENGINE_API RUNTIME_COLLECTIONS_IMPORT_API
     #endif
 #endif
 
@@ -52,7 +52,7 @@
 // Original:
 
 /**
- * ContainersAPI.hpp
+ * CollectionsAPI.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -63,8 +63,8 @@
  */
  
 /*
-#ifndef SEEDENGINE_INCLUDE_RUNTIME_CONTAINERS_API_H_
-#define SEEDENGINE_INCLUDE_RUNTIME_CONTAINERS_API_H_
+#ifndef SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_API_H_
+#define SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_API_H_
 
 
 
@@ -76,7 +76,7 @@
                 #pragma warning(disable: 4251)
             #endif
 
-            #if defined(RUNTIME_CONTAINERS_EXPORT)
+            #if defined(RUNTIME_COLLECTIONS_EXPORT)
                 #define ENGINE_API __declspec(dllexport)
             #else
                 #define ENGINE_API __declspec(dllimport)

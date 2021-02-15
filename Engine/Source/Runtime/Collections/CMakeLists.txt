@@ -10,18 +10,25 @@
 
 cmake_minimum_required(VERSION 3.0)
 
-message(STATUS "Building Runtime module Containers")
+message(STATUS "Building Runtime module Collections")
 
-set(LIBRARY_NAME RuntimeContainers)
-set(LIBRARY_NAME_UPPER RUNTIME_CONTAINERS)
+set(LIBRARY_NAME RuntimeCollections)
+set(LIBRARY_NAME_UPPER RUNTIME_COLLECTIONS)
 
 set(${LIBRARY_NAME_UPPER}_SRC
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/Array.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/Containers.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/ContainersAPI.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/ArrayList.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Collections.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/CollectionsAPI.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Dictionary.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Iterator.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/LinkedList.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/List.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Map.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Pair.hpp
 )
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/Public)
@@ -39,7 +46,7 @@ if(${LIBRARY_NAME_UPPER}_SRC)
         PRIVATE BUILD_SHARED_LIBS=1
         PRIVATE ${LIBRARY_NAME_UPPER}_EXPORT=1)
 else()
-    message(STATUS "Building Runtime module Containers as INTERFACE Library")
+    message(STATUS "Building Runtime module Collections as INTERFACE Library")
     add_library(${LIBRARY_NAME} INTERFACE)
 
     set(LIBRARY_SCOPE INTERFACE)
@@ -80,7 +87,7 @@ install(FILES ${${LIBRARY_NAME_UPPER}_HEADERS}
 if(BUILD_TESTS)
     get_target_property(TARGET_TYPE ${LIBRARY_NAME} TYPE)
     if(NOT ${TARGET_TYPE} STREQUAL "EXECUTABLE")
-        message(STATUS "Adding module Containers to test suite")
+        message(STATUS "Adding module Collections to test suite")
 
         file(GLOB_RECURSE ${LIBRARY_NAME_UPPER}_TEST_SRC
             ${CMAKE_CURRENT_LIST_DIR}

@@ -1,6 +1,6 @@
 {
     "Domain": "Runtime",
-    "Name": "Containers",
+    "Name": "Collections",
     "BuildTarget": "Shared",
     "Dependencies": [
         

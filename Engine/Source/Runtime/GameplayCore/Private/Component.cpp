@@ -28,16 +28,6 @@ namespace seedengine {
 
     }
 
-    // Serialization
-
-    void Component::serialize(std::ostream& target) const {
-
-    }
-
-    void Component::deserialize(std::istream& source) {
-
-    }
-
     // Functions
 
     Component::ComponentInstanceID Component::getInstanceID() const {

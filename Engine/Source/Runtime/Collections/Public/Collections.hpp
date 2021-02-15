@@ -1,5 +1,5 @@
 /**
- * Containers.hpp
+ * Collections.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -9,13 +9,20 @@
  * For a copy of the license, please go to https://github.com/conficturastudios/seed-engine/LICENSE
  */
 
-#ifndef SEEDENGINE_INCLUDE_RUNTIME_CONTAINERS_MODULE_H_
-#define SEEDENGINE_INCLUDE_RUNTIME_CONTAINERS_MODULE_H_
+#ifndef SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_MODULE_H_
+#define SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_MODULE_H_
 
-#include "ContainersAPI.hpp"
+#include "CollectionsAPI.hpp"
 
 
 #include "Array.hpp"
+#include "ArrayList.hpp"
+#include "Dictionary.hpp"
+#include "Iterator.hpp"
+#include "LinkedList.hpp"
+#include "List.hpp"
+#include "Map.hpp"
+#include "Pair.hpp"
 
 #ifdef ENGINE_API
     #undef ENGINE_API

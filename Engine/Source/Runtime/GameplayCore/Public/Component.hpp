@@ -14,7 +14,6 @@
 
 #include "GameplayCoreAPI.hpp"
 #include <iostream>
-#include "ISerializable.hpp"
 
 namespace seedengine {
 
@@ -23,7 +22,7 @@ namespace seedengine {
      * @details A component containing data to be attached to an entity.
      * 
      */
-    class ENGINE_API Component : ISerializable {
+    class ENGINE_API Component {
 
         friend class ComponentManager;
 
@@ -60,22 +59,6 @@ namespace seedengine {
              * @details Called when an instance of Component is deleted.
              */
             virtual ~Component();
-
-        // Override Functions
-
-            /**
-             * @brief Serializes this object into a stream.
-             * 
-             * @param target The output stream to write to.
-             */
-            virtual void serialize(std::ostream& target) const override;
-
-            /**
-             * @brief Deserializes the target from a stream.
-             * 
-             * @param source The source of the data to load in.
-             */
-            virtual void deserialize(std::istream& source) override;
 
         // Static Functions
 

@@ -22,16 +22,6 @@ namespace seedengine {
         
     }
 
-    // --- Serialization ---
-
-    void Entity::serialize(std::ostream& target) const {
-
-    }
-
-    void Entity::deserialize(std::istream& source) {
-
-    }
-
     // --- Functions ---
 
     Entity::EntityInstanceID Entity::getInstanceID() const {
