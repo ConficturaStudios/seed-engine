@@ -23,6 +23,7 @@
 #include "List.hpp"
 #include "Map.hpp"
 #include "Pair.hpp"
+#include "Tree.hpp"
 
 #ifdef ENGINE_API
     #undef ENGINE_API
