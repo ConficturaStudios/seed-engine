@@ -31,7 +31,7 @@ namespace seedengine {
      * @tparam N The number of elements in this Array.
      */
     template <typename T, std::size_t N>
-    class ENGINE_API FixedArray : public Iterable<T>, public ReverseIterable<T> {
+    class ENGINE_API FixedArray final : public Iterable<T>, public ReverseIterable<T> {
 
         static_assert(N > 0, "An array cannot have a size of 0");
 
@@ -46,44 +46,39 @@ namespace seedengine {
 
             // TODO: Document FixedArray Iterators
 
-            struct FixedArrayIterator : public IteratorBase<T> {
+            struct FixedArrayIterator final : public IteratorBase<T> {
 
                 T* ptr;
 
-                FixedArrayIterator(T* ptr) : ptr(ptr) { }
+                explicit FixedArrayIterator(T* ptr) : ptr(ptr) { }
 
-                virtual ~FixedArrayIterator() = default;
+                ~FixedArrayIterator() = default;
 
-                [[nodiscard]] virtual T& operator*() override {
+                [[nodiscard]] T& operator*() override {
                     return *ptr;
                 }
 
-                [[nodiscard]] virtual const T& operator*() const override {
+                [[nodiscard]] const T& operator*() const override {
                     return *ptr;
                 }
 
-                [[nodiscard]] virtual bool operator==(const IteratorBase<T>& rhs) const override {
-                    return this->ptr == dynamic_cast<const ArrayIterator&>(rhs).ptr;
+                [[nodiscard]] bool operator==(const IteratorBase<T>& rhs) const override {
+                    return this->ptr == dynamic_cast<const FixedArrayIterator&>(rhs).ptr;
                 }
 
-                [[nodiscard]] virtual bool operator!=(const IteratorBase<T>& rhs) const override {
-                    return this->ptr != dynamic_cast<const ArrayIterator&>(rhs).ptr;
+                [[nodiscard]] bool operator!=(const IteratorBase<T>& rhs) const override {
+                    return this->ptr != dynamic_cast<const FixedArrayIterator&>(rhs).ptr;
                 }
                 
-                [[nodiscard]] virtual bool operator==(const T& rhs) const override {
+                [[nodiscard]] bool operator==(const T& rhs) const override {
                     return this->operator*() == rhs;
                 }
 
-                [[nodiscard]] virtual bool operator!=(const T& rhs) const override {
+                [[nodiscard]] bool operator!=(const T& rhs) const override {
                     return this->operator*() != rhs;
                 }
 
-                virtual IteratorBase<T>& operator++() override {
-                    ++ptr;
-                    return *this;
-                }
-
-                virtual IteratorBase<T>& operator++(int) override {
+                IteratorBase<T>& operator++() override {
                     ptr++;
                     return *this;
                 }
@@ -93,41 +88,36 @@ namespace seedengine {
 
                 T* ptr;
 
-                FixedArrayReverseIterator(T* ptr) : ptr(ptr) { }
+                explicit FixedArrayReverseIterator(T* ptr) : ptr(ptr) { }
 
                 virtual ~FixedArrayReverseIterator() = default;
 
-                [[nodiscard]] virtual T& operator*() override {
+                [[nodiscard]] T& operator*() override {
                     return *ptr;
                 }
 
-                [[nodiscard]] virtual const T& operator*() const override {
+                [[nodiscard]] const T& operator*() const override {
                     return *ptr;
                 }
 
-                [[nodiscard]] virtual bool operator==(const IteratorBase<T>& rhs) const override {
-                    return this->ptr == dynamic_cast<const ArrayReverseIterator&>(rhs).ptr;
+                [[nodiscard]] bool operator==(const IteratorBase<T>& rhs) const override {
+                    return this->ptr == dynamic_cast<const FixedArrayReverseIterator&>(rhs).ptr;
                 }
 
-                [[nodiscard]] virtual bool operator!=(const IteratorBase<T>& rhs) const override {
-                    return this->ptr != dynamic_cast<const ArrayReverseIterator&>(rhs).ptr;
+                [[nodiscard]] bool operator!=(const IteratorBase<T>& rhs) const override {
+                    return this->ptr != dynamic_cast<const FixedArrayReverseIterator&>(rhs).ptr;
                 }
                 
-                [[nodiscard]] virtual bool operator==(const T& rhs) const override {
+                [[nodiscard]] bool operator==(const T& rhs) const override {
                     return this->operator*() == rhs;
                 }
 
-                [[nodiscard]] virtual bool operator!=(const T& rhs) const override {
+                [[nodiscard]] bool operator!=(const T& rhs) const override {
                     return this->operator*() != rhs;
                 }
 
-                virtual IteratorBase<T>& operator++() override {
+                IteratorBase<T>& operator++() override {
                     --ptr;
-                    return *this;
-                }
-
-                virtual IteratorBase<T>& operator++(int) override {
-                    ptr--;
                     return *this;
                 }
             };
@@ -160,7 +150,7 @@ namespace seedengine {
              * @details Constructs a new FixedArray by moving the data of a FixedArray
              *          into this object.
              */
-            FixedArray(FixedArray&& ref) = default;
+            FixedArray(FixedArray&& ref) noexcept = default;
 
             /**
              * @brief The destructor for FixedArray objects.
@@ -262,20 +252,20 @@ namespace seedengine {
                 return Iterator(new FixedArrayIterator(&data[0]));
             }
             [[nodiscard]] virtual const Iterator<T> begin() const override {
-                return const Iterator(new FixedArrayIterator(&data[0]));
+                return Iterator(new FixedArrayIterator(&data[0]));
             }
             [[nodiscard]] virtual const Iterator<T> cbegin() const override {
-                return const Iterator(new FixedArrayIterator(&data[0]));
+                return Iterator(new FixedArrayIterator(&data[0]));
             }
             
             [[nodiscard]] virtual Iterator<T> end() override {
                 return Iterator(new FixedArrayIterator(&data[N]));
             }
             [[nodiscard]] virtual const Iterator<T> end() const override {
-                return const Iterator(new FixedArrayIterator(&data[N]));
+                return Iterator(new FixedArrayIterator(&data[N]));
             }
             [[nodiscard]] virtual const Iterator<T> cend() const override {
-                return const Iterator(new FixedArrayIterator(&data[N]));
+                return Iterator(new FixedArrayIterator(&data[N]));
             }
 
         // Reverse Iterator Functions
@@ -285,24 +275,24 @@ namespace seedengine {
             }
 
             [[nodiscard]] virtual const Iterator<T> rbegin() const override {
-                return const Iterator(new FixedArrayReverseIterator(&data[N - 1]));
+                return Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
             [[nodiscard]] virtual const Iterator<T> crbegin() const override {
-                return const Iterator(new FixedArrayReverseIterator(&data[N - 1]));
+                return Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
             
-            [[nodiscard]] virtual Iterator<T> rend() override {
+            [[nodiscard]] Iterator<T> rend() override {
                 return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
-            [[nodiscard]] virtual const Iterator<T> rend() const override {
-                return const Iterator(new FixedArrayReverseIterator(&data[-1]));
+            [[nodiscard]] Iterator<T> rend() const override {
+                return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
-            [[nodiscard]] virtual const Iterator<T> crend() const override {
-                return const Iterator(new FixedArrayReverseIterator(&data[-1]));
+            [[nodiscard]] Iterator<T> crend() const override {
+                return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
         // Assignment Operators
@@ -319,7 +309,7 @@ namespace seedengine {
              * @details Reassigns the value of this object by moving the data of a FixedArray
              *          into this object.
              */
-            FixedArray& operator=(FixedArray&& rhs) = default;
+            FixedArray& operator=(FixedArray&& rhs) noexcept = default;
 
         // Operators
 

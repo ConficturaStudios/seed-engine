@@ -17,6 +17,11 @@
 #include <cstdint>
 
 namespace seedengine {
+
+    // Forward declare Iterator
+
+    template <typename T>
+    class Iterator;
     
     /**
      * @brief An interface representing an Iterator implementation compatible with range
@@ -44,7 +49,6 @@ namespace seedengine {
         [[nodiscard]] virtual bool operator!=(const T& rhs) const = 0;
 
         virtual IteratorBase<T>& operator++() = 0;
-        virtual IteratorBase<T>& operator++(int) = 0;
     };
 
     /**
@@ -73,34 +77,13 @@ namespace seedengine {
              * 
              * @param ptr The pointer to the Iterator implementation.
              */
-            constexpr Iterator(IteratorBase<T>* ptr) : instance(ptr) { }
-            
-            /**
-             * @brief The copy constructor for Iterator objects.
-             * @details Constructs a new Iterator by copying an existing Iterator.
-             */
-            constexpr Iterator(const Iterator& rhs) : instance(rhs.ptr) { }
-            
-            /**
-             * @brief The move constructor for Iterator objects.
-             * @details Constructs a new Iterator by moving the data of a Iterator into this object.
-             */
-            constexpr Iterator(Iterator&& rhs) : instance(rhs.ptr) { }
+            constexpr explicit Iterator(IteratorBase<T>* ptr) : instance(ptr) { }
             
             /**
              * @brief Destroys the Iterator object and internal implementation pointer.
              */
             ~Iterator() {
                 delete instance;
-            }
-            
-            Iterator& operator=(const Iterator& rhs) {
-                instance = rhs.instance;
-            }
-            
-            Iterator& operator=(Iterator&& rhs) {
-                instance = rhs.instance;
-                rhs.instance = nullptr;
             }
             
             [[nodiscard]] T& operator*() {
@@ -138,11 +121,6 @@ namespace seedengine {
                 instance->operator++();
                 return *this;
             }
-            
-            Iterator<T>& operator++(int) {
-                instance->operator++();
-                return *this;
-            }
     };
 
     /**
@@ -153,47 +131,50 @@ namespace seedengine {
      * within a range based for loop. This interface only enforces forward
      * iteration, not reverse iteration.
      * 
-     * Each method is expected to return an instance of the Iterator interface. The
-     * type of Iterator returned by each function is not strict, only requiring that
-     * the Iterator types are comparable. This is to allow for custom behavior such as
-     * using a sentinel end Iterator.
-     * 
+     * Each method is expected to return an object that is a valid iterator. By default, the
+     * return type is set to the generic Iterator object for type T. It is recommended to
+     * either use the default, or a pointer type.
+     * When using the Iterator wrapper class, the type of Iterator returned by each function
+     * is not strict, only requiring that he Iterator types are comparable. This is to allow for custom
+     * behavior such as using a sentinel end Iterator.
+     *
      * @tparam T The type of data this object iterates over.
+     * @tparam IteratorType The type of iterator returned by each function.
      */
-    template <typename T>
+    template <typename T, typename IteratorType = Iterator<T>>
     struct ENGINE_API Iterable {
 
         /**
-         * @brief Gets the Iterator at the beginning of the collection.
-         * @return Iterator<T> The Iterator at the beginning of the collection.
+         * @brief Gets the iterator at the beginning of the collection.
+         * @return IteratorType The iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual Iterator<T> begin() = 0;
+        [[nodiscard]] virtual IteratorType begin() = 0;
         /**
-         * @brief Gets the Iterator at the beginning of the collection.
-         * @return const Iterator<T> The Iterator at the beginning of the collection.
+         * @brief Gets the iterator at the beginning of the collection.
+         * @return const IteratorType The iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> begin() const = 0;
+        [[nodiscard]] virtual const IteratorType begin() const = 0;
         /**
-         * @brief Gets the Iterator at the beginning of the collection.
-         * @return const Iterator<T> The Iterator at the beginning of the collection.
+         * @brief Gets the iterator at the beginning of the collection.
+         * @return const IteratorType The iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> cbegin() const = 0;
+        [[nodiscard]] virtual const IteratorType cbegin() const = 0;
         
         /**
-         * @brief Gets the Iterator at the end of the collection.
-         * @return Iterator<T> The Iterator at the end of the collection.
+         * @brief Gets the iterator at the end of the collection.
+         * @return IteratorType The iterator at the end of the collection.
          */
-        [[nodiscard]] virtual Iterator<T> end() = 0;
+        [[nodiscard]] virtual IteratorType end() = 0;
         /**
-         * @brief Gets the Iterator at the end of the collection.
-         * @return const Iterator<T> The Iterator at the end of the collection.
+         * @brief Gets the iterator at the end of the collection.
+         * @return const IteratorType The iterator at the end of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> end() const = 0;
+        [[nodiscard]] virtual const IteratorType end() const = 0;
         /**
-         * @brief Gets the Iterator at the end of the collection.
-         * @return const Iterator<T> The Iterator at the end of the collection.
+         * @brief Gets the iterator at the end of the collection.
+         * @return const IteratorType The iterator at the end of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> cend() const = 0;
+        [[nodiscard]] virtual const IteratorType cend() const = 0;
     };
 
     /**
@@ -204,47 +185,50 @@ namespace seedengine {
      * within a range based for loop. This interface only enforces reverse
      * iteration, not forward iteration.
      * 
-     * Each method is expected to return an instance of the Iterator interface. The
-     * type of Iterator returned by each function is not strict, only requiring that
-     * the Iterator types are comparable. This is to allow for custom behavior such as
-     * using a sentinel end Iterator.
+     * Each method is expected to return an object that is a valid iterator. By default, the
+     * return type is set to the generic Iterator object for type T. It is recommended to
+     * either use the default, or a pointer type.
+     * When using the Iterator wrapper class, the type of Iterator returned by each function
+     * is not strict, only requiring that he Iterator types are comparable. This is to allow for custom
+     * behavior such as using a sentinel end Iterator.
      * 
      * @tparam T The type of data this object iterates over.
+     * @tparam IteratorType The type of iterator returned by each function.
      */
-    template <typename T>
+    template <typename T, typename IteratorType = Iterator<T>>
     struct ENGINE_API ReverseIterable {
         
         /**
-         * @brief Gets the reverse Iterator at the beginning of the collection.
-         * @return Iterator<T> The reverse Iterator at the beginning of the collection.
+         * @brief Gets the reverse iterator at the beginning of the collection.
+         * @return IteratorType The reverse iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual Iterator<T> rbegin() = 0;
+        [[nodiscard]] virtual IteratorType rbegin() = 0;
         /**
-         * @brief Gets the reverse Iterator at the beginning of the collection.
-         * @return const Iterator<T> The reverse Iterator at the beginning of the collection.
+         * @brief Gets the reverse iterator at the beginning of the collection.
+         * @return const IteratorType The reverse iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> rbegin() const = 0;
+        [[nodiscard]] virtual const IteratorType rbegin() const = 0;
         /**
-         * @brief Gets the reverse Iterator at the beginning of the collection.
-         * @return const Iterator<T> The reverse Iterator at the beginning of the collection.
+         * @brief Gets the reverse iterator at the beginning of the collection.
+         * @return const IteratorType The reverse iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> crbegin() const = 0;
+        [[nodiscard]] virtual const IteratorType crbegin() const = 0;
         
         /**
-         * @brief Gets the reverse Iterator at the end of the collection.
-         * @return Iterator<T> The reverse Iterator at the end of the collection.
+         * @brief Gets the reverse iterator at the end of the collection.
+         * @return IteratorType The reverse iterator at the end of the collection.
          */
-        [[nodiscard]] virtual Iterator<T> rend() = 0;
+        [[nodiscard]] virtual IteratorType rend() = 0;
         /**
-         * @brief Gets the reverse Iterator at the end of the collection.
-         * @return const Iterator<T> The reverse Iterator at the end of the collection.
+         * @brief Gets the reverse iterator at the end of the collection.
+         * @return const IteratorType The reverse iterator at the end of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> rend() const = 0;
+        [[nodiscard]] virtual const IteratorType rend() const = 0;
         /**
-         * @brief Gets the reverse Iterator at the end of the collection.
-         * @return const Iterator<T> The reverse Iterator at the end of the collection.
+         * @brief Gets the reverse iterator at the end of the collection.
+         * @return const IteratorType The reverse iterator at the end of the collection.
          */
-        [[nodiscard]] virtual const Iterator<T> crend() const = 0;
+        [[nodiscard]] virtual const IteratorType crend() const = 0;
     };
 
 }
