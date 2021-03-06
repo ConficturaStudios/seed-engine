@@ -14,14 +14,20 @@
 
 #include "CollectionsAPI.hpp"
 
+#include "Iterator.hpp"
+#include "Array.hpp"
+
 namespace seedengine {
 
     /**
-     * @brief
-     * @details
-     * 
+     * @brief The generic interface for all dynamically sized list objects.
+     * @details The base collection used to represent a dynamically resized list
+     *          object. This class is abstract and cannot be instanced directly,
+     *          and should instead be used to reference an arbitrary dynamic list.
+     * @tparam T The type of data stored in this list.
      */
-    class ENGINE_API List {
+    template <typename T>
+    class ENGINE_API List : public Iterable<T>, public ReverseIterable<T> {
 
         public:
 
@@ -31,9 +37,7 @@ namespace seedengine {
              * @brief The default constructor for List objects.
              * @details Constructs a new List with default initialization for all members.
              */
-            List() {
-                
-            }
+            List() = default;
 
             /**
              * @brief The copy constructor for List objects.
@@ -51,13 +55,93 @@ namespace seedengine {
              * @brief The destructor for List objects.
              * @details Called when an instance of List is deleted.
              */
-            virtual ~List() {
-                
-            }
+            virtual ~List() = default;
 
         // Functions
 
-
+            virtual void add(std::size_t index, T value) = 0;
+            
+            virtual void addFirst(T value) {
+                add(0, value);
+            }
+            
+            virtual void addLast(T value) {
+                add(size(), value);
+            }
+            
+            virtual T set(std::size_t index, T value) = 0;
+            
+            [[nodiscard]] virtual T& get(std::size_t index) = 0;
+            [[nodiscard]] virtual const T& get(std::size_t index) const = 0;
+            
+            [[nodiscard]] virtual T& first() {
+                return get(0);
+            }
+            
+            [[nodiscard]] virtual const T& first() const {
+                return get(0);
+            }
+            
+            [[nodiscard]] virtual T& last() {
+                return get(size() - 1);
+            }
+            
+            [[nodiscard]] virtual const T& last() const {
+                return get(size() - 1);
+            }
+            
+            [[nodiscard]] virtual std::size_t size() const noexcept = 0;
+            
+            [[nodiscard]] inline bool isEmpty() const noexcept { return size() == 0; }
+            
+            virtual T remove(std::size_t index) = 0;
+            
+            virtual T removeFirst() {
+                return remove(0);
+            }
+            
+            virtual T removeLast() {
+                return remove(size() - 1);
+            }
+            
+            // Bulk modifiers
+            
+            virtual void clear() {
+                const std::size_t s = size();
+                for (std::size_t i = 0; i < s; i++) {
+                    removeFirst();
+                }
+            }
+            
+            virtual void reverse() {
+                const std::size_t s = size();
+                for (std::size_t i = 0; i < s; i++) {
+                    add(i, removeLast());
+                }
+            }
+            
+            // Conditional modifiers
+            
+            virtual void removeIf(bool (*check)(const T&)) {
+                for (std::size_t i = 0; i < size(); i++) {
+                    if (check(get(i))) remove(i--);
+                }
+            }
+            
+            // Conversion
+            
+            // TODO: Decide what type of array to return from 
+            [[nodiscard]] virtual T* toArray() const = 0;
+            
+            // Operators
+            
+            [[nodiscard]] virtual T& operator[](std::size_t index) {
+                return get(index);
+            }
+            
+            [[nodiscard]] virtual const T& operator[](std::size_t index) const {
+                return get(index);
+            }
 
         // Assignment Operators
 

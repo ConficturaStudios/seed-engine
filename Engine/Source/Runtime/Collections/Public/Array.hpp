@@ -13,6 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_ARRAY_H_
 
 #include <cstddef>
+#include <initializer_list>
 
 #include "CollectionsAPI.hpp"
 #include "Iterator.hpp"
@@ -20,29 +21,38 @@
 namespace seedengine {
 
     /**
-     * @brief A generic stack allocated Array of a fixed size N.
+     * @brief A generic Array of a fixed size N. N must be known at compile time.
+     * @details A generic array with a fixed size known at compile time. This array type
+     *          has a fixed size, allowing for compiler optimizations and a consistent
+     *          memory layout. The only data stored in this class is the N size array
+     *          of T objects.
      * 
      * @tparam T The type of data stored within this Array.
      * @tparam N The number of elements in this Array.
      */
     template <typename T, std::size_t N>
-    class ENGINE_API Array : public Iterable<T>, public ReverseIterable<T> {
+    class ENGINE_API FixedArray : public Iterable<T>, public ReverseIterable<T> {
+
+        static_assert(N > 0, "An array cannot have a size of 0");
 
         private:
         // Data members
 
+            /** The internal fixed size array data. */
             T data[N];
 
         private:
         // Iterator classes
 
-            struct ArrayIterator : public IteratorBase<T> {
+            // TODO: Document FixedArray Iterators
+
+            struct FixedArrayIterator : public IteratorBase<T> {
 
                 T* ptr;
 
-                ArrayIterator(T* ptr) : ptr(ptr) { }
+                FixedArrayIterator(T* ptr) : ptr(ptr) { }
 
-                virtual ~ArrayIterator() = default;
+                virtual ~FixedArrayIterator() = default;
 
                 [[nodiscard]] virtual T& operator*() override {
                     return *ptr;
@@ -79,13 +89,13 @@ namespace seedengine {
                 }
             };
 
-            struct ArrayReverseIterator : public IteratorBase<T> {
+            struct FixedArrayReverseIterator : public IteratorBase<T> {
 
                 T* ptr;
 
-                ArrayReverseIterator(T* ptr) : ptr(ptr) { }
+                FixedArrayReverseIterator(T* ptr) : ptr(ptr) { }
 
-                virtual ~ArrayReverseIterator() = default;
+                virtual ~FixedArrayReverseIterator() = default;
 
                 [[nodiscard]] virtual T& operator*() override {
                     return *ptr;
@@ -132,99 +142,195 @@ namespace seedengine {
         // Constructors and destructor
 
             /**
-             * @brief The default constructor for Array objects.
-             * @details Constructs a new Array with default initialization for all members.
+             * @brief The default constructor for FixedArray objects.
+             * @details Constructs a new empty FixedArray with no initialization for any members.
+             *          Initializiation is skipped to increase performance and remove the
+             *          requirement for T to have a default constructor.
              */
-            Array() {
-                
-            }
+            FixedArray() = default;
 
             /**
-             * @brief The copy constructor for Array objects.
-             * @details Constructs a new Array by copying an existing Array.
+             * @brief The copy constructor for FixedArray objects.
+             * @details Constructs a new FixedArray by copying an existing FixedArray.
              */
-            Array(const Array& ref) = default;
+            FixedArray(const FixedArray& ref) = default;
             
             /**
-             * @brief The move constructor for Array objects.
-             * @details Constructs a new Array by moving the data of a Array into this object.
+             * @brief The move constructor for FixedArray objects.
+             * @details Constructs a new FixedArray by moving the data of a FixedArray
+             *          into this object.
              */
-            Array(Array&& ref) = default;
+            FixedArray(FixedArray&& ref) = default;
 
             /**
-             * @brief The destructor for Array objects.
-             * @details Called when an instance of Array is deleted.
+             * @brief The destructor for FixedArray objects.
+             * @details Called when an instance of FixedArray is deleted.
              */
-            virtual ~Array() {
-                
+            virtual ~FixedArray() {
+                delete[] data;
             }
 
         // Functions
+
+            /**
+             * @brief Gets the underlying array pointer of this instance.
+             * @return T* The underlying array pointer of this instance.
+             */
+            [[nodiscard]] T* getData() {
+                return data;
+            }
+
+            /**
+             * @brief Gets the underlying array pointer of this instance.
+             * @return const T* The underlying array pointer of this instance.
+             */
+            [[nodiscard]] const T* getData() const {
+                return data;
+            }
+
+            /**
+             * @brief Returns the number of elements in this array.
+             * @return std::size_t The number of elements in this array.
+             */
+            [[nodiscard]] std::size_t size() const {
+                return Size;
+            }
+
+
+            /**
+             * @brief Performs a linear search to find the specified element.
+             * @details Performs a linear search to find the specified element. Returns the index
+             *          the element was found at if it exists. Otherwise, a value of -1 is returned.
+             * 
+             * @param element The element to search for.
+             * @return int64_t The index that the element was found at, or -1 if it was not found.
+             */
+            [[nodiscard]] int64_t find(const T& element) const {
+                for (int i = 0; i < N; i++) {
+                    if (data[i] == element) return i;
+                }
+                return -1;
+            }
+
+            /**
+             * @brief Performs a linear search to find the specified element.
+             * @details Performs a linear search to find the specified element. Returns true if
+             *          the element was found and passes the index it was found at to outIndex. If
+             *          the element was not found outIndex will be set to -1.
+             * 
+             * @param element The element to search for.
+             * @param outIndex The output destination for the index the element was found at.
+             * @return true If the element was found.
+             * @return false If the element was not found.
+             */
+            bool find(const T& element, int64_t& outIndex) const {
+                return (outIndex = find(element)) != -1;
+            }
+
+            /**
+             * @brief Swaps the values stored at the two specified indices.
+             * 
+             * @param first The first index to swap.
+             * @param second The second index to swap.
+             */
+            void swap(std::size_t first, std::size_t second) {
+                T temp = data[first];
+                data[first] = data[second];
+                data[second] = temp;
+            }
+
+            /**
+             * @brief Copies the elements from index Start (inclusive) to End (exclusive) into
+             *        the provided sub array object.
+             * 
+             * @tparam Start The first index to copy, inclusive.
+             * @tparam End The last index to copy, exclusive.
+             * @param target The array to copy the values into.
+             */
+            template <std::size_t Start, std::size_t End>
+            [[nodiscard]] void copyToSubarray(FixedArray<T, End - Start>& target) const {
+                for (std::size_t i = Start; i < End; i++) {
+                    target[i] = T(data[i]);
+                }
+            }
 
         // Override Functions
 
         // Iterator Functions
 
             [[nodiscard]] virtual Iterator<T> begin() override {
-                return Iterator(new ArrayIterator(&data[0]));
+                return Iterator(new FixedArrayIterator(&data[0]));
             }
             [[nodiscard]] virtual const Iterator<T> begin() const override {
-                return const Iterator(new ArrayIterator(&data[0]));
+                return const Iterator(new FixedArrayIterator(&data[0]));
             }
             [[nodiscard]] virtual const Iterator<T> cbegin() const override {
-                return const Iterator(new ArrayIterator(&data[0]));
+                return const Iterator(new FixedArrayIterator(&data[0]));
             }
             
             [[nodiscard]] virtual Iterator<T> end() override {
-                return Iterator(new ArrayIterator(&data[N]));
+                return Iterator(new FixedArrayIterator(&data[N]));
             }
             [[nodiscard]] virtual const Iterator<T> end() const override {
-                return const Iterator(new ArrayIterator(&data[N]));
+                return const Iterator(new FixedArrayIterator(&data[N]));
             }
             [[nodiscard]] virtual const Iterator<T> cend() const override {
-                return const Iterator(new ArrayIterator(&data[N]));
+                return const Iterator(new FixedArrayIterator(&data[N]));
             }
 
         // Reverse Iterator Functions
             
             [[nodiscard]] virtual Iterator<T> rbegin() override {
-                return Iterator(new ArrayReverseIterator(&data[N - 1]));
+                return Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
             [[nodiscard]] virtual const Iterator<T> rbegin() const override {
-                return const Iterator(new ArrayReverseIterator(&data[N - 1]));
+                return const Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
             [[nodiscard]] virtual const Iterator<T> crbegin() const override {
-                return const Iterator(new ArrayReverseIterator(&data[N - 1]));
+                return const Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
             
             [[nodiscard]] virtual Iterator<T> rend() override {
-                return Iterator(new ArrayReverseIterator(&data[-1]));
+                return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
             [[nodiscard]] virtual const Iterator<T> rend() const override {
-                return const Iterator(new ArrayReverseIterator(&data[-1]));
+                return const Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
             [[nodiscard]] virtual const Iterator<T> crend() const override {
-                return const Iterator(new ArrayReverseIterator(&data[-1]));
+                return const Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
         // Assignment Operators
 
             /**
-             * @brief The copy assignment operator for Array objects.
-             * @details Reassigns the value of this object by copying the data of a Array into this object.
+             * @brief The copy assignment operator for FixedArray objects.
+             * @details Reassigns the value of this object by copying the data of a FixedArray
+             *          into this object.
              */
-            Array& operator=(const Array& rhs) = default;
+            FixedArray& operator=(const FixedArray& rhs) = default;
 
             /**
-             * @brief The move assignment operator for Array objects.
-             * @details Reassigns the value of this object by moving the data of a Array into this object.
+             * @brief The move assignment operator for FixedArray objects.
+             * @details Reassigns the value of this object by moving the data of a FixedArray
+             *          into this object.
              */
-            Array& operator=(Array&& rhs) = default;
+            FixedArray& operator=(FixedArray&& rhs) = default;
+
+        // Operators
+
+            [[nodiscard]] T& operator[](std::size_t i) {
+                // TODO: Add flag and behavior to perform optional bounds checking
+                return data[i];
+            }
+
+            [[nodiscard]] const T& operator[](std::size_t i) const {
+                return data[i];
+            } 
 
         protected:
 

@@ -14,6 +14,8 @@
 
 #include "CollectionsAPI.hpp"
 
+#include <cstdint>
+
 namespace seedengine {
     
     /**
