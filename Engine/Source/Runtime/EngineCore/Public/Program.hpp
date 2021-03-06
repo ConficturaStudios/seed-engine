@@ -24,7 +24,7 @@ namespace seedengine {
      *          thread.
      *          Additionally, any gameplay data needed at runtime should be passed to this object
      *          from the hosting thread.
-     *          When runtime is complete, the Prgoram will handle memory cleanup and return
+     *          When runtime is complete, the Program will handle memory cleanup and return
      *          information about the program execution and success back to the client.
      */
     class ENGINE_API Program final {
