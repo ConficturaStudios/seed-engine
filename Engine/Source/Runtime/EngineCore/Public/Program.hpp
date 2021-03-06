@@ -17,11 +17,17 @@
 namespace seedengine {
 
     /**
-     * @brief
-     * @details
-     * 
+     * @brief The main program class instanced and run by the client application.
+     * @details The Program class is responsible for instancing and running the main game loop
+     *          and the initialization of all other program paths. A Program object should be
+     *          created by the client application, and allowed to perform its run method on another
+     *          thread.
+     *          Additionally, any gameplay data needed at runtime should be passed to this object
+     *          from the hosting thread.
+     *          When runtime is complete, the Prgoram will handle memory cleanup and return
+     *          information about the program execution and success back to the client.
      */
-    class ENGINE_API Program {
+    class ENGINE_API Program final {
 
         public:
 
@@ -34,42 +40,48 @@ namespace seedengine {
             Program();
 
             /**
-             * @brief The copy constructor for Program objects.
-             * @details Constructs a new Program by copying an existing Program.
+             * @brief (Deleted) The copy constructor for Program objects.
+             * @details (Deleted) Constructs a new Program by copying an existing Program.
              */
-            Program(const Program& ref) = default;
+            Program(const Program& ref) = delete;
             
             /**
-             * @brief The move constructor for Program objects.
-             * @details Constructs a new Program by moving the data of a Program into this object.
+             * @brief (Deleted) The move constructor for Program objects.
+             * @details (Deleted) Constructs a new Program by moving the data of a Program into
+             *          this object.
              */
-            Program(Program&& ref) = default;
+            Program(Program&& ref) = delete;
 
             /**
              * @brief The destructor for Program objects.
              * @details Called when an instance of Program is deleted.
              */
-            virtual ~Program();
+            ~Program();
 
         // Functions
 
-
+            /**
+             * @brief Runs the program's main logic loop, returning an exit code.
+             * 
+             * @return int The exit status of the program.
+             */
+            int run();
 
         // Operators
 
             /**
-             * @brief The copy assignment operator for Program objects.
-             * @details Reassigns the value of this object by copying the data of a Program into this object.
+             * @brief (Deleted) The copy assignment operator for Program objects.
+             * @details (Deleted) Reassigns the value of this object by copying the data of a
+             *          Program into this object.
              */
-            Program& operator=(const Program& ref) = default;
+            Program& operator=(const Program& ref) = delete;
 
             /**
-             * @brief The move assignment operator for Program objects.
-             * @details Reassigns the value of this object by moving the data of a Program into this object.
+             * @brief (Deleted) The move assignment operator for Program objects.
+             * @details (Deleted) Reassigns the value of this object by moving the data of a
+             *          Program into this object.
              */
-            Program& operator=(Program&& ref) = default;
-
-        protected:
+            Program& operator=(Program&& ref) = delete;
 
         private:
 

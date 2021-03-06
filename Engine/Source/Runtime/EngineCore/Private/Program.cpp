@@ -21,4 +21,8 @@ namespace seedengine {
         
     }
 
+    int Program::run() {
+        return 0;
+    }
+
 }
