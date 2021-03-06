@@ -45,7 +45,7 @@ namespace ${PROJECT_NAMESPACE} {
              * @brief The move constructor for ${CLASS_NAME} objects.
              * @details Constructs a new ${CLASS_NAME} by moving the data of a ${CLASS_NAME} into this object.
              */
-            ${CLASS_NAME}(${CLASS_NAME}&& ref) = default;
+            ${CLASS_NAME}(${CLASS_NAME}&& ref) noexcept = default;
 
             /**
              * @brief The destructor for ${CLASS_NAME} objects.
@@ -71,7 +71,7 @@ namespace ${PROJECT_NAMESPACE} {
              * @brief The move assignment operator for ${CLASS_NAME} objects.
              * @details Reassigns the value of this object by moving the data of a ${CLASS_NAME} into this object.
              */
-            ${CLASS_NAME}& operator=(${CLASS_NAME}&& rhs) = default;
+            ${CLASS_NAME}& operator=(${CLASS_NAME}&& rhs) noexcept = default;
 
         protected:
 
