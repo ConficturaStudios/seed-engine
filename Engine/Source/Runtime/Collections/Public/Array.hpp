@@ -1,5 +1,5 @@
 /**
- * Array.hpp
+ * @file Array.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -12,6 +12,7 @@
 #ifndef SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_ARRAY_H_
 #define SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_ARRAY_H_
 
+#include <cstdlib>
 #include <cstddef>
 #include <initializer_list>
 
@@ -238,7 +239,7 @@ namespace seedengine {
              * @param target The array to copy the values into.
              */
             template <std::size_t Start, std::size_t End>
-            [[nodiscard]] void copyToSubarray(FixedArray<T, End - Start>& target) const {
+            void copyToSubarray(FixedArray<T, End - Start>& target) const {
                 for (std::size_t i = Start; i < End; i++) {
                     target[i] = T(data[i]);
                 }
@@ -320,14 +321,281 @@ namespace seedengine {
 
             [[nodiscard]] const T& operator[](std::size_t i) const {
                 return data[i];
-            } 
-
-        protected:
-
-        private:
+            }
 
     };
 
+    /**
+     * @brief A generic Array of T typed elements. This array can be resized dynamically.
+     * @details A generic array with a dynamic size specified at runtime. This array type
+     *          can have any number of elements, but does not support reallocation after its
+     *          initial creation.
+     *
+     * @tparam T The type of data stored within this Array.
+     */
+    template <typename T>
+    class ENGINE_API Array final : public Iterable<T, T*>, public ReverseIterable<T, T*> {
+
+    private:
+        // Data members
+
+        /** The internal array data. */
+        T* data;
+
+        /** The number of elements stored in this Array. */
+        std::size_t length;
+
+    public:
+
+        /** The type of elements stored in this Array type. */
+        using Type = T;
+
+        // Constructors and destructor
+
+        /**
+         * @brief (Deleted) The default constructor for Array objects.
+         * @warning Deleted
+         */
+        Array() = delete;
+
+        /**
+         * @brief Constructs an empty array with the specified size.
+         * @details Constructs a new empty Array with no initialization for any members.
+         *          Initializiation is skipped to increase performance and remove the
+         *          requirement for T to have a default constructor.
+         * @param size The number of elements to allocate.
+         */
+        explicit Array(std::size_t size) {
+            data = (T*)malloc(size * sizeof(T));
+            length = size;
+        }
+
+        /**
+         * @brief Constructs an array from the provided initializer list.
+         * @details Constructs a new Array from the provided initializer list. The size
+         *          of this array is determined implicitly by the number of elements in the
+         *          list.
+         * @param list The initializer list to construct this array from.
+         */
+        Array(std::initializer_list<T> list) {
+            data = (T*)malloc(list.size() * sizeof(T));
+            int i = 0;
+            for (const T& element : list) {
+                data[i++] = element;
+            }
+            length = list.size();
+        }
+
+        /**
+         * @brief The copy constructor for Array objects.
+         * @details Constructs a new Array by copying an existing Array.
+         */
+        Array(const Array& ref) {
+            data = (T*)malloc(ref.size * sizeof(T));
+            int i = 0;
+            for (T element : ref) {
+                data[i++] = element;
+            }
+            length = ref.size;
+        }
+
+        /**
+         * @brief The move constructor for Array objects.
+         * @details Constructs a new Array by moving the data of a Array
+         *          into this object.
+         */
+        Array(Array&& ref) noexcept {
+            data = ref.data;
+            ref.data = nullptr;
+            length = ref.size;
+        }
+
+        /**
+         * @brief The destructor for Array objects.
+         * @details Called when an instance of Array is deleted.
+         */
+        ~Array() {
+            free(data);
+        }
+
+        // Functions
+
+        /**
+         * @brief Gets the underlying array pointer of this instance.
+         * @return T* The underlying array pointer of this instance.
+         */
+        [[nodiscard]] inline T* getData() {
+            return data;
+        }
+
+        /**
+         * @brief Gets the underlying array pointer of this instance.
+         * @return const T* The underlying array pointer of this instance.
+         */
+        [[nodiscard]] inline const T* getData() const {
+            return data;
+        }
+
+        /**
+         * @brief Returns the number of elements in this array.
+         * @return std::size_t The number of elements in this array.
+         */
+        [[nodiscard]] inline std::size_t size() const {
+            return length;
+        }
+
+
+        /**
+         * @brief Performs a linear search to find the specified element.
+         * @details Performs a linear search to find the specified element. Returns the index
+         *          the element was found at if it exists. Otherwise, a value of -1 is returned.
+         *
+         * @param element The element to search for.
+         * @return int64_t The index that the element was found at, or -1 if it was not found.
+         */
+        [[nodiscard]] int64_t find(const T& element) const {
+            for (int i = 0; i < length; i++) {
+                if (data[i] == element) return i;
+            }
+            return -1;
+        }
+
+        /**
+         * @brief Performs a linear search to find the specified element.
+         * @details Performs a linear search to find the specified element. Returns true if
+         *          the element was found and passes the index it was found at to outIndex. If
+         *          the element was not found outIndex will be set to -1.
+         *
+         * @param element The element to search for.
+         * @param outIndex The output destination for the index the element was found at.
+         * @return true If the element was found.
+         * @return false If the element was not found.
+         */
+        bool find(const T& element, int64_t& outIndex) const {
+            return (outIndex = find(element)) != -1;
+        }
+
+        /**
+         * @brief Swaps the values stored at the two specified indices.
+         *
+         * @param first The first index to swap.
+         * @param second The second index to swap.
+         */
+        void swap(std::size_t first, std::size_t second) {
+            T temp = data[first];
+            data[first] = data[second];
+            data[second] = temp;
+        }
+
+        /**
+         * @brief Copies the elements from index start (inclusive) to end (exclusive) into
+         *        a new array object.
+         *
+         * @param start The first index to copy, inclusive.
+         * @param end The last index to copy, exclusive.
+         * @return A sub array of elements from this array.
+         */
+        Array<T> subarray(std::size_t start, std::size_t end) const {
+            Array<T> target(end - start);
+            for (std::size_t i = start; i < end; i++) {
+                target[i] = T(data[i]);
+            }
+            return target;
+        }
+
+        Array<T> concat(const Array<T>& array) {
+            Array<T> result(length + array.length);
+            int i = 0;
+            for (const T& element : *this) {
+                result[i++] = T(data[i]);
+            }
+            for (const T& element : array) {
+                result[i++] = T(array[i]);
+            }
+            return result;
+        }
+
+        // Override Functions
+
+        // Iterator Functions
+
+        [[nodiscard]] T* begin() override {
+            return &data[0];
+        }
+        [[nodiscard]] const T* begin() const override {
+            return &data[0];
+        }
+        [[nodiscard]] const T* cbegin() const override {
+            return &data[0];
+        }
+
+        [[nodiscard]] T* end() override {
+            return &data[length];
+        }
+        [[nodiscard]] const T* end() const override {
+            return &data[length];
+        }
+        [[nodiscard]] const T* cend() const override {
+            return &data[length];
+        }
+
+        // Reverse Iterator Functions
+
+        [[nodiscard]] T* rbegin() override {
+            return &data[length - 1];
+        }
+
+        [[nodiscard]] const T* rbegin() const override {
+            return &data[length - 1];
+        }
+
+        [[nodiscard]] const T* crbegin() const override {
+            return &data[length - 1];
+        }
+
+
+        [[nodiscard]] T* rend() override {
+            return &data[-1];
+        }
+
+        [[nodiscard]] const T* rend() const override {
+            return &data[-1];
+        }
+
+        [[nodiscard]] const T* crend() const override {
+            return &data[-1];
+        }
+
+        // Assignment Operators
+
+        /**
+         * @brief (Deleted) The copy assignment operator for Array objects.
+         * @details (Deleted) Reassigns the value of this object by copying the data of a Array
+         *          into this object.
+         * @warning Deleted
+         */
+        Array& operator=(const Array& rhs) = delete;
+
+        /**
+         * @brief (Deleted) The move assignment operator for Array objects.
+         * @details (Deleted) Reassigns the value of this object by moving the data of a Array
+         *          into this object.
+         * @warning Deleted
+         */
+        Array& operator=(Array&& rhs) noexcept = delete;
+
+        // Operators
+
+        [[nodiscard]] T& operator[](std::size_t i) {
+            // TODO: Add flag and behavior to perform optional bounds checking
+            return data[i];
+        }
+
+        [[nodiscard]] const T& operator[](std::size_t i) const {
+            return data[i];
+        }
+
+    };
 }
 
 #endif

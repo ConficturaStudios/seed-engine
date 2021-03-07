@@ -1,5 +1,5 @@
 /**
- * Iterator.hpp
+ * @file Iterator.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -139,10 +139,13 @@ namespace seedengine {
      * behavior such as using a sentinel end Iterator.
      *
      * @tparam T The type of data this object iterates over.
-     * @tparam IteratorType The type of iterator returned by each function.
+     * @tparam ItrType The type of iterator returned by each function.
      */
-    template <typename T, typename IteratorType = Iterator<T>>
+    template <typename T, typename ItrType = Iterator<T>>
     struct ENGINE_API Iterable {
+
+        /** The type of iterator used by this iterable object. */
+        using IteratorType = ItrType;
 
         /**
          * @brief Gets the iterator at the beginning of the collection.
@@ -193,42 +196,45 @@ namespace seedengine {
      * behavior such as using a sentinel end Iterator.
      * 
      * @tparam T The type of data this object iterates over.
-     * @tparam IteratorType The type of iterator returned by each function.
+     * @tparam ItrType The type of iterator returned by each function.
      */
-    template <typename T, typename IteratorType = Iterator<T>>
+    template <typename T, typename ItrType = Iterator<T>>
     struct ENGINE_API ReverseIterable {
+
+        /** The type of iterator used by this iterable object. */
+        using RIteratorType = ItrType;
         
         /**
          * @brief Gets the reverse iterator at the beginning of the collection.
          * @return IteratorType The reverse iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual IteratorType rbegin() = 0;
+        [[nodiscard]] virtual RIteratorType rbegin() = 0;
         /**
          * @brief Gets the reverse iterator at the beginning of the collection.
          * @return const IteratorType The reverse iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual const IteratorType rbegin() const = 0;
+        [[nodiscard]] virtual const RIteratorType rbegin() const = 0;
         /**
          * @brief Gets the reverse iterator at the beginning of the collection.
          * @return const IteratorType The reverse iterator at the beginning of the collection.
          */
-        [[nodiscard]] virtual const IteratorType crbegin() const = 0;
+        [[nodiscard]] virtual const RIteratorType crbegin() const = 0;
         
         /**
          * @brief Gets the reverse iterator at the end of the collection.
          * @return IteratorType The reverse iterator at the end of the collection.
          */
-        [[nodiscard]] virtual IteratorType rend() = 0;
+        [[nodiscard]] virtual RIteratorType rend() = 0;
         /**
          * @brief Gets the reverse iterator at the end of the collection.
          * @return const IteratorType The reverse iterator at the end of the collection.
          */
-        [[nodiscard]] virtual const IteratorType rend() const = 0;
+        [[nodiscard]] virtual const RIteratorType rend() const = 0;
         /**
          * @brief Gets the reverse iterator at the end of the collection.
          * @return const IteratorType The reverse iterator at the end of the collection.
          */
-        [[nodiscard]] virtual const IteratorType crend() const = 0;
+        [[nodiscard]] virtual const RIteratorType crend() const = 0;
     };
 
 }
