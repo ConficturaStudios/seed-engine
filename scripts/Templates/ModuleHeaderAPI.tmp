@@ -1,5 +1,5 @@
 /**
- * ${MODULE_NAME}API.hpp
+ * @file ${MODULE_NAME}API.hpp
  * 
  * @copyright Copyright (c) ${YEAR} ${OWNER}. All rights reserved.
  * @license This code is released under the ${LICENSE} License.
