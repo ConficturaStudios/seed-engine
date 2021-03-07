@@ -167,7 +167,7 @@ namespace seedengine {
              * @brief Gets the underlying array pointer of this instance.
              * @return T* The underlying array pointer of this instance.
              */
-            [[nodiscard]] T* getData() {
+            [[nodiscard]] inline T* getData() {
                 return data;
             }
 
@@ -175,7 +175,7 @@ namespace seedengine {
              * @brief Gets the underlying array pointer of this instance.
              * @return const T* The underlying array pointer of this instance.
              */
-            [[nodiscard]] const T* getData() const {
+            [[nodiscard]] inline const T* getData() const {
                 return data;
             }
 
@@ -183,7 +183,7 @@ namespace seedengine {
              * @brief Returns the number of elements in this array.
              * @return std::size_t The number of elements in this array.
              */
-            [[nodiscard]] std::size_t size() const {
+            [[nodiscard]] inline std::size_t size() const {
                 return Size;
             }
 
@@ -249,37 +249,37 @@ namespace seedengine {
 
         // Iterator Functions
 
-            [[nodiscard]] virtual Iterator<T> begin() override {
+            [[nodiscard]] Iterator<T> begin() override {
                 return Iterator(new FixedArrayIterator(&data[0]));
             }
-            [[nodiscard]] virtual const Iterator<T> begin() const override {
+            [[nodiscard]] const Iterator<T> begin() const override {
                 return Iterator(new FixedArrayIterator(&data[0]));
             }
-            [[nodiscard]] virtual const Iterator<T> cbegin() const override {
+            [[nodiscard]] const Iterator<T> cbegin() const override {
                 return Iterator(new FixedArrayIterator(&data[0]));
             }
             
-            [[nodiscard]] virtual Iterator<T> end() override {
+            [[nodiscard]] Iterator<T> end() override {
                 return Iterator(new FixedArrayIterator(&data[N]));
             }
-            [[nodiscard]] virtual const Iterator<T> end() const override {
+            [[nodiscard]] const Iterator<T> end() const override {
                 return Iterator(new FixedArrayIterator(&data[N]));
             }
-            [[nodiscard]] virtual const Iterator<T> cend() const override {
+            [[nodiscard]] const Iterator<T> cend() const override {
                 return Iterator(new FixedArrayIterator(&data[N]));
             }
 
         // Reverse Iterator Functions
             
-            [[nodiscard]] virtual Iterator<T> rbegin() override {
+            [[nodiscard]] Iterator<T> rbegin() override {
                 return Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
-            [[nodiscard]] virtual const Iterator<T> rbegin() const override {
+            [[nodiscard]] const Iterator<T> rbegin() const override {
                 return Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
-            [[nodiscard]] virtual const Iterator<T> crbegin() const override {
+            [[nodiscard]] const Iterator<T> crbegin() const override {
                 return Iterator(new FixedArrayReverseIterator(&data[N - 1]));
             }
 
@@ -288,11 +288,11 @@ namespace seedengine {
                 return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
-            [[nodiscard]] Iterator<T> rend() const override {
+            [[nodiscard]] const Iterator<T> rend() const override {
                 return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
-            [[nodiscard]] Iterator<T> crend() const override {
+            [[nodiscard]] const Iterator<T> crend() const override {
                 return Iterator(new FixedArrayReverseIterator(&data[-1]));
             }
 
@@ -451,7 +451,7 @@ namespace seedengine {
          *          the element was found at if it exists. Otherwise, a value of -1 is returned.
          *
          * @param element The element to search for.
-         * @return int64_t The index that the element was found at, or -1 if it was not found.
+         * @return The index that the element was found at, or -1 if it was not found.
          */
         [[nodiscard]] int64_t find(const T& element) const {
             for (int i = 0; i < length; i++) {
@@ -468,8 +468,7 @@ namespace seedengine {
          *
          * @param element The element to search for.
          * @param outIndex The output destination for the index the element was found at.
-         * @return true If the element was found.
-         * @return false If the element was not found.
+         * @return True if the element was found.
          */
         bool find(const T& element, int64_t& outIndex) const {
             return (outIndex = find(element)) != -1;
@@ -503,6 +502,12 @@ namespace seedengine {
             return target;
         }
 
+        /**
+         * @brief Concatenates this array with another, returning a new Array with the contents of
+         *        the parameter appended to this array.
+         * @param array The array to concatenate with.
+         * @return The resulting combined array.
+         */
         Array<T> concat(const Array<T>& array) {
             Array<T> result(length + array.length);
             int i = 0;

@@ -1,5 +1,5 @@
 /**
- * Program.hpp
+ * @file Program.hpp
  * 
  * @copyright Copyright (c) 2020 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
