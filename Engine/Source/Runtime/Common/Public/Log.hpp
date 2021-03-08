@@ -15,6 +15,7 @@
 #include "CommonAPI.hpp"
 
 #include <spdlog/spdlog.h>
+#include <spdlog/async.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace seedengine {
