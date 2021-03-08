@@ -49,7 +49,7 @@ namespace seedengine {
              * @brief The move constructor for List objects.
              * @details Constructs a new List by moving the data of a List into this object.
              */
-            List(List&& ref) = default;
+            List(List&& ref) noexcept = default;
 
             /**
              * @brief The destructor for List objects.
@@ -103,6 +103,10 @@ namespace seedengine {
             virtual T removeLast() {
                 return remove(size() - 1);
             }
+
+            // Search
+
+            [[nodiscard]] virtual bool contains() const = 0;
             
             // Bulk modifiers
             
@@ -129,9 +133,8 @@ namespace seedengine {
             }
             
             // Conversion
-            
-            // TODO: Decide what type of array to return from 
-            [[nodiscard]] virtual T* toArray() const = 0;
+
+            [[nodiscard]] virtual Array<T> toArray() const = 0;
             
             // Operators
             
@@ -155,7 +158,7 @@ namespace seedengine {
              * @brief The move assignment operator for List objects.
              * @details Reassigns the value of this object by moving the data of a List into this object.
              */
-            List& operator=(List&& rhs) = default;
+            List& operator=(List&& rhs) noexcept = default;
 
         protected:
 
