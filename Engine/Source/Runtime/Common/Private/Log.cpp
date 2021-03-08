@@ -13,8 +13,7 @@
 
 namespace seedengine {
 
-    Logger::Logger(const char *name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
-                   Logger::Level level = Logger::Level::Trace) {
+    Logger::Logger(const char *name, const char *pattern, Logger::Level level) {
         m_inst = spdlog::stdout_color_mt(name);
         m_inst->set_pattern(pattern);
         m_inst->set_level(static_cast<spdlog::level::level_enum>(level));

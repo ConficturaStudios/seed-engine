@@ -45,40 +45,41 @@ namespace seedengine {
                 Off = spdlog::level::level_enum::off
             };
             
-            Logger(const char* name, const char* pattern, Level level);
+            Logger(const char* name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
+                    Logger::Level level = Logger::Level::Trace);
 
             template <typename FormatString, typename... Args>
-            void Log(Level level, const FormatString& fmt, const Args&... args) {
+            void log(Level level, const FormatString& fmt, const Args&... args) {
                 m_inst->log(static_cast<spdlog::level::level_enum>(level), fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
-            void Trace(const FormatString& fmt, const Args&... args) {
+            void trace(const FormatString& fmt, const Args&... args) {
                 m_inst->trace(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
-            void Debug(const FormatString& fmt, const Args&... args) {
+            void debug(const FormatString& fmt, const Args&... args) {
                 m_inst->debug(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
-            void Info(const FormatString& fmt, const Args&... args) {
+            void info(const FormatString& fmt, const Args&... args) {
                 m_inst->info(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
-            void Warn(const FormatString& fmt, const Args&... args) {
+            void warn(const FormatString& fmt, const Args&... args) {
                 m_inst->warn(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
-            void Error(const FormatString& fmt, const Args&... args) {
+            void error(const FormatString& fmt, const Args&... args) {
                 m_inst->error(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
-            void Critical(const FormatString& fmt, const Args&... args) {
+            void critical(const FormatString& fmt, const Args&... args) {
                 m_inst->critical(fmt, args...);
             }
 
