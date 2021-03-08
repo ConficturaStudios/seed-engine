@@ -45,12 +45,17 @@ namespace seedengine {
                 Off = spdlog::level::level_enum::off
             };
             
-            Logger(const char* name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
+            explicit Logger(const char* name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
                     Logger::Level level = Logger::Level::Trace);
 
             template <typename FormatString, typename... Args>
             void log(Level level, const FormatString& fmt, const Args&... args) {
                 m_inst->log(static_cast<spdlog::level::level_enum>(level), fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void log(const FormatString& fmt, const Args&... args) {
+                m_inst->log(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
@@ -60,7 +65,9 @@ namespace seedengine {
 
             template <typename FormatString, typename... Args>
             void debug(const FormatString& fmt, const Args&... args) {
-                m_inst->debug(fmt, args...);
+                #ifdef ENGINE_COMPILE_DEBUG
+                    m_inst->debug(fmt, args...);
+                #endif
             }
 
             template <typename FormatString, typename... Args>
