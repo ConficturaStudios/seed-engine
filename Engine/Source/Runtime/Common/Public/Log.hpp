@@ -19,45 +19,77 @@
 
 namespace seedengine {
 
-    // TODO: Review spdlog implementation
-    // TODO: Consider storing a Log instance in System instead of using static getters in Log
+    // TODO: Create Logger instances for System library or other global sources
 
     /**
-     * @brief The logging interface for the engine.
-     * @details This is the logging utility used for debuging and console output.
+     * @brief A logger capable of printing to the standard output and standard error streams.
+     * @details This is the logging utility used for debugging and console output.
      * 
      */
-    class Log final {
+    class ENGINE_API Logger final {
 
         public:
-            
-            /** Initializes the logger. */
-            ENGINE_API static void init();
+
+            // TODO: Document Logger class
 
             /**
-             * @brief Returns the logger for the engine core.
-             * 
-             * @return std::shared_ptr<spdlog::logger> The logger for the engine core.
+             * The importance level of a message or logger.
              */
-            ENGINE_API static std::shared_ptr<spdlog::logger> getEngineLogger();
+            enum class Level : int {
+                Trace = spdlog::level::level_enum::trace,
+                Debug = spdlog::level::level_enum::debug,
+                Info = spdlog::level::level_enum::info,
+                Warn = spdlog::level::level_enum::warn,
+                Error = spdlog::level::level_enum::err,
+                Critical = spdlog::level::level_enum::critical,
+                Off = spdlog::level::level_enum::off
+            };
             
-            /**
-             * @brief Returns the logger for the client software.
-             * 
-             * @return std::shared_ptr<spdlog::logger> The logger for the client software.
-             */
-            ENGINE_API static std::shared_ptr<spdlog::logger> getClientLogger();
+            Logger(const char* name, const char* pattern, Level level);
+
+            template <typename FormatString, typename... Args>
+            void Log(Level level, const FormatString& fmt, const Args&... args) {
+                m_inst->log(static_cast<spdlog::level::level_enum>(level), fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void Trace(const FormatString& fmt, const Args&... args) {
+                m_inst->trace(fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void Debug(const FormatString& fmt, const Args&... args) {
+                m_inst->debug(fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void Info(const FormatString& fmt, const Args&... args) {
+                m_inst->info(fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void Warn(const FormatString& fmt, const Args&... args) {
+                m_inst->warn(fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void Error(const FormatString& fmt, const Args&... args) {
+                m_inst->error(fmt, args...);
+            }
+
+            template <typename FormatString, typename... Args>
+            void Critical(const FormatString& fmt, const Args&... args) {
+                m_inst->critical(fmt, args...);
+            }
 
         private:
 
-            /** The engine core logger. */
-            static std::shared_ptr<spdlog::logger> engine_logger_;
-            /** The client side logger. */
-            static std::shared_ptr<spdlog::logger> client_logger_;
-
+            std::shared_ptr<spdlog::logger> m_inst;
     };
 
 }
+
+// TODO: Replace macro logging calls with calls to a logger within system or other global source
 
 #define ENGINE_TRACE(...) seedengine::Log::getEngineLogger()->trace(__VA_ARGS__)
 #ifdef ENGINE_COMPILE_DEBUG

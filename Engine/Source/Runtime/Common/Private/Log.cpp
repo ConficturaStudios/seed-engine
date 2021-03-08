@@ -13,24 +13,10 @@
 
 namespace seedengine {
 
-    std::shared_ptr<spdlog::logger> Log::engine_logger_ = spdlog::stdout_color_mt("Seed Engine");
-    std::shared_ptr<spdlog::logger> Log::client_logger_ = spdlog::stdout_color_mt("Client");
-
-    void Log::init() {
-        spdlog::set_pattern("%^[%T] %n: %v%$ [Thread %t]");
-        
-        Log::engine_logger_->set_level(spdlog::level::trace);
-        
-        Log::client_logger_->set_level(spdlog::level::trace);
-        
+    Logger::Logger(const char *name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
+                   Logger::Level level = Logger::Level::Trace) {
+        m_inst = spdlog::stdout_color_mt(name);
+        m_inst->set_pattern(pattern);
+        m_inst->set_level(static_cast<spdlog::level::level_enum>(level));
     }
-
-    std::shared_ptr<spdlog::logger> Log::getEngineLogger() {
-        return engine_logger_;
-    }
-    
-    std::shared_ptr<spdlog::logger> Log::getClientLogger() {
-        return client_logger_;
-    }
-
 }

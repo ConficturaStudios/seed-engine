@@ -61,7 +61,7 @@ namespace seedengine {
         }
     }
 
-    String GetGraphicsModeName(const GraphicsMode& mode) noexcept {
+    String System::GetGraphicsModeName(const GraphicsMode& mode) noexcept {
         if (mode == GraphicsMode::OPEN_GL) {
             return "Open GL";
         }
