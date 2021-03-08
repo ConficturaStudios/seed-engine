@@ -67,6 +67,12 @@ namespace seedengine {
              */
             int run();
 
+            /**
+             * Should the program exit execution?
+             * @return True if the program should exit.
+             */
+            [[nodiscard]] bool shouldExit() const;
+
         // Operators
 
             /**
