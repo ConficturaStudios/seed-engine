@@ -16,6 +16,7 @@
 
 #include "Iterator.hpp"
 #include "Array.hpp"
+#include "Collection.hpp"
 
 namespace seedengine {
 
@@ -27,7 +28,7 @@ namespace seedengine {
      * @tparam T The type of data stored in this list.
      */
     template <typename T>
-    class ENGINE_API List : public Iterable<T>, public ReverseIterable<T> {
+    class ENGINE_API List : public Collection<T, std::size_t> {
 
         public:
 
@@ -59,92 +60,103 @@ namespace seedengine {
 
         // Functions
 
+            /**
+             * Adds the provided value to the list at the specified index.
+             * @param index The index position to insert the value at.
+             * @param value The value to insert.
+             */
             virtual void add(std::size_t index, T value) = 0;
-            
+
+            /**
+             * Adds the provided value at the beginning of the list.
+             * @param value The value to insert.
+             */
             virtual void addFirst(T value) {
                 add(0, value);
             }
-            
+
+            /**
+             * Adds the provided value at the end of the list.
+             * @param value The value to insert.
+             */
             virtual void addLast(T value) {
-                add(size(), value);
+                add(this->size(), value);
             }
-            
-            virtual T set(std::size_t index, T value) = 0;
-            
-            [[nodiscard]] virtual T& get(std::size_t index) = 0;
-            [[nodiscard]] virtual const T& get(std::size_t index) const = 0;
-            
+
+            /**
+             * Gets the first element in this list.
+             * @return The first element in this list.
+             */
             [[nodiscard]] virtual T& first() {
-                return get(0);
+                return this->get(0);
             }
-            
+
+            /**
+             * Gets the first element in this list.
+             * @return The first element in this list.
+             */
             [[nodiscard]] virtual const T& first() const {
-                return get(0);
+                return this->get(0);
             }
-            
+
+            /**
+             * Gets the last element in this list.
+             * @return The last element in this list.
+             */
             [[nodiscard]] virtual T& last() {
-                return get(size() - 1);
+                return get(this->size() - 1);
             }
-            
+
+            /**
+             * Gets the last element in this list.
+             * @return The last element in this list.
+             */
             [[nodiscard]] virtual const T& last() const {
-                return get(size() - 1);
+                return get(this->size() - 1);
             }
-            
-            [[nodiscard]] virtual std::size_t size() const noexcept = 0;
-            
-            [[nodiscard]] inline bool isEmpty() const noexcept { return size() == 0; }
-            
-            virtual T remove(std::size_t index) = 0;
-            
+
+            /**
+             * Removes and returns the first element of the list.
+             * @return The removed element.
+             */
             virtual T removeFirst() {
                 return remove(0);
             }
-            
+
+            /**
+             * Removes and returns the last element of the list.
+             * @return The removed element.
+             */
             virtual T removeLast() {
-                return remove(size() - 1);
+                return remove(this->size() - 1);
             }
 
             // Search
 
-            [[nodiscard]] virtual bool contains() const = 0;
-            
-            // Bulk modifiers
+        // Bulk modifiers
             
             virtual void clear() {
-                const std::size_t s = size();
+                const std::size_t s = this->size();
                 for (std::size_t i = 0; i < s; i++) {
                     removeFirst();
                 }
             }
-            
+
+            /**
+             * Reverses the contents of this list.
+             */
             virtual void reverse() {
-                const std::size_t s = size();
+                const std::size_t s = this->size();
                 for (std::size_t i = 0; i < s; i++) {
                     add(i, removeLast());
                 }
             }
             
             // Conditional modifiers
-            
-            virtual void removeIf(bool (*check)(const T&)) {
-                for (std::size_t i = 0; i < size(); i++) {
-                    if (check(get(i))) remove(i--);
-                }
-            }
-            
-            // Conversion
 
-            [[nodiscard]] virtual Array<T> toArray() const = 0;
-            
-            // Operators
-            
-            [[nodiscard]] virtual T& operator[](std::size_t index) {
-                return get(index);
-            }
-            
-            [[nodiscard]] virtual const T& operator[](std::size_t index) const {
-                return get(index);
-            }
+        // Conversion
+
+        // Operators
 
         // Assignment Operators
 
