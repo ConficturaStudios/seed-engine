@@ -21,6 +21,11 @@
 
 namespace seedengine {
 
+    // Forward declaration of Array
+
+    template <typename>
+    class Array;
+
     /**
      * @brief A generic Array of a fixed size N. N must be known at compile time.
      * @details A generic array with a fixed size known at compile time. This array type
@@ -241,8 +246,56 @@ namespace seedengine {
             template <std::size_t Start, std::size_t End>
             void copyToSubarray(FixedArray<T, End - Start>& target) const {
                 for (std::size_t i = Start; i < End; i++) {
-                    target[i] = T(data[i]);
+                    target[i - Start] = T(data[i]);
                 }
+            }
+
+            /**
+             * @brief Copies the elements from index start (inclusive) to end (exclusive) into
+             *        a new array object.
+             *
+             * @param start The first index to copy, inclusive.
+             * @param end The last index to copy, exclusive.
+             * @return A sub array of elements from this array.
+             */
+            [[nodiscard]] Array<T> subarray(std::size_t start, std::size_t end) const {
+                Array<T> target(end - start);
+                for (std::size_t i = start; i < end; i++) {
+                    target[i - start] = T(data[i]);
+                }
+                return target;
+            }
+
+            /**
+             * @brief Concatenates this array with another, returning a new Array with the contents of
+             *        the parameter appended to this array.
+             * @tparam M The size of the fixed array to append.
+             * @param array The array to concatenate with.
+             * @return The resulting combined array.
+             */
+            template <std::size_t M>
+            [[nodiscard]] FixedArray<T, N + M> concat(const FixedArray<T, M>& array) const {
+                FixedArray<T, N + M> result;
+                int i = 0;
+                for (const T& element : *this) {
+                    result[i++] = T(data[i]);
+                }
+                for (const T& element : array) {
+                    result[i++] = T(array[i - N]);
+                }
+                return result;
+            }
+
+            /**
+             *
+             * @return
+             */
+            [[nodiscard]] Array<T> toArray() const {
+                Array<T> result(N);
+                for (int i = 0; i < N; i++) {
+                    result[i] = data[i];
+                }
+                return result;
             }
 
         // Override Functions
@@ -361,7 +414,7 @@ namespace seedengine {
         /**
          * @brief Constructs an empty array with the specified size.
          * @details Constructs a new empty Array with no initialization for any members.
-         *          Initializiation is skipped to increase performance and remove the
+         *          Initialization is skipped to increase performance and remove the
          *          requirement for T to have a default constructor.
          * @param size The number of elements to allocate.
          */
@@ -444,7 +497,6 @@ namespace seedengine {
             return length;
         }
 
-
         /**
          * @brief Performs a linear search to find the specified element.
          * @details Performs a linear search to find the specified element. Returns the index
@@ -494,10 +546,10 @@ namespace seedengine {
          * @param end The last index to copy, exclusive.
          * @return A sub array of elements from this array.
          */
-        Array<T> subarray(std::size_t start, std::size_t end) const {
+        [[nodiscard]] Array<T> subarray(std::size_t start, std::size_t end) const {
             Array<T> target(end - start);
             for (std::size_t i = start; i < end; i++) {
-                target[i] = T(data[i]);
+                target[i - start] = T(data[i]);
             }
             return target;
         }
@@ -508,14 +560,14 @@ namespace seedengine {
          * @param array The array to concatenate with.
          * @return The resulting combined array.
          */
-        Array<T> concat(const Array<T>& array) {
+        [[nodiscard]] Array<T> concat(const Array<T>& array) const {
             Array<T> result(length + array.length);
             int i = 0;
             for (const T& element : *this) {
                 result[i++] = T(data[i]);
             }
             for (const T& element : array) {
-                result[i++] = T(array[i]);
+                result[i++] = T(array[i - length]);
             }
             return result;
         }
