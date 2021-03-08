@@ -1,5 +1,5 @@
 /**
- * EnvironmentAPI.hpp
+ * @file EnvironmentAPI.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.

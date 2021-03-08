@@ -1,5 +1,5 @@
 /**
- * Collections.hpp
+ * @file Collections.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -17,6 +17,7 @@
 
 #include "Array.hpp"
 #include "ArrayList.hpp"
+#include "Collection.hpp"
 #include "Dictionary.hpp"
 #include "Iterator.hpp"
 #include "LinkedList.hpp"

@@ -21,6 +21,7 @@ set(${LIBRARY_NAME_UPPER}_SRC
 set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/Array.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/ArrayList.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Collection.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Collections.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CollectionsAPI.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Dictionary.hpp
