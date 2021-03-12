@@ -45,12 +45,6 @@
 *.pdb
 *.exp
 
-# Dynamic library files
-*.dll
-*.so
-*.so.*
-*.dylib
-
 # Local files
 
 **/[Ll]ocal/*
