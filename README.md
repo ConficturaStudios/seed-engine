@@ -129,7 +129,7 @@ You can run **python -B Scripts/Tools.py -h** for more information about the dev
 
 The following third party dependencies are used:
 
-- [Open Asset Import Library (assimp) v4.1.0](https://github.com/assimp/assimp)<sup>[1]</sup>
+- [Open Asset Import Library (assimp) v4.1.0](https://github.com/assimp/assimp) <sup>[1]</sup>
 - [EnTT](https://github.com/skypjack/entt)
 - [glad](https://github.com/Dav1dde/glad)
 - [GLFW](https://github.com/glfw/glfw)
