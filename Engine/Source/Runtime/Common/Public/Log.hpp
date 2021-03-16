@@ -51,49 +51,51 @@ namespace seedengine {
 
             template <typename FormatString, typename... Args>
             inline void log(Level level, const FormatString& fmt, const Args&... args) {
-                m_inst->log(static_cast<spdlog::level::level_enum>(level), fmt, args...);
+                m_inst.logger->log(static_cast<spdlog::level::level_enum>(level), fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
             inline void log(const FormatString& fmt, const Args&... args) {
-                m_inst->log(fmt, args...);
+                m_inst.logger->log(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
             inline void trace(const FormatString& fmt, const Args&... args) {
-                m_inst->trace(fmt, args...);
+                m_inst.logger->trace(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
             inline void debug(const FormatString& fmt, const Args&... args) {
                 #ifdef ENGINE_COMPILE_DEBUG
-                    m_inst->debug(fmt, args...);
+                    m_inst.logger->debug(fmt, args...);
                 #endif
             }
 
             template <typename FormatString, typename... Args>
             inline void info(const FormatString& fmt, const Args&... args) {
-                m_inst->info(fmt, args...);
+                m_inst.logger->info(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
             inline void warn(const FormatString& fmt, const Args&... args) {
-                m_inst->warn(fmt, args...);
+                m_inst.logger->warn(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
             inline void error(const FormatString& fmt, const Args&... args) {
-                m_inst->error(fmt, args...);
+                m_inst.logger->error(fmt, args...);
             }
 
             template <typename FormatString, typename... Args>
             inline void critical(const FormatString& fmt, const Args&... args) {
-                m_inst->critical(fmt, args...);
+                m_inst.logger->critical(fmt, args...);
             }
 
         private:
 
-            std::shared_ptr<spdlog::logger> m_inst;
+            struct LogWrapper {
+                std::shared_ptr<spdlog::logger> logger;
+            } m_inst;
     };
 
 }
