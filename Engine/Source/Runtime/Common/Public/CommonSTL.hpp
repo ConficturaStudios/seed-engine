@@ -1,5 +1,5 @@
 /**
- * STLCommon.hpp
+ * @file CommonSTL.hpp
  * 
  * @copyright Copyright (c) 2020 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -22,7 +22,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 
 #if defined(_WIN32)
 // Windows only includes
