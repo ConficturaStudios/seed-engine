@@ -1,5 +1,5 @@
 /**
- * Platform.hpp
+ * EPlatform.hpp
  * 
  * @copyright Copyright (c) 2020 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -16,16 +16,54 @@
 
 #include <cstdint>
 
-namespace seedengine {
+#if defined(_WIN32)
+    // Windows
+    #define ENGINE_PLATFORM_WINDOWS
+#elif defined(__APPLE__) || defined(__MACH__)
+    // Apple Preprocessor Definitions
+    #include "TargetConditionals.h"
+    #if TARGET_IPHONE_SIMULATOR
+        // iOS Simulator
+        #define ENGINE_PLATFORM_IOS_SIM
+    #elif TARGET_OS_IPHONE
+        // iOS
+        #define ENGINE_PLATFORM_IOS
+    #elif TARGET_OS_MAC
+        // Mac
+        #define ENGINE_PLATFORM_MAC
+    #else
+        // Unknown Apple EPlatform
+        #define ENGINE_PLATFORM_UNKNOWN
+    #endif
+#elif defined(__ANDROID__)
+    // Android
+    #define ENGINE_PLATFORM_ANDROID
+#elif defined(__linux__)
+    // Linux
+    #define ENGINE_PLATFORM_LINUX
+#elif defined(__gnu_linux__)
+    // GNU Linux
+    #define ENGINE_PLATFORM_GNU_LINUX
+#elif defined(unix) || defined(__unix) || defined(__unix__)
+    // Unix
+    #define ENGINE_PLATFORM_UNIX
+#else
+    // Unknown EPlatform
+    #define ENGINE_PLATFORM_UNKNOWN
+#endif
 
-    // TODO: Update naming convention (EPlatform, EArchitecture)
-    // TODO: Consider switching to namespace->enum design to allow for functions like toString()
+// Handle unknown platforms
+#ifdef ENGINE_PLATFORM_UNKNOWN
+    #error "Unknown platform is not supported"
+#endif
+
+namespace seedengine {
 
     /**
      * @brief An enum containing available platforms.
      * 
      */
-    enum class ENGINE_API Platform : uint32_t {
+    enum class ENGINE_API EPlatform : uint32_t {
 
         UNKNOWN         = 0,
 
@@ -59,7 +97,7 @@ namespace seedengine {
      * @brief The memory architecture of the current platform.
      * 
      */
-    enum class ENGINE_API Architecture : uint8_t {
+    enum class ENGINE_API EArchitecture : uint8_t {
         UNKNOWN = 0,
         X86     = 1,
         X64     = 2

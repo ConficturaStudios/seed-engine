@@ -33,66 +33,53 @@ namespace seedengine {
             /**
              * @brief Gets the current platform that the application is running on.
              * 
-             * @return Platform The platform the application is running on.
+             * @return The platform the application is running on.
              */
-            [[nodiscard]] static constexpr Platform GetCurrentPlatform() noexcept {
-                #if defined(_WIN32)
+            [[nodiscard]] static constexpr EPlatform GetCurrentPlatform() noexcept {
+                #ifdef ENGINE_PLATFORM_WINDOWS
                 // Windows
-                    return Platform::WINDOWS;
-                #elif defined(__APPLE__) || defined(__MACH__)
-                // Apple Preprocessor Definitions
-                    #include "TargetConditionals.h"
-                    #if TARGET_IPHONE_SIMULATOR
-                    // iOS Simulator
-                        return Platform::IOS_SIM;
-                    #elif TARGET_OS_IPHONE
-                    // iOS
-                        return Platform::IOS;
-                    #elif TARGET_OS_MAC
-                    // Mac
-                        return Platform::MAC_OS;
-                    #else
-                    // Unknown Apple Platform
-                        return Platform::UNKOWN;
-                    #endif
-                #elif defined(__ANDROID__)
-                // Android
-                    return Platform::ANDROID;
-                #elif defined(__linux__)
-                // Linux
-                    return Platform::LINUX;
-                #elif defined(__gnu_linux__)
-                // GNU Linux
-                    return Platform::GNU_LINUX;
-                #elif defined(unix) || defined(__unix) || defined(__unix__)
-                // Unix
-                    return Platform::UNIX;
+                    return EPlatform::WINDOWS;
+                #elif defined(ENGINE_PLATFORM_IOS_SIM)
+                    return EPlatform::IOS_SIM;
+                #elif defined(ENGINE_PLATFORM_IOS)
+                    return EPlatform::IOS;
+                #elif defined(ENGINE_PLATFORM_MAC)
+                    return EPlatform::MAC_OS;
+                #elif defined(ENGINE_PLATFORM_ANDROID)
+                    return EPlatform::ANDROID;
+                #elif defined(ENGINE_PLATFORM_LINUX)
+                    return EPlatform::LINUX;
+                #elif defined(ENGINE_PLATFORM_GNU_LINUX)
+                    return EPlatform::GNU_LINUX;
+                #elif defined(ENGINE_PLATFORM_UNIX)
+                    return EPlatform::UNIX;
+                #elif defined(ENGINE_PLATFORM_UNKNOWN)
+                    return EPlatform::UNKOWN;
                 #else
-                // Unknown Platform
-                    return Platform::UNKOWN;
+                    return EPlatform::UNKOWN;
                 #endif
             }
 
             /**
              * @brief Returns the system architecture of the machine the application is running on.
              * 
-             * @return Architecture The system architecture that the aapplication is running on.
+             * @return The system architecture that the application is running on.
              */
-            [[nodiscard]] static constexpr Architecture GetCurrentArchitecture() noexcept  {
+            [[nodiscard]] static constexpr EArchitecture GetCurrentArchitecture() noexcept  {
 
                 // Current device's bit architecture
                     
                 if constexpr (sizeof(void*) == 8) {
                     // 64 bit architecture
-                    return Architecture::X64;
+                    return EArchitecture::X64;
                 }
                 else if (sizeof(void*) == 4) {
                     // 32 bit architecture
-                    return Architecture::X86;
+                    return EArchitecture::X86;
                 }
                 else {
                     // Unknown architecture
-                    return Architecture::UNKNOWN;
+                    return EArchitecture::UNKNOWN;
                 }
             }
 
@@ -102,7 +89,7 @@ namespace seedengine {
              * @param platform The platform to check.
              * @return String The name of the provided platform.
              */
-            [[nodiscard]] static String GetPlatformName(const Platform& platform) noexcept;
+            [[nodiscard]] static String GetPlatformName(const EPlatform& platform) noexcept;
 
             /**
              * @brief Returns the graphics mode being used by the engine.

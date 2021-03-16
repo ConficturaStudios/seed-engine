@@ -13,47 +13,46 @@
 
 namespace seedengine {
 
-    // TODO: Make these toString like methods into dedicated functions for each enum
-    // TODO: Look into possible compile time solutions to reduce execution time for name lookup
+    // TODO: Move naming functionality to specialized to string methods
     
-    String System::GetPlatformName(const Platform& platform) noexcept {
-        if (platform == Platform::WINDOWS) {
+    String System::GetPlatformName(const EPlatform& platform) noexcept {
+        if (platform == EPlatform::WINDOWS) {
             return "Windows";
         }
-        else if (platform == Platform::LINUX) {
+        else if (platform == EPlatform::LINUX) {
             return "Linux";
         }
-        else if (platform == Platform::GNU_LINUX) {
+        else if (platform == EPlatform::GNU_LINUX) {
             return "GNU Linux";
         }
-        else if (platform == Platform::MAC_OS) {
+        else if (platform == EPlatform::MAC_OS) {
             return "Mac OS";
         }
-        else if (platform == Platform::UNIX) {
+        else if (platform == EPlatform::UNIX) {
             return "Unix";
         }
-        else if (platform == Platform::ANDROID) {
+        else if (platform == EPlatform::ANDROID) {
             return "Android";
         }
-        else if (platform == Platform::IOS) {
+        else if (platform == EPlatform::IOS) {
             return "iOS";
         }
-        else if (platform == Platform::IOS_SIM) {
+        else if (platform == EPlatform::IOS_SIM) {
             return "iOS Simulator";
         }
-        else if (platform == Platform::PS4) {
+        else if (platform == EPlatform::PS4) {
             return "Playstation 4";
         }
-        else if (platform == Platform::PS5) {
+        else if (platform == EPlatform::PS5) {
             return "Playstation 5";
         }
-        else if (platform == Platform::XBOX_ONE) {
+        else if (platform == EPlatform::XBOX_ONE) {
             return "XBox One";
         }
-        else if (platform == Platform::XBOX_X) {
+        else if (platform == EPlatform::XBOX_X) {
             return "XBox Series X";
         }
-        else if (platform == Platform::NINTENDO_SWITCH) {
+        else if (platform == EPlatform::NINTENDO_SWITCH) {
             return "Nintendo Switch";
         }
         else {
