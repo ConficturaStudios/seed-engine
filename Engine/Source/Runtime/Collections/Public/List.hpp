@@ -65,13 +65,13 @@ namespace seedengine {
              * @param index The index position to insert the value at.
              * @param value The value to insert.
              */
-            virtual void add(std::size_t index, T value) = 0;
+            virtual void add(std::size_t index, const T& value) = 0;
 
             /**
              * Adds the provided value at the beginning of the list.
              * @param value The value to insert.
              */
-            virtual void addFirst(T value) {
+            virtual void addFirst(const T& value) {
                 add(0, value);
             }
 
@@ -79,7 +79,7 @@ namespace seedengine {
              * Adds the provided value at the end of the list.
              * @param value The value to insert.
              */
-            virtual void addLast(T value) {
+            virtual void addLast(const T& value) {
                 add(this->size(), value);
             }
 

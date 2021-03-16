@@ -46,7 +46,7 @@ namespace seedengine {
              * @param value The new value.
              * @return The previously stored value.
              */
-            virtual T set(IndexType index, T value) = 0;
+            virtual T set(IndexType index, const T& value) = 0;
 
             /**
              * Gets the value associated with the specified index.
