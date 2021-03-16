@@ -100,22 +100,22 @@ namespace seedengine {
 
 // TODO: Replace macro logging calls with calls to a logger within system or other global source
 
-#define ENGINE_TRACE(...) seedengine::Log::getEngineLogger()->trace(__VA_ARGS__)
+#define ENGINE_TRACE(...)
 #ifdef ENGINE_COMPILE_DEBUG
-    #define ENGINE_DEBUG(...) seedengine::Log::getEngineLogger()->debug(__VA_ARGS__)
+    #define ENGINE_DEBUG(...)
 #else
     #define ENGINE_DEBUG(...)
 #endif
-#define ENGINE_INFO(...) seedengine::Log::getEngineLogger()->info(__VA_ARGS__)
-#define ENGINE_WARN(...) seedengine::Log::getEngineLogger()->warn(__VA_ARGS__)
-#define ENGINE_ERROR(...) seedengine::Log::getEngineLogger()->error(__VA_ARGS__)
-#define ENGINE_CRIT(...) seedengine::Log::getEngineLogger()->critical(__VA_ARGS__)
+#define ENGINE_INFO(...)
+#define ENGINE_WARN(...)
+#define ENGINE_ERROR(...)
+#define ENGINE_CRIT(...)
 
-#define CLIENT_TRACE(...) seedengine::Log::getClientLogger()->trace(__VA_ARGS__)
-#define CLIENT_DEBUG(...) seedengine::Log::getClientLogger()->debug(__VA_ARGS__)
-#define CLIENT_INFO(...) seedengine::Log::getClientLogger()->info(__VA_ARGS__)
-#define CLIENT_WARN(...) seedengine::Log::getClientLogger()->warn(__VA_ARGS__)
-#define CLIENT_ERROR(...) seedengine::Log::getClientLogger()->error(__VA_ARGS__)
-#define CLIENT_CRIT(...) seedengine::Log::getClientLogger()->critical(__VA_ARGS__)
+#define CLIENT_TRACE(...)
+#define CLIENT_DEBUG(...)
+#define CLIENT_INFO(...)
+#define CLIENT_WARN(...)
+#define CLIENT_ERROR(...)
+#define CLIENT_CRIT(...)
 
 #endif
