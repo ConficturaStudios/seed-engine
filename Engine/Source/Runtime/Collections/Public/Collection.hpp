@@ -79,7 +79,7 @@ namespace seedengine {
              * @param element The element to remove.
              * @return True if the element was found and removed.
              */
-            virtual bool remove(const T& element) = 0;
+            virtual bool removeElement(const T& element) = 0;
 
             /**
              * Removes the element with the specified index.

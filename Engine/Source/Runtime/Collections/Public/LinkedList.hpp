@@ -13,6 +13,9 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_COLLECTIONS_LINKED_LIST_H_
 
 #include "CollectionsAPI.hpp"
+
+#include <cassert>
+
 #include "Iterator.hpp"
 #include "List.hpp"
 
@@ -209,7 +212,7 @@ namespace seedengine {
                 return current->value;
             }
 
-            bool remove(const T& element) override {
+            bool removeElement(const T& element) override {
                 LinkedNode* current = m_sentinel->next;
                 while (current && current != m_sentinel) {
                     if (current->value == element) {
@@ -313,6 +316,7 @@ namespace seedengine {
                 current->next->value = value;
                 current->next->prev = current;
                 current->next->next = next;
+                next->prev = current->next;
                 m_size++;
             }
 
@@ -325,6 +329,7 @@ namespace seedengine {
                         m_size--;
                         free(current);
                     }
+                    current = current->next;
                 }
             }
 
@@ -334,6 +339,7 @@ namespace seedengine {
                 m_sentinel->next->value = value;
                 m_sentinel->next->prev = m_sentinel;
                 m_sentinel->next->next = next;
+                next->prev = m_sentinel->next;
                 m_size++;
             }
 
@@ -343,6 +349,7 @@ namespace seedengine {
                 m_sentinel->prev->value = value;
                 m_sentinel->prev->next = m_sentinel;
                 m_sentinel->prev->prev = prev;
+                prev->next = m_sentinel->prev;
                 m_size++;
             }
 
@@ -440,9 +447,7 @@ namespace seedengine {
              * @param msg The failure message.
              */
             inline void fail(const char* msg = "Error occurred in LinkedList") const {
-                #if ENGINE_COMPILE_DEBUG
-                    throw -1;
-                #endif
+                assert(false);
             }
 
     };
