@@ -323,13 +323,14 @@ namespace seedengine {
             void removeIf(bool (*check)(const T &)) override {
                 LinkedNode* current = m_sentinel->next;
                 while (current && current != m_sentinel) {
+                    LinkedNode* next = current->next;
                     if (check(current->value)) {
                         current->prev->next = current->next;
                         current->next->prev = current->prev;
                         m_size--;
                         free(current);
                     }
-                    current = current->next;
+                    current = next;
                 }
             }
 
