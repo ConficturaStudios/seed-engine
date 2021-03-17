@@ -809,12 +809,12 @@ class SeedEngineCLI(object):
                 print()
                 print("Executing program debug tests.")
                 print()
-                subprocess.call("./" + self.BINARY_PATH + "Debug/seed-engine-core-tests.exe")
+                subprocess.call("./" + self.BINARY_PATH + "Debug/SeedEngine-0.0.1Tests.exe")
             else:
                 print()
                 print("Executing program release tests.")
                 print()
-                subprocess.call("./" + self.BINARY_PATH + "Release/seed-engine-core-tests.exe")
+                subprocess.call("./" + self.BINARY_PATH + "Release/SeedEngine-0.0.1Tests.exe")
         else:
             if args.debug:
                 print()

@@ -11,8 +11,9 @@
 
 #include <iostream>
 #include <gtest/gtest.h>
+#include "Array.hpp"
 
 TEST(TestRuntimeCollectionsArray, GeneralTest) {
-    using namespace seedengine;
+    //using namespace seedengine;
     
 }

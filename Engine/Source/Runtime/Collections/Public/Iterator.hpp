@@ -102,11 +102,11 @@ namespace seedengine {
             }
         
             [[nodiscard]] bool operator==(const Iterator<T>& rhs) const {
-                return instance->operator==(rhs.instance);
+                return instance->operator==(*rhs.instance);
             }
             
             [[nodiscard]] bool operator!=(const Iterator<T>& rhs) const {
-                return instance->operator!=(rhs.instance);
+                return instance->operator!=(*rhs.instance);
             }
             
             [[nodiscard]] bool operator==(const T& rhs) const {

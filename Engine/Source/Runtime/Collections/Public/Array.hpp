@@ -444,12 +444,12 @@ namespace seedengine {
          * @details Constructs a new Array by copying an existing Array.
          */
         Array(const Array& ref) {
-            data = (T*)malloc(ref.size * sizeof(T));
+            data = (T*)malloc(ref.length * sizeof(T));
             int i = 0;
             for (T element : ref) {
                 data[i++] = element;
             }
-            length = ref.size;
+            length = ref.length;
         }
 
         /**
@@ -460,7 +460,7 @@ namespace seedengine {
         Array(Array&& ref) noexcept {
             data = ref.data;
             ref.data = nullptr;
-            length = ref.size;
+            length = ref.length;
         }
 
         /**
@@ -579,20 +579,20 @@ namespace seedengine {
         [[nodiscard]] T* begin() override {
             return &data[0];
         }
-        [[nodiscard]] const T* begin() const override {
+        [[nodiscard]] T* const begin() const override {
             return &data[0];
         }
-        [[nodiscard]] const T* cbegin() const override {
+        [[nodiscard]] T* const cbegin() const override {
             return &data[0];
         }
 
         [[nodiscard]] T* end() override {
             return &data[length];
         }
-        [[nodiscard]] const T* end() const override {
+        [[nodiscard]] T* const end() const override {
             return &data[length];
         }
-        [[nodiscard]] const T* cend() const override {
+        [[nodiscard]] T* const cend() const override {
             return &data[length];
         }
 
@@ -602,11 +602,11 @@ namespace seedengine {
             return &data[length - 1];
         }
 
-        [[nodiscard]] const T* rbegin() const override {
+        [[nodiscard]] T* const rbegin() const override {
             return &data[length - 1];
         }
 
-        [[nodiscard]] const T* crbegin() const override {
+        [[nodiscard]] T* const crbegin() const override {
             return &data[length - 1];
         }
 
@@ -615,11 +615,11 @@ namespace seedengine {
             return &data[-1];
         }
 
-        [[nodiscard]] const T* rend() const override {
+        [[nodiscard]] T* const rend() const override {
             return &data[-1];
         }
 
-        [[nodiscard]] const T* crend() const override {
+        [[nodiscard]] T* const crend() const override {
             return &data[-1];
         }
 
