@@ -10,14 +10,12 @@
 
 cmake_minimum_required(VERSION 3.0)
 
-message(STATUS "Building Runtime module AssetManager")
+message("Building Runtime module AssetManager...")
 
 set(LIBRARY_NAME RuntimeAssetManager)
 set(LIBRARY_NAME_UPPER RUNTIME_ASSET_MANAGER)
 
 set(${LIBRARY_NAME_UPPER}_SRC
-	${CMAKE_CURRENT_LIST_DIR}/Private/Asset.cpp
-	${CMAKE_CURRENT_LIST_DIR}/Private/AssetLibrary.cpp
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
@@ -42,7 +40,6 @@ if(${LIBRARY_NAME_UPPER}_SRC)
         PRIVATE BUILD_SHARED_LIBS=1
         PRIVATE ${LIBRARY_NAME_UPPER}_EXPORT=1)
 else()
-    message(STATUS "Building Runtime module AssetManager as INTERFACE Library")
     add_library(${LIBRARY_NAME} INTERFACE)
 
     set(LIBRARY_SCOPE INTERFACE)
@@ -50,6 +47,9 @@ else()
     target_include_directories(${LIBRARY_NAME}
         ${LIBRARY_SCOPE} ${CMAKE_CURRENT_LIST_DIR}/Public)
 endif()
+
+get_target_property(${LIBRARY_NAME_UPPER}_TYPE ${LIBRARY_NAME} TYPE)
+message(STATUS "Built Runtime module AssetManager as ${${LIBRARY_NAME_UPPER}_TYPE}")
 
 target_compile_definitions(${LIBRARY_NAME}
     ${LIBRARY_SCOPE} ENGINE_VERSION_MAJOR=${ENGINE_VERSION_MAJOR}
@@ -92,7 +92,9 @@ if(BUILD_TESTS)
             ${CMAKE_CURRENT_LIST_DIR}/Test/*.cpp)
             
         set(RUNTIME_TEST_SRC_FILES ${RUNTIME_TEST_SRC_FILES} ${${LIBRARY_NAME_UPPER}_TEST_SRC} PARENT_SCOPE)
+        # TODO: Handle case where module has only empty cpp source files (no symbols)
         set(RUNTIME_TEST_LIBRARIES ${RUNTIME_TEST_LIBRARIES} ${LIBRARY_NAME} PARENT_SCOPE)
+
         set(RUNTIME_TEST_INCLUDES ${RUNTIME_TEST_INCLUDES} ${CMAKE_CURRENT_LIST_DIR}/Public PARENT_SCOPE)
         
     endif()
