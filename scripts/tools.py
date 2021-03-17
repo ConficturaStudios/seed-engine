@@ -112,7 +112,7 @@ class SeedEngineCLI(object):
         add_class_parser.add_argument("domain", metavar="D", type=str, help="The domain to target (e.g. Runtime, Editor, etc.)")
         add_class_parser.add_argument("module", metavar="M", type=str, help="The name of the module to add this to")
         add_class_parser.add_argument("name", metavar="N", type=str, help="The name of the class to create")
-        add_class_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this class inside [NOT IMPLEMENTED]")
+        add_class_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this class inside")
         add_class_access = add_class_parser.add_mutually_exclusive_group(required=False)
         add_class_access.add_argument("--public", dest="access", action="store_true", help="Used to make the class public")
         add_class_access.add_argument("--private", dest="access", action="store_false", help="Used to make the class private",)
@@ -126,7 +126,7 @@ class SeedEngineCLI(object):
         add_header_parser.add_argument("module", metavar="M", type=str, help="The name of the module to add this to")
         add_header_parser.add_argument("name", metavar="N", type=str, help="The name of the file to create")
         add_header_parser.add_argument("-c", "--makeclass", action="store_false", help="An optional flag to generate a header only class", required=False)
-        add_header_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this class inside [NOT IMPLEMENTED]")
+        add_header_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this class inside")
         add_header_access = add_header_parser.add_mutually_exclusive_group(required=False)
         add_header_access.add_argument("--public", dest="access", action="store_true", help="Used to make the header public")
         add_header_access.add_argument("--private", dest="access", action="store_false", help="Used to make the header private",)
@@ -139,9 +139,16 @@ class SeedEngineCLI(object):
         add_source_parser.add_argument("domain", metavar="D", type=str, help="The domain to target (e.g. Runtime, Editor, etc.)")
         add_source_parser.add_argument("module", metavar="M", type=str, help="The name of the module to add this to")
         add_source_parser.add_argument("name", metavar="N", type=str, help="The name of the file to create")
-        add_source_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this class inside [NOT IMPLEMENTED]")
+        add_source_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this class inside")
 
-        #TODO: Create 'add test' option
+        # Add test
+
+        add_source_parser = add_subparsers.add_parser("test", description="Adds a new test file to a module within the project.")
+        add_source_parser.set_defaults(func=self.add_test)
+        add_source_parser.add_argument("domain", metavar="D", type=str, help="The domain to target (e.g. Runtime, Editor, etc.)")
+        add_source_parser.add_argument("module", metavar="M", type=str, help="The name of the module to add this to")
+        add_source_parser.add_argument("name", metavar="N", type=str, help="The name of the test suite")
+        add_source_parser.add_argument("--folder", metavar="F", type=str, help="The subfolder to place this test inside")
 
         # Add module
 
@@ -336,7 +343,7 @@ class SeedEngineCLI(object):
         test_success = -1
         if args.access:
             test_success = self.__generate_file_from_temp(
-                module_path + self.TEST_DIR + "Test" + domain_name + module_name + class_name + ".cpp",
+                module_path + self.TEST_DIR + subdir + "Test" + domain_name + module_name + class_name + ".cpp",
                 "ModuleAddClassTest.tmp",
                 values
             )
@@ -627,6 +634,71 @@ class SeedEngineCLI(object):
         else:
             print("Module '" + module_name + "' CMakeLists.txt updated successfully.")
             return
+
+    def add_test(self, args):
+        from string import Template
+
+        if not (self.__check_str_format(args.name)):
+            print("ERROR: Invalid test name '" + args.name + "'. Exiting.")
+            return
+        if not (self.__check_str_format(args.module)):
+            print("ERROR: Invalid module name '" + args.module + "'. Exiting.")
+            return
+        if not (self.__check_str_format(args.domain)):
+            print("ERROR: Invalid domain name '" + args.domain + "'. Exiting.")
+            return
+
+        class_name = args.name
+        class_name_upper = to_snake_case(args.name).upper()
+        module_name = args.module
+        module_name_upper = to_snake_case(args.module).upper()
+        domain_name = args.domain
+        domain_name_upper = to_snake_case(args.domain).upper()
+
+        domain_path = self.__get_domain_path(args.domain)
+        module_path = self.__get_module_path(args.domain, args.module)
+        print("Creating test " + domain_name + module_name + class_name + "...")
+
+        subdir = ""
+        relpath = ""
+        if args.folder is not None:
+            if not (self.__check_dir_format(args.folder)):
+                print("ERROR: Invalid folder name '" + args.folder + "'. Skipping folder creation.")
+            else:
+                subdir = args.folder + "/"
+                if not self.__check_module_subdir_exists(args.domain, args.module, args.folder, True):
+                    self.__create_dir(self.__get_module_subdir_path(args.domain, args.module, args.folder, True))
+                if not self.__check_module_subdir_exists(args.domain, args.module, args.folder, False):
+                    self.__create_dir(self.__get_module_subdir_path(args.domain, args.module, args.folder, False))
+                if args.access:
+                    for c in subdir:
+                        if c == '/' or c == '\\':
+                            relpath = "../" + relpath
+
+        values = {
+            "CLASS_NAME":class_name,
+            "CLASS_NAME_UPPER":class_name_upper,
+            "MODULE_NAME":module_name,
+            "MODULE_NAME_UPPER":module_name_upper,
+            "DOMAIN_NAME":domain_name,
+            "DOMAIN_NAME_UPPER":domain_name_upper,
+            "SUBDIR":subdir,
+            "RELPATH":relpath
+        }
+
+        values.update(self.PROJECT_DICT_CONSTANTS)
+        test_success = -1
+        if args.access:
+            test_success = self.__generate_file_from_temp(
+                module_path + self.TEST_DIR + subdir + "Test" + domain_name + module_name + class_name + ".cpp",
+                "ModuleAddTest.tmp",
+                values
+            )
+
+        if test_success != -1:
+            print("Test '" + domain_name + module_name + class_name + "' created successfully.")
+        else:
+            print("Errors found when creating test '" + domain_name + module_name + class_name + "'.")
 
     def add_dependency(self, args):
         if not (self.__check_str_format(args.dep_domain)):
