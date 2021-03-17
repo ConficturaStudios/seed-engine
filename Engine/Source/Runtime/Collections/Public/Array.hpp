@@ -393,10 +393,10 @@ namespace seedengine {
         // Data members
 
         /** The internal array data. */
-        T* data;
+        T* m_data;
 
         /** The number of elements stored in this Array. */
-        std::size_t length;
+        std::size_t m_length;
 
     public:
 
@@ -419,8 +419,8 @@ namespace seedengine {
          * @param size The number of elements to allocate.
          */
         explicit Array(std::size_t size) {
-            data = (T*)malloc(size * sizeof(T));
-            length = size;
+            m_data = (T*)malloc(size * sizeof(T));
+            m_length = size;
         }
 
         /**
@@ -431,12 +431,12 @@ namespace seedengine {
          * @param list The initializer list to construct this array from.
          */
         Array(std::initializer_list<T> list) {
-            data = (T*)malloc(list.size() * sizeof(T));
+            m_data = (T*)malloc(list.size() * sizeof(T));
             int i = 0;
             for (const T& element : list) {
-                data[i++] = element;
+                m_data[i++] = element;
             }
-            length = list.size();
+            m_length = list.size();
         }
 
         /**
@@ -444,12 +444,12 @@ namespace seedengine {
          * @details Constructs a new Array by copying an existing Array.
          */
         Array(const Array& ref) {
-            data = (T*)malloc(ref.length * sizeof(T));
+            m_data = (T*)malloc(ref.m_length * sizeof(T));
             int i = 0;
             for (T element : ref) {
-                data[i++] = element;
+                m_data[i++] = element;
             }
-            length = ref.length;
+            m_length = ref.m_length;
         }
 
         /**
@@ -458,9 +458,9 @@ namespace seedengine {
          *          into this object.
          */
         Array(Array&& ref) noexcept {
-            data = ref.data;
-            ref.data = nullptr;
-            length = ref.length;
+            m_data = ref.m_data;
+            ref.m_data = nullptr;
+            m_length = ref.m_length;
         }
 
         /**
@@ -468,7 +468,7 @@ namespace seedengine {
          * @details Called when an instance of Array is deleted.
          */
         ~Array() {
-            free(data);
+            free(m_data);
         }
 
         // Functions
@@ -478,7 +478,7 @@ namespace seedengine {
          * @return T* The underlying array pointer of this instance.
          */
         [[nodiscard]] inline T* getData() {
-            return data;
+            return m_data;
         }
 
         /**
@@ -486,7 +486,7 @@ namespace seedengine {
          * @return const T* The underlying array pointer of this instance.
          */
         [[nodiscard]] inline const T* getData() const {
-            return data;
+            return m_data;
         }
 
         /**
@@ -494,7 +494,7 @@ namespace seedengine {
          * @return std::size_t The number of elements in this array.
          */
         [[nodiscard]] inline std::size_t size() const {
-            return length;
+            return m_length;
         }
 
         /**
@@ -506,8 +506,8 @@ namespace seedengine {
          * @return The index that the element was found at, or -1 if it was not found.
          */
         [[nodiscard]] int64_t find(const T& element) const {
-            for (int i = 0; i < length; i++) {
-                if (data[i] == element) return i;
+            for (std::size_t i = 0; i < m_length; i++) {
+                if (m_data[i] == element) return i;
             }
             return -1;
         }
@@ -533,9 +533,9 @@ namespace seedengine {
          * @param second The second index to swap.
          */
         void swap(std::size_t first, std::size_t second) {
-            T temp = data[first];
-            data[first] = data[second];
-            data[second] = temp;
+            T temp = m_data[first];
+            m_data[first] = m_data[second];
+            m_data[second] = temp;
         }
 
         /**
@@ -549,7 +549,7 @@ namespace seedengine {
         [[nodiscard]] Array<T> subarray(std::size_t start, std::size_t end) const {
             Array<T> target(end - start);
             for (std::size_t i = start; i < end; i++) {
-                target[i - start] = T(data[i]);
+                target[i - start] = T(m_data[i]);
             }
             return target;
         }
@@ -561,13 +561,13 @@ namespace seedengine {
          * @return The resulting combined array.
          */
         [[nodiscard]] Array<T> concat(const Array<T>& array) const {
-            Array<T> result(length + array.length);
+            Array<T> result(m_length + array.m_length);
             int i = 0;
             for (const T& element : *this) {
-                result[i++] = T(data[i]);
+                result[i++] = T(m_data[i]);
             }
             for (const T& element : array) {
-                result[i++] = T(array[i - length]);
+                result[i++] = T(array[i - m_length]);
             }
             return result;
         }
@@ -577,50 +577,50 @@ namespace seedengine {
         // Iterator Functions
 
         [[nodiscard]] T* begin() override {
-            return &data[0];
+            return &m_data[0];
         }
         [[nodiscard]] T* const begin() const override {
-            return &data[0];
+            return &m_data[0];
         }
         [[nodiscard]] T* const cbegin() const override {
-            return &data[0];
+            return &m_data[0];
         }
 
         [[nodiscard]] T* end() override {
-            return &data[length];
+            return &m_data[m_length];
         }
         [[nodiscard]] T* const end() const override {
-            return &data[length];
+            return &m_data[m_length];
         }
         [[nodiscard]] T* const cend() const override {
-            return &data[length];
+            return &m_data[m_length];
         }
 
         // Reverse Iterator Functions
 
         [[nodiscard]] T* rbegin() override {
-            return &data[length - 1];
+            return &m_data[m_length - 1];
         }
 
         [[nodiscard]] T* const rbegin() const override {
-            return &data[length - 1];
+            return &m_data[m_length - 1];
         }
 
         [[nodiscard]] T* const crbegin() const override {
-            return &data[length - 1];
+            return &m_data[m_length - 1];
         }
 
 
         [[nodiscard]] T* rend() override {
-            return &data[-1];
+            return &m_data[-1];
         }
 
         [[nodiscard]] T* const rend() const override {
-            return &data[-1];
+            return &m_data[-1];
         }
 
         [[nodiscard]] T* const crend() const override {
-            return &data[-1];
+            return &m_data[-1];
         }
 
         // Assignment Operators
@@ -645,11 +645,11 @@ namespace seedengine {
 
         [[nodiscard]] T& operator[](std::size_t i) {
             // TODO: Add flag and behavior to perform optional bounds checking
-            return data[i];
+            return m_data[i];
         }
 
         [[nodiscard]] const T& operator[](std::size_t i) const {
-            return data[i];
+            return m_data[i];
         }
 
     };
