@@ -666,14 +666,11 @@ class SeedEngineCLI(object):
                 print("ERROR: Invalid folder name '" + args.folder + "'. Skipping folder creation.")
             else:
                 subdir = args.folder + "/"
-                if not self.__check_module_subdir_exists(args.domain, args.module, args.folder, True):
-                    self.__create_dir(self.__get_module_subdir_path(args.domain, args.module, args.folder, True))
-                if not self.__check_module_subdir_exists(args.domain, args.module, args.folder, False):
-                    self.__create_dir(self.__get_module_subdir_path(args.domain, args.module, args.folder, False))
-                if args.access:
-                    for c in subdir:
-                        if c == '/' or c == '\\':
-                            relpath = "../" + relpath
+                if not self.__check_module_test_subdir_exists(args.domain, args.module, args.folder):
+                    self.__create_dir(self.__get_module_test_subdir_path(args.domain, args.module, args.folder))
+                # for c in subdir:
+                #     if c == '/' or c == '\\':
+                #         relpath = "../" + relpath
 
         values = {
             "CLASS_NAME":class_name,
@@ -687,13 +684,13 @@ class SeedEngineCLI(object):
         }
 
         values.update(self.PROJECT_DICT_CONSTANTS)
+
         test_success = -1
-        if args.access:
-            test_success = self.__generate_file_from_temp(
-                module_path + self.TEST_DIR + subdir + "Test" + domain_name + module_name + class_name + ".cpp",
-                "ModuleAddTest.tmp",
-                values
-            )
+        test_success = self.__generate_file_from_temp(
+            module_path + self.TEST_DIR + subdir + "Test" + domain_name + module_name + class_name + ".cpp",
+            "ModuleAddTest.tmp",
+            values
+        )
 
         if test_success != -1:
             print("Test '" + domain_name + module_name + class_name + "' created successfully.")
@@ -907,6 +904,9 @@ class SeedEngineCLI(object):
         else:
             return self.__get_module_path(domain, module) + "Private/" + subdir + "/"
 
+    def __get_module_test_subdir_path(self, domain, module, subdir):
+        return self.__get_module_path(domain, module) + "Test/" + subdir + "/"
+
     def __check_domain_exists(self, domain):
         domain_path = self.__get_domain_path(domain)
         return os.path.exists(domain_path)
@@ -917,6 +917,10 @@ class SeedEngineCLI(object):
 
     def __check_module_subdir_exists(self, domain, module, subdir, is_public):
         subdir_path = self.__get_module_subdir_path(domain, module, subdir, is_public)
+        return self.__check_module_exists(domain, module) and os.path.exists(subdir_path)
+
+    def __check_module_test_subdir_exists(self, domain, module, subdir):
+        subdir_path = self.__get_module_test_subdir_path(domain, module, subdir)
         return self.__check_module_exists(domain, module) and os.path.exists(subdir_path)
 
     def __check_str_format(self, text):
