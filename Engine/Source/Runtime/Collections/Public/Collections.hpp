@@ -24,6 +24,8 @@
 #include "List.hpp"
 #include "Map.hpp"
 #include "Pair.hpp"
+#include "Queue.hpp"
+#include "Stack.hpp"
 #include "Tree.hpp"
 
 #ifdef ENGINE_API

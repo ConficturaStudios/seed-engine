@@ -30,6 +30,8 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/List.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Map.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Pair.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Queue.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Stack.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Tree.hpp
 )
 
