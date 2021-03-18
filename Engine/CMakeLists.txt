@@ -34,6 +34,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Enable multiprocessor compiling
+
+if (MSVC)
+    add_definitions(/MP16)
+endif()
+
 # Options
 
 option(BUILD_DEV "Build developer (experimental) features" OFF)
