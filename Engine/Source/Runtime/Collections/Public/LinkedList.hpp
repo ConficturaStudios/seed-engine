@@ -131,6 +131,34 @@ namespace seedengine {
             }
 
             /**
+             * Constructs a new linked list by copying each element of a provided array.
+             * @param array The array to copy.
+             */
+            explicit LinkedList(const Array<T>& array) {
+                m_size = 0;
+                m_sentinel = (LinkedNode*)malloc(sizeof(LinkedNode));
+                m_sentinel->next = m_sentinel;
+                m_sentinel->prev = m_sentinel;
+                for (const T& element : array) {
+                    addLast(element);
+                }
+            }
+
+            /**
+             * Constructs a new linked list from the provided initializer list.
+             * @param list The initializer list to use when building this list.
+             */
+            LinkedList(std::initializer_list<T> list) {
+                m_sentinel = (LinkedNode*)malloc(sizeof(LinkedNode));
+                m_sentinel->next = m_sentinel;
+                m_sentinel->prev = m_sentinel;
+                m_size = 0;
+                for (const T& element : list) {
+                    addLast(element);
+                }
+            }
+
+            /**
              * @brief The copy constructor for LinkedList objects.
              * @details Constructs a new LinkedList by copying an existing LinkedList.
              */
