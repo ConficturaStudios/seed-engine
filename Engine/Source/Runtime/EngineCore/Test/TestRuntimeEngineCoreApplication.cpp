@@ -9,11 +9,10 @@
  * For a copy of the license, please go to https://github.com/conficturastudios/seed-engine/LICENSE
  */
 
-#include <iostream>
-#include <gtest/gtest.h>
 #include "Application.hpp"
 
-TEST(TestRuntimeEngineCoreApplication, GeneralTest) {
-    using namespace seedengine;
-    
+// Define CreateApplication implementation for test suite, should not be used.
+
+seedengine::Application* seedengine::CreateApplication() {
+    return nullptr;
 }

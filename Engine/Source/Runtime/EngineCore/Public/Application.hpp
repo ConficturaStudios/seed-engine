@@ -14,6 +14,16 @@
 
 #include "EngineCoreAPI.hpp"
 
+// Forward declare main
+
+/**
+ * The main program entry point.
+ * @param argc The number of command line arguments passed.
+ * @param argv The command line arguments provided to the program.
+ * @return The exit code of the program.
+ */
+int main(int argc, char** argv);
+
 namespace seedengine {
 
     /**
@@ -34,7 +44,9 @@ namespace seedengine {
      */
     class ENGINE_API Application {
 
-        public:
+            friend int ::main(int, char**);
+
+        protected:
 
         // Constructors and destructor
 
@@ -50,13 +62,22 @@ namespace seedengine {
              */
             virtual ~Application();
 
-        // Functions
+        private:
 
             /**
              * Runs the main game loop.
              * @return The exit status of the application.
              */
             int run();
+
+            /**
+             * Loads the game data from the specified file.
+             * TODO: Create game file format, update this method
+             * @return True if the game was successfully loaded.
+             */
+            bool loadGameData();
+
+        public:
 
             /**
              * Returns true if this program should attempt to safely exit.
@@ -84,23 +105,18 @@ namespace seedengine {
              */
             void abort(int exitCode, const char* msg);
 
-            /**
-             * Loads the game data from the specified file.
-             * TODO: Create game file format, update this method
-             * @return True if the game was successfully loaded.
-             */
-            bool loadGameData();
-
         protected:
 
             virtual void onStartup();
             virtual void onLoadGameData();
             virtual void onShutdown();
 
-        private:
-
     };
 
+    /**
+     * The factory function implemented by the client to create a new Application instance.
+     * @return A pointer to a new Application instance.
+     */
     Application* CreateApplication();
 
 }
