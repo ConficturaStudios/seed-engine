@@ -1,0 +1,15 @@
+{
+    "Domain": "Editor",
+    "Name": "SeedEngineEditor",
+    "BuildTarget": "Executable",
+    "Dependencies": [
+        {
+			"Domain": "Runtime",
+			"Module": "EngineCore"
+		}
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": []
+}
