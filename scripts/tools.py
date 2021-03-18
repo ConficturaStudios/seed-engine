@@ -981,6 +981,15 @@ class SeedEngineCLI(object):
             print("Module '" + domain + " " + module + "' is already dependent on module '" + dep.domain + " " + dep.module + "'. Exiting process.")
             return -1
 
+        dep_json_data = self.__get_json_data(dep.domain, dep.module)
+        if dep_json_data == None:
+            print("Encountered an error when getting dependency JSON data, exiting dependency add.")
+            return -1
+
+        if dep_json_data.build_target == BuildTarget.Executable:
+            print("Cannot add a dependency to executable module '" + domain + " " + module + "'. Exiting process.")
+            return -1
+
         print("Adding dependency '" + dep.domain + " " + dep.module + "' to " + domain + " module '" + module + "'...")
 
         json_data.dependencies.append(dep)
