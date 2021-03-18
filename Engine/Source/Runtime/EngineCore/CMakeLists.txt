@@ -16,13 +16,16 @@ set(LIBRARY_NAME RuntimeEngineCore)
 set(LIBRARY_NAME_UPPER RUNTIME_ENGINE_CORE)
 
 set(${LIBRARY_NAME_UPPER}_SRC
+	${CMAKE_CURRENT_LIST_DIR}/Private/Application.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Program.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Time.cpp
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
+	${CMAKE_CURRENT_LIST_DIR}/Public/Application.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/EngineCore.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/EngineCoreAPI.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/EntryPoint.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Program.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Time.hpp
 )
