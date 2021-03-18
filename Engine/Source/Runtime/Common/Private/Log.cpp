@@ -14,7 +14,7 @@
 namespace seedengine {
 
     Logger::Logger(const char *name, const char *pattern, Logger::Level level) {
-        m_inst = { spdlog::stdout_color_mt<spdlog::async_factory>(name) };
+        m_inst = { spdlog::stdout_color_st<spdlog::synchronous_factory>(name) };
         m_inst.logger->set_pattern(pattern);
         m_inst.logger->set_level(static_cast<spdlog::level::level_enum>(level));
     }

@@ -55,11 +55,11 @@ int main(int argc, char** argv) {
     if (exitStatus == 0)
         logger.info("Application completed successfully.");
     else
-        logger.error("Application completed with error code %d.", exitStatus);
+        logger.error("Application completed with error code {0}.", exitStatus);
 
     logger.info("Deleting application instance...");
     delete application;
-    logger.info("Application instance deleted, exiting with code %d.", exitStatus);
+    logger.info("Application instance deleted, exiting with code {0}.", exitStatus);
     return exitStatus;
 }
 

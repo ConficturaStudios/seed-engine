@@ -66,7 +66,7 @@ namespace seedengine {
         logger.info("Unloading engine assets...");
         logger.info("Unloading game assets...");
 
-        logger.info("Program has ended with exit code %d", 0);
+        logger.info("Program has ended with exit code {0}", 0);
         return 0;
     }
 
