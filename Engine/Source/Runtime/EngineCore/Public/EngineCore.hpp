@@ -16,7 +16,6 @@
 
 
 #include "Application.hpp"
-//#include "EntryPoint.hpp"
 #include "Time.hpp"
 
 #ifdef ENGINE_API
