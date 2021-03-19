@@ -37,6 +37,7 @@ namespace seedengine {
             logger.info("Program clock started successfully at MM/DD/YYYY HH:MM:SSS.");
 
             logger.info("Creating application window...");
+            // TODO: Create a console only mode option
 
             logger.info("Loading engine assets...");
             logger.info("Loading game assets...");
