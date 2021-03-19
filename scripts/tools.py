@@ -1156,7 +1156,7 @@ class SeedEngineCLI(object):
 
         # -- Read in custom output name from JSON
 
-        output_name = json_data.output_name
+        output_name = json_data.output_name if json_data.output_name is not "" else json_data.domain + json_data.name
 
         # -- Read in custom instructions from JSON
 

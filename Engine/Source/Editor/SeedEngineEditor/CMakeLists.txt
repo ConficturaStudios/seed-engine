@@ -12,8 +12,8 @@ cmake_minimum_required(VERSION 3.0)
 
 message("Building Editor module SeedEngineEditor...")
 
-set(LIBRARY_NAME EditorSeedEngineEditor)
-set(LIBRARY_NAME_UPPER EDITOR_SEED_ENGINE_EDITOR)
+set(LIBRARY_NAME SeedEngineEditor)
+set(LIBRARY_NAME_UPPER SEED_ENGINE_EDITOR)
 
 set(${LIBRARY_NAME_UPPER}_SRC
 	${CMAKE_CURRENT_LIST_DIR}/Private/EditorApplication.cpp
