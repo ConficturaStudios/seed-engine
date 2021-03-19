@@ -113,12 +113,6 @@ namespace seedengine {
 
     };
 
-    /**
-     * The factory function implemented by the client to create a new Application instance.
-     * @return A pointer to a new Application instance.
-     */
-    Application* CreateApplication();
-
 }
 
 #endif
