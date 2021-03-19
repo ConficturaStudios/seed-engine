@@ -1352,6 +1352,10 @@ class SeedEngineCLI(object):
         pass
 
     def __regen_module(self, domain, module):
+        validate_module = self.__validate_module_data(domain, module)
+        if not validate_module:
+            print("Failed to validate Module.json file, skipping regen of module '" + domain + " " + module + "'")
+            return
         composite_result = self.__generate_module_header(domain, module)
         api_result = self.__generate_api_header(domain, module)
         cmake_result = self.__generate_cmake(domain, module)
@@ -1381,6 +1385,18 @@ class SeedEngineCLI(object):
             print("UNKNOWN ERROR: Failed to update API header")
         return
 
+    def __validate_module_data(self, domain, module):
+        # Reads in Module.json file, validates that necessary fields are present, then rewrites
+        json_data = self.__get_json_data(domain, module)
+        if json_data is None:
+            print("ERROR: Could not read in json data for module '" + domain + " " + module + "', validation failed.")
+            return False
+        write_result = self.__write_json_data(domain, module, json_data)
+        if not write_result:
+            print("ERROR: Could not write json data for module '" + domain + " " + module + "', validation failed.")
+            return False
+        return True
+
 
 ### START ### --- JSON utility functions
 
@@ -1391,6 +1407,14 @@ class SeedEngineCLI(object):
 
             json_src = json_file.read()
             json_dct = json.loads(json_src)
+
+            if "Domain" not in json_dct:
+                print("WARNING: Module.json file missing domain data, inserting")
+                json_dct["Domain"] = domain
+            if "Name" not in json_dct:
+                print("WARNING: Module.json file missing module name data, inserting")
+                json_dct["Name"] = domain
+
             data = self.__decode_module(json_dct)
 
             json_file.close()
@@ -1422,12 +1446,12 @@ class SeedEngineCLI(object):
         return Module(
             dct["Domain"],
             dct["Name"],
-            BuildTarget[dct["BuildTarget"]],
-            self.__decode_dependencies(dct),
-            dct["GenerateCMake"] == "True",
-            dct["GenerateAPI"] == "True",
-            dct["GenerateCompositeHeader"] == "True",
-            dct["CustomCMakeInstructions"]
+            BuildTarget[dct["BuildTarget"] if "BuildTarget" in dct else "Shared"],
+            self.__decode_dependencies(dct) if "Dependencies" in dct else [],
+            dct["GenerateCMake"] == "True" if "GenerateCMake" in dct else True,
+            dct["GenerateAPI"] == "True" if "GenerateAPI" in dct else True,
+            dct["GenerateCompositeHeader"] == "True" if "GenerateCompositeHeader" in dct else True,
+            dct["CustomCMakeInstructions"] if "CustomCMakeInstructions" in dct else []
             )
 
     def __encode_module(self, module):
