@@ -13,8 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_RENDERER_WINDOW_H_
 
 #include "RendererAPI.hpp"
-#include "String.hpp"
-#include "SmartPointer.hpp"
+#include "Common.hpp"
 #include "Vector2.hpp"
 #include "Vector2Int.hpp"
 #include "Image.hpp"
@@ -22,8 +21,13 @@
 namespace seedengine {
 
     /**
-     * @brief
-     * @details
+     * @brief A window created to host a renderer for the engine.
+     * @details A window created to host a renderer instance for the engine. The
+     *          underlying type of the window will be an implementation specific
+     *          Window for a graphics API such as OpenGL or DirectX.
+     *          The window is responsible for providing an interface with the renderer
+     *          so that the renderer does not need to be accessed directly. The underlying renderer
+     *          will also be API specific.
      * 
      */
     class ENGINE_API Window {
@@ -51,10 +55,10 @@ namespace seedengine {
 
             [[nodiscard]] virtual String title() const noexcept = 0;
 
-            [[nodiscard]] virtual uint32_t width() const noexcept = 0;
-            [[nodiscard]] virtual uint32_t height() const noexcept = 0;
+            [[nodiscard]] virtual uint32 width() const noexcept = 0;
+            [[nodiscard]] virtual uint32 height() const noexcept = 0;
 
-            virtual void resize(uint32_t width, uint32_t height) = 0;
+            virtual void resize(uint32 width, uint32 height) = 0;
             virtual void resize(float width_percent, float height_percent) = 0;
 
             virtual bool toggleMaximize() = 0;
@@ -65,7 +69,7 @@ namespace seedengine {
 
             virtual void center() = 0;
 
-            virtual void setPosition(uint32_t x_pos, uint32_t y_pos) = 0;
+            virtual void setPosition(uint32 x_pos, uint32_t y_pos) = 0;
             virtual void setPosition(const Vector2Int& pos) = 0;
             virtual void setPosition(float x_pos_percent, float y_pos_percent) = 0;
             virtual void setPosition(const Vector2& pos_percent) = 0;
@@ -94,6 +98,9 @@ namespace seedengine {
 
     //TODO: Implement API specific windows
     //TODO: Decide on properties interface and usage
+    // TODO: Decide whether or not to move Window and Renderer code to the Graphics module
+    // NOTE: If maintaining distinct modules for Graphics objects and the renderer/window, rename Renderer module
+    //       to Rendering.
 
 }
 
