@@ -48,7 +48,7 @@ class Dependency:
 
 # A module within the project
 class Module:
-    def __init__(self, domain, name, build_target=BuildTarget.Shared, output_name="", dependencies=None, generate_cmake=True, generate_api=True, generate_composite_h=True, custom_cmake_instructions=None):
+    def __init__(self, domain, name, build_target=BuildTarget.Shared, output_name="", dependencies=None, generate_cmake=True, generate_api=True, generate_composite_h=True, custom_cmake_instructions=None, composite_header_excludes=None):
         self.domain = domain
         self.name = name
         self.build_target = build_target
@@ -58,6 +58,7 @@ class Module:
         self.generate_api = generate_api
         self.generate_composite_h = generate_composite_h
         self.custom_cmake_instructions = [] if custom_cmake_instructions is None else custom_cmake_instructions
+        self.composite_header_excludes = [] if composite_header_excludes is None else composite_header_excludes
 
 # The command line interface for the project
 class SeedEngineCLI(object):
@@ -1307,10 +1308,14 @@ class SeedEngineCLI(object):
             print("Encountered an error when getting JSON data, exiting composite header generation.")
             return -1
 
-        # -- Check if GenerateAPI is enabled, exit with message if not
+        # -- Check if GenerateCompositeHeader is enabled, exit with message if not
         if not json_data.generate_composite_h:
-            print("composite header generation is disabled for " + domain + " module '" + module + "'.")
+            print("Composite header generation is disabled for " + domain + " module '" + module + "'.")
             return 0
+
+        # -- Get exclusion list for module
+
+        excludes = json_data.composite_header_excludes
 
         # Create header file lists
 
@@ -1319,7 +1324,7 @@ class SeedEngineCLI(object):
         
         for root, dirs, files in os.walk(header_path):
             for header in files:
-                if header.endswith(".hpp"):
+                if header.endswith(".hpp") and header not in excludes:
                     if not (header == (module + ".hpp") or header == (module + "API.hpp")):
                         _dir = os.path.relpath(root, header_path)
                         if not (_dir == "."):
@@ -1336,11 +1341,11 @@ class SeedEngineCLI(object):
         # Generate file from template
 
         values = {
-            "MODULE_NAME":module,
-            "MODULE_NAME_UPPER":to_snake_case(module).upper(),
-            "DOMAIN_NAME":domain,
-            "DOMAIN_NAME_UPPER":to_snake_case(domain).upper(),
-            "HEADER_FILES":headers_str
+            "MODULE_NAME": module,
+            "MODULE_NAME_UPPER": to_snake_case(module).upper(),
+            "DOMAIN_NAME": domain,
+            "DOMAIN_NAME_UPPER": to_snake_case(domain).upper(),
+            "HEADER_FILES": headers_str
         }
 
         values.update(self.PROJECT_DICT_CONSTANTS)
@@ -1460,7 +1465,8 @@ class SeedEngineCLI(object):
             dct["GenerateCMake"] == "True" if "GenerateCMake" in dct else True,
             dct["GenerateAPI"] == "True" if "GenerateAPI" in dct else True,
             dct["GenerateCompositeHeader"] == "True" if "GenerateCompositeHeader" in dct else True,
-            dct["CustomCMakeInstructions"] if "CustomCMakeInstructions" in dct else []
+            dct["CustomCMakeInstructions"] if "CustomCMakeInstructions" in dct else [],
+            dct["CompositeHeaderExcludes"] if "CompositeHeaderExcludes" in dct else []
             )
 
     def __encode_module(self, module):
@@ -1473,7 +1479,8 @@ class SeedEngineCLI(object):
             "GenerateCMake": str(module.generate_cmake),
             "GenerateAPI": str(module.generate_api),
             "GenerateCompositeHeader": str(module.generate_composite_h),
-            "CustomCMakeInstructions": module.custom_cmake_instructions
+            "CustomCMakeInstructions": module.custom_cmake_instructions,
+            "CompositeHeaderExcludes": module.composite_header_excludes
         }
         return data
 
