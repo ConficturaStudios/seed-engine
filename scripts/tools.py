@@ -48,10 +48,11 @@ class Dependency:
 
 # A module within the project
 class Module:
-    def __init__(self, domain, name, build_target=BuildTarget.Shared, dependencies=None, generate_cmake=True, generate_api=True, generate_composite_h=True, custom_cmake_instructions=None):
+    def __init__(self, domain, name, build_target=BuildTarget.Shared, output_name="", dependencies=None, generate_cmake=True, generate_api=True, generate_composite_h=True, custom_cmake_instructions=None):
         self.domain = domain
         self.name = name
         self.build_target = build_target
+        self.output_name = output_name
         self.dependencies = [] if dependencies is None else dependencies
         self.generate_cmake = generate_cmake
         self.generate_api = generate_api
@@ -1136,8 +1137,8 @@ class SeedEngineCLI(object):
 
         dependencies = json_data.dependencies
 
-        dep_temp_str = "add_dependencies(${LIBRARY_NAME} ${DEPENDENCY_DOMAIN}${DEPENDENCY})\n"
-        dep_temp_str = dep_temp_str + "target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} ${DEPENDENCY_DOMAIN}${DEPENDENCY})\n"
+        dep_temp_str = "add_dependencies(${LIBRARY_NAME} ${DEPENDENCY})\n"
+        dep_temp_str = dep_temp_str + "target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} ${DEPENDENCY})\n"
         dep_temp = Template(dep_temp_str)
 
         dependency_str = ""
@@ -1146,11 +1147,16 @@ class SeedEngineCLI(object):
             if not self.__check_module_exists(dep.domain, dep.module):
                 print_error("Module '" + dep.domain + " " + dep.module + "' does not exist. Skipping.")
             else:
+                dep_data = self.__get_json_data(dep.domain, dep.module)
                 dep_values = {
-                    "DEPENDENCY_DOMAIN": dep.domain,
-                    "DEPENDENCY": dep.module
+                    "DEPENDENCY":
+                        dep.domain + dep.module if dep_data.output_name is "" else dep_data.output_name
                 }
                 dependency_str = dependency_str + dep_temp.safe_substitute(dep_values)
+
+        # -- Read in custom output name from JSON
+
+        output_name = json_data.output_name
 
         # -- Read in custom instructions from JSON
 
@@ -1198,18 +1204,20 @@ class SeedEngineCLI(object):
         # Generate file from template
 
         values = {
-            "MODULE_NAME":module,
-            "MODULE_NAME_UPPER":to_snake_case(module).upper(),
-            "DOMAIN_NAME":domain,
-            "DOMAIN_NAME_UPPER":to_snake_case(domain).upper(),
-            "CMAKE_DEPENDENCIES":dependency_str,
-            "SOURCES":sources_str,
-            "HEADERS":headers_str,
-            "BUILD_INSTRUCTION":build_instruction,
-            "CMAKE_CUSTOM_INSTRUCTIONS":custom_instruction,
-            "BUILD_TARGET":build_target.name,
-            "BUILD_TARGET_TYPE":build_target.value,
-            "BUILD_SHARED_LIBS_B":"1" if build_target is BuildTarget.Shared else "0"
+            "MODULE_NAME": module,
+            "MODULE_NAME_UPPER": to_snake_case(module).upper(),
+            "DOMAIN_NAME": domain,
+            "DOMAIN_NAME_UPPER": to_snake_case(domain).upper(),
+            "OUTPUT_NAME": output_name,
+            "OUTPUT_NAME_UPPER": to_snake_case(output_name).upper(),
+            "CMAKE_DEPENDENCIES": dependency_str,
+            "SOURCES": sources_str,
+            "HEADERS": headers_str,
+            "BUILD_INSTRUCTION": build_instruction,
+            "CMAKE_CUSTOM_INSTRUCTIONS": custom_instruction,
+            "BUILD_TARGET": build_target.name,
+            "BUILD_TARGET_TYPE": build_target.value,
+            "BUILD_SHARED_LIBS_B": "1" if build_target is BuildTarget.Shared else "0"
         }
 
         values.update(self.PROJECT_DICT_CONSTANTS)
@@ -1447,6 +1455,7 @@ class SeedEngineCLI(object):
             dct["Domain"],
             dct["Name"],
             BuildTarget[dct["BuildTarget"] if "BuildTarget" in dct else "Shared"],
+            dct["CustomOutputName"] if "CustomOutputName" in dct else "",
             self.__decode_dependencies(dct) if "Dependencies" in dct else [],
             dct["GenerateCMake"] == "True" if "GenerateCMake" in dct else True,
             dct["GenerateAPI"] == "True" if "GenerateAPI" in dct else True,
@@ -1459,6 +1468,7 @@ class SeedEngineCLI(object):
             "Domain": module.domain,
             "Name": module.name,
             "BuildTarget": str(module.build_target),
+            "CustomOutputName": module.output_name,
             "Dependencies": self.__encode_dependencies(module),
             "GenerateCMake": str(module.generate_cmake),
             "GenerateAPI": str(module.generate_api),
