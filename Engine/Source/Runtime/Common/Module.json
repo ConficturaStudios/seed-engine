@@ -2,6 +2,7 @@
     "Domain": "Runtime",
     "Name": "Common",
     "BuildTarget": "Shared",
+    "CustomOutputName": "",
     "Dependencies": [],
     "GenerateCMake": "True",
     "GenerateAPI": "True",

@@ -2,9 +2,8 @@
     "Domain": "Runtime",
     "Name": "Input",
     "BuildTarget": "Shared",
-    "Dependencies": [
-        
-    ],
+    "CustomOutputName": "",
+    "Dependencies": [],
     "GenerateCMake": "True",
     "GenerateAPI": "True",
     "GenerateCompositeHeader": "True",

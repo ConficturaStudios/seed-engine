@@ -2,6 +2,7 @@
     "Domain": "Runtime",
     "Name": "FileExchange",
     "BuildTarget": "Shared",
+    "CustomOutputName": "",
     "Dependencies": [
         {
             "Domain": "Runtime",
