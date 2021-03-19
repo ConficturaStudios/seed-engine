@@ -4,9 +4,9 @@
     "BuildTarget": "Executable",
     "Dependencies": [
         {
-			"Domain": "Runtime",
-			"Module": "EngineCore"
-		}
+            "Domain": "Runtime",
+            "Module": "EngineCore"
+        }
     ],
     "GenerateCMake": "True",
     "GenerateAPI": "True",
