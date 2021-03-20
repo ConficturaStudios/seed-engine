@@ -26,7 +26,8 @@ namespace seedengine {
 
         public:
 
-
+            OpenGLWindow();
+            ~OpenGLWindow();
 
     };
 
