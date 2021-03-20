@@ -13,7 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_METAL_TEXTURE_H_
 
 #include "GraphicsAPI.hpp"
-#include "Metal.hpp"
+#include "Metal/Metal.hpp"
 #include "Texture.hpp"
 
 namespace seedengine {

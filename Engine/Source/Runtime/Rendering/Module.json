@@ -1,6 +1,6 @@
 {
     "Domain": "Runtime",
-    "Name": "Renderer",
+    "Name": "Rendering",
     "BuildTarget": "Shared",
     "CustomOutputName": "",
     "Dependencies": [
@@ -10,7 +10,7 @@
         },
         {
             "Domain": "Runtime",
-            "Module": "GameplayCore"
+            "Module": "Common"
         },
         {
             "Domain": "Runtime",
@@ -18,11 +18,12 @@
         },
         {
             "Domain": "Runtime",
-            "Module": "Common"
+            "Module": "Collections"
         }
     ],
     "GenerateCMake": "True",
     "GenerateAPI": "True",
     "GenerateCompositeHeader": "True",
-    "CustomCMakeInstructions": []
+    "CustomCMakeInstructions": [],
+    "CompositeHeaderExcludes": []
 }

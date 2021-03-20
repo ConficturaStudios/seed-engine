@@ -13,7 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_OPEN_GL_SHADER_H_
 
 #include "GraphicsAPI.hpp"
-#include "OpenGL.hpp"
+#include "OpenGL/OpenGL.hpp"
 #include "Shader.hpp"
 #include "String.hpp"
 #include <iostream>

@@ -13,7 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_DIRECT_X_SHADER_H_
 
 #include "GraphicsAPI.hpp"
-#include "DirectX.hpp"
+#include "DirectX/DirectX.hpp"
 #include "Shader.hpp"
 
 namespace seedengine {

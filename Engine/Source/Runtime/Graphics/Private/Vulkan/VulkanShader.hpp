@@ -13,7 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_VULKAN_SHADER_H_
 
 #include "GraphicsAPI.hpp"
-#include "Vulkan.hpp"
+#include "Vulkan/Vulkan.hpp"
 #include "Shader.hpp"
 
 namespace seedengine {

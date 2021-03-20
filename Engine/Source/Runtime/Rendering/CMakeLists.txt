@@ -10,18 +10,22 @@
 
 cmake_minimum_required(VERSION 3.0)
 
-message("Building Runtime module Renderer...")
+message("Building Runtime module Rendering...")
 
-set(LIBRARY_NAME RuntimeRenderer)
-set(LIBRARY_NAME_UPPER RUNTIME_RENDERER)
+set(LIBRARY_NAME RuntimeRendering)
+set(LIBRARY_NAME_UPPER RUNTIME_RENDERING)
 
 set(${LIBRARY_NAME_UPPER}_SRC
+	${CMAKE_CURRENT_LIST_DIR}/Private/Renderer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Window.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLRenderer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLWindow.cpp
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/Renderer.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/RendererAPI.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Rendering.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/RenderingAPI.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Window.hpp
 )
 
@@ -49,7 +53,7 @@ else()
 endif()
 
 get_target_property(${LIBRARY_NAME_UPPER}_TYPE ${LIBRARY_NAME} TYPE)
-message(STATUS "Built Runtime module Renderer as ${${LIBRARY_NAME_UPPER}_TYPE}")
+message(STATUS "Built Runtime module Rendering as ${${LIBRARY_NAME_UPPER}_TYPE}")
 
 target_compile_definitions(${LIBRARY_NAME}
     ${LIBRARY_SCOPE} ENGINE_VERSION_MAJOR=${ENGINE_VERSION_MAJOR}
@@ -68,12 +72,12 @@ endif()
 
 add_dependencies(${LIBRARY_NAME} RuntimeGraphics)
 target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeGraphics)
-add_dependencies(${LIBRARY_NAME} RuntimeGameplayCore)
-target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeGameplayCore)
-add_dependencies(${LIBRARY_NAME} RuntimeMath)
-target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeMath)
 add_dependencies(${LIBRARY_NAME} RuntimeCommon)
 target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCommon)
+add_dependencies(${LIBRARY_NAME} RuntimeMath)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeMath)
+add_dependencies(${LIBRARY_NAME} RuntimeCollections)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCollections)
 
 
 
@@ -91,7 +95,7 @@ install(FILES ${${LIBRARY_NAME_UPPER}_HEADERS}
 if(BUILD_TESTS)
     get_target_property(TARGET_TYPE ${LIBRARY_NAME} TYPE)
     if(NOT ${TARGET_TYPE} STREQUAL "EXECUTABLE")
-        message(STATUS "Adding module Renderer to test suite")
+        message(STATUS "Adding module Rendering to test suite")
 
         file(GLOB_RECURSE ${LIBRARY_NAME_UPPER}_TEST_SRC
             ${CMAKE_CURRENT_LIST_DIR}

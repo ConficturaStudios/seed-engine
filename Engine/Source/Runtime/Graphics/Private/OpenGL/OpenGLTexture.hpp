@@ -13,7 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_OPEN_GL_TEXTURE_H_
 
 #include "GraphicsAPI.hpp"
-#include "OpenGL.hpp"
+#include "OpenGL/OpenGL.hpp"
 #include "Texture.hpp"
 
 namespace seedengine {

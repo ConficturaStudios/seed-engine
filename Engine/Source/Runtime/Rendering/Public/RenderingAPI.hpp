@@ -1,5 +1,5 @@
 /**
- * @file RendererAPI.hpp
+ * @file RenderingAPI.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -9,43 +9,43 @@
  * For a copy of the license, please go to https://github.com/conficturastudios/seed-engine/LICENSE
  */
  
-#ifndef SEEDENGINE_INCLUDE_RUNTIME_RENDERER_API_H_
-#define SEEDENGINE_INCLUDE_RUNTIME_RENDERER_API_H_
+#ifndef SEEDENGINE_INCLUDE_RUNTIME_RENDERING_API_H_
+#define SEEDENGINE_INCLUDE_RUNTIME_RENDERING_API_H_
 
 #include "Graphics.hpp"
-#include "GameplayCore.hpp"
-#include "Math.hpp"
 #include "Common.hpp"
+#include "Math.hpp"
+#include "Collections.hpp"
 
 
-#ifndef RUNTIME_RENDERER_EXPORT_API
+#ifndef RUNTIME_RENDERING_EXPORT_API
     #if BUILD_SHARED_LIBS
         #if defined(_WIN32) || defined(__CYGWIN__) || defined(_MSC_VER)
-            #define RUNTIME_RENDERER_EXPORT_API __declspec(dllexport)
-            #define RUNTIME_RENDERER_IMPORT_API __declspec(dllimport)
-            #define RUNTIME_RENDERER_HIDDEN_API
+            #define RUNTIME_RENDERING_EXPORT_API __declspec(dllexport)
+            #define RUNTIME_RENDERING_IMPORT_API __declspec(dllimport)
+            #define RUNTIME_RENDERING_HIDDEN_API
         #elif defined(__GNUC__) && __GNUC__ >= 4
-            #define RUNTIME_RENDERER_EXPORT_API __attribute__((visibility("default")))
-            #define RUNTIME_RENDERER_IMPORT_API __attribute__((visibility("default")))
-            #define RUNTIME_RENDERER_HIDDEN_API __attribute__((visibility("hidden")))
+            #define RUNTIME_RENDERING_EXPORT_API __attribute__((visibility("default")))
+            #define RUNTIME_RENDERING_IMPORT_API __attribute__((visibility("default")))
+            #define RUNTIME_RENDERING_HIDDEN_API __attribute__((visibility("hidden")))
         #else
-            #define RUNTIME_RENDERER_EXPORT_API
-            #define RUNTIME_RENDERER_IMPORT_API
-            #define RUNTIME_RENDERER_HIDDEN_API
+            #define RUNTIME_RENDERING_EXPORT_API
+            #define RUNTIME_RENDERING_IMPORT_API
+            #define RUNTIME_RENDERING_HIDDEN_API
         #endif
     #else
-        #define RUNTIME_RENDERER_EXPORT_API
-        #define RUNTIME_RENDERER_IMPORT_API
-        #define RUNTIME_RENDERER_HIDDEN_API
+        #define RUNTIME_RENDERING_EXPORT_API
+        #define RUNTIME_RENDERING_IMPORT_API
+        #define RUNTIME_RENDERING_HIDDEN_API
     #endif
 #endif
 
 //#ifndef ${PROJECT_IDENTIFIER}_API
 #ifndef ENGINE_API
-    #ifdef RUNTIME_RENDERER_EXPORT
-        #define ENGINE_API RUNTIME_RENDERER_EXPORT_API
+    #ifdef RUNTIME_RENDERING_EXPORT
+        #define ENGINE_API RUNTIME_RENDERING_EXPORT_API
     #else
-        #define ENGINE_API RUNTIME_RENDERER_IMPORT_API
+        #define ENGINE_API RUNTIME_RENDERING_IMPORT_API
     #endif
 #endif
 
@@ -56,7 +56,7 @@
 // Original:
 
 /**
- * RendererAPI.hpp
+ * RenderingAPI.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -67,13 +67,13 @@
  */
  
 /*
-#ifndef SEEDENGINE_INCLUDE_RUNTIME_RENDERER_API_H_
-#define SEEDENGINE_INCLUDE_RUNTIME_RENDERER_API_H_
+#ifndef SEEDENGINE_INCLUDE_RUNTIME_RENDERING_API_H_
+#define SEEDENGINE_INCLUDE_RUNTIME_RENDERING_API_H_
 
 #include "Graphics.hpp"
-#include "GameplayCore.hpp"
-#include "Math.hpp"
 #include "Common.hpp"
+#include "Math.hpp"
+#include "Collections.hpp"
 
 
 #ifndef ENGINE_API
@@ -84,7 +84,7 @@
                 #pragma warning(disable: 4251)
             #endif
 
-            #if defined(RUNTIME_RENDERER_EXPORT)
+            #if defined(RUNTIME_RENDERING_EXPORT)
                 #define ENGINE_API __declspec(dllexport)
             #else
                 #define ENGINE_API __declspec(dllimport)

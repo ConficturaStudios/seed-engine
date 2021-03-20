@@ -13,7 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_DIRECT_X_TEXTURE_H_
 
 #include "GraphicsAPI.hpp"
-#include "DirectX.hpp"
+#include "DirectX/DirectX.hpp"
 #include "Texture.hpp"
 
 namespace seedengine {
