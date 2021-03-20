@@ -28,7 +28,7 @@ namespace seedengine {
      * @tparam T The type of data stored in this list.
      */
     template <typename T>
-    class ENGINE_API LinkedList : public List<T> {
+    class LinkedList : public List<T> {
 
             struct LinkedNode {
                 T value;

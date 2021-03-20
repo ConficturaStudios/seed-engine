@@ -35,7 +35,7 @@ namespace seedengine {
      * @tparam T The type of data iterated over by this Iterator.
      */
     template <typename T>
-    struct ENGINE_API IteratorBase {
+    struct IteratorBase {
 
         virtual ~IteratorBase() = default;
 
@@ -65,7 +65,7 @@ namespace seedengine {
      * @tparam T The type of data iterated over by this Iterator.
      */
     template <typename T>
-    class ENGINE_API Iterator final {
+    class Iterator final {
         private:
             IteratorBase<T>* instance;
             
@@ -142,7 +142,7 @@ namespace seedengine {
      * @tparam ItrType The type of iterator returned by each function.
      */
     template <typename T, typename ItrType = Iterator<T>>
-    struct ENGINE_API Iterable {
+    struct Iterable {
 
         /** The type of iterator used by this iterable object. */
         using IteratorType = ItrType;
@@ -199,7 +199,7 @@ namespace seedengine {
      * @tparam ItrType The type of iterator returned by each function.
      */
     template <typename T, typename ItrType = Iterator<T>>
-    struct ENGINE_API ReverseIterable {
+    struct ReverseIterable {
 
         /** The type of iterator used by this iterable object. */
         using RIteratorType = ItrType;

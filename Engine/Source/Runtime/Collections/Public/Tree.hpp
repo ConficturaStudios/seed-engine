@@ -21,7 +21,7 @@ namespace seedengine {
      * @details
      * 
      */
-    class ENGINE_API Tree {
+    class Tree {
 
         public:
 

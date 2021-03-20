@@ -25,7 +25,7 @@ namespace seedengine {
      * @tparam T2 The type of the second element in this pair.
      */
     template <typename T1, typename T2>
-    struct ENGINE_API Pair {
+    struct Pair {
 
         public:
 

@@ -28,7 +28,7 @@ namespace seedengine {
      * @tparam T The type of data stored in this list.
      */
     template <typename T>
-    class ENGINE_API List : public Collection<T, std::size_t> {
+    class List : public Collection<T, std::size_t> {
 
         public:
 

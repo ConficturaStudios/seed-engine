@@ -37,7 +37,7 @@ namespace seedengine {
      * @tparam N The number of elements in this Array.
      */
     template <typename T, std::size_t N>
-    class ENGINE_API FixedArray final : public Iterable<T>, public ReverseIterable<T> {
+    class FixedArray final : public Iterable<T>, public ReverseIterable<T> {
 
         static_assert(N > 0, "An array cannot have a size of 0");
 
@@ -387,7 +387,7 @@ namespace seedengine {
      * @tparam T The type of data stored within this Array.
      */
     template <typename T>
-    class ENGINE_API Array final : public Iterable<T, T*>, public ReverseIterable<T, T*> {
+    class Array final : public Iterable<T, T*>, public ReverseIterable<T, T*> {
 
     private:
         // Data members
