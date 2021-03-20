@@ -29,6 +29,24 @@ namespace seedengine {
             OpenGLWindow();
             ~OpenGLWindow();
 
+            void onUpdate() override;
+
+            void onClose() override;
+
+            void onResize(uint32 width, uint32 height) override;
+
+            void onToggleMaximize(bool maximize) override;
+
+            void onToggleMinimize(bool minimize) override;
+
+            void onToggleBorderless(bool borderless) override;
+
+            void onSetPosition(uint32 x, uint32_t y) override;
+
+            void onSetVSync(bool vsync) override;
+
+            void onSetIcon(SharedPtr<Image> icon) override;
+
     };
 
 }

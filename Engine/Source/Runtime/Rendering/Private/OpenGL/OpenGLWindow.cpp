@@ -14,11 +14,47 @@
 namespace seedengine {
 
     OpenGLWindow::OpenGLWindow() {
-
+        // TODO: Handle OpenGL window creation code here
     }
 
     OpenGLWindow::~OpenGLWindow() {
         
+    }
+
+    void OpenGLWindow::onUpdate() {
+
+    }
+
+    void OpenGLWindow::onClose() {
+
+    }
+
+    void OpenGLWindow::onResize(uint32 width, uint32 height) {
+
+    }
+
+    void OpenGLWindow::onToggleMaximize(bool maximize) {
+
+    }
+
+    void OpenGLWindow::onToggleMinimize(bool minimize) {
+
+    }
+
+    void OpenGLWindow::onToggleBorderless(bool borderless) {
+
+    }
+
+    void OpenGLWindow::onSetPosition(uint32 x, uint32_t y) {
+
+    }
+
+    void OpenGLWindow::onSetVSync(bool vsync) {
+
+    }
+
+    void OpenGLWindow::onSetIcon(SharedPtr<Image> icon) {
+
     }
 
 }

@@ -34,40 +34,14 @@ namespace seedengine {
             Renderer();
 
             /**
-             * @brief The copy constructor for Renderer objects.
-             * @details Constructs a new Renderer by copying an existing Renderer.
-             */
-            Renderer(const Renderer& ref) = default;
-            
-            /**
-             * @brief The move constructor for Renderer objects.
-             * @details Constructs a new Renderer by moving the data of a Renderer into this object.
-             */
-            Renderer(Renderer&& ref) noexcept = default;
-
-            /**
              * @brief The destructor for Renderer objects.
              * @details Called when an instance of Renderer is deleted.
              */
             virtual ~Renderer();
 
-        // Functions
+        // Static Functions
 
-
-
-        // Assignment Operators
-
-            /**
-             * @brief The copy assignment operator for Renderer objects.
-             * @details Reassigns the value of this object by copying the data of a Renderer into this object.
-             */
-            Renderer& operator=(const Renderer& rhs) = default;
-
-            /**
-             * @brief The move assignment operator for Renderer objects.
-             * @details Reassigns the value of this object by moving the data of a Renderer into this object.
-             */
-            Renderer& operator=(Renderer&& rhs) noexcept = default;
+            [[nodiscard]] static GraphicsMode GetGraphicsAPI();
 
         protected:
 

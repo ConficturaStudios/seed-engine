@@ -21,4 +21,9 @@ namespace seedengine {
         
     }
 
+    GraphicsMode Renderer::GetGraphicsAPI() {
+        // TODO: Read in API choice from a config or preferences file
+        return GraphicsMode::OPEN_GL;
+    }
+
 }
