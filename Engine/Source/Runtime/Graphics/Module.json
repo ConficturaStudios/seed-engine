@@ -27,5 +27,6 @@
         "    ${LIBRARY_SCOPE} glad",
         "    ${LIBRARY_SCOPE} glfw ${GLFW_LIBRARIES}",
         ")"
-    ]
+    ],
+    "CompositeHeaderExcludes": []
 }

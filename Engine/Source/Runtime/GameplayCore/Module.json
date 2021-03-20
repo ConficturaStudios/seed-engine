@@ -16,5 +16,6 @@
     "GenerateCMake": "True",
     "GenerateAPI": "True",
     "GenerateCompositeHeader": "True",
-    "CustomCMakeInstructions": []
+    "CustomCMakeInstructions": [],
+    "CompositeHeaderExcludes": []
 }

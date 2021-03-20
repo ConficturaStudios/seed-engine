@@ -24,6 +24,10 @@
 #include "Mesh.hpp"
 #include "Shader.hpp"
 #include "Texture.hpp"
+#include "DirectX/DirectX.hpp"
+#include "Metal/Metal.hpp"
+#include "OpenGL/OpenGL.hpp"
+#include "Vulkan/Vulkan.hpp"
 
 #ifdef ENGINE_API
     #undef ENGINE_API

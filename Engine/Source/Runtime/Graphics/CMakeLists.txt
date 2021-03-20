@@ -47,6 +47,10 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/Mesh.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Shader.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Texture.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/DirectX/DirectX.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Metal/Metal.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/OpenGL/OpenGL.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Vulkan/Vulkan.hpp
 )
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/Public)
