@@ -33,6 +33,8 @@ namespace seedengine {
 
             void onClose() override;
 
+            void onSetTitle(String title) override;
+
             void onResize(uint32 width, uint32 height) override;
 
             void onToggleMaximize(bool maximize) override;

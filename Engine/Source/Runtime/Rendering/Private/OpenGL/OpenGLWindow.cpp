@@ -29,6 +29,10 @@ namespace seedengine {
 
     }
 
+    void OpenGLWindow::onSetTitle(String title) {
+
+    }
+
     void OpenGLWindow::onResize(uint32 width, uint32 height) {
 
     }
