@@ -36,6 +36,7 @@ namespace seedengine {
 
     template <typename, std::size_t> class Color;
 
+    // TODO: Redo color classes
 
     template <typename T, std::size_t N, typename ColorType>
     class ENGINE_API ColorBase {
