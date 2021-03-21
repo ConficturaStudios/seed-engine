@@ -16,19 +16,19 @@ set(LIBRARY_NAME RuntimeGraphics)
 set(LIBRARY_NAME_UPPER RUNTIME_GRAPHICS)
 
 set(${LIBRARY_NAME_UPPER}_SRC
-	${CMAKE_CURRENT_LIST_DIR}/Private/BufferObject.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Color.cpp
-	${CMAKE_CURRENT_LIST_DIR}/Private/DepthBuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Framebuffer.cpp
-	${CMAKE_CURRENT_LIST_DIR}/Private/GBuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Image.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Mesh.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/Renderbuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Shader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Texture.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/DirectX/DirectXShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/DirectX/DirectXTexture.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Metal/MetalShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Metal/MetalTexture.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLFramebuffer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLRenderbuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLTexture.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Vulkan/VulkanShader.cpp
@@ -36,15 +36,13 @@ set(${LIBRARY_NAME_UPPER}_SRC
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
-	${CMAKE_CURRENT_LIST_DIR}/Public/BufferObject.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Color.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/DepthBuffer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Framebuffer.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/GBuffer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Graphics.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/GraphicsAPI.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Image.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Mesh.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Renderbuffer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Shader.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Texture.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/DirectX/DirectX.hpp

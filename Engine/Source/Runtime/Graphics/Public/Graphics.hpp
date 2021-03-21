@@ -15,13 +15,11 @@
 #include "GraphicsAPI.hpp"
 
 
-#include "BufferObject.hpp"
 #include "Color.hpp"
-#include "DepthBuffer.hpp"
 #include "Framebuffer.hpp"
-#include "GBuffer.hpp"
 #include "Image.hpp"
 #include "Mesh.hpp"
+#include "Renderbuffer.hpp"
 #include "Shader.hpp"
 #include "Texture.hpp"
 #include "DirectX/DirectX.hpp"
