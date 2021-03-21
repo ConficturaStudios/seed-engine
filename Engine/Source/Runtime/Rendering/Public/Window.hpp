@@ -82,7 +82,7 @@ namespace seedengine {
              * Checks if this Window should close.
              * @return True if this Window should close.
              */
-            [[nodiscard]] bool shouldClose() const noexcept;
+            [[nodiscard]] virtual bool shouldClose() const = 0;
             /**
              * Closes this Window, destroying itself.
              */
@@ -231,8 +231,10 @@ namespace seedengine {
 
             /**
              * The default constructor for the Window interface.
+             * @param properties The initial properties of the new window.
+             * @param renderer The renderer hosted by this window.
              */
-            Window() = default;
+            Window(const WindowProperties& properties, Renderer* renderer);
 
             /** The properties of this Window. */
             WindowProperties m_properties;

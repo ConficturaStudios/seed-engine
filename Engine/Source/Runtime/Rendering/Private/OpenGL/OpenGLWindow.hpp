@@ -26,8 +26,14 @@ namespace seedengine {
 
         public:
 
-            OpenGLWindow();
+            /**
+             * Constructs, initializes, and displays a new OpenGL window.
+             * @param properties The initial properties of this Window.
+             */
+            OpenGLWindow(const WindowProperties& properties);
             ~OpenGLWindow();
+
+            [[nodiscard]] bool shouldClose() const override;
 
             void onUpdate() override;
 

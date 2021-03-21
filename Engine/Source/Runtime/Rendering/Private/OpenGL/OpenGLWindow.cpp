@@ -10,15 +10,20 @@
  */
 
 #include "OpenGL/OpenGLWindow.hpp"
+#include "OpenGLRenderer.hpp"
 
 namespace seedengine {
 
-    OpenGLWindow::OpenGLWindow() {
+    OpenGLWindow::OpenGLWindow(const WindowProperties& properties) : Window(properties, new OpenGLRenderer()) {
         // TODO: Handle OpenGL window creation code here
     }
 
     OpenGLWindow::~OpenGLWindow() {
         
+    }
+
+    bool OpenGLWindow::shouldClose() const {
+        return false;
     }
 
     void OpenGLWindow::onUpdate() {

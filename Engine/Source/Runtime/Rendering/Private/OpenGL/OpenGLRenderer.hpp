@@ -21,7 +21,7 @@ namespace seedengine {
      * @details
      * 
      */
-    class ENGINE_API OpenGLRenderer {
+    class ENGINE_API OpenGLRenderer : public Renderer {
 
         public:
 
@@ -34,18 +34,6 @@ namespace seedengine {
             OpenGLRenderer();
 
             /**
-             * @brief The copy constructor for OpenGLRenderer objects.
-             * @details Constructs a new OpenGLRenderer by copying an existing OpenGLRenderer.
-             */
-            OpenGLRenderer(const OpenGLRenderer& ref) = default;
-            
-            /**
-             * @brief The move constructor for OpenGLRenderer objects.
-             * @details Constructs a new OpenGLRenderer by moving the data of a OpenGLRenderer into this object.
-             */
-            OpenGLRenderer(OpenGLRenderer&& ref) noexcept = default;
-
-            /**
              * @brief The destructor for OpenGLRenderer objects.
              * @details Called when an instance of OpenGLRenderer is deleted.
              */
@@ -53,21 +41,9 @@ namespace seedengine {
 
         // Functions
 
+            void startup() override;
 
-
-        // Assignment Operators
-
-            /**
-             * @brief The copy assignment operator for OpenGLRenderer objects.
-             * @details Reassigns the value of this object by copying the data of a OpenGLRenderer into this object.
-             */
-            OpenGLRenderer& operator=(const OpenGLRenderer& rhs) = default;
-
-            /**
-             * @brief The move assignment operator for OpenGLRenderer objects.
-             * @details Reassigns the value of this object by moving the data of a OpenGLRenderer into this object.
-             */
-            OpenGLRenderer& operator=(OpenGLRenderer&& rhs) noexcept = default;
+            void shutdown() override;
 
         protected:
 

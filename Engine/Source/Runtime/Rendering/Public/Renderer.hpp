@@ -41,7 +41,23 @@ namespace seedengine {
 
         // Static Functions
 
+            /**
+             * Gets the active graphics API in use by the engine.
+             * @return The active graphics API.
+             */
             [[nodiscard]] static GraphicsMode GetGraphicsAPI();
+
+            /**
+             * Called when this Renderer is created, implementation specific. This method
+             * is responsible for initializing the current graphics api.
+             */
+            virtual void startup() = 0;
+
+            /**
+             * Called when this Renderer is destroyed, implementation specific. This method
+             * is responsible for shutting down the current graphics api.
+             */
+            virtual void shutdown() = 0;
 
         protected:
 

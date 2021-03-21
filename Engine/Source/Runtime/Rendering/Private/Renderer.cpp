@@ -18,7 +18,7 @@ namespace seedengine {
     }
 
     Renderer::~Renderer() {
-        
+
     }
 
     GraphicsMode Renderer::GetGraphicsAPI() {

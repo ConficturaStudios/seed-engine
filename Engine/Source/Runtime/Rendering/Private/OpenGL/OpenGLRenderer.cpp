@@ -21,4 +21,12 @@ namespace seedengine {
         
     }
 
+    void OpenGLRenderer::startup() {
+
+    }
+
+    void OpenGLRenderer::shutdown() {
+
+    }
+
 }

@@ -18,20 +18,25 @@ namespace seedengine {
 
     List<Window*>* Window::s_windows = new LinkedList<Window*>();
 
+    Window::Window(const WindowProperties& properties, Renderer* renderer) {
+        m_properties = properties;
+
+    }
+
     UniquePtr<Window> Window::Create(const WindowProperties& properties) {
         Window* window;
         switch (Renderer::GetGraphicsAPI()) {
             #if ENGINE_GRAPHICS_OPENGL
-                case GraphicsMode::OPEN_GL: window = new OpenGLWindow(); break;
+                case GraphicsMode::OPEN_GL: window = new OpenGLWindow(properties); break;
             #endif
             #if ENGINE_GRAPHICS_DIRECTX
-                case GraphicsMode::DIRECT_X: window = new DirectXWindow(); break;
+                case GraphicsMode::DIRECT_X: window = new DirectXWindow(properties); break;
             #endif
             #if ENGINE_GRAPHICS_METAL
-                case GraphicsMode::METAL: window = new MetalWindow(); break;
+                case GraphicsMode::METAL: window = new MetalWindow(properties); break;
             #endif
             #if ENGINE_GRAPHICS_VULKAN
-                case GraphicsMode::VULKAN: window = new VulkanWindow(); break;
+                case GraphicsMode::VULKAN: window = new VulkanWindow(properties); break;
             #endif
             // Unknown or unsupported value
             default: window = nullptr; break;
@@ -42,7 +47,6 @@ namespace seedengine {
             // TODO: Replace direct assert calls with custom SE_ASSERT(condition, msg) macros
             assert(false);
         }
-        window->m_properties = properties;
         s_windows->addLast(window);
         return UniquePtr<Window>(window);
     }
@@ -61,10 +65,6 @@ namespace seedengine {
 
     void Window::update() {
         onUpdate();
-    }
-
-    bool Window::shouldClose() const noexcept {
-        return false;
     }
 
     void Window::close() {
