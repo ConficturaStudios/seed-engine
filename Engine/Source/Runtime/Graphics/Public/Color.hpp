@@ -17,8 +17,7 @@
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 #include "String.hpp"
-#include "CommonTraits.hpp"
-#include "CommonSTL.hpp"
+#include "Common.hpp"
 
 namespace seedengine {
 
@@ -26,11 +25,11 @@ namespace seedengine {
      * @brief The data format used by color objects.
      * 
      */
-    struct ENGINE_API ColorFormat final {
+    struct ColorFormat final {
         /** The number of channels used by this color format. */
-        uint8_t channels;
+        uint8 channels;
         /** The size of each color channel in bytes. */
-        uint8_t channel_size;
+        uint8 channel_size;
     };
 
 
@@ -150,11 +149,11 @@ namespace seedengine {
 
         public:
 
-            Color() : ColorBase() {
+            Color() : ColorBase<ChannelType, Channels, Color<ChannelType, Channels>>() {
                 for (std::size_t i = 0; i < Channels; i++) data[i] = 0;
             }
 
-            Color(ChannelType value) : ColorBase() {
+            explicit Color(ChannelType value) : ColorBase<ChannelType, Channels, Color<ChannelType, Channels>>() {
                 for (std::size_t i = 0; i < Channels; i++) data[i] = value;
             }
 
@@ -171,15 +170,15 @@ namespace seedengine {
     };
 
     template <typename ChannelType>
-    class ENGINE_API Color<ChannelType, 1> final : public ColorBase<ChannelType, 1, Color<ChannelType, 1>> {
+    class Color<ChannelType, 1> final : public ColorBase<ChannelType, 1, Color<ChannelType, 1>> {
 
         public:
 
-            Color() : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = 0;
+            Color() : ColorBase<ChannelType, 1, Color<ChannelType, 1>>() {
+                for (std::size_t i = 0; i < 1; i++) data[i] = 0;
             }
 
-            Color(ChannelType value) : ColorBase() {
+            explicit Color(ChannelType value) : ColorBase<ChannelType, 1, Color<ChannelType, 1>>() {
                 r = value;
             }
 
@@ -198,19 +197,19 @@ namespace seedengine {
     };
 
     template <typename ChannelType>
-    class ENGINE_API Color<ChannelType, 2> final : public ColorBase<ChannelType, 2, Color<ChannelType, 2>> {
+    class Color<ChannelType, 2> final : public ColorBase<ChannelType, 2, Color<ChannelType, 2>> {
 
         public:
 
-            Color() : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = 0;
+            Color() : ColorBase<ChannelType, 2, Color<ChannelType, 2>>() {
+                for (std::size_t i = 0; i < 2; i++) data[i] = 0;
             }
 
-            Color(ChannelType value) : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = value;
+            explicit Color(ChannelType value) : ColorBase<ChannelType, 2, Color<ChannelType, 2>>() {
+                for (std::size_t i = 0; i < 2; i++) data[i] = value;
             }
 
-            Color(ChannelType r, ChannelType g) : ColorBase() {
+            Color(ChannelType r, ChannelType g) : ColorBase<ChannelType, 2, Color<ChannelType, 2>>() {
                 this->r = r;
                 this->g = g;
             }
@@ -233,19 +232,20 @@ namespace seedengine {
     };
 
     template <typename ChannelType>
-    class ENGINE_API Color<ChannelType, 3> final : public ColorBase<ChannelType, 3, Color<ChannelType, 3>> {
+    class Color<ChannelType, 3> final : public ColorBase<ChannelType, 3, Color<ChannelType, 3>> {
 
         public:
 
-            constexpr Color() : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = 0;
+            constexpr Color() : ColorBase<ChannelType, 3, Color<ChannelType, 3>>() {
+                for (std::size_t i = 0; i < 3; i++) data[i] = 0;
             }
 
-            constexpr Color(ChannelType value) : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = value;
+            explicit constexpr Color(ChannelType value) : ColorBase<ChannelType, 3, Color<ChannelType, 3>>() {
+                for (std::size_t i = 0; i < 3; i++) data[i] = value;
             }
 
-            constexpr Color(ChannelType r, ChannelType g, ChannelType b) : ColorBase() {
+            constexpr Color(ChannelType r, ChannelType g, ChannelType b)
+                : ColorBase<ChannelType, 3, Color<ChannelType, 3>>() {
                 this->r = r;
                 this->g = g;
                 this->b = b;
@@ -320,26 +320,28 @@ namespace seedengine {
     };
 
     template <typename ChannelType>
-    class ENGINE_API Color<ChannelType, 4> final : public ColorBase<ChannelType, 4, Color<ChannelType, 4>> {
+    class Color<ChannelType, 4> final : public ColorBase<ChannelType, 4, Color<ChannelType, 4>> {
 
         public:
 
-            constexpr Color() : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = 0;
+            constexpr Color() : ColorBase<ChannelType, 4, Color<ChannelType, 4>>() {
+                for (std::size_t i = 0; i < 4; i++) data[i] = 0;
             }
 
-            constexpr Color(ChannelType value) : ColorBase() {
-                for (std::size_t i = 0; i < Channels; i++) data[i] = value;
+            explicit constexpr Color(ChannelType value) : ColorBase<ChannelType, 4, Color<ChannelType, 4>>() {
+                for (std::size_t i = 0; i < 4; i++) data[i] = value;
             }
 
-            constexpr Color(ChannelType r, ChannelType g, ChannelType b) : ColorBase() {
+            constexpr Color(ChannelType r, ChannelType g, ChannelType b)
+                : ColorBase<ChannelType, 4, Color<ChannelType, 4>>() {
                 this->r = r;
                 this->g = g;
                 this->b = b;
                 this->a = 1;
             }
 
-            constexpr Color(ChannelType r, ChannelType g, ChannelType b, ChannelType a) : ColorBase() {
+            constexpr Color(ChannelType r, ChannelType g, ChannelType b, ChannelType a)
+                : ColorBase<ChannelType, 4, Color<ChannelType, 4>>() {
                 this->r = r;
                 this->g = g;
                 this->b = b;
