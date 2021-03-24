@@ -71,6 +71,11 @@ namespace seedengine {
 
         protected:
 
+            // Implementation specific framebuffer id (OpenGL only possibly?) in derived class
+            // If an API does not support framebuffer objects, model the design after OpenGL
+            // Array<Texture*> m_Textures; // Define size at creation time
+            // Renderbuffer* m_depthBuffer; // Possibly nullptr if not used
+
         private:
 
     };

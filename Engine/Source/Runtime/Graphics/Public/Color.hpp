@@ -21,6 +21,18 @@
 
 namespace seedengine {
 
+    enum class EColorDataType : int8 {
+        UBYTE = 1,
+        BYTE = -1,
+        USHORT = 2,
+        SHORT = -2,
+        UINT = 4,
+        INT = -4,
+        FLOAT = 0,
+    };
+
+    // TODO: Create type lookup using EColorDataType (EColorTypeData::UINT -> uint32)
+
     /**
      * @brief The data format used by color objects.
      * 
@@ -28,9 +40,11 @@ namespace seedengine {
     struct ColorFormat final {
         /** The number of channels used by this color format. */
         uint8 channels;
-        /** The size of each color channel in bytes. */
-        uint8 channel_size;
+        /** The type of data stored in each channel of the color. */
+        EColorDataType dataType;
     };
+
+    // TODO: Change color specializations to use ColorFormat instead of <T, N>
 
 
     template <typename, std::size_t> class Color;
@@ -58,7 +72,7 @@ namespace seedengine {
             static constexpr const std::size_t ChannelSize = sizeof(ChannelType);
             static constexpr const std::size_t Size = Channels * ChannelSize;
 
-            static constexpr const ColorFormat Format = { Channels, ChannelSize };
+            //static constexpr const ColorFormat Format = { Channels, ChannelSize };
 
             // Operators
 
@@ -490,7 +504,7 @@ namespace seedengine {
                 };
             };
 
-            static constexpr const ColorFormat Format = { 3U, sizeof(uint8_t) };
+            //static constexpr const ColorFormat Format = { 3U, sizeof(uint8_t) };
 
     };
 

@@ -16,9 +16,46 @@
 
 namespace seedengine {
 
-    enum class TextureTilingMode : uint8_t {
+    /**
+     * The tiling mode used to display a specific texture.
+     */
+    enum class ETextureTilingMode : uint8 {
+        /** The texture will wrap for out of bound UV coordinates. */
         WRAPPED = 1,
+        /** The texture will clamp at the edges for out of bound UV coordinates. */
         CLAMPED = 2
+    };
+
+    enum class ETextureFilterMode : uint8 {
+        NEAREST = 1,
+        LINEAR = 2
+    };
+
+    enum class ETextureFormat : uint8 {
+            // TODO: Associate with ColorFormat object
+        LR,
+        LRG,
+        LRGB,
+        LBGR,
+        /** Linear RGBA texture format. */
+        LRGBA,
+        LBGRA,
+        R,
+        RG,
+        RGB,
+        BGR,
+        RGBA,
+        BGRA,
+        STENCIL,
+        DEPTH_ONLY,
+        DEPTH_STENCIL
+    };
+
+    struct TextureProperties {
+        uint32 width;
+        uint32 height;
+        ETextureTilingMode tilingMode;
+        ETextureFilterMode filterMode;
     };
 
     /**
@@ -66,13 +103,15 @@ namespace seedengine {
 
     };
 
+    //TODO: Implement Texture1D
+    //TODO: Implement Texture1DArray
     //TODO: Implement Texture2D
     //TODO: Implement Texture2DArray
     //TODO: Implement TextureCube
-    //TODO: Implement TextureVolume
-    //TODO: Implement RenderTarget (?) (decide how to relate to frame buffer vs texture)
-    //TODO: Implement MediaTexture (?) (used for media texture/video display)
+    //TODO: Implement Texture3D
+    //TODO: Implement Texture3DArray
 
+    //TODO: Implement Sprites, Sprite sheets, Tile maps, etc (2D module)
 }
 
 #endif
