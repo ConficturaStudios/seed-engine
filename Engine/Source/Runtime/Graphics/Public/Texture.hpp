@@ -52,8 +52,6 @@ namespace seedengine {
     };
 
     struct TextureProperties {
-        uint32 width;
-        uint32 height;
         ETextureTilingMode tilingMode;
         ETextureFilterMode filterMode;
     };
@@ -76,9 +74,6 @@ namespace seedengine {
             virtual ~Texture() = default;
 
         // Functions
-
-            [[nodiscard]] virtual uint32_t getWidth() const noexcept = 0;
-            [[nodiscard]] virtual uint32_t getHeight() const noexcept = 0;
 
             //TODO: Standardize ID retrieval between APIs and components (texture, shader, etc.)
             [[nodiscard]] virtual uint32_t getTextureID() const noexcept = 0;
