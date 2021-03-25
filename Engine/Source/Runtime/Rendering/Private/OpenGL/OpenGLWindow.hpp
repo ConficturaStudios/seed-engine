@@ -14,6 +14,7 @@
 
 #include "RenderingAPI.hpp"
 #include "Window.hpp"
+#include "OpenGL/OpenGL.hpp"
 
 namespace seedengine {
 
@@ -54,6 +55,10 @@ namespace seedengine {
             void onSetVSync(bool vsync) override;
 
             void onSetIcon(SharedPtr<Image> icon) override;
+
+        private:
+
+            GLFWwindow* m_glWindow;
 
     };
 

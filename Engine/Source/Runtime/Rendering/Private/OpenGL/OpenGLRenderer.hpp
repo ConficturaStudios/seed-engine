@@ -13,13 +13,12 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_RENDERING_OPEN_GL_RENDERER_H_
 
 #include "RenderingAPI.hpp"
+#include "Renderer.hpp"
 
 namespace seedengine {
 
     /**
-     * @brief
-     * @details
-     * 
+     * @brief A renderer implementation built around OpenGL.
      */
     class ENGINE_API OpenGLRenderer : public Renderer {
 

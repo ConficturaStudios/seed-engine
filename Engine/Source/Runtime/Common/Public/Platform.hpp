@@ -25,12 +25,15 @@
     #if TARGET_IPHONE_SIMULATOR
         // iOS Simulator
         #define ENGINE_PLATFORM_IOS_SIM
+        #define ENGINE_PLATFORM_APPLE
     #elif TARGET_OS_IPHONE
         // iOS
         #define ENGINE_PLATFORM_IOS
+        #define ENGINE_PLATFORM_APPLE
     #elif TARGET_OS_MAC
         // Mac
         #define ENGINE_PLATFORM_MAC
+        #define ENGINE_PLATFORM_APPLE
     #else
         // Unknown Apple EPlatform
         #define ENGINE_PLATFORM_UNKNOWN
