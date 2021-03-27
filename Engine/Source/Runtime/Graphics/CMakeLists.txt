@@ -29,6 +29,7 @@ set(${LIBRARY_NAME_UPPER}_SRC
 	${CMAKE_CURRENT_LIST_DIR}/Private/Metal/MetalShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Metal/MetalTexture.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLFramebuffer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLGraphicsManager.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLRenderbuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLTexture.cpp

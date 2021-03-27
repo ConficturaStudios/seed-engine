@@ -12,10 +12,18 @@
 #include "Shader.hpp"
 #include "GraphicsManager.hpp"
 
-#include "OpenGL/OpenGLShader.hpp"
-#include "DirectX/DirectXShader.hpp"
-#include "Vulkan/VulkanShader.hpp"
-#include "Metal/MetalShader.hpp"
+#if ENGINE_GRAPHICS_OPENGL
+    #include "OpenGL/OpenGLShader.hpp"
+#endif
+#if ENGINE_GRAPHICS_DIRECTX
+    #include "DirectX/DirectXShader.hpp"
+#endif
+#if ENGINE_GRAPHICS_VULKAN
+    #include "Vulkan/VulkanShader.hpp"
+#endif
+#if ENGINE_GRAPHICS_METAL
+    #include "Metal/MetalShader.hpp"
+#endif
 
 namespace seedengine {
 

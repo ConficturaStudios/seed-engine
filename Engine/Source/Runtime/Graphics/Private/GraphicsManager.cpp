@@ -11,6 +11,19 @@
 
 #include "GraphicsManager.hpp"
 
+#if ENGINE_GRAPHICS_OPENGL
+    #include "OpenGL/OpenGLGraphicsManager.hpp"
+#endif
+#if ENGINE_GRAPHICS_DIRECTX
+    #include "DirectX/DirectXGraphicsManager.hpp"
+#endif
+#if ENGINE_GRAPHICS_VULKAN
+    #include "Vulkan/VulkanGraphicsManager.hpp"
+#endif
+#if ENGINE_GRAPHICS_METAL
+    #include "Metal/MetalGraphicsManager.hpp"
+#endif
+
 namespace seedengine {
 
     GraphicsManager* GraphicsManager::s_instance = nullptr;
@@ -19,9 +32,7 @@ namespace seedengine {
         m_framework = framework;
     }
 
-    GraphicsManager::~GraphicsManager() {
-        
-    }
+    GraphicsManager::~GraphicsManager() = default;
 
     EGraphicsFramework GraphicsManager::GetFramework() {
         return s_instance->m_framework;
@@ -43,7 +54,7 @@ namespace seedengine {
         }
     }
 
-    Array<EGraphicsFramework> GraphicsManager::GetAvailableFrameworks() {
+    Array<EGraphicsFramework> GraphicsManager::GetAvailableFrameworks() noexcept {
         return {
 #if ENGINE_GRAPHICS_OPENGL
             EGraphicsFramework::OPEN_GL,
@@ -61,14 +72,16 @@ namespace seedengine {
     }
 
     bool GraphicsManager::Startup() {
+        // TODO: Load default from config
         return Startup(GetAvailableFrameworks()[0]);
     }
 
     bool GraphicsManager::Startup(EGraphicsFramework framework) {
+        if (Initialized()) return false; // TODO: Add warning here
         switch (framework) {
 #if ENGINE_GRAPHICS_OPENGL
             case EGraphicsFramework::OPEN_GL:
-                //s_instance = new OpenGLGraphicsManager();
+                s_instance = new OpenGLGraphicsManager();
                 break;
 #endif
 #if ENGINE_GRAPHICS_DIRECTX
@@ -88,8 +101,9 @@ namespace seedengine {
 #endif
             default:
                 // Error: unknown graphics framework
-                return false;
+                break;
         }
+        return s_instance;
     }
 
     void GraphicsManager::Shutdown() {
