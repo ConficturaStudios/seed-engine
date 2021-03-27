@@ -69,6 +69,8 @@ namespace seedengine {
 
         // Set callbacks
 
+        // TODO: Setup callbacks for remaining window events using lambdas
+
         glfwSetKeyCallback(m_glWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods) -> void {
             // TODO: Dispatch KeyboardEvent here
         });
@@ -82,7 +84,7 @@ namespace seedengine {
     }
 
     OpenGLWindow::~OpenGLWindow() {
-        
+        glfwDestroyWindow(m_glWindow);
     }
 
     bool OpenGLWindow::shouldClose() const {
@@ -94,7 +96,7 @@ namespace seedengine {
     }
 
     void OpenGLWindow::onClose() {
-
+        glfwSetWindowShouldClose(m_glWindow, true);
     }
 
     void OpenGLWindow::onSetTitle(String title) {
