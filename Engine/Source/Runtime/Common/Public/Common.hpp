@@ -20,7 +20,6 @@
 #include "CommonSTL.hpp"
 #include "CommonTraits.hpp"
 #include "FunctionPointer.hpp"
-#include "GraphicsMode.hpp"
 #include "Log.hpp"
 #include "MemberFunctionPointer.hpp"
 #include "Platform.hpp"

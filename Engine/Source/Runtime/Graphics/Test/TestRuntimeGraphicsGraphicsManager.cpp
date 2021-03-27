@@ -1,5 +1,5 @@
 /**
- * @file Renderer.cpp
+ * @file TestRuntimeGraphicsGraphicsManager.cpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -9,16 +9,11 @@
  * For a copy of the license, please go to https://github.com/conficturastudios/seed-engine/LICENSE
  */
 
-#include "Renderer.hpp"
+#include <iostream>
+#include <gtest/gtest.h>
+#include "GraphicsManager.hpp"
 
-namespace seedengine {
-
-    Renderer::Renderer() {
-
-    }
-
-    Renderer::~Renderer() {
-
-    }
-
+TEST(TestRuntimeGraphicsGraphicsManager, GeneralTest) {
+    using namespace seedengine;
+    
 }

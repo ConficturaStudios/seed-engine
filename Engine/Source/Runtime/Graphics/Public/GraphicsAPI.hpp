@@ -14,6 +14,7 @@
 
 #include "Math.hpp"
 #include "Common.hpp"
+#include "Collections.hpp"
 
 
 #ifndef RUNTIME_GRAPHICS_EXPORT_API
@@ -70,6 +71,7 @@
 
 #include "Math.hpp"
 #include "Common.hpp"
+#include "Collections.hpp"
 
 
 #ifndef ENGINE_API

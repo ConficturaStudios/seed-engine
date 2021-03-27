@@ -38,6 +38,8 @@ namespace seedengine {
              */
             virtual ~OpenGLRenderer();
 
+        protected:
+
         // Functions
 
             void startup() override;

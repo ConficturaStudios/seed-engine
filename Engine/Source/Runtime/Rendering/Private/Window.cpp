@@ -25,18 +25,18 @@ namespace seedengine {
 
     UniquePtr<Window> Window::Create(const WindowProperties& properties) {
         Window* window;
-        switch (Renderer::GetGraphicsAPI()) {
+        switch (GraphicsManager::GetFramework()) {
             #if ENGINE_GRAPHICS_OPENGL
-                case GraphicsMode::OPEN_GL: window = new OpenGLWindow(properties); break;
+                case EGraphicsFramework::OPEN_GL: window = new OpenGLWindow(properties); break;
             #endif
             #if ENGINE_GRAPHICS_DIRECTX
-                case GraphicsMode::DIRECT_X: window = new DirectXWindow(properties); break;
+                case EGraphicsFramework::DIRECT_X: window = new DirectXWindow(properties); break;
             #endif
             #if ENGINE_GRAPHICS_METAL
-                case GraphicsMode::METAL: window = new MetalWindow(properties); break;
+                case EGraphicsFramework::METAL: window = new MetalWindow(properties); break;
             #endif
             #if ENGINE_GRAPHICS_VULKAN
-                case GraphicsMode::VULKAN: window = new VulkanWindow(properties); break;
+                case EGraphicsFramework::VULKAN: window = new VulkanWindow(properties); break;
             #endif
             // Unknown or unsupported value
             default: window = nullptr; break;

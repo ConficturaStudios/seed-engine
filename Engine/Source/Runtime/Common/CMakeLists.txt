@@ -29,7 +29,6 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonSTL.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonTraits.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FunctionPointer.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/GraphicsMode.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Log.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/MemberFunctionPointer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Platform.hpp

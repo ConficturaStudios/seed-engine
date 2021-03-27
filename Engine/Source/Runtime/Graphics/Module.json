@@ -11,6 +11,10 @@
         {
             "Domain": "Runtime",
             "Module": "Common"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Collections"
         }
     ],
     "GenerateCMake": "True",

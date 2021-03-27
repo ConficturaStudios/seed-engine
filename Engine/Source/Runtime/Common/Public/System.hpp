@@ -14,7 +14,6 @@
 
 #include "CommonAPI.hpp"
 #include "Platform.hpp"
-#include "GraphicsMode.hpp"
 #include "String.hpp"
 
 namespace seedengine {
@@ -90,24 +89,6 @@ namespace seedengine {
              * @return String The name of the provided platform.
              */
             [[nodiscard]] static String GetPlatformName(const EPlatform& platform) noexcept;
-
-            /**
-             * @brief Returns the graphics mode being used by the engine.
-             * 
-             * @return GraphicsMode The graphics mode used by the engine.
-             */
-            [[nodiscard]] static constexpr GraphicsMode GetGraphicsMode() noexcept {
-                return GraphicsMode::OPEN_GL;
-                //TODO: Set graphics mode from ini, do compatibility check
-            }
-
-            /**
-             * @brief Returns the name of the provided graphics mode.
-             * 
-             * @param mode The Graphics Mode to check.
-             * @return String The name of the graphics mode.
-             */
-            [[nodiscard]] static String GetGraphicsModeName(const GraphicsMode& mode) noexcept;
 
         // IO
 

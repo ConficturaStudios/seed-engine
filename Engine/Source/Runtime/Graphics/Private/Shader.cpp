@@ -10,8 +10,7 @@
  */
 
 #include "Shader.hpp"
-#include "GraphicsMode.hpp"
-#include "System.hpp"
+#include "GraphicsManager.hpp"
 
 #include "OpenGL/OpenGLShader.hpp"
 #include "DirectX/DirectXShader.hpp"
@@ -26,57 +25,65 @@ namespace seedengine {
     }
 
     SharedPtr<Shader> Shader::Create(const String& filepath) {
-        if constexpr (System::GetGraphicsMode() == GraphicsMode::OPEN_GL) {
-            auto shader = CreateSharedPtr<OpenGLShader>();
-            if (shader->init(filepath)) return shader;
-            else return nullptr;
+        SharedPtr<Shader> shader;
+        switch (GraphicsManager::GetFramework()) {
+#if ENGINE_GRAPHICS_OPENGL
+            case EGraphicsFramework::OPEN_GL:
+                shader = CreateSharedPtr<OpenGLShader>();
+                break;
+#endif
+#if ENGINE_GRAPHICS_DIRECTX
+            case EGraphicsFramework::DIRECT_X:
+                shader = CreateSharedPtr<DirectXShader>();
+                break;
+#endif
+#if ENGINE_GRAPHICS_VULKAN
+            case EGraphicsFramework::VULKAN:
+                shader = CreateSharedPtr<VulkanShader>();
+                break;
+#endif
+#if ENGINE_GRAPHICS_METAL
+            case EGraphicsFramework::METAL:
+                shader = CreateSharedPtr<MetalShader>();
+                break;
+#endif
+            default:
+                // Error: unknown graphics framework
+                return nullptr;
         }
-        else if (System::GetGraphicsMode() == GraphicsMode::DIRECT_X) {
-            auto shader = CreateSharedPtr<DirectXShader>();
-            if (shader->init(filepath)) return shader;
-            else return nullptr;
-        }
-        else if (System::GetGraphicsMode() == GraphicsMode::VULKAN) {
-            auto shader = CreateSharedPtr<VulkanShader>();
-            if (shader->init(filepath)) return shader;
-            else return nullptr;
-        }
-        else if (System::GetGraphicsMode() == GraphicsMode::METAL) {
-            auto shader = CreateSharedPtr<MetalShader>();
-            if (shader->init(filepath)) return shader;
-            else return nullptr;
-        }
-        else {
-            // Error
-            return nullptr;
-        }
+        if (shader->init(filepath)) return shader;
+        else return nullptr;
     }
 
     SharedPtr<Shader> Shader::Create(const String& name, const String& vs_filepath, const String& fs_filepath) {
-        if constexpr (System::GetGraphicsMode() == GraphicsMode::OPEN_GL) {
-            auto shader = CreateSharedPtr<OpenGLShader>();
-            if (shader->init(name, vs_filepath, fs_filepath)) return shader;
-            else return nullptr;
+        SharedPtr<Shader> shader;
+        switch (GraphicsManager::GetFramework()) {
+#if ENGINE_GRAPHICS_OPENGL
+            case EGraphicsFramework::OPEN_GL:
+                shader = CreateSharedPtr<OpenGLShader>();
+                break;
+#endif
+#if ENGINE_GRAPHICS_DIRECTX
+                case EGraphicsFramework::DIRECT_X:
+                shader = CreateSharedPtr<DirectXShader>();
+                break;
+#endif
+#if ENGINE_GRAPHICS_VULKAN
+                case EGraphicsFramework::VULKAN:
+                shader = CreateSharedPtr<VulkanShader>();
+                break;
+#endif
+#if ENGINE_GRAPHICS_METAL
+                case EGraphicsFramework::METAL:
+                shader = CreateSharedPtr<MetalShader>();
+                break;
+#endif
+            default:
+                // Error: unknown graphics framework
+                return nullptr;
         }
-        else if (System::GetGraphicsMode() == GraphicsMode::DIRECT_X) {
-            auto shader = CreateSharedPtr<DirectXShader>();
-            if (shader->init(name, vs_filepath, fs_filepath)) return shader;
-            else return nullptr;
-        }
-        else if (System::GetGraphicsMode() == GraphicsMode::VULKAN) {
-            auto shader = CreateSharedPtr<VulkanShader>();
-            if (shader->init(name, vs_filepath, fs_filepath)) return shader;
-            else return nullptr;
-        }
-        else if (System::GetGraphicsMode() == GraphicsMode::METAL) {
-            auto shader = CreateSharedPtr<MetalShader>();
-            if (shader->init(name, vs_filepath, fs_filepath)) return shader;
-            else return nullptr;
-        }
-        else {
-            // Error
-            return nullptr;
-        }
+        if (shader->init(name, vs_filepath, fs_filepath)) return shader;
+        else return nullptr;
     }
 
 }

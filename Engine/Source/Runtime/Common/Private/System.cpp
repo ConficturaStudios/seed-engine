@@ -13,7 +13,7 @@
 
 namespace seedengine {
 
-    // TODO: Move naming functionality to specialized to string methods
+    // TODO: Move naming functionality to specialized toString method
     
     String System::GetPlatformName(const EPlatform& platform) noexcept {
         if (platform == EPlatform::WINDOWS) {
@@ -54,24 +54,6 @@ namespace seedengine {
         }
         else if (platform == EPlatform::NINTENDO_SWITCH) {
             return "Nintendo Switch";
-        }
-        else {
-            return "Unknown";
-        }
-    }
-
-    String System::GetGraphicsModeName(const GraphicsMode& mode) noexcept {
-        if (mode == GraphicsMode::OPEN_GL) {
-            return "Open GL";
-        }
-        else if (mode == GraphicsMode::DIRECT_X) {
-            return "DirectX";
-        }
-        else if (mode == GraphicsMode::VULKAN) {
-            return "Vulkan";
-        }
-        else if (mode == GraphicsMode::METAL) {
-            return "Metal";
         }
         else {
             return "Unknown";

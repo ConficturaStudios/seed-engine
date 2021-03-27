@@ -17,6 +17,7 @@
 
 #include "Color.hpp"
 #include "Framebuffer.hpp"
+#include "GraphicsManager.hpp"
 #include "Image.hpp"
 #include "Mesh.hpp"
 #include "Renderbuffer.hpp"
