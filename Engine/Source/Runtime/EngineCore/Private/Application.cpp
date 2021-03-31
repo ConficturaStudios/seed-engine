@@ -18,7 +18,7 @@ namespace seedengine {
     }
 
     Application::~Application() {
-        
+
     }
 
     int Application::run() {
@@ -30,13 +30,17 @@ namespace seedengine {
         logger.info("Loading game data...");
         logger.info("Loading game preferences...");
 
+        onStartup();
+
         // Allocate any memory needed outside of try block or at close
+        UniquePtr<Window> window;
 
         try {
             logger.info("Initializing program clock...");
             logger.info("Program clock started successfully at MM/DD/YYYY HH:MM:SSS.");
 
             logger.info("Creating application window...");
+            window = Window::Create();
             // TODO: Create a console only mode option
 
             logger.info("Loading engine assets...");
@@ -45,15 +49,16 @@ namespace seedengine {
             logger.info("Initializing statistics...");
 
             logger.info("Starting main loop...");
-            while (!this->shouldExit() && !this->shouldAbort()) {
-                logger.debug("Updating game time data...");
-                logger.debug("Running event dispatcher...");
+            while (!this->shouldExit() && !this->shouldAbort() && !window->shouldClose()) {
+                //logger.debug("Updating game time data...");
+                //logger.debug("Running event dispatcher...");
 
                 // Run logic update loop
 
-                logger.debug("Running renderer...");
+                //logger.debug("Running renderer...");
 
                 // Update window
+                window->update();
                 // Update statistics
                 // VSync loop (if enabled)
             }
@@ -62,7 +67,8 @@ namespace seedengine {
             logger.critical("Unknown exception was thrown during program runtime. Exiting...");
         }
 
-        logger.info("Closing application window...");
+        Window::DestroyAll();
+        onShutdown();
 
         logger.info("Unloading engine assets...");
         logger.info("Unloading game assets...");
@@ -72,7 +78,7 @@ namespace seedengine {
     }
 
     bool Application::shouldExit() const {
-        return true; // TODO: Handle exiting, either in application or in System
+        return false; // TODO: Handle exiting, either in application or in System
     }
 
     void Application::exit(int exitCode) {
@@ -92,7 +98,7 @@ namespace seedengine {
     }
 
     void Application::onStartup() {
-
+        GraphicsManager::Startup();
     }
 
     void Application::onLoadGameData() {
@@ -100,7 +106,7 @@ namespace seedengine {
     }
 
     void Application::onShutdown() {
-
+        GraphicsManager::Shutdown();
     }
 
 }

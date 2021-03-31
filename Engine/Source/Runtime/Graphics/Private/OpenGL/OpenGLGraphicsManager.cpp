@@ -15,14 +15,26 @@
 namespace seedengine {
 
     OpenGLGraphicsManager::OpenGLGraphicsManager() : GraphicsManager(EGraphicsFramework::OPEN_GL) {
-        glfwInit();
+        // Initialize GLFW
         glfwSetErrorCallback([](int error, const char* description) -> void {
             // TODO: Error output to graphics logger here
+            Logger errorTemp("Graphics");
+            errorTemp.error("GLFW Error {0}: {1}", error, description);
         });
+        Logger log("Graphics");
+        log.info("Initializing GLFW...");
+        if (!glfwInit()) {
+            // TODO: Error output (GLFW failed)
+            log.warn("Failed to initialize GLFW");
+        } else {
+            log.info("Initialized GLFW.");
+        }
     }
 
     OpenGLGraphicsManager::~OpenGLGraphicsManager() {
+        Logger log("Graphics");
         glfwTerminate();
+        log.warn("Terminating GLFW");
     }
 
 }

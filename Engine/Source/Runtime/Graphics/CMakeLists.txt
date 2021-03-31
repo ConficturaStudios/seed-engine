@@ -22,8 +22,10 @@ set(${LIBRARY_NAME_UPPER}_SRC
 	${CMAKE_CURRENT_LIST_DIR}/Private/Image.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Mesh.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Renderbuffer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/Renderer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Shader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Texture.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/Window.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/DirectX/DirectXShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/DirectX/DirectXTexture.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Metal/MetalShader.cpp
@@ -31,8 +33,10 @@ set(${LIBRARY_NAME_UPPER}_SRC
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLFramebuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLGraphicsManager.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLRenderbuffer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLRenderer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLTexture.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/OpenGL/OpenGLWindow.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Vulkan/VulkanShader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Vulkan/VulkanTexture.cpp
 )
@@ -46,8 +50,10 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/Image.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Mesh.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Renderbuffer.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Renderer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Shader.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Texture.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Window.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/DirectX/DirectX.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Metal/Metal.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/OpenGL/OpenGL.hpp

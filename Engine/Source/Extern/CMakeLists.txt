@@ -5,8 +5,9 @@ cmake_minimum_required(VERSION 3.0)
 message(STATUS "Building external modules")
 
 add_subdirectory(glad)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "")
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "")
+option(GLFW_BUILD_EXAMPLES "Disable GLFW examples" OFF)
+option(GLFW_BUILD_TESTS "Disable GLFW tests" OFF)
+option(BUILD_SHARED_LIBS "Disable shared library output for GLFW" OFF)
 add_subdirectory(glfw)
 
 #set(ASSIMP_BUILD_BOOST_WORKAROUND   ON CACHE BOOL "")
