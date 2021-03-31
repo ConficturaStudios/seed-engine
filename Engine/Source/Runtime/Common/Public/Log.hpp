@@ -21,6 +21,7 @@
 namespace seedengine {
 
     // TODO: Create Logger instances for System library or other global sources
+    // TODO: Move logging into a new module
 
     /**
      * @brief A logger capable of printing to the standard output and standard error streams.
@@ -48,6 +49,8 @@ namespace seedengine {
             
             explicit Logger(const char* name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
                     Logger::Level level = Logger::Level::Trace);
+
+            ~Logger();
 
             template <typename FormatString, typename... Args>
             inline void log(Level level, const FormatString& fmt, const Args&... args) {

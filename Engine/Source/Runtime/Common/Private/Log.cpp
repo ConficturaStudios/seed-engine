@@ -18,4 +18,8 @@ namespace seedengine {
         m_inst.logger->set_pattern(pattern);
         m_inst.logger->set_level(static_cast<spdlog::level::level_enum>(level));
     }
+
+    Logger::~Logger() {
+        spdlog::drop(m_inst.logger->name());
+    }
 }
