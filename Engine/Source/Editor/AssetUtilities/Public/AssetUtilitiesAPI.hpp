@@ -12,6 +12,9 @@
 #ifndef SEEDENGINE_INCLUDE_EDITOR_ASSET_UTILITIES_API_H_
 #define SEEDENGINE_INCLUDE_EDITOR_ASSET_UTILITIES_API_H_
 
+#include "Common.hpp"
+#include "Graphics.hpp"
+#include "Collections.hpp"
 
 
 #ifndef EDITOR_ASSET_UTILITIES_EXPORT_API
@@ -66,6 +69,9 @@
 #ifndef SEEDENGINE_INCLUDE_EDITOR_ASSET_UTILITIES_API_H_
 #define SEEDENGINE_INCLUDE_EDITOR_ASSET_UTILITIES_API_H_
 
+#include "Common.hpp"
+#include "Graphics.hpp"
+#include "Collections.hpp"
 
 
 #ifndef ENGINE_API

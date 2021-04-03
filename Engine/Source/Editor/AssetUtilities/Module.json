@@ -3,7 +3,20 @@
     "Name": "AssetUtilities",
     "BuildTarget": "Shared",
     "CustomOutputName": "",
-    "Dependencies": [],
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Common"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Graphics"
+        },
+        {
+            "Domain": "Runtime",
+            "Module": "Collections"
+        }
+    ],
     "GenerateCMake": "True",
     "GenerateAPI": "True",
     "GenerateCompositeHeader": "True",

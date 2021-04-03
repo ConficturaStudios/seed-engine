@@ -16,11 +16,13 @@ set(LIBRARY_NAME EditorAssetUtilities)
 set(LIBRARY_NAME_UPPER EDITOR_ASSET_UTILITIES)
 
 set(${LIBRARY_NAME_UPPER}_SRC
+	${CMAKE_CURRENT_LIST_DIR}/Private/MeshImporter.cpp
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/AssetUtilities.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/AssetUtilitiesAPI.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/MeshImporter.hpp
 )
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/Public)
@@ -64,6 +66,12 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ${LIBRARY_SCOPE} ENGINE_COMPILE_DEBUG=1)
 endif()
 
+add_dependencies(${LIBRARY_NAME} RuntimeCommon)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCommon)
+add_dependencies(${LIBRARY_NAME} RuntimeGraphics)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeGraphics)
+add_dependencies(${LIBRARY_NAME} RuntimeCollections)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCollections)
 
 
 target_include_directories(${LIBRARY_NAME}
