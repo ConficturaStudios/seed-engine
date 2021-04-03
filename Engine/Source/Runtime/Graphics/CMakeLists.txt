@@ -20,6 +20,7 @@ set(${LIBRARY_NAME_UPPER}_SRC
 	${CMAKE_CURRENT_LIST_DIR}/Private/Framebuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/GraphicsManager.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Image.cpp
+	${CMAKE_CURRENT_LIST_DIR}/Private/Material.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Mesh.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Renderbuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/Renderer.cpp
@@ -48,6 +49,7 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/GraphicsAPI.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/GraphicsManager.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Image.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Material.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Mesh.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Renderbuffer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Renderer.hpp

@@ -16,75 +16,76 @@
 #include "Color.hpp"
 #include "Vector2.hpp"
 #include "Vector3.hpp"
-#include "CommonSTL.hpp"
 
 namespace seedengine {
 
-    struct Vertex {
-        Vector3 position;
-        Vector3 normal;
+    struct MeshData {
+
+        // Internal types
+
+        struct FileHeader {
+            uint32_t positionCount;
+            uint32_t normalCount;
+            uint32_t uvCount;
+            uint32_t colorCount;
+
+            uint32_t boneCount;
+            uint32_t boneWeightCount;
+            uint32_t morphCount;
+
+            union {
+                uint32 rawUvAndColorData;
+                struct {
+                    uint32 uvsPerVertex : 3;
+                    uint32 colorsPerVertex : 3;
+                    uint32 _padding_0 : 26;
+                };
+            };
+
+            uint32_t vertexCount;
+            uint32_t smoothingGroupCount;
+        };
+
+        struct Vertex {
+            uint32 position;
+            uint32 normal;
+            uint32* uvs;
+            uint32* colors;
+            uint32* weights;
+        };
+
+        struct Face {
+            uint32 vertexCount;
+            uint32* vertices;
+        };
+
+        struct Morph {
+            uint32 originalVertex;
+            uint32 targetVertex;
+        };
+
+        struct SmoothingGroup {
+            uint32 faceCount;
+            MeshData::Face* faces;
+        };
+
+        // Data members
+
+        MeshData::FileHeader header;
+
+        Vector3* positions;
+        Vector3* normals;
         Vector2* uvs;
         LinearColor* colors;
-        //float* bone_weights; // ?
-        //Vector3 morphs; // ?
+
+        // bones?
+        float* bone_weights;
+        // Morphs
+
+        MeshData::Vertex* vertices;
+        MeshData::SmoothingGroup* smoothing_group;
+
     };
-
-    struct MeshFileData {
-
-            // Internal types
-
-            struct FileHeader {
-                uint32_t position_count;
-                uint32_t normal_count;
-                uint32_t uv_count;
-                uint32_t color_count;
-
-                uint32_t bone_count;
-                uint32_t bone_weight_count;
-                uint32_t morph_count;
-
-                union {
-                    uint32_t uvc_raw;
-                    struct {
-                        uint8_t  uv_channel_count : 3;
-                        uint8_t  color_channel_count : 3;
-                        uint8_t  UNUSED_0x03000000 : 2;
-                        uint8_t  UNUSED_0x00FF0000;
-                        uint16_t UNUSED_0x0000FFFF;
-                    };
-                };
-
-                uint32_t vertex_count;
-                uint32_t smoothing_group_count;
-
-                // Note: ensure Big Endian during IO operations
-                friend std::ostream& operator<<(std::ostream& lhs, const MeshFileData::FileHeader& rhs);
-                friend std::istream& operator>>(std::istream& lhs,       MeshFileData::FileHeader& rhs);
-            };
-
-            struct SmoothingGroup {
-                uint32_t* faces;
-            };
-
-            // Data members
-
-            MeshFileData::FileHeader header_data;
-
-            //TODO: Decide between heap (*) and stack ([]) allocated storage for variable sized data
-
-            float* positions;
-            float* normals;
-            float* uvs;
-            float* colors;
-
-            //float* ? bones;
-            float* bone_weights;
-            float* morphs;
-
-            uint32_t* vertices;
-            MeshFileData::SmoothingGroup* smoothing_group;
-
-        };
 
     /**
      * @brief

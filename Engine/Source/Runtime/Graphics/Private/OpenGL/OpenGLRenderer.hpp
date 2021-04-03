@@ -38,17 +38,37 @@ namespace seedengine {
              */
             virtual ~OpenGLRenderer();
 
-        protected:
-
         // Functions
 
             void startup() override;
 
             void shutdown() override;
 
-        protected:
+            void clear() override;
 
-        private:
+            void setClearColor(const LinearColor& color) override;
+
+            void setUseDepthTest(bool state) override;
+
+            void setUseBackfaceCulling(bool state) override;
+
+            void bindShader(const Shader& shader) override;
+
+            void bindMesh(const Mesh& mesh) override;
+
+            void bindMaterial(const Material& material) override;
+
+            void unbindShader() override;
+
+            void unbindMesh() override;
+
+            void unbindMaterial() override;
+
+            void drawCurrent() override;
+
+            void bindTexture(const Texture& texture) override;
+
+            void clearTextures() override;
 
     };
 

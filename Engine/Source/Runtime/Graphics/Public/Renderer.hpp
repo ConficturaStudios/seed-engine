@@ -13,15 +13,25 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_GRAPHICS_RENDERER_H_
 
 #include "GraphicsAPI.hpp"
+#include "Texture.hpp"
+#include "Mesh.hpp"
+#include "Material.hpp"
+#include "Color.hpp"
+#include "Framebuffer.hpp"
+#include "Shader.hpp"
 
 namespace seedengine {
 
     /**
-     * @brief
+     * @brief The base class for a graphics framework specific renderer implementation.
      * @details
      * 
      */
     class ENGINE_API Renderer {
+
+            // TODO: Document Renderer class
+            // TODO: Complete OpenGLRenderer class
+            // TODO: Create LevelRenderer in EngineCore
 
         public:
 
@@ -39,10 +49,6 @@ namespace seedengine {
              */
             virtual ~Renderer();
 
-        // Static Functions
-
-        protected:
-
             /**
              * Called when this Renderer is created, implementation specific. This method
              * is responsible for initializing the current graphics api.
@@ -55,7 +61,97 @@ namespace seedengine {
              */
             virtual void shutdown() = 0;
 
+            /**
+             * Clears the screen of all currently rendered objects and fills the screen with the clear color.
+             */
+            virtual void clear() = 0;
+            /**
+             * Sets the color that the screen will clear to upon refresh.
+             * @param color The clear color.
+             */
+            virtual void setClearColor(const LinearColor& color);
+
+            /**
+             * Set to true to enable depth testing, false to disable.
+             * @param state the state to set the useDepthTest flag to.
+             */
+            virtual void setUseDepthTest(bool state);
+            /**
+             * Set to true to enable backface culling, false to disable.
+             * @param state the state to set the useBackfaceCulling flag to.
+             */
+            virtual void setUseBackfaceCulling(bool state);
+
+            /**
+             * Binds the specified shader to the renderer.
+             * @param shader The shader to bind.
+             */
+            virtual void bindShader(const Shader& shader);
+            /**
+             * Binds the specified mesh to the renderer.
+             * @param mesh The mesh to bind.
+             */
+            virtual void bindMesh(const Mesh& mesh);
+            /**
+             * Binds the specified material to the renderer.
+             * @param material The material to bind.
+             */
+            virtual void bindMaterial(const Material& material);
+
+            /**
+             * Unbinds the currently active shader from the renderer.
+             */
+            virtual void unbindShader();
+            /**
+             * Unbinds the currently active mesh from the renderer.
+             */
+            virtual void unbindMesh();
+            /**
+             * Unbinds the currently active material from the renderer.
+             */
+            virtual void unbindMaterial();
+
+            // This could be used for visibility flags and other object instance data?
+            //virtual void setCurrentRenderProperties(const RenderProperties& properties) = 0;
+
+            /**
+             * Draws the currently bound data to the screen.
+             */
+            virtual void drawCurrent() = 0;
+
+            /**
+             * Binds the specified texture into the next available texture slot.
+             * @param texture The texture to bind.
+             */
+            virtual void bindTexture(const Texture& texture);
+            /**
+             * Unbinds all textures from the renderer.
+             */
+            virtual void clearTextures();
+
         private:
+
+            /** Is backface culling enabled? */
+            bool m_useBackfaceCulling;
+            /** Is depth testing enabled? */
+            bool m_useDepth;
+
+        protected:
+
+            /** The clear color applied to the screen upon refresh. */
+            LinearColor m_clearColor = LinearColor::clear;
+
+            /** The currently active shader. */
+            const Shader* m_currentShader;
+            /** The currently active mesh. */
+            const Mesh* m_currentMesh;
+            /** The currently active material. */
+            const Material* m_currentMaterial;
+
+            /** A list of all currently bound textures. */
+            LinkedList<const Texture*> m_textures;
+            /** The number of texture slots currently bound. */
+            uint32 m_filledTextureSlots = 0;
 
     };
 

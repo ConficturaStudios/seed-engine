@@ -19,6 +19,7 @@
 #include "Framebuffer.hpp"
 #include "GraphicsManager.hpp"
 #include "Image.hpp"
+#include "Material.hpp"
 #include "Mesh.hpp"
 #include "Renderbuffer.hpp"
 #include "Renderer.hpp"
