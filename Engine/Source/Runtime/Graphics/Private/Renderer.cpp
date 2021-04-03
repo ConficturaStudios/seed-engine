@@ -14,11 +14,11 @@
 namespace seedengine {
 
     Renderer::Renderer() {
-
+        m_textures = new LinkedList<const Texture*>();
     }
 
     Renderer::~Renderer() {
-
+        delete m_textures;
     }
 
     void Renderer::setClearColor(const LinearColor& color) {
@@ -58,12 +58,12 @@ namespace seedengine {
     }
 
     void Renderer::bindTexture(const Texture& texture) {
-        m_textures.addLast(&texture);
+        m_textures->addLast(&texture);
         m_filledTextureSlots++;
     }
 
     void Renderer::clearTextures() {
-        m_textures.clear();
+        m_textures->clear();
         m_filledTextureSlots = 0;
     }
 

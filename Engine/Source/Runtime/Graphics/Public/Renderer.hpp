@@ -132,9 +132,9 @@ namespace seedengine {
         private:
 
             /** Is backface culling enabled? */
-            bool m_useBackfaceCulling;
+            bool m_useBackfaceCulling = true;
             /** Is depth testing enabled? */
-            bool m_useDepth;
+            bool m_useDepth = true;
 
         protected:
 
@@ -142,14 +142,14 @@ namespace seedengine {
             LinearColor m_clearColor = LinearColor::clear;
 
             /** The currently active shader. */
-            const Shader* m_currentShader;
+            const Shader* m_currentShader = nullptr;
             /** The currently active mesh. */
-            const Mesh* m_currentMesh;
+            const Mesh* m_currentMesh = nullptr;
             /** The currently active material. */
-            const Material* m_currentMaterial;
+            const Material* m_currentMaterial = nullptr;
 
             /** A list of all currently bound textures. */
-            LinkedList<const Texture*> m_textures;
+            List<const Texture*>* m_textures;
             /** The number of texture slots currently bound. */
             uint32 m_filledTextureSlots = 0;
 

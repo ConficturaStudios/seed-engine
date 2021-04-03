@@ -14,13 +14,9 @@
 
 namespace seedengine {
 
-    OpenGLRenderer::OpenGLRenderer() {
+    OpenGLRenderer::OpenGLRenderer() = default;
 
-    }
-
-    OpenGLRenderer::~OpenGLRenderer() {
-        
-    }
+    OpenGLRenderer::~OpenGLRenderer() = default;
 
     void OpenGLRenderer::startup() {
 
@@ -100,7 +96,7 @@ namespace seedengine {
 
     void OpenGLRenderer::clearTextures() {
         int i = 0;
-        for (const Texture* texture : m_textures) {
+        for (const Texture* texture : *m_textures) {
             glActiveTexture(GL_TEXTURE0 + i);
             // TODO: Get texture type from texture, support 1D, 3D, etc.
             glBindTexture(GL_TEXTURE_2D, 0);
