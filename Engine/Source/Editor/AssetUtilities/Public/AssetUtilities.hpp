@@ -1,5 +1,5 @@
 /**
- * @file MeshImporter.hpp
+ * @file AssetUtilities.hpp
  * 
  * @copyright Copyright (c) 2021 Confictura Studios. All rights reserved.
  * @license This code is released under the MIT License.
@@ -9,10 +9,10 @@
  * For a copy of the license, please go to https://github.com/conficturastudios/seed-engine/LICENSE
  */
 
-#ifndef SEEDENGINE_INCLUDE_EDITOR_MESH_IMPORTER_MODULE_H_
-#define SEEDENGINE_INCLUDE_EDITOR_MESH_IMPORTER_MODULE_H_
+#ifndef SEEDENGINE_INCLUDE_EDITOR_ASSET_UTILITIES_MODULE_H_
+#define SEEDENGINE_INCLUDE_EDITOR_ASSET_UTILITIES_MODULE_H_
 
-#include "MeshImporterAPI.hpp"
+#include "AssetUtilitiesAPI.hpp"
 
 
 

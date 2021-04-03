@@ -10,17 +10,17 @@
 
 cmake_minimum_required(VERSION 3.0)
 
-message("Building Editor module MeshImporter...")
+message("Building Editor module AssetUtilities...")
 
-set(LIBRARY_NAME EditorMeshImporter)
-set(LIBRARY_NAME_UPPER EDITOR_MESH_IMPORTER)
+set(LIBRARY_NAME EditorAssetUtilities)
+set(LIBRARY_NAME_UPPER EDITOR_ASSET_UTILITIES)
 
 set(${LIBRARY_NAME_UPPER}_SRC
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
-	${CMAKE_CURRENT_LIST_DIR}/Public/MeshImporter.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/MeshImporterAPI.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/AssetUtilities.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/AssetUtilitiesAPI.hpp
 )
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/Public)
@@ -47,7 +47,7 @@ else()
 endif()
 
 get_target_property(${LIBRARY_NAME_UPPER}_TYPE ${LIBRARY_NAME} TYPE)
-message(STATUS "Built Editor module MeshImporter as ${${LIBRARY_NAME_UPPER}_TYPE}")
+message(STATUS "Built Editor module AssetUtilities as ${${LIBRARY_NAME_UPPER}_TYPE}")
 
 target_compile_definitions(${LIBRARY_NAME}
     ${LIBRARY_SCOPE} ENGINE_VERSION_MAJOR=${ENGINE_VERSION_MAJOR}
@@ -66,6 +66,12 @@ endif()
 
 
 
+target_include_directories(${LIBRARY_NAME}
+    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/assimp/include)
+
+target_link_libraries(${LIBRARY_NAME}
+    ${LIBRARY_SCOPE} ${ASSIMP_LIBRARIES}
+)
 
 
 # Install Library
@@ -81,7 +87,7 @@ install(FILES ${${LIBRARY_NAME_UPPER}_HEADERS}
 if(BUILD_TESTS)
     get_target_property(TARGET_TYPE ${LIBRARY_NAME} TYPE)
     if(NOT ${TARGET_TYPE} STREQUAL "EXECUTABLE")
-        message(STATUS "Adding module MeshImporter to test suite")
+        message(STATUS "Adding module AssetUtilities to test suite")
 
         file(GLOB_RECURSE ${LIBRARY_NAME_UPPER}_TEST_SRC
             ${CMAKE_CURRENT_LIST_DIR}
