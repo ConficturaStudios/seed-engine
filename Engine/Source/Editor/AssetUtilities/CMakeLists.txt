@@ -75,10 +75,11 @@ target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCollections)
 
 
 target_include_directories(${LIBRARY_NAME}
-    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/assimp/include)
+    ${LIBRARY_SCOPE} ${PROJECT_SOURCE_DIR}/Source/Extern/assimp/include
+    ${LIBRARY_SCOPE} ${CMAKE_BINARY_DIR}/Source/Extern/assimp/include)
 
 target_link_libraries(${LIBRARY_NAME}
-    ${LIBRARY_SCOPE} ${ASSIMP_LIBRARIES}
+    ${LIBRARY_SCOPE} assimp::assimp
 )
 
 

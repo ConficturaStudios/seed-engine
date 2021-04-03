@@ -33,7 +33,7 @@ namespace seedengine {
         for (uint32 i = 0; i < scene->mNumMeshes; i++) {
             // Get mesh, allocate storage
             const aiMesh* mesh = scene->mMeshes[i];
-            MeshData data; // TODO: Fix mesh data generation
+            //MeshData data; // TODO: Fix mesh data generation
 
             // Iterate through vertices
             for (uint32 j = 0; j < mesh->mNumVertices; j++) {
