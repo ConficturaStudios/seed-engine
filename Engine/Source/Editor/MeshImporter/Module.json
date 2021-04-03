@@ -1,0 +1,14 @@
+{
+    "Domain": "Editor",
+    "Name": "MeshImporter",
+    "BuildTarget": "Shared",
+    "CustomOutputName": "",
+    "Dependencies": [
+        
+    ],
+    "GenerateCMake": "True",
+    "GenerateAPI": "True",
+    "GenerateCompositeHeader": "True",
+    "CustomCMakeInstructions": [],
+    "CompositeHeaderExcludes": []
+}
