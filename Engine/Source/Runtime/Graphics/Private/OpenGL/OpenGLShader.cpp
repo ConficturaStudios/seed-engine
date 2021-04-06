@@ -30,7 +30,7 @@ namespace seedengine {
     
     void OpenGLShader::unbind() {
         if (m_running) glUseProgram(0);
-        else ENGINE_WARN("Shader is not currently running, therefore cannot stop.");
+        else ENGINE_DEBUG_WARN("Shader is not currently running, therefore cannot stop.");
     }
 
     bool OpenGLShader::init(const String& filepath) {
@@ -38,7 +38,7 @@ namespace seedengine {
 
         //TODO: Process monolithic shader into shader components
 
-        ENGINE_WARN("Monolithic GLSL shaders are not yet supported. Initialization failed.");
+        ENGINE_DEBUG_WARN("Monolithic GLSL shaders are not yet supported. Initialization failed.");
         return false;
 
         /*m_vertex_shader_id = loadShader(vertex_shader_path, GL_VERTEX_SHADER);
@@ -70,13 +70,13 @@ namespace seedengine {
         // pass: shader path(s), ordered attribute names ?, uniform names ?
         m_vertex_shader_id = loadShader(vs_filepath, GL_VERTEX_SHADER);
         if (m_vertex_shader_id == 0) {
-            ENGINE_WARN("Failed to load fragment shader, Shader will not initialize.");
+            ENGINE_DEBUG_WARN("Failed to load fragment shader, Shader will not initialize.");
             return false;
         }
         else {
             m_fragment_shader_id = loadShader(fs_filepath, GL_FRAGMENT_SHADER);
             if (m_fragment_shader_id == 0) {
-                ENGINE_WARN("Failed to load fragment shader, Shader will not initialize.");
+                ENGINE_DEBUG_WARN("Failed to load fragment shader, Shader will not initialize.");
                 glDeleteShader(m_vertex_shader_id);
                 return false;
             }
@@ -229,7 +229,7 @@ namespace seedengine {
             glGetShaderInfoLog(shader_id, max_length, &max_length, &error_log[0]);
 
             String msg(error_log.begin(), error_log.end());
-            ENGINE_ERROR(msg);
+            ENGINE_DEBUG_ERROR(msg);
 
             glDeleteShader(shader_id);
 
