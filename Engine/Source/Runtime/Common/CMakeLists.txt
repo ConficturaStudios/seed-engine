@@ -25,9 +25,9 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/Common.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonAPI.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonDefinitions.hpp
-	${CMAKE_CURRENT_LIST_DIR}/Public/CommonMacros.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonSTL.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonTraits.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Debug.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FunctionPointer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Log.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/MemberFunctionPointer.hpp

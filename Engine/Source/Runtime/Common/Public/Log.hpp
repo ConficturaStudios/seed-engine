@@ -47,8 +47,8 @@ namespace seedengine {
                 Off = spdlog::level::level_enum::off
             };
             
-            explicit Logger(const char* name, const char *pattern = "%^[%T] %n: %v%$ [Thread %t]",
-                    Logger::Level level = Logger::Level::Trace);
+            explicit Logger(const char* name, Logger::Level level = Logger::Level::Trace,
+                            const char *pattern = "%^[%T] %n: %v%$ [Thread %t]");
 
             ~Logger();
 
@@ -94,6 +94,12 @@ namespace seedengine {
                 m_inst.logger->critical(fmt, args...);
             }
 
+            /**
+             * Provides a standard logger for debugging purposes.
+             * @return A reference to the standard debug logger.
+             */
+            [[nodiscard]] static Logger& DebugLogger();
+
         private:
 
             struct LogWrapper {
@@ -105,22 +111,14 @@ namespace seedengine {
 
 // TODO: Replace macro logging calls with calls to a logger within system or other global source
 
-#define ENGINE_TRACE(...)
 #ifdef ENGINE_COMPILE_DEBUG
-    #define ENGINE_DEBUG(...)
+    #define ENGINE_DEBUG_LOG(...) Logger::DebugLogger().log(__VA_ARGS__)
+    #define ENGINE_DEBUG_WARN(...) Logger::DebugLogger().warn(__VA_ARGS__)
+    #define ENGINE_DEBUG_ERROR(...) Logger::DebugLogger().log(__VA_ARGS__)
 #else
-    #define ENGINE_DEBUG(...)
+    #define ENGINE_DEBUG_LOG(...)
+    #define ENGINE_DEBUG_WARN(...)
+    #define ENGINE_DEBUG_ERROR(...)
 #endif
-#define ENGINE_INFO(...)
-#define ENGINE_WARN(...)
-#define ENGINE_ERROR(...)
-#define ENGINE_CRIT(...)
-
-#define CLIENT_TRACE(...)
-#define CLIENT_DEBUG(...)
-#define CLIENT_INFO(...)
-#define CLIENT_WARN(...)
-#define CLIENT_ERROR(...)
-#define CLIENT_CRIT(...)
 
 #endif

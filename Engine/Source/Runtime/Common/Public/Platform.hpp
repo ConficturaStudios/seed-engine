@@ -18,41 +18,41 @@
 
 #if defined(_WIN32)
     // Windows
-    #define ENGINE_PLATFORM_WINDOWS
+    #define ENGINE_PLATFORM_WINDOWS 1
 #elif defined(__APPLE__) || defined(__MACH__)
     // Apple Preprocessor Definitions
     #include "TargetConditionals.h"
     #if TARGET_IPHONE_SIMULATOR
         // iOS Simulator
-        #define ENGINE_PLATFORM_IOS_SIM
-        #define ENGINE_PLATFORM_APPLE
+        #define ENGINE_PLATFORM_IOS_SIM 1
+        #define ENGINE_PLATFORM_APPLE 1
     #elif TARGET_OS_IPHONE
         // iOS
-        #define ENGINE_PLATFORM_IOS
-        #define ENGINE_PLATFORM_APPLE
+        #define ENGINE_PLATFORM_IOS 1
+        #define ENGINE_PLATFORM_APPLE 1
     #elif TARGET_OS_MAC
         // Mac
-        #define ENGINE_PLATFORM_MAC
-        #define ENGINE_PLATFORM_APPLE
+        #define ENGINE_PLATFORM_MAC 1
+        #define ENGINE_PLATFORM_APPLE 1
     #else
         // Unknown Apple EPlatform
-        #define ENGINE_PLATFORM_UNKNOWN
+        #define ENGINE_PLATFORM_UNKNOWN 1
     #endif
 #elif defined(__ANDROID__)
     // Android
-    #define ENGINE_PLATFORM_ANDROID
+    #define ENGINE_PLATFORM_ANDROID 1
 #elif defined(__linux__)
     // Linux
-    #define ENGINE_PLATFORM_LINUX
+    #define ENGINE_PLATFORM_LINUX 1
 #elif defined(__gnu_linux__)
     // GNU Linux
-    #define ENGINE_PLATFORM_GNU_LINUX
+    #define ENGINE_PLATFORM_GNU_LINUX 1
 #elif defined(unix) || defined(__unix) || defined(__unix__)
     // Unix
-    #define ENGINE_PLATFORM_UNIX
+    #define ENGINE_PLATFORM_UNIX 1
 #else
     // Unknown EPlatform
-    #define ENGINE_PLATFORM_UNKNOWN
+    #define ENGINE_PLATFORM_UNKNOWN 1
 #endif
 
 // Handle unknown platforms

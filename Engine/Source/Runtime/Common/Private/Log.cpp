@@ -13,7 +13,7 @@
 
 namespace seedengine {
 
-    Logger::Logger(const char *name, const char *pattern, Logger::Level level) {
+    Logger::Logger(const char *name, Logger::Level level, const char *pattern) {
         m_inst = { spdlog::stdout_color_st<spdlog::synchronous_factory>(name) };
         m_inst.logger->set_pattern(pattern);
         m_inst.logger->set_level(static_cast<spdlog::level::level_enum>(level));
@@ -21,5 +21,10 @@ namespace seedengine {
 
     Logger::~Logger() {
         spdlog::drop(m_inst.logger->name());
+    }
+
+    Logger& Logger::DebugLogger() {
+        static Logger logger("Debug", Level::Debug);
+        return logger;
     }
 }

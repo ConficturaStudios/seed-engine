@@ -16,9 +16,9 @@
 
 
 #include "CommonDefinitions.hpp"
-#include "CommonMacros.hpp"
 #include "CommonSTL.hpp"
 #include "CommonTraits.hpp"
+#include "Debug.hpp"
 #include "FunctionPointer.hpp"
 #include "Log.hpp"
 #include "MemberFunctionPointer.hpp"

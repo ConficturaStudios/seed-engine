@@ -64,7 +64,7 @@ namespace seedengine {
              * 
              * @return The system architecture that the application is running on.
              */
-            [[nodiscard]] static constexpr EArchitecture GetCurrentArchitecture() noexcept  {
+            [[nodiscard]] static constexpr EArchitecture GetCurrentArchitecture() noexcept {
 
                 // Current device's bit architecture
                     
@@ -80,6 +80,14 @@ namespace seedengine {
                     // Unknown architecture
                     return EArchitecture::UNKNOWN;
                 }
+            }
+
+            /**
+             * Returns the byte order type of the executing system.
+             * @return The byte order (endianness) of this system.
+             */
+            [[nodiscard]] static constexpr Memory::EByteOrder GetByteOrder() noexcept {
+                return Memory::EByteOrder::NATIVE;
             }
 
             /**

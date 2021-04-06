@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <cerrno>
 
 // STL Includes:
 
@@ -96,49 +97,6 @@ namespace std {
     }
 
 #endif
-
-/*
-// C++14 or newer code
-#if __cplusplus >= 201400L
-
-// Pre C++14 code
-#else
-
-    template<typename T, T... Ints>
-    struct integer_sequence {
-        typedef T value_type;
-
-        static constexpr std::size_t size() noexcept {
-            return sizeof...(Ints);
-        }
-    };
-
-    template<typename T, std::size_t... Ints>
-    struct __make_integer_sequence;
-
-    template<typename T, std::size_t N, std::size_t... Ints>
-    struct __make_integer_sequence<T, N, Ints...> {
-       using type = typename __make_integer_sequence<T, N - 1, N - 1, Ints...>::type;
-    };
-
-    template<typename T, std::size_t... Ints>
-    struct __make_integer_sequence<T, 0, Ints...> {
-        using type = integer_sequence<T, ((T)Ints)...>;
-    };
-
-    template<std::size_t... Ints>
-    using index_sequence = std::integer_sequence<std::size_t, Ints...>;
-
-    template<typename T, T N>
-    using make_integer_sequence = typename __make_integer_sequence<T, N>::type;
-
-    template<std::size_t N>
-    using make_index_sequence = std::make_integer_sequence<std::size_t, N>;
-
-    template<typename... T>
-    using index_sequence_for = std::make_index_sequence<sizeof...(T)>;
-
-#endif*/
 
 }
 
