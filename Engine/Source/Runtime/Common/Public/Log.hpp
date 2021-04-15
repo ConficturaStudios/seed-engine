@@ -112,9 +112,9 @@ namespace seedengine {
 // TODO: Replace macro logging calls with calls to a logger within system or other global source
 
 #ifdef ENGINE_COMPILE_DEBUG
-    #define ENGINE_DEBUG_LOG(...) Logger::DebugLogger().log(__VA_ARGS__)
+    #define ENGINE_DEBUG_LOG(...) Logger::DebugLogger().debug(__VA_ARGS__)
     #define ENGINE_DEBUG_WARN(...) Logger::DebugLogger().warn(__VA_ARGS__)
-    #define ENGINE_DEBUG_ERROR(...) Logger::DebugLogger().log(__VA_ARGS__)
+    #define ENGINE_DEBUG_ERROR(...) Logger::DebugLogger().error(__VA_ARGS__)
 #else
     #define ENGINE_DEBUG_LOG(...)
     #define ENGINE_DEBUG_WARN(...)
