@@ -18,499 +18,335 @@
 #include <iostream>
 #include <stdexcept>
 #include <type_traits>
-#include <cstdarg>
 #include <cstring>
+
+// Done to fix minor macro definition in GCC library code
+#undef minor
 
 namespace seedengine {
 
-    /**
-     * @brief A R x C (row major) matrix of T objects
-     * 
-     * @tparam T The type stored in this matrix. Must be algebraic.
-     * @tparam R The number of row in this matrix. Must be greater than or equal to 1.
-     * @tparam C The number of columns in this matrix. Must be greater than or equal to 1.
-     */
-    template<typename T, std::size_t R, std::size_t C>
-    class ENGINE_API Matrix final {
+// Forward declare Matrix
 
-        template<typename, std::size_t, std::size_t>
-        friend class Matrix;
+    template<typename, size_t, size_t>
+    class Matrix;
 
-        private:
+/**
+ * The base class of all matrix types containing common behavior and data. Should never
+ * be instanced or used by client code, use Matrix<T, R, C> instead.
+ * @tparam T The type of element stored in this matrix.
+ * @tparam R The number of rows in this matrix.
+ * @tparam C The number of columns in this matrix.
+ */
+    template <typename T, size_t R, size_t C>
+    class ENGINE_API MatrixBase {
 
-        // Properties
-
-            /** The values stored in this matrix. */
-            T buffer[R][C]{};
+            // Check template argument validity
+            static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
+            static_assert(std::is_arithmetic_v<T>, "Matrices only support numeric types.");
 
         public:
 
-        // Static traits
+            /** The type of element stored in this matrix. */
+            using Type = T;
+            /** The number of rows in this matrix. */
+            static constexpr const size_t Rows = R;
+            /** The number of columns in this matrix. */
+            static constexpr const size_t Columns = C;
+            /** The number of elements in this matrix. */
+            static constexpr const size_t Size = R * C;
 
-            /** The data type stored by this matrix. */
-            using type = T;
+        protected:
 
-            /** The number of rows for this matrix type. */
-            static constexpr const std::size_t rows = R;
+            /** The type of a complete row of the matrix. */
+            typedef T RowType[C];
 
-            /** The number of columns for this matrix type. */
-            static constexpr const std::size_t columns = C;
+            /** The buffer of elements stored in this matrix. */
+            T m_buffer[R][C]{};
 
-            /** The total number of elements for this matrix type. */
-            static constexpr const std::size_t size = rows * columns;
+            // Constructors
 
             /**
-             * @brief Determines if this type constitutes a square matrix.
-             * 
-             * @return true If the number of rows == the number of columns.
-             * @return false If the number of rows and columns are not equal.
+             * Constructs a new matrix with 0 initialized values.
              */
-            static constexpr const bool isSquare() {
-                static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
+            MatrixBase() noexcept = default;
+
+            /**
+             * Constructs a new MatrixBase with all elements initialized to the provided value.
+             * @param value The value to initialize all elements to.
+             */
+            explicit MatrixBase(const T& value) noexcept {
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        m_buffer[r][c] = value;
+                    }
+                }
+            }
+
+            /**
+             * Constructs a new MatrixBase by copying the RxC array provided.
+             * @param buffer The array to copy.
+             */
+            MatrixBase(const T (&buffer)[R][C]) noexcept {
+                memcpy(m_buffer, buffer, sizeof(T) * Size);
+            }
+
+            /**
+             * Copy constructs a new MatrixBase instance.
+             * @param ref The MatrixBase to copy.
+             */
+            MatrixBase(const MatrixBase<T, R, C>& ref) noexcept {
+                memcpy(m_buffer, ref.m_buffer, sizeof(T) * Size);
+            }
+
+            /**
+             * Move constructs a new MatrixBase instance.
+             * @param ref The MatrixBase to move from.
+             */
+            MatrixBase(MatrixBase<T, R, C>&& ref) noexcept {
+                memcpy(m_buffer, ref.m_buffer, sizeof(T) * Size);
+            }
+
+        public:
+
+            // Destructor
+
+            /**
+             * Called for every MatrixBase instance at destruction.
+             */
+            virtual ~MatrixBase() = default;
+
+            // Static functions
+
+            /**
+             * Returns true if this type of matrix is square (R = C).
+             * @return True if this matrix type is square.
+             */
+            [[nodiscard]] static constexpr bool IsSquare() {
                 return R == C;
             }
 
-        // Constructors and destructor
+            // Member functions
 
             /**
-             * @brief The default constructor for Matrix objects.
-             * @details Constructs a new Matrix with default initialization for all elements.
+             * Transposes this matrix into a CxR matrix.
+             * @return The transposition of this matrix.
              */
-            Matrix() {
-                static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = T();
+            [[nodiscard]] Matrix<T, C, R> transpose() const {
+                Matrix<T, C, R> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        result[c][r] = m_buffer[r][c];
                     }
-                }
-            }
-
-            /**
-             * @brief Constructs a new Matrix with all elements initialized to a set value.
-             * 
-             * @param value The value to initialize all elements to.
-             */
-            Matrix(const T& value) {
-                static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = value;
-                    }
-                }
-            }
-
-            /**
-             * @brief Construct a new Matrix with each alement copied from the passed buffer.
-             * 
-             * @param buffer The buffer to load.
-             */
-            Matrix(const T (&buffer)[R][C]) {
-                static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = buffer[r][c];
-                    }
-                }
-            }
-
-            /**
-             * @brief The copy constructor for Matrix objects.
-             * @details Constructs a new Matrix by copying an existing Matrix.
-             */
-            Matrix(const Matrix<T, R, C>& ref) {
-                static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = ref(r, c);
-                    }
-                }
-            }
-            
-            /**
-             * @brief The move constructor for Matrix objects.
-             * @details Constructs a new Matrix by moving the data of a Matrix into this object.
-             */
-            Matrix(Matrix<T, R, C>&& ref) {
-                static_assert(R > 0 && C > 0, "Matrices cannot have dimensions of size 0");
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = ref(r, c);
-                    }
-                }
-            }
-
-            /**
-             * @brief The destructor for Matrix objects.
-             * @details Called when an instance of Matrix is deleted.
-             */
-            ~Matrix() {
-                
-            }
-
-        // Static Functions
-        
-            /**
-             * @brief Returns the identity matrix for this type if it is square.
-             * 
-             * @tparam std::enable_if<(isSquare() && R > 0U)>::type SFINAE enable condition.
-             * @return Matrix<T, R, C> The identity matrix for this type.
-             */
-            template<typename = typename std::enable_if<(isSquare() && R > 0U)>::type>
-            static Matrix<T, R, C> identity() {
-                Matrix<T, R, C> result = Matrix<T, R, C>();
-                for (std::size_t i = 0; i < R; i++) {
-                    result.buffer[i][i] = 1;
                 }
                 return result;
             }
 
-        // Functions
+            /**
+             * Performs a per-element multiplication with another matrix for each corresponding element.
+             * @param rhs The element to multiply against.
+             * @return The per-element product of the two matrices.
+             */
+            [[nodiscard]] Matrix<T, R, C> multiplyComponents(const Matrix<T, R, C>& rhs) const {
+                Matrix<T, R, C> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        result.m_buffer[r][c] = m_buffer[r][c] * rhs.m_buffer[r][c];
+                    }
+                }
+                return result;
+            }
 
             /**
-             * @brief Creates the cofactor matrix of this matrix at a given index. This is the matrix of all
-             *        elements not sharing a row or column with the one specified.
-             * 
-             * @tparam std::enable_if<(isSquare() && R > 1U)>::type SFINAE enable condition.
-             * 
-             * @param row The row to skip.
-             * @param column The column to skip.
-             * 
-             * @return Matrix<T, R - 1U, C - 1U> The cofactor of the specified element.
+             * Returns a matrix with values calculated using the values of this array passed though a positional
+             * function. This function should produce a value from the current value, row index, and column index.
+             * @param func The function to use for each element.
+             * @return A matrix computed by applying func to each element of this matrix.
              */
-            template<typename = typename std::enable_if<(isSquare() && R > 1U)>::type>
-            Matrix<T, R - 1U, C - 1U> cofactor(const std::size_t& row, const std::size_t& column) const {
-                Matrix<T, R - 1U, C - 1U> result = Matrix<T, R - 1U, C - 1U>();
+            [[nodiscard]] Matrix<T, R, C> positionalFunc(T (*func)(T, size_t, size_t)) {
+                Matrix<T, R, C> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        result[r][c] = func(m_buffer[r][c], r, c);
+                    }
+                }
+                return result;
+            }
 
-                std::size_t r_i = 0;
-                std::size_t c_i = 0;
-                for (std::size_t r = 0; r < R; r++) {
-                    if (r != row) {
-                        for (std::size_t c = 0; c < C; c++) {
-                            if (c != column) {
-                                result.buffer[r_i][c_i] = this->buffer[r][c] * (T)(((row + column) % 2 == 0) ? 1 : -1);
-                                r_i++;
-                            }
+            // Arithmetic operators
+
+            /**
+             * Adds this matrix with another.
+             * @param rhs The matrix to add with.
+             * @return The sum of this matrix and rhs.
+             */
+            [[nodiscard]] Matrix<T, R, C> operator+(const Matrix<T, R, C>& rhs) const {
+                Matrix<T, R, C> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        // TODO: Evaluate SIMD options
+                        result.m_buffer[r][c] = m_buffer[r][c] + rhs.m_buffer[r][c];
+                    }
+                }
+                return result;
+            }
+
+            /**
+             * Subtracts rhs from this matrix.
+             * @param rhs The matrix to subtract.
+             * @return The difference of this matrix and rhs.
+             */
+            [[nodiscard]] Matrix<T, R, C> operator-(const Matrix<T, R, C>& rhs) const {
+                Matrix<T, R, C> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        result.m_buffer[r][c] = m_buffer[r][c] - rhs.m_buffer[r][c];
+                    }
+                }
+                return result;
+            }
+
+            /**
+             * Performs a matrix multiplication between this and a CxN matrix, returning a new RxN matrix.
+             * @tparam N The number of columns in the right hand side of the product.
+             * @param rhs The matrix to multiply with.
+             * @return The RxN product of this matrix and rhs.
+             */
+            template <size_t N>
+            [[nodiscard]] Matrix<T, R, N> operator*(const Matrix<T, C, N>& rhs) const {
+                Matrix<T, R, N> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t n = 0; n < N; n++) {
+                        for (size_t c = 0; c < C; c++) {
+                            result[r][n] += m_buffer[r][c] * rhs[c][n];
                         }
-                        c_i = 0;
-                        r_i++;
                     }
                 }
                 return result;
             }
 
             /**
-             * @brief Gets the complete cofactor matrix of this matrix.
-             * 
-             * @tparam std::enable_if<(isSquare() && R > 1U)>::type SFINAE enable condition.
-             * 
-             * @return Matrix<T, R, C> This matrix's cofactor matrix.
+             * Calculates the scalar product of this matrix and a scalar value.
+             * @param scale The scalar value to apply.
+             * @return The scalar product of this matrix and scale.
              */
-            template<typename = typename std::enable_if<(isSquare() && R > 1U)>::type>
-            Matrix<T, R, C> cofactorMatrix() const {
-                Matrix<T, R, C> result = Matrix<T, R, C>();
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        result.buffer[r][c] = cofactor(r, c).determinant();
+            [[nodiscard]] Matrix<T, R, C> operator*(T scale) const {
+                Matrix<T, R, C> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        result.m_buffer[r][c] = m_buffer[r][c] * scale;
                     }
                 }
                 return result;
             }
 
             /**
-             * @brief Gets the adjoint matrix of this matrix.
-             * 
-             * @tparam std::enable_if<(isSquare() && R > 1U)>::type 
-             * @return Matrix<T, R, C> The adjoint matrix of this matrix.
+             * Calculates the scalar product of this matrix and 1 divided by a scalar value.
+             * @param scale The inverse of the scalar value to apply.
+             * @return The scalar product of this matrix and 1 / scale.
              */
-            template<typename = typename std::enable_if<(isSquare() && R > 1U)>::type>
-            Matrix<T, R, C> adjointMatrix() const {
-                return cofactorMatrix().transpose();
-            }
-
-            /**
-             * @brief Calculates the determinant of this matrix if it is square.
-             * 
-             * @tparam std::enable_if<(isSquare() && R > 1U)>::type SFINAE enable condition.
-             * 
-             * @return T The determinant of this matrix.
-             */
-            template<typename = typename std::enable_if<(isSquare() && R > 1U)>::type>
-            T determinant() const {
-                /*if (R == 2U && C == 2U) {
-                    return this->buffer[0][0] * this->buffer[1][1] - this->buffer[0][1] * this->buffer[1][0];
-                }
-                else {
-                    T result = T();
-                    for (std::size_t i = 0; i < C; i++) {
-
-                        result += this->buffer[0][i] * cofactor(0, i).determinant();
+            [[nodiscard]] Matrix<T, R, C> operator/(T scale) const {
+                Matrix<T, R, C> result;
+                for (size_t r = 0; r < R; r++) {
+                    for (size_t c = 0; c < C; c++) {
+                        result.m_buffer[r][c] = m_buffer[r][c] / scale;
                     }
-                    return result;
-                }*/
-                return determinant<T>(*this);
-            }
-
-        private:
-
-            /**
-             * @brief Calculates the determinant of the passed matrix.
-             * 
-             * @tparam U The type stored in the passed matrix.
-             * @tparam Size The size of each side of the passed matrix.
-             * 
-             * @param mat The matrix to evaluate
-             * @return U The determinant of the matrix.
-             */
-            template<typename U, std::size_t Size>
-            static U determinant(const Matrix<U, Size, Size>& mat) {
-                U result = U();
-                for (std::size_t i = 0; i < C; i++) {
-
-                    result += mat.buffer[0][i] * determinant(mat.cofactor(0, i));
                 }
                 return result;
             }
 
             /**
-             * @brief Calculates the determinant of the passed 2x2 matrix.
-             * 
-             * @tparam U The type stored in the passed matrix.
-             * 
-             * @param mat The matrix to evaluate
-             * @return U The determinant of the matrix.
+             * Calculates the scalar product of this matrix and a scalar value.
+             * @param lhs The scalar to apply.
+             * @param rhs The matrix to scale.
+             * @return The scalar product of rhs and lhs.
              */
-            template<typename U>
-            static U determinant(const Matrix<U, 2U, 2U>& mat) {
-                return mat.buffer[0][0] * mat.buffer[1][1] - mat.buffer[0][1] * mat.buffer[1][0];
+            template <typename, size_t, size_t>
+            [[nodiscard]] friend Matrix<T, R, C> operator*(T lhs, const Matrix<T, R, C>& rhs) {
+                return rhs * lhs;
+            }
+
+            // Accessors
+
+            /**
+             * Accesses a specific element of this matrix by row and column index.
+             * @param i The row index.
+             * @param j The column index.
+             * @return The element at [i, j].
+             */
+            [[nodiscard]] T& operator()(size_t i, size_t j) {
+                return m_buffer[i][j];
             }
 
             /**
-             * @brief Calculates the determinant of the passed 1x1 matrix.
-             * 
-             * @tparam U The type stored in the passed matrix.
-             * 
-             * @param mat The matrix to evaluate
-             * @return U The determinant of the matrix.
+             * Accesses a specific element of this matrix by row and column index.
+             * @param i The row index.
+             * @param j The column index.
+             * @return The element at [i, j].
              */
-            template<typename U>
-            static U determinant(const Matrix<U, 1U, 1U>& mat) {
-                return U();
+            [[nodiscard]] const T& operator()(size_t i, size_t j) const {
+                return m_buffer[i][j];
             }
 
             /**
-             * @brief Calculates the determinant of the passed 0x0 matrix.
-             * 
-             * @tparam U The type stored in the passed matrix.
-             * 
-             * @param mat The matrix to evaluate
-             * @return U The determinant of the matrix.
+             * Gets the row with the specified index.
+             * @param row The row index.
+             * @return The row at the specified index.
              */
-            template<typename U>
-            static U determinant(const Matrix<U, 0U, 0U>& mat) {
-                return U();
-            }
-
-        public:
-
-            /**
-             * @brief Returns the transpose of this matrix.
-             * 
-             * @return Matrix<T, R, C> This R x C matrix transposed to a C x R matrix.
-             */
-            Matrix<T, C, R> transpose() const {
-                Matrix<T, C, R> result = Matrix<T, C, R>();
-
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        result.buffer[c][r] = this->buffer[r][c];
-                    }
-                }
-
-                return result;
+            [[nodiscard]] RowType& operator[](size_t row) {
+                return m_buffer[row]; // TODO: Add debug assertions for range access
             }
 
             /**
-             * @brief Computes the product of each component of two matrices.
-             * 
-             * @param mat The matrix to multiply.
-             * @return Matrix<T, R, C> A matrix with elements equal to the component products of the inputs.
+             * Gets the row with the specified index.
+             * @param row The row index.
+             * @return The row at the specified index.
              */
-            Matrix<T, R, C> multpilyComponents(const Matrix<T, R, C>& mat) const {
-                Matrix<T, R, C> result = Matrix<T, R, C>();
+            [[nodiscard]] const RowType& operator[](size_t row) const {
+                return m_buffer[row];
+            }
 
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        result.buffer[r][c] = this->buffer[r][c] * mat.buffer[r][c];
-                    }
-                }
+            // Comparison
 
-                return result;
+            /**
+             * Checks if this matrix is equal to another.
+             * @tparam U The type of data stored in the other matrix.
+             * @tparam R2 The number of rows in the other matrix.
+             * @tparam C2 The number of columns in the other matrix.
+             * @param rhs The matrix to compare with.
+             * @return True if the matrices are equal.
+             */
+            template <typename U, size_t R2, size_t C2>
+            [[nodiscard]] bool operator==(const MatrixBase<U, R2, C2>& rhs) const {
+                if constexpr (R2 == R && C2 == C && std::is_same_v<T, U>) {
+                    return memcmp(m_buffer, rhs.m_buffer, Size * sizeof(T)) == 0;
+                } else return false;
             }
 
             /**
-             * @brief Gets the inverse of this matrix.
-             * 
-             * @tparam std::enable_if<(isSquare() && R > 1U)>::type SFINAE enable condition.
-             * 
-             * @return Matrix<T, R, C> The inverse of this matrix.
+             * Checks if this matrix is not equal to another.
+             * @tparam U The type of data stored in the other matrix.
+             * @tparam R2 The number of rows in the other matrix.
+             * @tparam C2 The number of columns in the other matrix.
+             * @param rhs The matrix to compare with.
+             * @return True if the matrices are not equal.
              */
-            template<typename = typename std::enable_if<(isSquare() && R > 1U)>::type>
-            Matrix<T, R, C> inverse() const {
-                T d = determinant();
-                if (d == 0) return Matrix(); //TODO: Handle matrix inversion error when det = 0
-                else {
-                    return adjointMatrix() * (1 / d);
-                }
+            template <typename U, size_t R2, size_t C2>
+            [[nodiscard]] bool operator!=(const MatrixBase<U, R2, C2>& rhs) const {
+                if constexpr (R2 == R && C2 == C && std::is_same_v<T, U>) {
+                    return memcmp(m_buffer, rhs.m_buffer, Size * sizeof(T)) != 0;
+                } else return true;
             }
 
-        // Arithmatic Operators
+            // Conversion
 
-            /**
-             * @brief Add two matrices.
-             * 
-             * @param rhs The right hand side.
-             * @return Matrix<T, R, C> The sum of each matrix.
-             */
-            Matrix<T, R, C> operator+(const Matrix<T, R, C>& rhs) const {
-                Matrix<T, R, C> result = Matrix<T, R, C>();
-
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        result.buffer[r][c] = this->buffer[r][c] + rhs.buffer[r][c];
-                    }
-                }
-
-                return result;
-            }
-
-            /**
-             * @brief Subtract two matrices.
-             * 
-             * @param rhs The right hand side.
-             * @return Matrix<T, R, C> The difference of each matrix.
-             */
-            Matrix<T, R, C> operator-(const Matrix<T, R, C>& rhs) const {
-                Matrix<T, R, C> result = Matrix<T, R, C>();
-
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        result.buffer[r][c] = this->buffer[r][c] - rhs.buffer[r][c];
-                    }
-                }
-
-                return result;
-            }
-
-            /**
-             * @brief The matrix multiplication of two matrices.
-             * 
-             * @tparam N The columns of the right hand side.
-             * @param rhs The right hand side.
-             * @return Matrix<T, R, N> The matrix product of two matrices.
-             */
-            template<std::size_t N>
-            Matrix<T, R, N> operator*(const Matrix<T, C, N>& rhs) const {
-                Matrix<T, R, N> result = Matrix<T, R, N>();
-
-                for (std::size_t c = 0; c < N; c++) {
-                    for (std::size_t r = 0; r < R; r++) {
-
-                        T v = 0;
-                        for (std::size_t i = 0; i < C; i++) {
-                            v += this->buffer[r][i] * rhs.buffer[i][c];
-                        }
-
-                        result.buffer[r][c] = v;
-                    }
-                }
-
-                return result;
-            }
-
-            /**
-             * @brief The scalar product of a matrix and a float.
-             * 
-             * @param rhs The right hand side.
-             * @return Matrix<T, R, C> This matrix scaled by a float.
-             */
-            Matrix<T, R, C> operator*(const T& rhs) const {
-                Matrix<T, R, C> result = Matrix<T, R, C>();
-
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        result.buffer[r][c] = this->buffer[r][c] * rhs;
-                    }
-                }
-
-                return result;
-            }
-
-            template<typename, std::size_t, std::size_t>
-            friend Matrix<T, R, C> operator*(const T& lhs, const Matrix<T, R, C>& rhs);
-
-        // Accessor operators
-
-            /**
-             * @brief A getter for elements of this matrix.
-             * 
-             * @param row The row index to get.
-             * @param column The column index to get.
-             * @return T& The value at the specified position.
-             */
-            T& operator()(const std::size_t& row, const std::size_t& column) {
-                if (row >= R || column >= C) throw std::out_of_range("Attempting to access out of range element.");
-                return buffer[row][column];
-            }
-
-            /**
-             * @brief A getter for elements of this matrix.
-             * 
-             * @param row The row index to get.
-             * @param column The column index to get.
-             * @return const T& The value at the specified position.
-             */
-            const T& operator()(const std::size_t& row, const std::size_t& column) const {
-                if (row >= R || column >= C) throw std::out_of_range("Attempting to access out of range element.");
-                return buffer[row][column];
-            }
-
-        // Assignment Operators
-
-            /**
-             * @brief The copy assignment operator for Matrix objects.
-             * @details Reassigns the value of this object by copying the data of a Matrix into this object.
-             */
-            Matrix<T, R, C>& operator=(const Matrix<T, R, C>& ref) {
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = ref(r, c);
-                    }
-                }
-                return *this;
-            }
-
-            /**
-             * @brief The move assignment operator for Matrix objects.
-             * @details Reassigns the value of this object by moving the data of a Matrix into this object.
-             */
-            Matrix<T, R, C>& operator=(Matrix<T, R, C>&& ref) {
-                for (std::size_t r = 0; r < R; r++) {
-                    for (std::size_t c = 0; c < C; c++) {
-                        this->buffer[r][c] = ref(r, c);
-                    }
-                }
-                return *this;
-            }
-
-        // Cast Operators
-
-            operator std::string() const {
+            // TODO: Replace with ToString template defined in String.hpp
+            [[nodiscard]] friend std::string ToString(const Matrix<T, R, C>& matrix) {
                 std::stringstream ss("");
                 ss << "[ ";
-                for (std::size_t r = 0; r < R; r++) {
+                for (size_t r = 0; r < R; r++) {
                     ss << "[";
-                    for (std::size_t c = 0; c < C; c++) {
-                        ss << this->buffer[r][c];
+                    for (size_t c = 0; c < C; c++) {
+                        ss << matrix[r][c];
                         if (c < C - 1) ss << ", ";
                     }
                     ss << "]";
@@ -520,27 +356,270 @@ namespace seedengine {
                 return ss.str();
             }
 
-        // IO Operators
-
-            template<typename, std::size_t, std::size_t>
-            friend std::ostream& operator<<(std::ostream& os, const Matrix<T, R, C>& rhs);
-
+            // TODO: Add +=, -=, *= (T), and /= (T) operator overloads
     };
 
-    // Global arithmatic operators
+/**
+ * A matrix of R rows and C columns of T typed elements.
+ * @tparam T The type of element stored in this matrix.
+ * @tparam R The number of rows in this matrix.
+ * @tparam C The number of columns in this matrix.
+ */
+    template <typename T, size_t R, size_t C>
+    struct ENGINE_API Matrix final : public MatrixBase<T, R, C> {
 
-    template<typename T, std::size_t R, std::size_t C>
-    Matrix<T, R, C> operator*(const T& lhs, const Matrix<T, R, C>& rhs) {
-        return rhs * lhs;
-    }
+        /**
+         * Constructs a new matrix with 0 initialized values.
+         */
+        Matrix() noexcept = default;
+        /**
+         * Constructs a new matrix with all elements initialized to the provided value.
+         * @param value The value to initialize all elements to.
+         */
+        explicit Matrix(const T& value) noexcept : MatrixBase<T, R, C>(value) {}
+        /**
+         * Constructs a new matrix by copying the RxC array provided.
+         * @param buffer The array to copy.
+         */
+        Matrix(const T (&buffer)[R][C]) noexcept : MatrixBase<T, R, C>(buffer) {}
+        /**
+         * Copy constructs a new matrix instance.
+         * @param ref The matrix to copy.
+         */
+        Matrix(const Matrix<T, R, C>& ref) noexcept : MatrixBase<T, R, C>(ref) {}
+        /**
+         * Move constructs a new matrix instance.
+         * @param ref The matrix to move from.
+         */
+        Matrix(Matrix<T, R, C>&& ref) noexcept : MatrixBase<T, R, C>(ref) {}
+    };
 
-    // IO Operators
+/**
+ * A 1x1 matrix of T typed elements.
+ * @tparam T The type of elements stored by this matrix.
+ */
+    template <typename T>
+    struct ENGINE_API Matrix<T, 1, 1> final : public MatrixBase<T, 1, 1> {
 
-    template<typename T, std::size_t R, std::size_t C>
-    std::ostream& operator<<(std::ostream& os, const Matrix<T, R, C>& rhs) {
-        os << (String)rhs;
-        return os;
-    }
+        /**
+         * Constructs a new matrix with 0 initialized values.
+         */
+        Matrix() noexcept = default;
+
+        /**
+         * Constructs a new matrix with all elements initialized to the provided value.
+         * @param value The value to initialize all elements to.
+         */
+        explicit Matrix(const T& value) noexcept : MatrixBase<T, 1, 1>(value) {}
+
+        /**
+         * Constructs a new matrix by copying the 1x1 array provided.
+         * @param buffer The array to copy.
+         */
+        Matrix(const T (&buffer)[1][1]) noexcept : MatrixBase<T, 1, 1>(buffer) {}
+
+        /**
+         * Copy constructs a new matrix instance.
+         * @param ref The matrix to copy.
+         */
+        Matrix(const Matrix<T, 1, 1>& ref) noexcept : MatrixBase<T, 1, 1>(ref) {}
+
+        /**
+         * Move constructs a new matrix instance.
+         * @param ref The matrix to move from.
+         */
+        Matrix(Matrix<T, 1, 1>&& ref) noexcept : MatrixBase<T, 1, 1>(ref) {}
+
+        /**
+         * Returns the identity matrix for this square matrix type.
+         * @return The identity matrix.
+         */
+        [[nodiscard]] static constexpr Matrix<T, 1, 1> Identity() {
+            Matrix<T, 1, 1> matrix;
+            matrix.m_buffer[0][0] = 1;
+            return matrix;
+        }
+
+        /**
+         * Returns true if this matrix is invertible.
+         * @return True if this matrix is invertible.
+         */
+        [[nodiscard]] bool invertible() const {
+            return determinant() != 0;
+        }
+
+        /**
+         * Returns the inverse of this matrix if it exists, or a zero filled matrix if it does not.
+         * @return The inverse of this matrix.
+         */
+        [[nodiscard]] Matrix<T, 1, 1> inverse() const {
+            Matrix<T, 1, 1> matrix;
+            T det = determinant();
+            if (det != 0) // TODO: Handle non-invertible case
+                matrix.m_buffer[0][0] = 1 / det;
+            return matrix;
+        }
+
+        /**
+         * Calculates and returns the determinant of this matrix.
+         * @return The determinant of this matrix.
+         */
+        [[nodiscard]] T determinant() const {
+            return this->m_buffer[0][0];
+        }
+    };
+
+/**
+ * A square matrix of size NxN with T typed elements.
+ * @tparam T The type of element stored in this matrix.
+ * @tparam N The number or rows or columns in this matrix.
+ */
+    template <typename T, size_t N>
+    struct ENGINE_API Matrix<T, N, N> final : public MatrixBase<T, N, N> {
+
+        /**
+         * Constructs a new matrix with 0 initialized values.
+         */
+        Matrix() noexcept = default;
+
+        /**
+         * Constructs a new matrix with all elements initialized to the provided value.
+         * @param value The value to initialize all elements to.
+         */
+        explicit Matrix(const T& value) noexcept : MatrixBase<T, N, N>(value) {}
+
+        /**
+         * Constructs a new matrix by copying the NxN array provided.
+         * @param buffer The array to copy.
+         */
+        Matrix(const T (&buffer)[N][N]) noexcept : MatrixBase<T, N, N>(buffer) {}
+
+        /**
+         * Copy constructs a new matrix instance.
+         * @param ref The matrix to copy.
+         */
+        Matrix(const Matrix<T, N, N>& ref) noexcept : MatrixBase<T, N, N>(ref) {}
+
+        /**
+         * Move constructs a new matrix instance.
+         * @param ref The matrix to move from.
+         */
+        Matrix(Matrix<T, N, N>&& ref) noexcept : MatrixBase<T, N, N>(ref) {}
+
+        /**
+         * Returns the identity matrix for this square matrix type.
+         * @return The identity matrix.
+         */
+        [[nodiscard]] static constexpr Matrix<T, N, N> Identity() {
+            Matrix<T, N, N> matrix;
+            for (size_t i = 0; i < N; i++) {
+                matrix.m_buffer[i][i] = 1;
+            }
+            return matrix;
+        }
+
+        /**
+         * Calculates the minor of the specified row and column.
+         * @param row The row to exclude.
+         * @param col The column to exclude.
+         * @return The minor matrix of the specified row and column.
+         */
+        [[nodiscard]] Matrix<T, N - 1, N - 1> minorMatrix(size_t row, size_t col) const {
+            Matrix<T, N - 1, N - 1> matrix;
+            int r = 0;
+            int c = 0;
+            for (size_t i = 0; i < N; i++) {
+                if (i != row) {
+                    for (size_t j = 0; j < N; j++) {
+                        if (j != col) {
+                            matrix[r][c++] = this->m_buffer[i][j];
+                        }
+                    }
+                    c = 0;
+                    r++;
+                }
+            }
+            return matrix;
+        }
+
+        /**
+         * Returns the determinant of the minor matrix or the specified row and column.
+         * @param row The row to exclude.
+         * @param col The column to exclude.
+         * @return The determinant of the minor matrix or the specified row and column.
+         */
+        [[nodiscard]] T minor(size_t row, size_t col) const {
+            return minorMatrix(row, col).determinant();
+        }
+
+        /**
+         * Returns the cofactor of the specified row and column.
+         * @param row The row to consider.
+         * @param col The column to consider.
+         * @return The cofactor of the specified row and column.
+         */
+        [[nodiscard]] T cofactor(size_t row, size_t col) const {
+            return (((row + col) % 2) ? -1 : 1) * minor(row, col);
+        }
+
+        /**
+         * Returns the matrix of all cofactors of this matrix.
+         * @return The matrix of all cofactors of this matrix.
+         */
+        [[nodiscard]] Matrix<T, N, N> cofactorMatrix() const {
+            Matrix<T, N, N> result = Matrix<T, N, N>();
+            for (size_t r = 0; r < N; r++) {
+                for (size_t c = 0; c < N; c++) {
+                    result.m_buffer[r][c] = cofactor(r, c);
+                }
+            }
+            return result;
+        }
+
+        /**
+         * Returns the adjoint of the matrix, equal to the transpose of the cofactor matrix.
+         * @return The adjoint matrix of this matrix.
+         */
+        [[nodiscard]] Matrix<T, N, N> adjoint() const {
+            return cofactorMatrix().transpose();
+        }
+
+        /**
+         * Returns true if this matrix is invertible.
+         * @return True if this matrix is invertible.
+         */
+        [[nodiscard]] bool invertible() const {
+            return determinant() != 0;
+        }
+
+        /**
+         * Returns the inverse of this matrix if it exists, or a zero filled matrix if it does not.
+         * @return The inverse of this matrix.
+         */
+        [[nodiscard]] Matrix<T, N, N> inverse() const {
+            Matrix<T, N, N> matrix;
+            T det = determinant();
+            if (det != 0) // TODO: Handle non-invertible case
+                return adjoint() * (1 / det);
+            return matrix;
+        }
+
+        /**
+         * Calculates and returns the determinant of this matrix.
+         * @return The determinant of this matrix.
+         */
+        [[nodiscard]] T determinant() const {
+            if constexpr (N == 2)
+                return this->m_buffer[0][0] * this->m_buffer[1][1] - this->m_buffer[0][1] * this->m_buffer[1][0];
+            else {
+                T result = 0;
+                for (std::size_t i = 0; i < N; i++) {
+                    result += this->m_buffer[0][i] * cofactor(0, i);
+                }
+                return result;
+            }
+        }
+    };
 
     // Typedefs
 
