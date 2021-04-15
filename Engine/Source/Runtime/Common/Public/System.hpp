@@ -13,6 +13,7 @@
 #define SEEDENGINE_INCLUDE_RUNTIME_COMMON_SYSTEM_H_
 
 #include "CommonAPI.hpp"
+#include "CommonDefinitions.hpp"
 #include "Platform.hpp"
 #include "String.hpp"
 
