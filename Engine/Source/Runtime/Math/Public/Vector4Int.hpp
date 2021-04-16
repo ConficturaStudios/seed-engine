@@ -33,7 +33,7 @@ namespace seedengine {
     class Vector4Int;
 
     /**
-     * @brief A 4 Dimentsional integer vector with components x, y, z, and w
+     * @brief A 4 Dimensional integer vector with components x, y, z, and w
      *
      * @see #Vector2
      * @see #Vector3
@@ -56,15 +56,15 @@ namespace seedengine {
              * @brief Constructs a new Vector4Int initialized to the zero vector.
              * @details Constructs a new Vector4Int with x, y, z, and w initialized to a value of 0.
              */
-            Vector4Int();
+            Vector4Int() noexcept;
 
             /**
              * @brief Constructs a new Vector4Int with x, y, z, and w initialized to the specified value.
              * @details Constructs a new Vector4Int with x, y, z, and w initialized to the specified value.
              *
-             * @param value The value to use when initializeing this vector.
+             * @param value The value to use when initializing this vector.
              */
-            Vector4Int(const int& value);
+            explicit Vector4Int(int value) noexcept;
 
             /**
              * @brief Constructs a new Vector4Int from the specified values.
@@ -75,7 +75,7 @@ namespace seedengine {
              * @param z The value to initialize z to.
              * @param w The value to initialize w to.
              */
-            Vector4Int(const int& x, const int& y, const int& z, const int& w);
+            Vector4Int(int x, int y, int z, int w) noexcept;
             
             /**
              * @brief Constructs a new Vector4Int by appending a z and w value to an existing Vector2Int.
@@ -85,7 +85,7 @@ namespace seedengine {
              * @param z The value to initialize z to.
              * @param w The value to initialize w to.
              */
-            Vector4Int(const Vector2Int& xy, const int& z, const int& w);
+            Vector4Int(const Vector2Int& xy, int z, int w) noexcept;
             
             /**
              * @brief Constructs a new Vector4Int by prepending a x value to an existing Vector2Int and appending a w value.
@@ -95,7 +95,7 @@ namespace seedengine {
              * @param yz The Vector2Int to use to initialize y and z.
              * @param w The value to initialize w to.
              */
-            Vector4Int(const int& x, const Vector2Int& yz, const int& w);
+            Vector4Int(int x, const Vector2Int& yz, int w) noexcept;
             
             /**
              * @brief Constructs a new Vector4Int by prepending a x and y value to an existing Vector2Int.
@@ -105,16 +105,16 @@ namespace seedengine {
              * @param y The value to initialize y to.
              * @param zw The Vector2Int to use to initialize z and w.
              */
-            Vector4Int(const int& x, const int& y, const Vector2Int& zw);
+            Vector4Int(int x, int y, const Vector2Int& zw) noexcept;
             
             /**
-             * @brief Constructs a new Vector4Int by concatinating two Vector2Ints.
-             * @details Constructs a new Vector4Int by concatinating two Vector2Int values.
+             * @brief Constructs a new Vector4Int by concatenating two Vector2Ints.
+             * @details Constructs a new Vector4Int by concatenating two Vector2Int values.
              *
              * @param xy The Vector2Int to use to initialize x and y.
              * @param zw The Vector2Int to use to initialize z and w.
              */
-            Vector4Int(const Vector2Int& xy, const Vector2Int& zw);
+            Vector4Int(const Vector2Int& xy, const Vector2Int& zw) noexcept;
             
             /**
              * @brief Constructs a new Vector4Int by appending a w value to an existing Vector3Int.
@@ -123,7 +123,7 @@ namespace seedengine {
              * @param xyz The Vector3Int to use to initialize x, y, and z.
              * @param w The value to initialize w to.
              */
-            Vector4Int(const Vector3Int& xyz, const int& w);
+            Vector4Int(const Vector3Int& xyz, int w) noexcept;
             
             /**
              * @brief Constructs a new Vector4Int by prepending a x value to an existing Vector3Int.
@@ -132,7 +132,7 @@ namespace seedengine {
              * @param x The value to initialize x to.
              * @param yz The Vector3Int to use to initialize y, z, and w.
              */
-            Vector4Int(const int& x, const Vector3Int& yzw);
+            Vector4Int(int x, const Vector3Int& yzw) noexcept;
             
             /**
              * @brief Construct a new Vector4Int from an existing int array.
@@ -144,25 +144,25 @@ namespace seedengine {
 
             /**
              * @brief Copy construct a new Vector4Int from an existing Vector4Int.
-             * @details Constructs a new Vector4Int by copying the values stored in an exisiting Vector4Int.
+             * @details Constructs a new Vector4Int by copying the values stored in an existing Vector4Int.
              * 
              * @param vec The vector to copy.
              */
-            Vector4Int(const Vector4Int& vec);
+            Vector4Int(const Vector4Int& vec) noexcept;
 
             /**
              * @brief Move construct a new Vector4Int from an existing Vector4Int.
-             * @details Constructs a new Vector4Int by moving the values stored in an exisiting Vector4Int rvalue into this object.
+             * @details Constructs a new Vector4Int by moving the values stored in an existing Vector4Int rvalue into this object.
              * 
              * @param vec The vector to move.
              */
-            Vector4Int(Vector4Int&& vec);
+            Vector4Int(Vector4Int&& vec) noexcept;
 
             // Properties
 
             union {
                 /** The elements of this vector in a raw buffer array. */
-                int buffer[SIZE];
+                int buffer[SIZE]{};
                 struct {
                     /** The x component of this vector. */
                     int x;
@@ -214,7 +214,7 @@ namespace seedengine {
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The distance between the two vectos.
+             * @return float The distance between the two vectors.
              */
             static float distance(const Vector4Int& v0, const Vector4Int& v1);
 
@@ -223,7 +223,7 @@ namespace seedengine {
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return int The dot product the two vectos.
+             * @return int The dot product the two vectors.
              */
             static int dot(const Vector4Int& v0, const Vector4Int& v1);
 
@@ -287,27 +287,27 @@ namespace seedengine {
 
             // Accessor operators
 
-            int& operator[](const int& index);
+            int& operator[](int index);
 
-            const int& operator[](const int& index) const;
+            const int& operator[](int index) const;
 
-            // Arithmatic operators
+            // Arithmetic operators
 
             Vector4Int operator+(const Vector4Int& vec) const;
-            Vector4Int operator+(const int& f) const;
-            friend ENGINE_API Vector4Int operator+(const int& f, const Vector4Int& vector);
+            Vector4Int operator+(int f) const;
+            friend ENGINE_API Vector4Int operator+(int f, const Vector4Int& vector);
 
             Vector4Int operator-(const Vector4Int& vec) const;
-            Vector4Int operator-(const int& f) const;
-            friend ENGINE_API Vector4Int operator+(const int& f, const Vector4Int& vector);
+            Vector4Int operator-(int f) const;
+            friend ENGINE_API Vector4Int operator+(int f, const Vector4Int& vector);
 
             Vector4Int operator/(const Vector4Int& vec) const;
-            Vector4Int operator/(const int& f) const;
-            friend ENGINE_API Vector4Int operator/(const int& f, const Vector4Int& vector);
+            Vector4Int operator/(int f) const;
+            friend ENGINE_API Vector4Int operator/(int f, const Vector4Int& vector);
 
             Vector4Int operator*(const Vector4Int& vec) const;
-            Vector4Int operator*(const int& f) const;
-            friend ENGINE_API Vector4Int operator*(const int& f, const Vector4Int& vector);
+            Vector4Int operator*(int f) const;
+            friend ENGINE_API Vector4Int operator*(int f, const Vector4Int& vector);
 
             // Boolean operators
 
@@ -318,26 +318,26 @@ namespace seedengine {
             // Assignment operators
 
             Vector4Int& operator=(const Vector4Int& vec);
-            Vector4Int& operator=(const int& value);
+            Vector4Int& operator=(int value);
 
             // Cast operators
 
-            operator Vector2() const;
-            operator Vector3() const;
-            operator Vector4() const;
+            explicit operator Vector2() const;
+            explicit operator Vector3() const;
+            explicit operator Vector4() const;
 
-            operator Vector2Int() const;
-            operator Vector3Int() const;
+            explicit operator Vector2Int() const;
+            explicit operator Vector3Int() const;
 
-            operator Matrix1x2Int() const;
-            operator Matrix1x3Int() const;
-            operator Matrix1x4Int() const;
-            
-            operator Matrix2x1Int() const;
-            operator Matrix3x1Int() const;
-            operator Matrix4x1Int() const;
+            explicit operator Matrix1x2Int() const;
+            explicit operator Matrix1x3Int() const;
+            explicit operator Matrix1x4Int() const;
 
-            operator std::string() const;
+            explicit operator Matrix2x1Int() const;
+            explicit operator Matrix3x1Int() const;
+            explicit operator Matrix4x1Int() const;
+
+            explicit operator ::std::string() const;
 
             // IO operators
 
@@ -345,12 +345,12 @@ namespace seedengine {
 
     };
 
-    // Global arithmatic operators
+    // Global arithmetic operators
 
-    ENGINE_API Vector4Int operator+(const int& f, const Vector4Int& vector);
-    ENGINE_API Vector4Int operator-(const int& f, const Vector4Int& vector);
-    ENGINE_API Vector4Int operator*(const int& f, const Vector4Int& vector);
-    ENGINE_API Vector4Int operator/(const int& f, const Vector4Int& vector);
+    ENGINE_API Vector4Int operator+(int f, const Vector4Int& vector);
+    ENGINE_API Vector4Int operator-(int f, const Vector4Int& vector);
+    ENGINE_API Vector4Int operator*(int f, const Vector4Int& vector);
+    ENGINE_API Vector4Int operator/(int f, const Vector4Int& vector);
 
     // Global IO operators
 

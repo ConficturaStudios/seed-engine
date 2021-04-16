@@ -33,53 +33,53 @@ namespace seedengine {
 
     // Constructors
 
-    Vector4Int::Vector4Int() : Vector4Int(0) {};
+    Vector4Int::Vector4Int() noexcept = default;
 
-    Vector4Int::Vector4Int(const int& value) : Vector4Int(value, value, value, value) {};
+    Vector4Int::Vector4Int(int value) noexcept : Vector4Int(value, value, value, value) {};
 
-    Vector4Int::Vector4Int(const int& x, const int& y, const int& z, const int& w) {
+    Vector4Int::Vector4Int(int x, int y, int z, int w) noexcept {
         this->x = x;
         this->y = y;
         this->z = z;
         this->w = w;
     }
 
-    Vector4Int::Vector4Int(const Vector2Int& xy, const int& z, const int& w) {
+    Vector4Int::Vector4Int(const Vector2Int& xy, int z, int w) noexcept {
         this->x = xy.x;
         this->y = xy.y;
         this->z = z;
         this->w = w;
     }
     
-    Vector4Int::Vector4Int(const int& x, const Vector2Int& yz, const int& w) {
+    Vector4Int::Vector4Int(int x, const Vector2Int& yz, int w) noexcept {
         this->x = x;
         this->y = yz.x;
         this->z = yz.y;
         this->w = w;
     }
 
-    Vector4Int::Vector4Int(const int& x, const int& y, const Vector2Int& zw) {
+    Vector4Int::Vector4Int(int x, int y, const Vector2Int& zw) noexcept {
         this->x = x;
         this->y = y;
         this->z = zw.x;
         this->w = zw.y;
     }
     
-    Vector4Int::Vector4Int(const Vector2Int& xy, const Vector2Int& zw) {
+    Vector4Int::Vector4Int(const Vector2Int& xy, const Vector2Int& zw) noexcept {
         this->x = xy.x;
         this->y = xy.y;
         this->z = zw.x;
         this->w = zw.y;
     }
     
-    Vector4Int::Vector4Int(const Vector3Int& xyz, const int& w) {
+    Vector4Int::Vector4Int(const Vector3Int& xyz, int w) noexcept {
         this->x = xyz.x;
         this->y = xyz.y;
         this->z = xyz.z;
         this->w = w;
     }
     
-    Vector4Int::Vector4Int(const int& x, const Vector3Int& yzw) {
+    Vector4Int::Vector4Int(int x, const Vector3Int& yzw) noexcept {
         this->x = x;
         this->y = yzw.x;
         this->z = yzw.y;
@@ -93,14 +93,14 @@ namespace seedengine {
         this->buffer[3] = buffer[3];
     }
 
-    Vector4Int::Vector4Int(const Vector4Int& vec) {
+    Vector4Int::Vector4Int(const Vector4Int& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
         this->buffer[2] = vec.buffer[2];
         this->buffer[3] = vec.buffer[3];
     }
 
-    Vector4Int::Vector4Int(Vector4Int&& vec) {
+    Vector4Int::Vector4Int(Vector4Int&& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
         this->buffer[2] = vec.buffer[2];
@@ -157,17 +157,17 @@ namespace seedengine {
 
     // Accessor operators
 
-    int& Vector4Int::operator[](const int& index) {
+    int& Vector4Int::operator[](int index) {
         if (index < 0 || index >= SIZE) throw std::out_of_range("Attempting to access out of range element.");
         return buffer[index];
     }
 
-    const int& Vector4Int::operator[](const int& index) const {
+    const int& Vector4Int::operator[](int index) const {
         if (index < 0 || index >= SIZE) throw std::out_of_range("Attempting to access out of range element.");
         return buffer[index];
     }
 
-    // Arithmatic operators
+    // Arithmetic operators
 
     Vector4Int Vector4Int::operator+(const Vector4Int& vec) const {
         Vector4Int v = Vector4Int();
@@ -177,7 +177,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4Int Vector4Int::operator+(const int& f) const {
+    Vector4Int Vector4Int::operator+(int f) const {
         Vector4Int v = Vector4Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] + f;
@@ -193,7 +193,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4Int Vector4Int::operator-(const int& f) const {
+    Vector4Int Vector4Int::operator-(int f) const {
         Vector4Int v = Vector4Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] - f;
@@ -209,7 +209,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4Int Vector4Int::operator/(const int& f) const {
+    Vector4Int Vector4Int::operator/(int f) const {
         Vector4Int v = Vector4Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] / f;
@@ -225,7 +225,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4Int Vector4Int::operator*(const int& f) const {
+    Vector4Int Vector4Int::operator*(int f) const {
         Vector4Int v = Vector4Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] * f;
@@ -258,7 +258,7 @@ namespace seedengine {
         return *this;
     }
 
-    Vector4Int& Vector4Int::operator=(const int& value) {
+    Vector4Int& Vector4Int::operator=(int value) {
         for (int i = 0; i < SIZE; i++) {
             buffer[i] = value;
         }
@@ -289,37 +289,37 @@ namespace seedengine {
 
 
     Vector4Int::operator Matrix1x2Int() const {
-        Matrix1x2Int::type arr[1][2] = { {x, y} };
+        Matrix1x2Int::Type arr[1][2] = { {x, y} };
         return Matrix1x2Int(arr);
     }
 
     Vector4Int::operator Matrix1x3Int() const {
-        Matrix1x3Int::type arr[1][3] = { {x, y, z} };
+        Matrix1x3Int::Type arr[1][3] = { {x, y, z} };
         return Matrix1x3Int(arr);
     }
 
     Vector4Int::operator Matrix1x4Int() const {
-        Matrix1x4Int::type arr[1][4] = { {x, y, z, w} };
+        Matrix1x4Int::Type arr[1][4] = { {x, y, z, w} };
         return Matrix1x4Int(arr);
     }
 
     Vector4Int::operator Matrix2x1Int() const {
-        Matrix2x1Int::type arr[2][1] = { {x}, {y} };
+        Matrix2x1Int::Type arr[2][1] = { {x}, {y} };
         return Matrix2x1Int(arr);
     }
 
     Vector4Int::operator Matrix3x1Int() const {
-        Matrix3x1Int::type arr[3][1] = { {x}, {y}, {z} };
+        Matrix3x1Int::Type arr[3][1] = { {x}, {y}, {z} };
         return Matrix3x1Int(arr);
     }
 
     Vector4Int::operator Matrix4x1Int() const {
-        Matrix4x1Int::type arr[4][1] = { {x}, {y}, {z}, {w} };
+        Matrix4x1Int::Type arr[4][1] = { {x}, {y}, {z}, {w} };
         return Matrix4x1Int(arr);
     }
 
 
-    Vector4Int::operator std::string() const {
+    Vector4Int::operator ::std::string() const {
         std::stringstream ss("");
         ss << "<";
         for (int i = 0; i < SIZE; i++) {
@@ -330,18 +330,18 @@ namespace seedengine {
         return ss.str();
     }
 
-    // Arithmatic operators ----------------------------------------------------------
+    // Arithmetic operators ----------------------------------------------------------
 
-    ENGINE_API Vector4Int operator+(const int& f, const Vector4Int& vector) {
+    ENGINE_API Vector4Int operator+(int f, const Vector4Int& vector) {
         return vector + f;
     }
-    ENGINE_API Vector4Int operator-(const int& f, const Vector4Int& vector) {
+    ENGINE_API Vector4Int operator-(int f, const Vector4Int& vector) {
         return Vector4Int(f - vector.x, f - vector.y, f - vector.z, f - vector.w);
     }
-    ENGINE_API Vector4Int operator*(const int& f, const Vector4Int& vector) {
+    ENGINE_API Vector4Int operator*(int f, const Vector4Int& vector) {
         return vector * f;
     }
-    ENGINE_API Vector4Int operator/(const int& f, const Vector4Int& vector) {
+    ENGINE_API Vector4Int operator/(int f, const Vector4Int& vector) {
         return Vector4Int(f / vector.x, f / vector.y, f / vector.z, f / vector.w);
     }
 

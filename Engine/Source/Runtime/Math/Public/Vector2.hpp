@@ -33,7 +33,7 @@ namespace seedengine {
     class Vector4Int;
 
     /**
-     * @brief A 2 Dimentsional vector with components x and y.
+     * @brief A 2 Dimensional vector with components x and y.
      *
      * @see #Vector3
      * @see #Vector4
@@ -56,7 +56,7 @@ namespace seedengine {
              * @brief Constructs a new Vector2 initialized to the zero vector.
              * @details Constructs a new Vector2 with x an y both initialized to a value of 0.
              */
-            Vector2();
+            Vector2() noexcept;
 
             /**
              * @brief Constructs a new Vector2 with both x and y initialized to the specified value.
@@ -64,7 +64,7 @@ namespace seedengine {
              *
              * @param value The value to use when initializing this vector.
              */
-            Vector2(const float& value);
+            explicit Vector2(float value) noexcept;
 
             /**
              * @brief Constructs a new Vector2 from the specified values.
@@ -73,7 +73,7 @@ namespace seedengine {
              * @param x The value to initialize x to.
              * @param y The value to initialize y to.
              */
-            Vector2(const float& x, const float& y);
+            Vector2(float x, float y) noexcept;
 
             /**
              * @brief Construct a new Vector2 from an existing float array.
@@ -85,25 +85,25 @@ namespace seedengine {
 
             /**
              * @brief Copy construct a new Vector2 from an existing Vector2.
-             * @details Constructs a new Vector2 by copying the values stored in an exisiting Vector2.
+             * @details Constructs a new Vector2 by copying the values stored in an existing Vector2.
              * 
              * @param vec The vector to copy.
              */
-            Vector2(const Vector2& vec);
+            Vector2(const Vector2& vec) noexcept;
 
             /**
              * @brief Move construct a new Vector2 from an existing Vector2.
-             * @details Constructs a new Vector2 by moving the values stored in an exisiting Vector2 rvalue into this object.
+             * @details Constructs a new Vector2 by moving the values stored in an existing Vector2 rvalue into this object.
              * 
              * @param vec The vector to move.
              */
-            Vector2(Vector2&& vec);
+            Vector2(Vector2&& vec) noexcept;
 
         // Properties
 
             union {
                 /** The elements of this vector in a raw buffer array. */
-                float buffer[SIZE];
+                float buffer[SIZE]{};
                 struct {
                     /** The x component of this vector. */
                     float x;
@@ -136,25 +136,25 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return float The angle between the vectors in radians.
              */
-            static float angle(const Vector2& v0, const Vector2& v1);
+            [[nodiscard]] static float angle(const Vector2& v0, const Vector2& v1);
 
             /**
              * @brief Calculates the distance between two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The distance between the two vectos.
+             * @return float The distance between the two vectors.
              */
-            static float distance(const Vector2& v0, const Vector2& v1);
+            [[nodiscard]] static float distance(const Vector2& v0, const Vector2& v1);
 
             /**
              * @brief Calculates the dot product of two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The dot product the two vectos.
+             * @return float The dot product the two vectors.
              */
-            static float dot(const Vector2& v0, const Vector2& v1);
+            [[nodiscard]] static float dot(const Vector2& v0, const Vector2& v1);
 
             /**
              * @brief Returns the magnitude (vector length) of the passed vector.
@@ -162,7 +162,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The magnitude (vector length) of the vector.
              */
-            static float magnitude(const Vector2& v);
+            [[nodiscard]] static float magnitude(const Vector2& v);
 
             /**
              * @brief Returns the squared magnitude (vector length) of the passed vector.
@@ -172,7 +172,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The squared magnitude (vector length) of the vector.
              */
-            static float mag2(const Vector2& v);
+            [[nodiscard]] static float mag2(const Vector2& v);
 
             /**
              * @brief Returns the normalized version of the passed vector.
@@ -182,7 +182,7 @@ namespace seedengine {
              * @param v The vector to normalize.
              * @return Vector2 The normalized vector.
              */
-            static Vector2 normalize(const Vector2& v);
+            [[nodiscard]] static Vector2 normalize(const Vector2& v);
 
             /**
              * @brief Reflects the incident vector off of a surface with the specified normal.
@@ -191,7 +191,7 @@ namespace seedengine {
              * @param normal The surface normal vector.
              * @return Vector2 The reflection of the incident vector.
              */
-            static Vector2 reflect(const Vector2& incident, const Vector2& normal);
+            [[nodiscard]] static Vector2 reflect(const Vector2& incident, const Vector2& normal);
 
             /**
              * @brief Refracts an incident vector based on a surface normal and index of refraction.
@@ -201,7 +201,7 @@ namespace seedengine {
              * @param eta The index of refraction.
              * @return Vector2 The refraction of the incident vector.
              */
-            static Vector2 refract(const Vector2& incident, const Vector2& normal, const float& eta);
+            [[nodiscard]] static Vector2 refract(const Vector2& incident, const Vector2& normal, float eta);
 
             /**
              * @brief Projects vector a onto vector b.
@@ -210,7 +210,7 @@ namespace seedengine {
              * @param b The vector to project onto.
              * @return Vector2 The projection of a onto b.
              */
-            static Vector2 project(const Vector2& a, const Vector2& b);
+            [[nodiscard]] static Vector2 project(const Vector2& a, const Vector2& b);
 
             /**
              * @brief Orthogonally projects vector a onto vector b.
@@ -219,7 +219,7 @@ namespace seedengine {
              * @param b The vector to project onto.
              * @return Vector2 The orthogonal projection of a onto b.
              */
-            static Vector2 ortho(const Vector2& a, const Vector2& b);
+            [[nodiscard]] static Vector2 ortho(const Vector2& a, const Vector2& b);
 
             /**
              * @brief Rotates the passed vector counterclockwise by the given angle.
@@ -228,7 +228,7 @@ namespace seedengine {
              * @param angle The angle to rotate in radians.
              * @return Vector2 The rotated vector.
              */
-            static Vector2 rotate(const Vector2& v, const float& angle);
+            [[nodiscard]] static Vector2 rotate(const Vector2& v, float angle);
 
         // Member Functions
 
@@ -238,7 +238,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The angle in radians between the vectors.
              */
-            float angle(const Vector2& v) const;
+            [[nodiscard]] float angle(const Vector2& v) const;
 
             /**
              * @brief Gets the distance between this vector and the specified vector.
@@ -246,7 +246,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The distance between this vector and the specified vector.
              */
-            float distance(const Vector2& v) const;
+            [[nodiscard]] float distance(const Vector2& v) const;
 
             /**
              * @brief Calculates the dot product between this vector and the specified vector.
@@ -254,21 +254,21 @@ namespace seedengine {
              * @param v The vector to compute the dot product with.
              * @return float The dot product of this vector and the specified vector.
              */
-            float dot(const Vector2& v) const;
+            [[nodiscard]] float dot(const Vector2& v) const;
 
             /**
              * @brief Gets the magnitude (vector length) of this vector.
              *
              * @return float The magnitude (vector length) of this vector.
              */
-            float magnitude() const;
+            [[nodiscard]] float magnitude() const;
 
             /**
              * @brief Gets the squared magnitude (vector length) of this vector.
              *
              * @return float The squared magnitude (vector length) of this vector.
              */
-            float mag2() const;
+            [[nodiscard]] float mag2() const;
 
             /**
              * @brief Gets the normalized version of this vector.
@@ -277,7 +277,7 @@ namespace seedengine {
              *
              * @return Vector2 The normalized version of this vector.
              */
-            Vector2 normalize() const;
+            [[nodiscard]] Vector2 normalize() const;
 
             /**
              * @brief Gets this vector rotated counterclockwise by the given angle.
@@ -285,61 +285,61 @@ namespace seedengine {
              * @param angle The angle to rotate in radians.
              * @return Vector2 The rotated vector.
              */
-            Vector2 rotate(const float& angle) const;
+            [[nodiscard]] Vector2 rotate(float angle) const;
 
         // Accessor operators
 
-            float& operator[](const int& index);
+            [[nodiscard]] float& operator[](const int& index);
 
-            const float& operator[](const int& index) const;
+            [[nodiscard]] const float& operator[](const int& index) const;
 
-        // Arithmatic operators
+        // Arithmetic operators
 
-            Vector2 operator+(const Vector2& vec) const;
-            Vector2 operator+(const float& f) const;
-            friend ENGINE_API Vector2 operator+(const float& f, const Vector2& vector);
+            [[nodiscard]] Vector2 operator+(const Vector2& vec) const;
+            [[nodiscard]] Vector2 operator+(float f) const;
+            friend ENGINE_API Vector2 operator+(float f, const Vector2& vector);
 
-            Vector2 operator-(const Vector2& vec) const;
-            Vector2 operator-(const float& f) const;
-            friend ENGINE_API Vector2 operator+(const float& f, const Vector2& vector);
+            [[nodiscard]] Vector2 operator-(const Vector2& vec) const;
+            [[nodiscard]] Vector2 operator-(float f) const;
+            friend ENGINE_API Vector2 operator+(float f, const Vector2& vector);
 
-            Vector2 operator/(const Vector2& vec) const;
-            Vector2 operator/(const float& f) const;
-            friend ENGINE_API Vector2 operator/(const float& f, const Vector2& vector);
+            [[nodiscard]] Vector2 operator/(const Vector2& vec) const;
+            [[nodiscard]] Vector2 operator/(float f) const;
+            friend ENGINE_API Vector2 operator/(float f, const Vector2& vector);
 
-            Vector2 operator*(const Vector2& vec) const;
-            Vector2 operator*(const float& f) const;
-            friend ENGINE_API Vector2 operator*(const float& f, const Vector2& vector);
+            [[nodiscard]] Vector2 operator*(const Vector2& vec) const;
+            [[nodiscard]] Vector2 operator*(float f) const;
+            friend ENGINE_API Vector2 operator*(float f, const Vector2& vector);
 
         // Boolean operators
 
-            bool operator==(const Vector2& vec) const;
+            [[nodiscard]] bool operator==(const Vector2& vec) const;
 
-            bool operator!=(const Vector2& vec) const;
+            [[nodiscard]] bool operator!=(const Vector2& vec) const;
 
         // Assignment operators
 
             Vector2& operator=(const Vector2& vec);
-            Vector2& operator=(const float& value);
+            Vector2& operator=(float value);
 
         // Cast operators
 
-            operator Vector3() const;
-            operator Vector4() const;
+            [[nodiscard]] explicit operator Vector3() const;
+            [[nodiscard]] explicit operator Vector4() const;
 
-            operator Vector2Int() const;
-            operator Vector3Int() const;
-            operator Vector4Int() const;
+            [[nodiscard]] explicit operator Vector2Int() const;
+            [[nodiscard]] explicit operator Vector3Int() const;
+            [[nodiscard]] explicit operator Vector4Int() const;
 
-            operator Matrix1x2() const;
-            operator Matrix1x3() const;
-            operator Matrix1x4() const;
+            [[nodiscard]] explicit operator Matrix1x2() const;
+            [[nodiscard]] explicit operator Matrix1x3() const;
+            [[nodiscard]] explicit operator Matrix1x4() const;
             
-            operator Matrix2x1() const;
-            operator Matrix3x1() const;
-            operator Matrix4x1() const;
+            [[nodiscard]] explicit operator Matrix2x1() const;
+            [[nodiscard]] explicit operator Matrix3x1() const;
+            [[nodiscard]] explicit operator Matrix4x1() const;
 
-            operator std::string() const;
+            [[nodiscard]] explicit operator ::std::string() const;
 
         // IO operators
 
@@ -348,16 +348,16 @@ namespace seedengine {
 
     };
 
-    // Global arithmatic operators
+    // Global arithmetic operators
 
-    ENGINE_API Vector2 operator+(const float& f, const Vector2& vector);
-    ENGINE_API Vector2 operator-(const float& f, const Vector2& vector);
-    ENGINE_API Vector2 operator*(const float& f, const Vector2& vector);
-    ENGINE_API Vector2 operator/(const float& f, const Vector2& vector);
+    [[nodiscard]] ENGINE_API Vector2 operator+(float f, const Vector2& vector);
+    [[nodiscard]] ENGINE_API Vector2 operator-(float f, const Vector2& vector);
+    [[nodiscard]] ENGINE_API Vector2 operator*(float f, const Vector2& vector);
+    [[nodiscard]] ENGINE_API Vector2 operator/(float f, const Vector2& vector);
 
     // Global IO operators
 
-    ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector2& c);
+    [[nodiscard]] ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector2& c);
 
 }
 

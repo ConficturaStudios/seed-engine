@@ -33,53 +33,53 @@ namespace seedengine {
 
     // Constructors
 
-    Vector4::Vector4() : Vector4(0) {};
+    Vector4::Vector4() noexcept = default;
 
-    Vector4::Vector4(const float& value) : Vector4(value, value, value, value) {};
+    Vector4::Vector4(float value) noexcept : Vector4(value, value, value, value) {};
 
-    Vector4::Vector4(const float& x, const float& y, const float& z, const float& w) {
+    Vector4::Vector4(float x, float y, float z, float w) noexcept {
         this->x = x;
         this->y = y;
         this->z = z;
         this->w = w;
     }
 
-    Vector4::Vector4(const Vector2& xy, const float& z, const float& w) {
+    Vector4::Vector4(const Vector2& xy, float z, float w) noexcept {
         this->x = xy.x;
         this->y = xy.y;
         this->z = z;
         this->w = w;
     }
     
-    Vector4::Vector4(const float& x, const Vector2& yz, const float& w) {
+    Vector4::Vector4(float x, const Vector2& yz, float w) noexcept {
         this->x = x;
         this->y = yz.x;
         this->z = yz.y;
         this->w = w;
     }
 
-    Vector4::Vector4(const float& x, const float& y, const Vector2& zw) {
+    Vector4::Vector4(float x, float y, const Vector2& zw) noexcept {
         this->x = x;
         this->y = y;
         this->z = zw.x;
         this->w = zw.y;
     }
     
-    Vector4::Vector4(const Vector2& xy, const Vector2& zw) {
+    Vector4::Vector4(const Vector2& xy, const Vector2& zw) noexcept {
         this->x = xy.x;
         this->y = xy.y;
         this->z = zw.x;
         this->w = zw.y;
     }
     
-    Vector4::Vector4(const Vector3& xyz, const float& w) {
+    Vector4::Vector4(const Vector3& xyz, float w) noexcept {
         this->x = xyz.x;
         this->y = xyz.y;
         this->z = xyz.z;
         this->w = w;
     }
     
-    Vector4::Vector4(const float& x, const Vector3& yzw) {
+    Vector4::Vector4(float x, const Vector3& yzw) noexcept {
         this->x = x;
         this->y = yzw.x;
         this->z = yzw.y;
@@ -93,14 +93,14 @@ namespace seedengine {
         this->buffer[3] = buffer[3];
     }
 
-    Vector4::Vector4(const Vector4& vec) {
+    Vector4::Vector4(const Vector4& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
         this->buffer[2] = vec.buffer[2];
         this->buffer[3] = vec.buffer[3];
     }
 
-    Vector4::Vector4(Vector4&& vec) {
+    Vector4::Vector4(Vector4&& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
         this->buffer[2] = vec.buffer[2];
@@ -141,7 +141,7 @@ namespace seedengine {
         return incident - (2 * dot(normal, incident) * normal);
     }
 
-    Vector4 Vector4::refract(const Vector4& incident, const Vector4& normal, const float& eta) {
+    Vector4 Vector4::refract(const Vector4& incident, const Vector4& normal, float eta) {
         float d = dot(normal, incident);
         float t = 1 - (eta * eta * (1 - d * d));
         if (t < 0) return Vector4();
@@ -194,7 +194,7 @@ namespace seedengine {
         return buffer[index];
     }
 
-    // Arithmatic operators
+    // Arithmetic operators
 
     Vector4 Vector4::operator+(const Vector4& vec) const {
         Vector4 v = Vector4();
@@ -204,7 +204,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4 Vector4::operator+(const float& f) const {
+    Vector4 Vector4::operator+(float f) const {
         Vector4 v = Vector4();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] + f;
@@ -220,7 +220,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4 Vector4::operator-(const float& f) const {
+    Vector4 Vector4::operator-(float f) const {
         Vector4 v = Vector4();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] - f;
@@ -236,7 +236,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4 Vector4::operator/(const float& f) const {
+    Vector4 Vector4::operator/(float f) const {
         Vector4 v = Vector4();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] / f;
@@ -252,7 +252,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector4 Vector4::operator*(const float& f) const {
+    Vector4 Vector4::operator*(float f) const {
         Vector4 v = Vector4();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] * f;
@@ -285,7 +285,7 @@ namespace seedengine {
         return *this;
     }
 
-    Vector4& Vector4::operator=(const float& value) {
+    Vector4& Vector4::operator=(float value) {
         for (int i = 0; i < SIZE; i++) {
             buffer[i] = value;
         }
@@ -316,37 +316,37 @@ namespace seedengine {
 
 
     Vector4::operator Matrix1x2() const {
-        Matrix1x2::type arr[1][2] = { {x, y} };
+        Matrix1x2::Type arr[1][2] = { {x, y} };
         return Matrix1x2(arr);
     }
 
     Vector4::operator Matrix1x3() const {
-        Matrix1x3::type arr[1][3] = { {x, y, z} };
+        Matrix1x3::Type arr[1][3] = { {x, y, z} };
         return Matrix1x3(arr);
     }
 
     Vector4::operator Matrix1x4() const {
-        Matrix1x4::type arr[1][4] = { {x, y, z, w} };
+        Matrix1x4::Type arr[1][4] = { {x, y, z, w} };
         return Matrix1x4(arr);
     }
 
     Vector4::operator Matrix2x1() const {
-        Matrix2x1::type arr[2][1] = { {x}, {y} };
+        Matrix2x1::Type arr[2][1] = { {x}, {y} };
         return Matrix2x1(arr);
     }
 
     Vector4::operator Matrix3x1() const {
-        Matrix3x1::type arr[3][1] = { {x}, {y}, {z} };
+        Matrix3x1::Type arr[3][1] = { {x}, {y}, {z} };
         return Matrix3x1(arr);
     }
 
     Vector4::operator Matrix4x1() const {
-        Matrix4x1::type arr[4][1] = { {x}, {y}, {z}, {w} };
+        Matrix4x1::Type arr[4][1] = { {x}, {y}, {z}, {w} };
         return Matrix4x1(arr);
     }
 
 
-    Vector4::operator std::string() const {
+    Vector4::operator ::std::string() const {
         std::stringstream ss("");
         ss << "<";
         for (int i = 0; i < SIZE; i++) {
@@ -357,18 +357,18 @@ namespace seedengine {
         return ss.str();
     }
 
-    // Arithmatic operators ----------------------------------------------------------
+    // Arithmetic operators ----------------------------------------------------------
 
-    ENGINE_API Vector4 operator+(const float& f, const Vector4& vector) {
+    ENGINE_API Vector4 operator+(float f, const Vector4& vector) {
         return vector + f;
     }
-    ENGINE_API Vector4 operator-(const float& f, const Vector4& vector) {
+    ENGINE_API Vector4 operator-(float f, const Vector4& vector) {
         return Vector4(f - vector.x, f - vector.y, f - vector.z, f - vector.w);
     }
-    ENGINE_API Vector4 operator*(const float& f, const Vector4& vector) {
+    ENGINE_API Vector4 operator*(float f, const Vector4& vector) {
         return vector * f;
     }
-    ENGINE_API Vector4 operator/(const float& f, const Vector4& vector) {
+    ENGINE_API Vector4 operator/(float f, const Vector4& vector) {
         return Vector4(f / vector.x, f / vector.y, f / vector.z, f / vector.w);
     }
 

@@ -29,11 +29,11 @@ namespace seedengine {
 
     // Constructors
 
-    Vector2Int::Vector2Int() : Vector2Int(0) {};
+    Vector2Int::Vector2Int() noexcept = default;
 
-    Vector2Int::Vector2Int(const int& value) : Vector2Int(value, value) {};
+    Vector2Int::Vector2Int(int value) noexcept : Vector2Int(value, value) {};
 
-    Vector2Int::Vector2Int(const int& x, const int& y) {
+    Vector2Int::Vector2Int(int x, int y) noexcept {
         this->x = x;
         this->y = y;
     }
@@ -43,12 +43,12 @@ namespace seedengine {
         this->buffer[1] = buffer[1];
     }
 
-    Vector2Int::Vector2Int(const Vector2Int& vec) {
+    Vector2Int::Vector2Int(const Vector2Int& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
     }
 
-    Vector2Int::Vector2Int(Vector2Int&& vec) {
+    Vector2Int::Vector2Int(Vector2Int&& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
     }
@@ -103,17 +103,17 @@ namespace seedengine {
 
     // Accessor operators
 
-    int& Vector2Int::operator[](const int& index) {
+    int& Vector2Int::operator[](int index) {
         if (index < 0 || index >= SIZE) throw std::out_of_range("Attempting to access out of range element.");
         return buffer[index];
     }
 
-    const int& Vector2Int::operator[](const int& index) const {
+    const int& Vector2Int::operator[](int index) const {
         if (index < 0 || index >= SIZE) throw std::out_of_range("Attempting to access out of range element.");
         return buffer[index];
     }
 
-    // Arithmatic operators
+    // Arithmetic operators
 
     Vector2Int Vector2Int::operator+(const Vector2Int& vec) const {
         Vector2Int v = Vector2Int();
@@ -123,7 +123,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2Int Vector2Int::operator+(const int& f) const {
+    Vector2Int Vector2Int::operator+(int f) const {
         Vector2Int v = Vector2Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] + f;
@@ -139,7 +139,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2Int Vector2Int::operator-(const int& f) const {
+    Vector2Int Vector2Int::operator-(int f) const {
         Vector2Int v = Vector2Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] - f;
@@ -155,7 +155,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2Int Vector2Int::operator/(const int& f) const {
+    Vector2Int Vector2Int::operator/(int f) const {
         Vector2Int v = Vector2Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] / f;
@@ -171,7 +171,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2Int Vector2Int::operator*(const int& f) const {
+    Vector2Int Vector2Int::operator*(int f) const {
         Vector2Int v = Vector2Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] * f;
@@ -202,7 +202,7 @@ namespace seedengine {
         return *this;
     }
 
-    Vector2Int& Vector2Int::operator=(const int& value) {
+    Vector2Int& Vector2Int::operator=(int value) {
         for (int i = 0; i < SIZE; i++) {
             buffer[i] = value;
         }
@@ -233,37 +233,37 @@ namespace seedengine {
 
 
     Vector2Int::operator Matrix1x2Int() const {
-        Matrix1x2Int::type arr[1][2] = { {x, y} };
+        Matrix1x2Int::Type arr[1][2] = { {x, y} };
         return Matrix1x2Int(arr);
     }
 
     Vector2Int::operator Matrix1x3Int() const {
-        Matrix1x3Int::type arr[1][3] = { {x, y, 0} };
+        Matrix1x3Int::Type arr[1][3] = { {x, y, 0} };
         return Matrix1x3Int(arr);
     }
 
     Vector2Int::operator Matrix1x4Int() const {
-        Matrix1x4Int::type arr[1][4] = { {x, y, 0, 0} };
+        Matrix1x4Int::Type arr[1][4] = { {x, y, 0, 0} };
         return Matrix1x4Int(arr);
     }
 
     Vector2Int::operator Matrix2x1Int() const {
-        Matrix2x1Int::type arr[2][1] = { {x}, {y} };
+        Matrix2x1Int::Type arr[2][1] = { {x}, {y} };
         return Matrix2x1Int(arr);
     }
 
     Vector2Int::operator Matrix3x1Int() const {
-        Matrix3x1Int::type arr[3][1] = { {x}, {y}, {0} };
+        Matrix3x1Int::Type arr[3][1] = { {x}, {y}, {0} };
         return Matrix3x1Int(arr);
     }
 
     Vector2Int::operator Matrix4x1Int() const {
-        Matrix4x1Int::type arr[4][1] = { {x}, {y}, {0}, {0} };
+        Matrix4x1Int::Type arr[4][1] = { {x}, {y}, {0}, {0} };
         return Matrix4x1Int(arr);
     }
 
 
-    Vector2Int::operator std::string() const {
+    Vector2Int::operator ::std::string() const {
         std::stringstream ss("");
         ss << "<";
         for (int i = 0; i < SIZE; i++) {
@@ -274,18 +274,18 @@ namespace seedengine {
         return ss.str();
     }
 
-    // Arithmatic operators ----------------------------------------------------------
+    // Arithmetic operators ----------------------------------------------------------
 
-    ENGINE_API Vector2Int operator+(const int& f, const Vector2Int& vector) {
+    ENGINE_API Vector2Int operator+(int f, const Vector2Int& vector) {
         return vector + f;
     }
-    ENGINE_API Vector2Int operator-(const int& f, const Vector2Int& vector) {
+    ENGINE_API Vector2Int operator-(int f, const Vector2Int& vector) {
         return Vector2Int(f - vector.x, f - vector.y);
     }
-    ENGINE_API Vector2Int operator*(const int& f, const Vector2Int& vector) {
+    ENGINE_API Vector2Int operator*(int f, const Vector2Int& vector) {
         return vector * f;
     }
-    ENGINE_API Vector2Int operator/(const int& f, const Vector2Int& vector) {
+    ENGINE_API Vector2Int operator/(int f, const Vector2Int& vector) {
         return Vector2Int(f / vector.x, f / vector.y);
     }
 

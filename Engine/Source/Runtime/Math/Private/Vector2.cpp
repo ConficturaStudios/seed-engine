@@ -29,11 +29,11 @@ namespace seedengine {
 
     // Constructors
 
-    Vector2::Vector2() : Vector2(0) {};
+    Vector2::Vector2() noexcept = default;
 
-    Vector2::Vector2(const float& value) : Vector2(value, value) {};
+    Vector2::Vector2(float value) noexcept : Vector2(value, value) {};
 
-    Vector2::Vector2(const float& x, const float& y) {
+    Vector2::Vector2(float x, float y) noexcept {
         this->x = x;
         this->y = y;
     }
@@ -43,12 +43,12 @@ namespace seedengine {
         this->buffer[1] = buffer[1];
     }
 
-    Vector2::Vector2(const Vector2& vec) {
+    Vector2::Vector2(const Vector2& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
     }
 
-    Vector2::Vector2(Vector2&& vec) {
+    Vector2::Vector2(Vector2&& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
     }
@@ -87,7 +87,7 @@ namespace seedengine {
         return incident - (2 * dot(normal, incident) * normal);
     }
 
-    Vector2 Vector2::refract(const Vector2& incident, const Vector2& normal, const float& eta) {
+    Vector2 Vector2::refract(const Vector2& incident, const Vector2& normal, float eta) {
         float d = dot(normal, incident);
         float t = 1 - (eta * eta * (1 - d * d));
         if (t < 0) return Vector2();
@@ -102,7 +102,7 @@ namespace seedengine {
         return a - (b * (dot(a, b) / dot(b, b)));
     }
 
-    Vector2 Vector2::rotate(const Vector2& v, const float& angle) {
+    Vector2 Vector2::rotate(const Vector2& v, float angle) {
         return Vector2(
             (math::cos(angle) * v.x) - (math::sin(angle) * v.y),
             (math::sin(angle) * v.x) + (math::cos(angle) * v.y)
@@ -135,7 +135,7 @@ namespace seedengine {
         return normalize(*this);
     }
 
-    Vector2 Vector2::rotate(const float& angle) const {
+    Vector2 Vector2::rotate(float angle) const {
         return rotate(*this, angle);
     }
 
@@ -151,7 +151,7 @@ namespace seedengine {
         return buffer[index];
     }
 
-    // Arithmatic operators
+    // Arithmetic operators
 
     Vector2 Vector2::operator+(const Vector2& vec) const {
         Vector2 v = Vector2();
@@ -161,7 +161,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2 Vector2::operator+(const float& f) const {
+    Vector2 Vector2::operator+(float f) const {
         Vector2 v = Vector2();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] + f;
@@ -177,7 +177,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2 Vector2::operator-(const float& f) const {
+    Vector2 Vector2::operator-(float f) const {
         Vector2 v = Vector2();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] - f;
@@ -193,7 +193,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2 Vector2::operator/(const float& f) const {
+    Vector2 Vector2::operator/(float f) const {
         Vector2 v = Vector2();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] / f;
@@ -209,7 +209,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector2 Vector2::operator*(const float& f) const {
+    Vector2 Vector2::operator*(float f) const {
         Vector2 v = Vector2();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] * f;
@@ -240,7 +240,7 @@ namespace seedengine {
         return *this;
     }
 
-    Vector2& Vector2::operator=(const float& value) {
+    Vector2& Vector2::operator=(float value) {
         for (int i = 0; i < SIZE; i++) {
             buffer[i] = value;
         }
@@ -271,37 +271,37 @@ namespace seedengine {
 
 
     Vector2::operator Matrix1x2() const {
-        Matrix1x2::type arr[1][2] = { {x, y} };
+        Matrix1x2::Type arr[1][2] = { {x, y} };
         return Matrix1x2(arr);
     }
 
     Vector2::operator Matrix1x3() const {
-        Matrix1x3::type arr[1][3] = { {x, y, 0} };
+        Matrix1x3::Type arr[1][3] = { {x, y, 0} };
         return Matrix1x3(arr);
     }
 
     Vector2::operator Matrix1x4() const {
-        Matrix1x4::type arr[1][4] = { {x, y, 0, 0} };
+        Matrix1x4::Type arr[1][4] = { {x, y, 0, 0} };
         return Matrix1x4(arr);
     }
 
     Vector2::operator Matrix2x1() const {
-        Matrix2x1::type arr[2][1] = { {x}, {y} };
+        Matrix2x1::Type arr[2][1] = { {x}, {y} };
         return Matrix2x1(arr);
     }
 
     Vector2::operator Matrix3x1() const {
-        Matrix3x1::type arr[3][1] = { {x}, {y}, {0} };
+        Matrix3x1::Type arr[3][1] = { {x}, {y}, {0} };
         return Matrix3x1(arr);
     }
 
     Vector2::operator Matrix4x1() const {
-        Matrix4x1::type arr[4][1] = { {x}, {y}, {0}, {0} };
+        Matrix4x1::Type arr[4][1] = { {x}, {y}, {0}, {0} };
         return Matrix4x1(arr);
     }
 
 
-    Vector2::operator std::string() const {
+    Vector2::operator ::std::string() const {
         std::stringstream ss("");
         ss << "<";
         for (int i = 0; i < SIZE; i++) {
@@ -312,18 +312,18 @@ namespace seedengine {
         return ss.str();
     }
 
-    // Arithmatic operators ----------------------------------------------------------
+    // Arithmetic operators ----------------------------------------------------------
 
-    ENGINE_API Vector2 operator+(const float& f, const Vector2& vector) {
+    ENGINE_API Vector2 operator+(float f, const Vector2& vector) {
         return vector + f;
     }
-    ENGINE_API Vector2 operator-(const float& f, const Vector2& vector) {
+    ENGINE_API Vector2 operator-(float f, const Vector2& vector) {
         return Vector2(f - vector.x, f - vector.y);
     }
-    ENGINE_API Vector2 operator*(const float& f, const Vector2& vector) {
+    ENGINE_API Vector2 operator*(float f, const Vector2& vector) {
         return vector * f;
     }
-    ENGINE_API Vector2 operator/(const float& f, const Vector2& vector) {
+    ENGINE_API Vector2 operator/(float f, const Vector2& vector) {
         return Vector2(f / vector.x, f / vector.y);
     }
 

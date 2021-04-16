@@ -31,23 +31,23 @@ namespace seedengine {
 
     // Constructors
 
-    Vector3Int::Vector3Int() : Vector3Int(0) {};
+    Vector3Int::Vector3Int() noexcept = default;
 
-    Vector3Int::Vector3Int(const int& value) : Vector3Int(value, value, value) {};
+    Vector3Int::Vector3Int(int value) noexcept : Vector3Int(value, value, value) {};
 
-    Vector3Int::Vector3Int(const int& x, const int& y, const int& z) {
+    Vector3Int::Vector3Int(int x, int y, int z) noexcept {
         this->x = x;
         this->y = y;
         this->z = z;
     }
 
-    Vector3Int::Vector3Int(const Vector2Int& xy, const int& z) {
+    Vector3Int::Vector3Int(const Vector2Int& xy, int z) noexcept {
         this->x = xy.x;
         this->y = xy.y;
         this->z = z;
     }
 
-    Vector3Int::Vector3Int(const int& x, const Vector2Int& yz) {
+    Vector3Int::Vector3Int(int x, const Vector2Int& yz) noexcept {
         this->x = x;
         this->y = yz.x;
         this->z = yz.y;
@@ -59,13 +59,13 @@ namespace seedengine {
         this->buffer[2] = buffer[2];
     }
 
-    Vector3Int::Vector3Int(const Vector3Int& vec) {
+    Vector3Int::Vector3Int(const Vector3Int& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
         this->buffer[2] = vec.buffer[2];
     }
 
-    Vector3Int::Vector3Int(Vector3Int&& vec) {
+    Vector3Int::Vector3Int(Vector3Int&& vec) noexcept {
         this->buffer[0] = vec.buffer[0];
         this->buffer[1] = vec.buffer[1];
         this->buffer[2] = vec.buffer[2];
@@ -133,17 +133,17 @@ namespace seedengine {
 
     // Accessor operators
 
-    int& Vector3Int::operator[](const int& index) {
+    int& Vector3Int::operator[](int index) {
         if (index < 0 || index >= SIZE) throw std::out_of_range("Attempting to access out of range element.");
         return buffer[index];
     }
 
-    const int& Vector3Int::operator[](const int& index) const {
+    const int& Vector3Int::operator[](int index) const {
         if (index < 0 || index >= SIZE) throw std::out_of_range("Attempting to access out of range element.");
         return buffer[index];
     }
 
-    // Arithmatic operators
+    // Arithmetic operators
 
     Vector3Int Vector3Int::operator+(const Vector3Int& vec) const {
         Vector3Int v = Vector3Int();
@@ -153,7 +153,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector3Int Vector3Int::operator+(const int& f) const {
+    Vector3Int Vector3Int::operator+(int f) const {
         Vector3Int v = Vector3Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] + f;
@@ -169,7 +169,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector3Int Vector3Int::operator-(const int& f) const {
+    Vector3Int Vector3Int::operator-(int f) const {
         Vector3Int v = Vector3Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] - f;
@@ -185,7 +185,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector3Int Vector3Int::operator/(const int& f) const {
+    Vector3Int Vector3Int::operator/(int f) const {
         Vector3Int v = Vector3Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] / f;
@@ -201,7 +201,7 @@ namespace seedengine {
         return v;
     }
 
-    Vector3Int Vector3Int::operator*(const int& f) const {
+    Vector3Int Vector3Int::operator*(int f) const {
         Vector3Int v = Vector3Int();
         for (int i = 0; i < SIZE; i++) {
             v.buffer[i] = this->buffer[i] * f;
@@ -233,7 +233,7 @@ namespace seedengine {
         return *this;
     }
 
-    Vector3Int& Vector3Int::operator=(const int& value) {
+    Vector3Int& Vector3Int::operator=(int value) {
         for (int i = 0; i < SIZE; i++) {
             buffer[i] = value;
         }
@@ -264,37 +264,37 @@ namespace seedengine {
 
 
     Vector3Int::operator Matrix1x2Int() const {
-        Matrix1x2Int::type arr[1][2] = { {x, y} };
+        Matrix1x2Int::Type arr[1][2] = { {x, y} };
         return Matrix1x2Int(arr);
     }
 
     Vector3Int::operator Matrix1x3Int() const {
-        Matrix1x3Int::type arr[1][3] = { {x, y, z} };
+        Matrix1x3Int::Type arr[1][3] = { {x, y, z} };
         return Matrix1x3Int(arr);
     }
 
     Vector3Int::operator Matrix1x4Int() const {
-        Matrix1x4Int::type arr[1][4] = { {x, y, z, 0} };
+        Matrix1x4Int::Type arr[1][4] = { {x, y, z, 0} };
         return Matrix1x4Int(arr);
     }
 
     Vector3Int::operator Matrix2x1Int() const {
-        Matrix2x1Int::type arr[2][1] = { {x}, {y} };
+        Matrix2x1Int::Type arr[2][1] = { {x}, {y} };
         return Matrix2x1Int(arr);
     }
 
     Vector3Int::operator Matrix3x1Int() const {
-        Matrix3x1Int::type arr[3][1] = { {x}, {y}, {z} };
+        Matrix3x1Int::Type arr[3][1] = { {x}, {y}, {z} };
         return Matrix3x1Int(arr);
     }
 
     Vector3Int::operator Matrix4x1Int() const {
-        Matrix4x1Int::type arr[4][1] = { {x}, {y}, {z}, {0} };
+        Matrix4x1Int::Type arr[4][1] = { {x}, {y}, {z}, {0} };
         return Matrix4x1Int(arr);
     }
 
 
-    Vector3Int::operator std::string() const {
+    Vector3Int::operator ::std::string() const {
         std::stringstream ss("");
         ss << "<";
         for (int i = 0; i < SIZE; i++) {
@@ -305,18 +305,18 @@ namespace seedengine {
         return ss.str();
     }
 
-    // Arithmatic operators ----------------------------------------------------------
+    // Arithmetic operators ----------------------------------------------------------
 
-    ENGINE_API Vector3Int operator+(const int& f, const Vector3Int& vector) {
+    ENGINE_API Vector3Int operator+(int f, const Vector3Int& vector) {
         return vector + f;
     }
-    ENGINE_API Vector3Int operator-(const int& f, const Vector3Int& vector) {
+    ENGINE_API Vector3Int operator-(int f, const Vector3Int& vector) {
         return Vector3Int(f - vector.x, f - vector.y, f - vector.z);
     }
-    ENGINE_API Vector3Int operator*(const int& f, const Vector3Int& vector) {
+    ENGINE_API Vector3Int operator*(int f, const Vector3Int& vector) {
         return vector * f;
     }
-    ENGINE_API Vector3Int operator/(const int& f, const Vector3Int& vector) {
+    ENGINE_API Vector3Int operator/(int f, const Vector3Int& vector) {
         return Vector3Int(f / vector.x, f / vector.y, f / vector.z);
     }
 

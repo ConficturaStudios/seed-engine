@@ -33,7 +33,7 @@ namespace seedengine {
     class Vector4Int;
 
     /**
-     * @brief A 3 Dimentsional integer vector with components x, y, and z.
+     * @brief A 3 Dimensional integer vector with components x, y, and z.
      *
      * @see #Vector2
      * @see #Vector3
@@ -56,15 +56,15 @@ namespace seedengine {
              * @brief Constructs a new Vector3Int initialized to the zero vector.
              * @details Constructs a new Vector3Int with x, y, and z initialized to a value of 0.
              */
-            Vector3Int();
+            Vector3Int() noexcept;
 
             /**
              * @brief Constructs a new Vector3Int with x, y, and z initialized to the specified value.
              * @details Constructs a new Vector3Int with x, y, and z initialized to the specified value.
              *
-             * @param value The value to use when initializeing this vector.
+             * @param value The value to use when initializing this vector.
              */
-            Vector3Int(const int& value);
+            explicit Vector3Int(int value) noexcept;
 
             /**
              * @brief Constructs a new Vector3Int from the specified values.
@@ -74,7 +74,7 @@ namespace seedengine {
              * @param y The value to initialize y to.
              * @param z The value to initialize z to.
              */
-            Vector3Int(const int& x, const int& y, const int& z);
+            Vector3Int(int x, int y, int z) noexcept;
             
             /**
              * @brief Constructs a new Vector3Int by appending a z value to an existing Vector2Int.
@@ -83,7 +83,7 @@ namespace seedengine {
              * @param xy The Vector2Int to use to initialize x and y.
              * @param z The value to initialize z to.
              */
-            Vector3Int(const Vector2Int& xy, const int& z);
+            Vector3Int(const Vector2Int& xy, int z) noexcept;
             
             
             /**
@@ -93,7 +93,7 @@ namespace seedengine {
              * @param x The value to initialize x to.
              * @param yz The Vector2Int to use to initialize y and z.
              */
-            Vector3Int(const int& x, const Vector2Int& yz);
+            Vector3Int(int x, const Vector2Int& yz) noexcept;
 
             /**
              * @brief Construct a new Vector3Int from an existing int array.
@@ -105,25 +105,25 @@ namespace seedengine {
 
             /**
              * @brief Copy construct a new Vector3Int from an existing Vector3Int.
-             * @details Constructs a new Vector3Int by copying the values stored in an exisiting Vector3Int.
+             * @details Constructs a new Vector3Int by copying the values stored in an existing Vector3Int.
              * 
              * @param vec The vector to copy.
              */
-            Vector3Int(const Vector3Int& vec);
+            Vector3Int(const Vector3Int& vec) noexcept;
 
             /**
              * @brief Move construct a new Vector3Int from an existing Vector3Int.
-             * @details Constructs a new Vector3Int by moving the values stored in an exisiting Vector3Int rvalue into this object.
+             * @details Constructs a new Vector3Int by moving the values stored in an existing Vector3Int rvalue into this object.
              * 
              * @param vec The vector to move.
              */
-            Vector3Int(Vector3Int&& vec);
+            Vector3Int(Vector3Int&& vec) noexcept;
 
             // Properties
 
             union {
                 /** The elements of this vector in a raw buffer array. */
-                int buffer[SIZE];
+                int buffer[SIZE]{};
                 struct {
                     /** The x component of this vector. */
                     int x;
@@ -162,25 +162,25 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return float The angle between the vectors in radians.
              */
-            static float angle(const Vector3Int& v0, const Vector3Int& v1);
+            [[nodiscard]] static float angle(const Vector3Int& v0, const Vector3Int& v1);
 
             /**
              * @brief Calculates the distance between two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The distance between the two vectos.
+             * @return float The distance between the two vectors.
              */
-            static float distance(const Vector3Int& v0, const Vector3Int& v1);
+            [[nodiscard]] static float distance(const Vector3Int& v0, const Vector3Int& v1);
 
             /**
              * @brief Calculates the dot product of two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return int The dot product the two vectos.
+             * @return int The dot product the two vectors.
              */
-            static int dot(const Vector3Int& v0, const Vector3Int& v1);
+            [[nodiscard]] static int dot(const Vector3Int& v0, const Vector3Int& v1);
 
             /**
              * @brief Takes the cross product of two vectors.
@@ -189,7 +189,7 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return Vector3Int The vector orthogonal to both v0 and v1.
              */
-            static Vector3Int cross(const Vector3Int& v0, const Vector3Int& v1);
+            [[nodiscard]] static Vector3Int cross(const Vector3Int& v0, const Vector3Int& v1);
 
             /**
              * @brief Returns the magnitude (vector length) of the passed vector.
@@ -197,7 +197,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The magnitude (vector length) of the vector.
              */
-            static float magnitude(const Vector3Int& v);
+            [[nodiscard]] static float magnitude(const Vector3Int& v);
 
             /**
              * @brief Returns the squared magnitude (vector length) of the passed vector.
@@ -207,7 +207,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return int The squared magnitude (vector length) of the vector.
              */
-            static int mag2(const Vector3Int& v);
+            [[nodiscard]] static int mag2(const Vector3Int& v);
 
             // Member Functions
 
@@ -217,7 +217,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The angle in radians between the vectors.
              */
-            float angle(const Vector3Int& v) const;
+            [[nodiscard]] float angle(const Vector3Int& v) const;
 
             /**
              * @brief Gets the distance between this vector and the specified vector.
@@ -225,7 +225,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The distance between this vector and the specified vector.
              */
-            float distance(const Vector3Int& v) const;
+            [[nodiscard]] float distance(const Vector3Int& v) const;
 
             /**
              * @brief Calculates the dot product between this vector and the specified vector.
@@ -233,7 +233,7 @@ namespace seedengine {
              * @param v The vector to compute the dot product with.
              * @return int The dot product of this vector and the specified vector.
              */
-            int dot(const Vector3Int& v) const;
+            [[nodiscard]] int dot(const Vector3Int& v) const;
 
             /**
              * @brief Calculates the cross product between this vector and the specified vector.
@@ -242,75 +242,75 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return Vector3Int The vector orthogonal to both this and v.
              */
-            Vector3Int cross(const Vector3Int& v) const;
+            [[nodiscard]] Vector3Int cross(const Vector3Int& v) const;
 
             /**
              * @brief Gets the magnitude (vector length) of this vector.
              *
              * @return float The magnitude (vector length) of this vector.
              */
-            float magnitude() const;
+            [[nodiscard]] float magnitude() const;
 
             /**
              * @brief Gets the squared magnitude (vector length) of this vector.
              *
              * @return int The squared magnitude (vector length) of this vector.
              */
-            int mag2() const;
+            [[nodiscard]] int mag2() const;
 
             // Accessor operators
 
-            int& operator[](const int& index);
+            [[nodiscard]] int& operator[](int index);
 
-            const int& operator[](const int& index) const;
+            [[nodiscard]] const int& operator[](int index) const;
 
-            // Arithmatic operators
+            // Arithmetic operators
 
-            Vector3Int operator+(const Vector3Int& vec) const;
-            Vector3Int operator+(const int& f) const;
-            friend ENGINE_API Vector3Int operator+(const int& f, const Vector3Int& vector);
+            [[nodiscard]] Vector3Int operator+(const Vector3Int& vec) const;
+            [[nodiscard]] Vector3Int operator+(int f) const;
+            friend ENGINE_API Vector3Int operator+(int f, const Vector3Int& vector);
 
-            Vector3Int operator-(const Vector3Int& vec) const;
-            Vector3Int operator-(const int& f) const;
-            friend ENGINE_API Vector3Int operator+(const int& f, const Vector3Int& vector);
+            [[nodiscard]] Vector3Int operator-(const Vector3Int& vec) const;
+            [[nodiscard]] Vector3Int operator-(int f) const;
+            friend ENGINE_API Vector3Int operator+(int f, const Vector3Int& vector);
 
-            Vector3Int operator/(const Vector3Int& vec) const;
-            Vector3Int operator/(const int& f) const;
-            friend ENGINE_API Vector3Int operator/(const int& f, const Vector3Int& vector);
+            [[nodiscard]] Vector3Int operator/(const Vector3Int& vec) const;
+            [[nodiscard]] Vector3Int operator/(int f) const;
+            friend ENGINE_API Vector3Int operator/(int f, const Vector3Int& vector);
 
-            Vector3Int operator*(const Vector3Int& vec) const;
-            Vector3Int operator*(const int& f) const;
-            friend ENGINE_API Vector3Int operator*(const int& f, const Vector3Int& vector);
+            [[nodiscard]] Vector3Int operator*(const Vector3Int& vec) const;
+            [[nodiscard]] Vector3Int operator*(int f) const;
+            friend ENGINE_API Vector3Int operator*(int f, const Vector3Int& vector);
 
             // Boolean operators
 
-            bool operator==(const Vector3Int& vec) const;
+            [[nodiscard]] bool operator==(const Vector3Int& vec) const;
 
-            bool operator!=(const Vector3Int& vec) const;
+            [[nodiscard]] bool operator!=(const Vector3Int& vec) const;
 
             // Assignment operators
 
             Vector3Int& operator=(const Vector3Int& vec);
-            Vector3Int& operator=(const int& value);
+            Vector3Int& operator=(int value);
 
             // Cast operators
 
-            operator Vector2() const;
-            operator Vector3() const;
-            operator Vector4() const;
+            [[nodiscard]] explicit operator Vector2() const;
+            [[nodiscard]] explicit operator Vector3() const;
+            [[nodiscard]] explicit operator Vector4() const;
 
-            operator Vector2Int() const;
-            operator Vector4Int() const;
+            [[nodiscard]] explicit operator Vector2Int() const;
+            [[nodiscard]] explicit operator Vector4Int() const;
 
-            operator Matrix1x2Int() const;
-            operator Matrix1x3Int() const;
-            operator Matrix1x4Int() const;
+            [[nodiscard]] explicit operator Matrix1x2Int() const;
+            [[nodiscard]] explicit operator Matrix1x3Int() const;
+            [[nodiscard]] explicit operator Matrix1x4Int() const;
             
-            operator Matrix2x1Int() const;
-            operator Matrix3x1Int() const;
-            operator Matrix4x1Int() const;
+            [[nodiscard]] explicit operator Matrix2x1Int() const;
+            [[nodiscard]] explicit operator Matrix3x1Int() const;
+            [[nodiscard]] explicit operator Matrix4x1Int() const;
 
-            operator std::string() const;
+            [[nodiscard]] explicit operator ::std::string() const;
 
             // IO operators
 
@@ -318,16 +318,16 @@ namespace seedengine {
 
     };
 
-    // Global arithmatic operators
+    // Global arithmetic operators
 
-    ENGINE_API Vector3Int operator+(const int& f, const Vector3Int& vector);
-    ENGINE_API Vector3Int operator-(const int& f, const Vector3Int& vector);
-    ENGINE_API Vector3Int operator*(const int& f, const Vector3Int& vector);
-    ENGINE_API Vector3Int operator/(const int& f, const Vector3Int& vector);
+    [[nodiscard]] ENGINE_API Vector3Int operator+(int f, const Vector3Int& vector);
+    [[nodiscard]] ENGINE_API Vector3Int operator-(int f, const Vector3Int& vector);
+    [[nodiscard]] ENGINE_API Vector3Int operator*(int f, const Vector3Int& vector);
+    [[nodiscard]] ENGINE_API Vector3Int operator/(int f, const Vector3Int& vector);
 
     // Global IO operators
 
-    ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector3Int& c);
+    [[nodiscard]] ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector3Int& c);
 
 }
 

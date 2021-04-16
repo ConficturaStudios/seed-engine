@@ -35,7 +35,7 @@ namespace seedengine {
     class Quaternion;
 
     /**
-     * @brief A 3 Dimentsional vector with components x, y, and z.
+     * @brief A 3 Dimensional vector with components x, y, and z.
      *
      * @see #Vector2
      * @see #Vector4
@@ -58,15 +58,15 @@ namespace seedengine {
              * @brief Constructs a new Vector3 initialized to the zero vector.
              * @details Constructs a new Vector3 with x, y, and z initialized to a value of 0.
              */
-            Vector3();
+            Vector3() noexcept;
 
             /**
              * @brief Constructs a new Vector3 with x, y, and z initialized to the specified value.
              * @details Constructs a new Vector3 with x, y, and z initialized to the specified value.
              *
-             * @param value The value to use when initializeing this vector.
+             * @param value The value to use when initializing this vector.
              */
-            Vector3(const float& value);
+            explicit Vector3(float value) noexcept;
 
             /**
              * @brief Constructs a new Vector3 from the specified values.
@@ -76,7 +76,7 @@ namespace seedengine {
              * @param y The value to initialize y to.
              * @param z The value to initialize z to.
              */
-            Vector3(const float& x, const float& y, const float& z);
+            explicit Vector3(float x, float y, float z) noexcept;
             
             /**
              * @brief Constructs a new Vector3 by appending a z value to an existing Vector2.
@@ -85,7 +85,7 @@ namespace seedengine {
              * @param xy The Vector2 to use to initialize x and y.
              * @param z The value to initialize z to.
              */
-            Vector3(const Vector2& xy, const float& z);
+            Vector3(const Vector2& xy, float z) noexcept;
             
             
             /**
@@ -95,7 +95,7 @@ namespace seedengine {
              * @param x The value to initialize x to.
              * @param yz The Vector2 to use to initialize y and z.
              */
-            Vector3(const float& x, const Vector2& yz);
+            Vector3(float x, const Vector2& yz) noexcept;
 
             /**
              * @brief Construct a new Vector3 from an existing float array.
@@ -107,25 +107,25 @@ namespace seedengine {
 
             /**
              * @brief Copy construct a new Vector3 from an existing Vector3.
-             * @details Constructs a new Vector3 by copying the values stored in an exisiting Vector3.
+             * @details Constructs a new Vector3 by copying the values stored in an existing Vector3.
              * 
              * @param vec The vector to copy.
              */
-            Vector3(const Vector3& vec);
+            Vector3(const Vector3& vec) noexcept;
 
             /**
              * @brief Move construct a new Vector3 from an existing Vector3.
-             * @details Constructs a new Vector3 by moving the values stored in an exisiting Vector3 rvalue into this object.
+             * @details Constructs a new Vector3 by moving the values stored in an existing Vector3 rvalue into this object.
              * 
              * @param vec The vector to move.
              */
-            Vector3(Vector3&& vec);
+            Vector3(Vector3&& vec) noexcept;
 
             // Properties
 
             union {
                 /** The elements of this vector in a raw buffer array. */
-                float buffer[SIZE];
+                float buffer[SIZE]{};
                 struct {
                     /** The x component of this vector. */
                     float x;
@@ -164,25 +164,25 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return float The angle between the vectors in radians.
              */
-            static float angle(const Vector3& v0, const Vector3& v1);
+            [[nodiscard]] static float angle(const Vector3& v0, const Vector3& v1);
 
             /**
              * @brief Calculates the distance between two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The distance between the two vectos.
+             * @return float The distance between the two vectors.
              */
-            static float distance(const Vector3& v0, const Vector3& v1);
+            [[nodiscard]] static float distance(const Vector3& v0, const Vector3& v1);
 
             /**
              * @brief Calculates the dot product of two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The dot product the two vectos.
+             * @return float The dot product the two vectors.
              */
-            static float dot(const Vector3& v0, const Vector3& v1);
+            [[nodiscard]] static float dot(const Vector3& v0, const Vector3& v1);
 
             /**
              * @brief Takes the cross product of two vectors.
@@ -191,7 +191,7 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return Vector3 The vector orthogonal to both v0 and v1.
              */
-            static Vector3 cross(const Vector3& v0, const Vector3& v1);
+            [[nodiscard]] static Vector3 cross(const Vector3& v0, const Vector3& v1);
 
             /**
              * @brief Returns the magnitude (vector length) of the passed vector.
@@ -199,7 +199,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The magnitude (vector length) of the vector.
              */
-            static float magnitude(const Vector3& v);
+            [[nodiscard]] static float magnitude(const Vector3& v);
 
             /**
              * @brief Returns the squared magnitude (vector length) of the passed vector.
@@ -209,7 +209,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The squared magnitude (vector length) of the vector.
              */
-            static float mag2(const Vector3& v);
+            [[nodiscard]] static float mag2(const Vector3& v);
 
             /**
              * @brief Returns the normalized version of the passed vector.
@@ -219,7 +219,7 @@ namespace seedengine {
              * @param v The vector to normalize.
              * @return Vector3 The normalized vector.
              */
-            static Vector3 normalize(const Vector3& v);
+            [[nodiscard]] static Vector3 normalize(const Vector3& v);
 
             /**
              * @brief Reflects the incident vector off of a surface with the specified normal.
@@ -228,7 +228,7 @@ namespace seedengine {
              * @param normal The surface normal vector.
              * @return Vector3 The reflection of the incident vector.
              */
-            static Vector3 reflect(const Vector3& incident, const Vector3& normal);
+            [[nodiscard]] static Vector3 reflect(const Vector3& incident, const Vector3& normal);
 
             /**
              * @brief Refracts an incident vector based on a surface normal and index of refraction.
@@ -238,7 +238,7 @@ namespace seedengine {
              * @param eta The index of refraction.
              * @return Vector3 The refraction of the incident vector.
              */
-            static Vector3 refract(const Vector3& incident, const Vector3& normal, const float& eta);
+            [[nodiscard]] static Vector3 refract(const Vector3& incident, const Vector3& normal, float eta);
 
             /**
              * @brief Projects vector a onto vector b.
@@ -247,7 +247,7 @@ namespace seedengine {
              * @param b The vector to project onto.
              * @return Vector3 The projection of a onto b.
              */
-            static Vector3 project(const Vector3& a, const Vector3& b);
+            [[nodiscard]] static Vector3 project(const Vector3& a, const Vector3& b);
 
             /**
              * @brief Orthogonally projects vector a onto vector b.
@@ -256,7 +256,7 @@ namespace seedengine {
              * @param b The vector to project onto.
              * @return Vector3 The orthogonal projection of a onto b.
              */
-            static Vector3 ortho(const Vector3& a, const Vector3& b);
+            [[nodiscard]] static Vector3 ortho(const Vector3& a, const Vector3& b);
 
             /**
              * @brief Rotates the passed vector using the given quaternion.
@@ -265,7 +265,7 @@ namespace seedengine {
              * @param q The quaternion to rotate by.
              * @return Vector3 The rotated vector.
              */
-            static Vector3 rotate(const Vector3& v, const Quaternion& q);
+            [[nodiscard]] static Vector3 rotate(const Vector3& v, const Quaternion& q);
 
             // Member Functions
 
@@ -275,7 +275,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The angle in radians between the vectors.
              */
-            float angle(const Vector3& v) const;
+            [[nodiscard]] float angle(const Vector3& v) const;
 
             /**
              * @brief Gets the distance between this vector and the specified vector.
@@ -283,7 +283,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The distance between this vector and the specified vector.
              */
-            float distance(const Vector3& v) const;
+            [[nodiscard]] float distance(const Vector3& v) const;
 
             /**
              * @brief Calculates the dot product between this vector and the specified vector.
@@ -291,7 +291,7 @@ namespace seedengine {
              * @param v The vector to compute the dot product with.
              * @return float The dot product of this vector and the specified vector.
              */
-            float dot(const Vector3& v) const;
+            [[nodiscard]] float dot(const Vector3& v) const;
 
             /**
              * @brief Calculates the cross product between this vector and the specified vector.
@@ -300,21 +300,21 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return Vector3 The vector orthogonal to both this and v.
              */
-            Vector3 cross(const Vector3& v) const;
+            [[nodiscard]] Vector3 cross(const Vector3& v) const;
 
             /**
              * @brief Gets the magnitude (vector length) of this vector.
              *
              * @return float The magnitude (vector length) of this vector.
              */
-            float magnitude() const;
+            [[nodiscard]] float magnitude() const;
 
             /**
              * @brief Gets the squared magnitude (vector length) of this vector.
              *
              * @return float The squared magnitude (vector length) of this vector.
              */
-            float mag2() const;
+            [[nodiscard]] float mag2() const;
 
             /**
              * @brief Gets the normalized version of this vector.
@@ -323,7 +323,7 @@ namespace seedengine {
              *
              * @return Vector3 The normalized version of this vector.
              */
-            Vector3 normalize() const;
+            [[nodiscard]] Vector3 normalize() const;
 
             /**
              * @brief Gets this vector rotated by the given quaternion.
@@ -331,61 +331,61 @@ namespace seedengine {
              * @param angle The quaternion to rotate by.
              * @return Vector3 The rotated vector.
              */
-            Vector3 rotate(const Quaternion& q) const;
+            [[nodiscard]] Vector3 rotate(const Quaternion& q) const;
 
             // Accessor operators
 
-            float& operator[](const int& index);
+            [[nodiscard]] float& operator[](const int& index);
 
-            const float& operator[](const int& index) const;
+            [[nodiscard]] const float& operator[](const int& index) const;
 
-            // Arithmatic operators
+            // Arithmetic operators
 
-            Vector3 operator+(const Vector3& vec) const;
-            Vector3 operator+(const float& f) const;
-            friend ENGINE_API Vector3 operator+(const float& f, const Vector3& vector);
+            [[nodiscard]] Vector3 operator+(const Vector3& vec) const;
+            [[nodiscard]] Vector3 operator+(float f) const;
+            friend ENGINE_API Vector3 operator+(float f, const Vector3& vector);
 
-            Vector3 operator-(const Vector3& vec) const;
-            Vector3 operator-(const float& f) const;
-            friend ENGINE_API Vector3 operator+(const float& f, const Vector3& vector);
+            [[nodiscard]] Vector3 operator-(const Vector3& vec) const;
+            [[nodiscard]] Vector3 operator-(float f) const;
+            friend ENGINE_API Vector3 operator+(float f, const Vector3& vector);
 
-            Vector3 operator/(const Vector3& vec) const;
-            Vector3 operator/(const float& f) const;
-            friend ENGINE_API Vector3 operator/(const float& f, const Vector3& vector);
+            [[nodiscard]] Vector3 operator/(const Vector3& vec) const;
+            [[nodiscard]] Vector3 operator/(float f) const;
+            friend ENGINE_API Vector3 operator/(float f, const Vector3& vector);
 
-            Vector3 operator*(const Vector3& vec) const;
-            Vector3 operator*(const float& f) const;
-            friend ENGINE_API Vector3 operator*(const float& f, const Vector3& vector);
+            [[nodiscard]] Vector3 operator*(const Vector3& vec) const;
+            [[nodiscard]] Vector3 operator*(float f) const;
+            friend ENGINE_API Vector3 operator*(float f, const Vector3& vector);
 
             // Boolean operators
 
-            bool operator==(const Vector3& vec) const;
+            [[nodiscard]] bool operator==(const Vector3& vec) const;
 
-            bool operator!=(const Vector3& vec) const;
+            [[nodiscard]] bool operator!=(const Vector3& vec) const;
 
             // Assignment operators
 
             Vector3& operator=(const Vector3& vec);
-            Vector3& operator=(const float& value);
+            Vector3& operator=(float value);
 
             // Cast operators
 
-            operator Vector2() const;
-            operator Vector4() const;
+            [[nodiscard]] explicit operator Vector2() const;
+            [[nodiscard]] explicit operator Vector4() const;
 
-            operator Vector2Int() const;
-            operator Vector3Int() const;
-            operator Vector4Int() const;
+            [[nodiscard]] explicit operator Vector2Int() const;
+            [[nodiscard]] explicit operator Vector3Int() const;
+            [[nodiscard]] explicit operator Vector4Int() const;
 
-            operator Matrix1x2() const;
-            operator Matrix1x3() const;
-            operator Matrix1x4() const;
+            [[nodiscard]] explicit operator Matrix1x2() const;
+            [[nodiscard]] explicit operator Matrix1x3() const;
+            [[nodiscard]] explicit operator Matrix1x4() const;
             
-            operator Matrix2x1() const;
-            operator Matrix3x1() const;
-            operator Matrix4x1() const;
+            [[nodiscard]] explicit operator Matrix2x1() const;
+            [[nodiscard]] explicit operator Matrix3x1() const;
+            [[nodiscard]] explicit operator Matrix4x1() const;
 
-            operator std::string() const;
+            [[nodiscard]] explicit operator ::std::string() const;
 
             // IO operators
 
@@ -393,16 +393,16 @@ namespace seedengine {
 
     };
 
-    // Global arithmatic operators
+    // Global arithmetic operators
 
-    ENGINE_API Vector3 operator+(const float& f, const Vector3& vector);
-    ENGINE_API Vector3 operator-(const float& f, const Vector3& vector);
-    ENGINE_API Vector3 operator*(const float& f, const Vector3& vector);
-    ENGINE_API Vector3 operator/(const float& f, const Vector3& vector);
+    [[nodiscard]] ENGINE_API Vector3 operator+(float f, const Vector3& vector);
+    [[nodiscard]] ENGINE_API Vector3 operator-(float f, const Vector3& vector);
+    [[nodiscard]] ENGINE_API Vector3 operator*(float f, const Vector3& vector);
+    [[nodiscard]] ENGINE_API Vector3 operator/(float f, const Vector3& vector);
 
     // Global IO operators
 
-    ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector3& c);
+    [[nodiscard]] ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector3& c);
 
 }
 

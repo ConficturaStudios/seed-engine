@@ -33,7 +33,7 @@ namespace seedengine {
     class Vector4Int;
 
     /**
-     * @brief A 4 Dimentsional vector with components x, y, z, and w
+     * @brief A 4 Dimensional vector with components x, y, z, and w
      *
      * @see #Vector2
      * @see #Vector3
@@ -56,15 +56,15 @@ namespace seedengine {
              * @brief Constructs a new Vector4 initialized to the zero vector.
              * @details Constructs a new Vector4 with x, y, z, and w initialized to a value of 0.
              */
-            Vector4();
+            Vector4() noexcept;
 
             /**
              * @brief Constructs a new Vector4 with x, y, z, and w initialized to the specified value.
              * @details Constructs a new Vector4 with x, y, z, and w initialized to the specified value.
              *
-             * @param value The value to use when initializeing this vector.
+             * @param value The value to use when initializing this vector.
              */
-            Vector4(const float& value);
+            explicit Vector4(float value) noexcept;
 
             /**
              * @brief Constructs a new Vector4 from the specified values.
@@ -75,7 +75,7 @@ namespace seedengine {
              * @param z The value to initialize z to.
              * @param w The value to initialize w to.
              */
-            Vector4(const float& x, const float& y, const float& z, const float& w);
+            Vector4(float x, float y, float z, float w) noexcept;
             
             /**
              * @brief Constructs a new Vector4 by appending a z and w value to an existing Vector2.
@@ -85,7 +85,7 @@ namespace seedengine {
              * @param z The value to initialize z to.
              * @param w The value to initialize w to.
              */
-            Vector4(const Vector2& xy, const float& z, const float& w);
+            Vector4(const Vector2& xy, float z, float w) noexcept;
             
             /**
              * @brief Constructs a new Vector4 by prepending a x value to an existing Vector2 and appending a w value.
@@ -95,7 +95,7 @@ namespace seedengine {
              * @param yz The Vector2 to use to initialize y and z.
              * @param w The value to initialize w to.
              */
-            Vector4(const float& x, const Vector2& yz, const float& w);
+            Vector4(float x, const Vector2& yz, float w) noexcept;
             
             /**
              * @brief Constructs a new Vector4 by prepending a x and y value to an existing Vector2.
@@ -105,16 +105,16 @@ namespace seedengine {
              * @param y The value to initialize y to.
              * @param zw The Vector2 to use to initialize z and w.
              */
-            Vector4(const float& x, const float& y, const Vector2& zw);
+            Vector4(float x, float y, const Vector2& zw) noexcept;
             
             /**
-             * @brief Constructs a new Vector4 by concatinating two Vector2s.
-             * @details Constructs a new Vector4 by concatinating two Vector2 values.
+             * @brief Constructs a new Vector4 by concatenating two Vector2s.
+             * @details Constructs a new Vector4 by concatenating two Vector2 values.
              *
              * @param xy The Vector2 to use to initialize x and y.
              * @param zw The Vector2 to use to initialize z and w.
              */
-            Vector4(const Vector2& xy, const Vector2& zw);
+            Vector4(const Vector2& xy, const Vector2& zw) noexcept;
             
             /**
              * @brief Constructs a new Vector4 by appending a w value to an existing Vector3.
@@ -123,7 +123,7 @@ namespace seedengine {
              * @param xyz The Vector3 to use to initialize x, y, and z.
              * @param w The value to initialize w to.
              */
-            Vector4(const Vector3& xyz, const float& w);
+            Vector4(const Vector3& xyz, float w) noexcept;
             
             /**
              * @brief Constructs a new Vector4 by prepending a x value to an existing Vector3.
@@ -132,7 +132,7 @@ namespace seedengine {
              * @param x The value to initialize x to.
              * @param yz The Vector3 to use to initialize y, z, and w.
              */
-            Vector4(const float& x, const Vector3& yzw);
+            Vector4(float x, const Vector3& yzw) noexcept;
             
             /**
              * @brief Construct a new Vector4 from an existing float array.
@@ -144,25 +144,25 @@ namespace seedengine {
 
             /**
              * @brief Copy construct a new Vector4 from an existing Vector4.
-             * @details Constructs a new Vector4 by copying the values stored in an exisiting Vector4.
+             * @details Constructs a new Vector4 by copying the values stored in an existing Vector4.
              * 
              * @param vec The vector to copy.
              */
-            Vector4(const Vector4& vec);
+            Vector4(const Vector4& vec) noexcept;
 
             /**
              * @brief Move construct a new Vector4 from an existing Vector4.
-             * @details Constructs a new Vector4 by moving the values stored in an exisiting Vector4 rvalue into this object.
+             * @details Constructs a new Vector4 by moving the values stored in an existing Vector4 rvalue into this object.
              * 
              * @param vec The vector to move.
              */
-            Vector4(Vector4&& vec);
+            Vector4(Vector4&& vec) noexcept;
 
             // Properties
 
             union {
                 /** The elements of this vector in a raw buffer array. */
-                float buffer[SIZE];
+                float buffer[SIZE]{};
                 struct {
                     /** The x component of this vector. */
                     float x;
@@ -207,25 +207,25 @@ namespace seedengine {
              * @param v1 The second vector.
              * @return float The angle between the vectors in radians.
              */
-            static float angle(const Vector4& v0, const Vector4& v1);
+            [[nodiscard]] static float angle(const Vector4& v0, const Vector4& v1);
 
             /**
              * @brief Calculates the distance between two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The distance between the two vectos.
+             * @return float The distance between the two vectors.
              */
-            static float distance(const Vector4& v0, const Vector4& v1);
+            [[nodiscard]] static float distance(const Vector4& v0, const Vector4& v1);
 
             /**
              * @brief Calculates the dot product of two vectors.
              *
              * @param v0 The first vector.
              * @param v1 The second vector.
-             * @return float The dot product the two vectos.
+             * @return float The dot product the two vectors.
              */
-            static float dot(const Vector4& v0, const Vector4& v1);
+            [[nodiscard]] static float dot(const Vector4& v0, const Vector4& v1);
 
             /**
              * @brief Returns the magnitude (vector length) of the passed vector.
@@ -233,7 +233,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The magnitude (vector length) of the vector.
              */
-            static float magnitude(const Vector4& v);
+            [[nodiscard]] static float magnitude(const Vector4& v);
 
             /**
              * @brief Returns the squared magnitude (vector length) of the passed vector.
@@ -243,7 +243,7 @@ namespace seedengine {
              * @param v The vector to evaluate.
              * @return float The squared magnitude (vector length) of the vector.
              */
-            static float mag2(const Vector4& v);
+            [[nodiscard]] static float mag2(const Vector4& v);
 
             /**
              * @brief Returns the normalized version of the passed vector.
@@ -253,7 +253,7 @@ namespace seedengine {
              * @param v The vector to normalize.
              * @return Vector4 The normalized vector.
              */
-            static Vector4 normalize(const Vector4& v);
+            [[nodiscard]] static Vector4 normalize(const Vector4& v);
 
             /**
              * @brief Reflects the incident vector off of a surface with the specified normal.
@@ -262,7 +262,7 @@ namespace seedengine {
              * @param normal The surface normal vector.
              * @return Vector4 The reflection of the incident vector.
              */
-            static Vector4 reflect(const Vector4& incident, const Vector4& normal);
+            [[nodiscard]] static Vector4 reflect(const Vector4& incident, const Vector4& normal);
 
             /**
              * @brief Refracts an incident vector based on a surface normal and index of refraction.
@@ -272,7 +272,7 @@ namespace seedengine {
              * @param eta The index of refraction.
              * @return Vector4 The refraction of the incident vector.
              */
-            static Vector4 refract(const Vector4& incident, const Vector4& normal, const float& eta);
+            [[nodiscard]] static Vector4 refract(const Vector4& incident, const Vector4& normal, float eta);
 
             /**
              * @brief Projects vector a onto vector b.
@@ -281,7 +281,7 @@ namespace seedengine {
              * @param b The vector to project onto.
              * @return Vector4 The projection of a onto b.
              */
-            static Vector4 project(const Vector4& a, const Vector4& b);
+            [[nodiscard]] static Vector4 project(const Vector4& a, const Vector4& b);
 
             /**
              * @brief Orthogonally projects vector a onto vector b.
@@ -290,7 +290,7 @@ namespace seedengine {
              * @param b The vector to project onto.
              * @return Vector4 The orthogonal projection of a onto b.
              */
-            static Vector4 ortho(const Vector4& a, const Vector4& b);
+            [[nodiscard]] static Vector4 ortho(const Vector4& a, const Vector4& b);
 
             // Member Functions
 
@@ -300,7 +300,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The angle in radians between the vectors.
              */
-            float angle(const Vector4& v) const;
+            [[nodiscard]] float angle(const Vector4& v) const;
 
             /**
              * @brief Gets the distance between this vector and the specified vector.
@@ -308,7 +308,7 @@ namespace seedengine {
              * @param v The vector to check against.
              * @return float The distance between this vector and the specified vector.
              */
-            float distance(const Vector4& v) const;
+            [[nodiscard]] float distance(const Vector4& v) const;
 
             /**
              * @brief Calculates the dot product between this vector and the specified vector.
@@ -316,21 +316,21 @@ namespace seedengine {
              * @param v The vector to compute the dot product with.
              * @return float The dot product of this vector and the specified vector.
              */
-            float dot(const Vector4& v) const;
+            [[nodiscard]] float dot(const Vector4& v) const;
 
             /**
              * @brief Gets the magnitude (vector length) of this vector.
              *
              * @return float The magnitude (vector length) of this vector.
              */
-            float magnitude() const;
+            [[nodiscard]] float magnitude() const;
 
             /**
              * @brief Gets the squared magnitude (vector length) of this vector.
              *
              * @return float The squared magnitude (vector length) of this vector.
              */
-            float mag2() const;
+            [[nodiscard]] float mag2() const;
 
             /**
              * @brief Gets the normalized version of this vector.
@@ -339,61 +339,61 @@ namespace seedengine {
              *
              * @return Vector4 The normalized version of this vector.
              */
-            Vector4 normalize() const;
+            [[nodiscard]] Vector4 normalize() const;
 
             // Accessor operators
 
-            float& operator[](const int& index);
+            [[nodiscard]] float& operator[](const int& index);
 
-            const float& operator[](const int& index) const;
+            [[nodiscard]] const float& operator[](const int& index) const;
 
-            // Arithmatic operators
+            // Arithmetic operators
 
-            Vector4 operator+(const Vector4& vec) const;
-            Vector4 operator+(const float& f) const;
-            friend ENGINE_API Vector4 operator+(const float& f, const Vector4& vector);
+            [[nodiscard]] Vector4 operator+(const Vector4& vec) const;
+            [[nodiscard]] Vector4 operator+(float f) const;
+            friend ENGINE_API Vector4 operator+(float f, const Vector4& vector);
 
-            Vector4 operator-(const Vector4& vec) const;
-            Vector4 operator-(const float& f) const;
-            friend ENGINE_API Vector4 operator+(const float& f, const Vector4& vector);
+            [[nodiscard]] Vector4 operator-(const Vector4& vec) const;
+            [[nodiscard]] Vector4 operator-(float f) const;
+            friend ENGINE_API Vector4 operator+(float f, const Vector4& vector);
 
-            Vector4 operator/(const Vector4& vec) const;
-            Vector4 operator/(const float& f) const;
-            friend ENGINE_API Vector4 operator/(const float& f, const Vector4& vector);
+            [[nodiscard]] Vector4 operator/(const Vector4& vec) const;
+            [[nodiscard]] Vector4 operator/(float f) const;
+            friend ENGINE_API Vector4 operator/(float f, const Vector4& vector);
 
-            Vector4 operator*(const Vector4& vec) const;
-            Vector4 operator*(const float& f) const;
-            friend ENGINE_API Vector4 operator*(const float& f, const Vector4& vector);
+            [[nodiscard]] Vector4 operator*(const Vector4& vec) const;
+            [[nodiscard]] Vector4 operator*(float f) const;
+            friend ENGINE_API Vector4 operator*(float f, const Vector4& vector);
 
             // Boolean operators
 
-            bool operator==(const Vector4& vec) const;
+            [[nodiscard]] bool operator==(const Vector4& vec) const;
 
-            bool operator!=(const Vector4& vec) const;
+            [[nodiscard]] bool operator!=(const Vector4& vec) const;
 
             // Assignment operators
 
             Vector4& operator=(const Vector4& vec);
-            Vector4& operator=(const float& value);
+            Vector4& operator=(float value);
 
             // Cast operators
 
-            operator Vector2() const;
-            operator Vector3() const;
+            [[nodiscard]] explicit operator Vector2() const;
+            [[nodiscard]] explicit operator Vector3() const;
 
-            operator Vector2Int() const;
-            operator Vector3Int() const;
-            operator Vector4Int() const;
+            [[nodiscard]] explicit operator Vector2Int() const;
+            [[nodiscard]] explicit operator Vector3Int() const;
+            [[nodiscard]] explicit operator Vector4Int() const;
 
-            operator Matrix1x2() const;
-            operator Matrix1x3() const;
-            operator Matrix1x4() const;
-            
-            operator Matrix2x1() const;
-            operator Matrix3x1() const;
-            operator Matrix4x1() const;
+            [[nodiscard]] explicit operator Matrix1x2() const;
+            [[nodiscard]] explicit operator Matrix1x3() const;
+            [[nodiscard]] explicit operator Matrix1x4() const;
 
-            operator std::string() const;
+            [[nodiscard]] explicit operator Matrix2x1() const;
+            [[nodiscard]] explicit operator Matrix3x1() const;
+            [[nodiscard]] explicit operator Matrix4x1() const;
+
+            [[nodiscard]] explicit operator ::std::string() const;
 
             // IO operators
 
@@ -401,16 +401,16 @@ namespace seedengine {
 
     };
 
-    // Global arithmatic operators
+    // Global arithmetic operators
 
-    ENGINE_API Vector4 operator+(const float& f, const Vector4& vector);
-    ENGINE_API Vector4 operator-(const float& f, const Vector4& vector);
-    ENGINE_API Vector4 operator*(const float& f, const Vector4& vector);
-    ENGINE_API Vector4 operator/(const float& f, const Vector4& vector);
+    [[nodiscard]] ENGINE_API Vector4 operator+(float f, const Vector4& vector);
+    [[nodiscard]] ENGINE_API Vector4 operator-(float f, const Vector4& vector);
+    [[nodiscard]] ENGINE_API Vector4 operator*(float f, const Vector4& vector);
+    [[nodiscard]] ENGINE_API Vector4 operator/(float f, const Vector4& vector);
 
     // Global IO operators
 
-    ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector4& c);
+    [[nodiscard]] ENGINE_API std::ostream& operator<< (std::ostream& os, const Vector4& c);
 }
 
 #endif
