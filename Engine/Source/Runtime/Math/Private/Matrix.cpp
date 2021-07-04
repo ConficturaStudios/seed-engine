@@ -15,45 +15,86 @@ namespace seedengine {
 
     // Explicit template instantiation
 
-    template class ENGINE_API Matrix<float, 1, 1>;
-    template class ENGINE_API Matrix<float, 1, 2>;
-    template class ENGINE_API Matrix<float, 1, 3>;
-    template class ENGINE_API Matrix<float, 1, 4>;
+    template class ENGINE_API MatrixBase<float, 1, 1>;
+    template class ENGINE_API MatrixBase<float, 1, 2>;
+    template class ENGINE_API MatrixBase<float, 1, 3>;
+    template class ENGINE_API MatrixBase<float, 1, 4>;
 
-    template class ENGINE_API Matrix<float, 2, 1>;
-    template class ENGINE_API Matrix<float, 2, 2>;
-    template class ENGINE_API Matrix<float, 2, 3>;
-    template class ENGINE_API Matrix<float, 2, 4>;
+    template class ENGINE_API MatrixBase<float, 2, 1>;
+    template class ENGINE_API MatrixBase<float, 2, 2>;
+    template class ENGINE_API MatrixBase<float, 2, 3>;
+    template class ENGINE_API MatrixBase<float, 2, 4>;
 
-    template class ENGINE_API Matrix<float, 3, 1>;
-    template class ENGINE_API Matrix<float, 3, 2>;
-    template class ENGINE_API Matrix<float, 3, 3>;
-    template class ENGINE_API Matrix<float, 3, 4>;
+    template class ENGINE_API MatrixBase<float, 3, 1>;
+    template class ENGINE_API MatrixBase<float, 3, 2>;
+    template class ENGINE_API MatrixBase<float, 3, 3>;
+    template class ENGINE_API MatrixBase<float, 3, 4>;
 
-    template class ENGINE_API Matrix<float, 4, 1>;
-    template class ENGINE_API Matrix<float, 4, 2>;
-    template class ENGINE_API Matrix<float, 4, 3>;
-    template class ENGINE_API Matrix<float, 4, 4>;
+    template class ENGINE_API MatrixBase<float, 4, 1>;
+    template class ENGINE_API MatrixBase<float, 4, 2>;
+    template class ENGINE_API MatrixBase<float, 4, 3>;
+    template class ENGINE_API MatrixBase<float, 4, 4>;
 
 
-    template class ENGINE_API Matrix<int, 1, 1>;
-    template class ENGINE_API Matrix<int, 1, 2>;
-    template class ENGINE_API Matrix<int, 1, 3>;
-    template class ENGINE_API Matrix<int, 1, 4>;
+    template class ENGINE_API MatrixBase<int, 1, 1>;
+    template class ENGINE_API MatrixBase<int, 1, 2>;
+    template class ENGINE_API MatrixBase<int, 1, 3>;
+    template class ENGINE_API MatrixBase<int, 1, 4>;
 
-    template class ENGINE_API Matrix<int, 2, 1>;
-    template class ENGINE_API Matrix<int, 2, 2>;
-    template class ENGINE_API Matrix<int, 2, 3>;
-    template class ENGINE_API Matrix<int, 2, 4>;
+    template class ENGINE_API MatrixBase<int, 2, 1>;
+    template class ENGINE_API MatrixBase<int, 2, 2>;
+    template class ENGINE_API MatrixBase<int, 2, 3>;
+    template class ENGINE_API MatrixBase<int, 2, 4>;
 
-    template class ENGINE_API Matrix<int, 3, 1>;
-    template class ENGINE_API Matrix<int, 3, 2>;
-    template class ENGINE_API Matrix<int, 3, 3>;
-    template class ENGINE_API Matrix<int, 3, 4>;
+    template class ENGINE_API MatrixBase<int, 3, 1>;
+    template class ENGINE_API MatrixBase<int, 3, 2>;
+    template class ENGINE_API MatrixBase<int, 3, 3>;
+    template class ENGINE_API MatrixBase<int, 3, 4>;
 
-    template class ENGINE_API Matrix<int, 4, 1>;
-    template class ENGINE_API Matrix<int, 4, 2>;
-    template class ENGINE_API Matrix<int, 4, 3>;
-    template class ENGINE_API Matrix<int, 4, 4>;
+    template class ENGINE_API MatrixBase<int, 4, 1>;
+    template class ENGINE_API MatrixBase<int, 4, 2>;
+    template class ENGINE_API MatrixBase<int, 4, 3>;
+    template class ENGINE_API MatrixBase<int, 4, 4>;
+
+    template struct ENGINE_API Matrix<float, 1, 1>;
+    template struct ENGINE_API Matrix<float, 1, 2>;
+    template struct ENGINE_API Matrix<float, 1, 3>;
+    template struct ENGINE_API Matrix<float, 1, 4>;
+
+    template struct ENGINE_API Matrix<float, 2, 1>;
+    template struct ENGINE_API Matrix<float, 2, 2>;
+    template struct ENGINE_API Matrix<float, 2, 3>;
+    template struct ENGINE_API Matrix<float, 2, 4>;
+
+    template struct ENGINE_API Matrix<float, 3, 1>;
+    template struct ENGINE_API Matrix<float, 3, 2>;
+    template struct ENGINE_API Matrix<float, 3, 3>;
+    template struct ENGINE_API Matrix<float, 3, 4>;
+
+    template struct ENGINE_API Matrix<float, 4, 1>;
+    template struct ENGINE_API Matrix<float, 4, 2>;
+    template struct ENGINE_API Matrix<float, 4, 3>;
+    template struct ENGINE_API Matrix<float, 4, 4>;
+
+
+    template struct ENGINE_API Matrix<int, 1, 1>;
+    template struct ENGINE_API Matrix<int, 1, 2>;
+    template struct ENGINE_API Matrix<int, 1, 3>;
+    template struct ENGINE_API Matrix<int, 1, 4>;
+
+    template struct ENGINE_API Matrix<int, 2, 1>;
+    template struct ENGINE_API Matrix<int, 2, 2>;
+    template struct ENGINE_API Matrix<int, 2, 3>;
+    template struct ENGINE_API Matrix<int, 2, 4>;
+
+    template struct ENGINE_API Matrix<int, 3, 1>;
+    template struct ENGINE_API Matrix<int, 3, 2>;
+    template struct ENGINE_API Matrix<int, 3, 3>;
+    template struct ENGINE_API Matrix<int, 3, 4>;
+
+    template struct ENGINE_API Matrix<int, 4, 1>;
+    template struct ENGINE_API Matrix<int, 4, 2>;
+    template struct ENGINE_API Matrix<int, 4, 3>;
+    template struct ENGINE_API Matrix<int, 4, 4>;
 
 }
