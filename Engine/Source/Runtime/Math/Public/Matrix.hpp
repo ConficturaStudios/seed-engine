@@ -28,7 +28,7 @@ namespace seedengine {
 // Forward declare Matrix
 
     template<typename, size_t, size_t>
-    class Matrix;
+    struct Matrix;
 
 /**
  * The base class of all matrix types containing common behavior and data. Should never
@@ -105,6 +105,20 @@ namespace seedengine {
             MatrixBase(MatrixBase<T, R, C>&& ref) noexcept {
                 memcpy(m_buffer, ref.m_buffer, sizeof(T) * Size);
             }
+
+            /**
+             * Copy assignment operator for matrix instances.
+             * @param rhs The matrix to copy.
+             * @return A reference to this matrix after assignment;
+             */
+            MatrixBase<T, R, C>& operator=(const MatrixBase<T, R, C>& rhs) noexcept = default;
+
+            /**
+             * Move assignment operator for matrix instances.
+             * @param rhs The matrix to move from.
+             * @return A reference to this matrix after assignment;
+             */
+            MatrixBase<T, R, C>& operator=(MatrixBase<T, R, C>&& rhs) noexcept = default;
 
         public:
 
@@ -392,6 +406,20 @@ namespace seedengine {
          * @param ref The matrix to move from.
          */
         Matrix(Matrix<T, R, C>&& ref) noexcept : MatrixBase<T, R, C>(ref) {}
+
+        /**
+         * Copy assignment operator for matrix instances.
+         * @param rhs The matrix to copy.
+         * @return A reference to this matrix after assignment;
+         */
+        Matrix<T, R, C>& operator=(const Matrix<T, R, C>& rhs) noexcept = default;
+
+        /**
+         * Move assignment operator for matrix instances.
+         * @param rhs The matrix to move from.
+         * @return A reference to this matrix after assignment;
+         */
+        Matrix<T, R, C>& operator=(Matrix<T, R, C>&& rhs) noexcept = default;
     };
 
 /**
@@ -429,6 +457,20 @@ namespace seedengine {
          * @param ref The matrix to move from.
          */
         Matrix(Matrix<T, 1, 1>&& ref) noexcept : MatrixBase<T, 1, 1>(ref) {}
+
+        /**
+         * Copy assignment operator for matrix instances.
+         * @param rhs The matrix to copy.
+         * @return A reference to this matrix after assignment;
+         */
+        Matrix<T, 1, 1>& operator=(const Matrix<T, 1, 1>& rhs) noexcept = default;
+
+        /**
+         * Move assignment operator for matrix instances.
+         * @param rhs The matrix to move from.
+         * @return A reference to this matrix after assignment;
+         */
+        Matrix<T, 1, 1>& operator=(Matrix<T, 1, 1>&& rhs) noexcept = default;
 
         /**
          * Returns the identity matrix for this square matrix type.
@@ -505,6 +547,20 @@ namespace seedengine {
          * @param ref The matrix to move from.
          */
         Matrix(Matrix<T, N, N>&& ref) noexcept : MatrixBase<T, N, N>(ref) {}
+
+        /**
+         * Copy assignment operator for matrix instances.
+         * @param rhs The matrix to copy.
+         * @return A reference to this matrix after assignment;
+         */
+        Matrix<T, N, N>& operator=(const Matrix<T, N, N>& rhs) noexcept = default;
+
+        /**
+         * Move assignment operator for matrix instances.
+         * @param rhs The matrix to move from.
+         * @return A reference to this matrix after assignment;
+         */
+        Matrix<T, N, N>& operator=(Matrix<T, N, N>&& rhs) noexcept = default;
 
         /**
          * Returns the identity matrix for this square matrix type.
