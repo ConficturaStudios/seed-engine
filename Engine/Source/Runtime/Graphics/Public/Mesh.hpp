@@ -24,6 +24,7 @@ namespace seedengine {
         // Internal types
 
         struct FileHeader {
+            // TODO: Add version identifier support to allow changes to format without breaking old files
             uint32_t positionCount;
             uint32_t normalCount;
             uint32_t uvCount;
@@ -46,17 +47,16 @@ namespace seedengine {
             uint32_t smoothingGroupCount;
         };
 
-        struct Vertex {
+        /*struct Vertex {
             uint32 position;
             uint32 normal;
             uint32* uvs;
             uint32* colors;
-            uint32* weights;
-        };
+            uint32* weights; // TODO: Store weights in key value pairs (bone id, weight index) to 0 default unused bones
+        };*/
 
         struct Face {
-            uint32 vertexCount;
-            uint32* vertices;
+            uint32 indices[3];
         };
 
         struct Morph {
@@ -79,11 +79,11 @@ namespace seedengine {
         LinearColor* colors;
 
         // bones?
-        float* bone_weights;
+        float* boneWeights;
         // Morphs
 
-        MeshData::Vertex* vertices;
-        MeshData::SmoothingGroup* smoothing_group;
+        //MeshData::Vertex* vertices;
+        MeshData::SmoothingGroup* smoothingGroups;
 
     };
 
@@ -124,7 +124,7 @@ namespace seedengine {
 
         // Functions
 
-
+            [[nodiscard]] static UniquePtr<Mesh> load(const char* path);
 
         // Operators
 
@@ -141,6 +141,8 @@ namespace seedengine {
             Mesh& operator=(Mesh&& ref) = default;
 
         protected:
+
+            MeshData m_data{};
 
         private:
 
