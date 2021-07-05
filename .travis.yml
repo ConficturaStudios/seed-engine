@@ -65,7 +65,7 @@ before_install:
 script:
   - cmake -S ./Engine -B ./Engine/Build -DBUILD_EDITOR=OFF
   - cmake --build ./Engine/Build
-  - ./Engine/Bin/SeedEngine-0.0.1Tests
+  - ./Engine/Bin/SeedEngine-0.1.0Tests
 
 after_success:
   - coveralls --root . -E ".*Extern." -E ".*Scripts" -E ".*CMake" -E ".*Build" -E ".*Test" -E ".*Config" -E ".*Resources" -E ".*Docs"

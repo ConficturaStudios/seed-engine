@@ -28,7 +28,7 @@ build:
   project: $(APPVEYOR_BUILD_FOLDER)\Engine\Build\$(CONFIGURATION)\$(APPVEYOR_PROJECT_NAME).sln
 
 environment:
-  SE_VERSION: 0.0.1
+  SE_VERSION: 0.1.0
   COVERALLS_REPO_TOKEN:
     secure: HdL44XKFPDMvko4po50wltbyooEzEbCmlmBWVTtJtMOjiCZ+eLEzXPMYCyCq+0tW 
 
