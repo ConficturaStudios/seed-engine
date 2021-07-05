@@ -3,10 +3,11 @@ version: '1.0.{build}'
 image:
   - Visual Studio 2015
   - Visual Studio 2017
+  - Visual Studio 2019
 
 platform:
   - x64
-  - Win32
+#  - Win32
 
 configuration:
   - Release
@@ -16,19 +17,21 @@ install:
   - git submodule update --init --recursive
 
 init:
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" ( set GENERATOR="Visual Studio 16 2019" )
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set GENERATOR="Visual Studio 15 2017" )
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set GENERATOR="Visual Studio 14 2015" )
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2013" ( set GENERATOR="Visual Studio 12 2013" )
 
 before_build:
-  - cmake -G %GENERATOR% -A %PLATFORM% -S . -B build\%CONFIGURATION%  -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
+  - cmake -G %GENERATOR% -A %PLATFORM% -S .\Engine -B Engine\Build\%CONFIGURATION%  -DCMAKE_BUILD_TYPE=%CONFIGURATION%
 
 build:
-  project: $(APPVEYOR_BUILD_FOLDER)\build\$(CONFIGURATION)\$(APPVEYOR_PROJECT_NAME).sln
+  project: $(APPVEYOR_BUILD_FOLDER)\Engine\Build\$(CONFIGURATION)\$(APPVEYOR_PROJECT_NAME).sln
 
 environment:
+  SE_VERSION: 0.0.1
   COVERALLS_REPO_TOKEN:
     secure: HdL44XKFPDMvko4po50wltbyooEzEbCmlmBWVTtJtMOjiCZ+eLEzXPMYCyCq+0tW 
 
 test_script:
-  - '%APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%\seed-engine-core-tests.exe'
+  - '%APPVEYOR_BUILD_FOLDER%\Bin\%CONFIGURATION%\SeedEngine-%SE_VERSION%Tests.exe'
