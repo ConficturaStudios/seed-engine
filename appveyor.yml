@@ -33,4 +33,4 @@ environment:
     secure: HdL44XKFPDMvko4po50wltbyooEzEbCmlmBWVTtJtMOjiCZ+eLEzXPMYCyCq+0tW 
 
 test_script:
-  - '%APPVEYOR_BUILD_FOLDER%\Bin\%CONFIGURATION%\SeedEngine-%SE_VERSION%Tests.exe'
+  - '%APPVEYOR_BUILD_FOLDER%\Engine\Bin\%CONFIGURATION%\SeedEngine-%SE_VERSION%Tests.exe'
