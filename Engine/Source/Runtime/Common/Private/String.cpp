@@ -27,7 +27,7 @@ namespace seedengine {
     }
 
     StringClass::StringClass(const StringClass& ref) {
-        m_capacity = m_capacity;
+        m_capacity = ref.m_capacity;
         m_length = ref.m_length;
         m_buffer = new value_type[m_capacity];
         strncpy_s(m_buffer, m_capacity, ref.m_buffer, m_length);
