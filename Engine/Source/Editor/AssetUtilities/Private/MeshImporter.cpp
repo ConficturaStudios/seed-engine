@@ -22,6 +22,8 @@ namespace seedengine {
         const aiScene* scene = importer.ReadFile(path,
             aiProcess_Triangulate);
 
+        // TODO: Only link to ASSIMP library in editor, exclude from engine builds to enabled x86 support outside of editor
+
         if (!scene) {
             // TODO: Output to error log, failed to import
             return false;
