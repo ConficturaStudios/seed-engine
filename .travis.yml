@@ -68,4 +68,4 @@ script:
   - ./Engine/Bin/SeedEngine-0.1.0Tests
 
 after_success:
-  - coveralls --root . -E ".*Extern." -E ".*Scripts" -E ".*CMake" -E ".*Build" -E ".*Test" -E ".*Config" -E ".*Resources" -E ".*Docs"
+  - coveralls --root . -E ".*Extern." -E ".*Scripts" -E ".*CMake" -E ".*Build" -E ".*Test" -E ".*Config" -E ".*Resources" -E ".*Docs" -E ".*Dev" -E ".*Tools"
