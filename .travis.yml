@@ -63,9 +63,9 @@ before_install:
   - pip install --user cpp-coveralls
 
 script:
-  - cmake . -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGRAPHICS_API:STRING=OPENGL
-  - cmake --build .
-  - ./bin/seed-engine-core-tests
+  - cmake -S ./Engine -B ./Engine/Build
+  - cmake --build ./Engine/Build
+  - ./Engine/Bin/SeedEngine-0.0.1Tests
 
 after_success:
-  - coveralls --root . -E ".*extern." -E ".*scripts" -E ".*ci" -E ".*cmake" -E ".*build" -E ".*test"
+  - coveralls --root . -E ".*Extern." -E ".*Scripts" -E ".*CMake" -E ".*Build" -E ".*Test" -E ".*Config" -E ".*Resources" -E ".*Docs"
