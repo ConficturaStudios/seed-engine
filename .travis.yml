@@ -63,7 +63,7 @@ before_install:
   - pip install --user cpp-coveralls
 
 script:
-  - cmake -S ./Engine -B ./Engine/Build
+  - cmake -S ./Engine -B ./Engine/Build -DBUILD_EDITOR=OFF
   - cmake --build ./Engine/Build
   - ./Engine/Bin/SeedEngine-0.0.1Tests
 
