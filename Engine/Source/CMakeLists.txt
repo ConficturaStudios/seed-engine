@@ -6,10 +6,14 @@ cmake_minimum_required(VERSION 3.0)
 
 # External Dependencies
 add_subdirectory(Extern)
+
 # Runtime Modules
 add_subdirectory(Runtime)
+
 # Editor Modules
-add_subdirectory(Editor)
+if (BUILD_EDITOR)
+    add_subdirectory(Editor)
+endif(BUILD_EDITOR)
 
 # Developer/Experimental Modules
 if(BUILD_DEV)

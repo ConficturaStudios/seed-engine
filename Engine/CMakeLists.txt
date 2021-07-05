@@ -42,9 +42,17 @@ endif()
 
 # Options
 
+option(BUILD_EDITOR "Build editor features" ON)
 option(BUILD_DEV "Build developer (experimental) features" OFF)
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_TESTS "Build all tests" ON)
+
+# Architecture Specific Configuration
+
+if (NOT CMAKE_GENERATOR_PLATFORM EQUALS x64)
+    message(WARNING "Editor builds only support x64 platform architectures, disabling editor modules for this build")
+    set(BUILD_EDITOR OFF)
+endif()
 
 # Graphics options
 
