@@ -30,7 +30,7 @@ namespace seedengine {
         m_capacity = ref.m_capacity;
         m_length = ref.m_length;
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, ref.m_buffer, m_length);
+        strncpy(m_buffer, ref.m_buffer, m_length);
     }
 
     StringClass::StringClass(StringClass&& ref) {
@@ -45,7 +45,7 @@ namespace seedengine {
         m_capacity = strlen(cstr) + 1;
         m_length = strlen(cstr);
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, cstr, m_length);
+        strncpy(m_buffer, cstr, m_length);
     }
 
 
@@ -53,7 +53,7 @@ namespace seedengine {
         m_capacity = str.capacity();
         m_length = str.length();
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, str.c_str(), m_length);
+        strncpy(m_buffer, str.c_str(), m_length);
     }
 
 
@@ -68,7 +68,7 @@ namespace seedengine {
         m_capacity = rhs.m_capacity;
         m_length = rhs.m_length;
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, rhs.m_buffer, m_length);
+        strncpy(m_buffer, rhs.m_buffer, m_length);
         return *this;
     }
 
@@ -86,7 +86,7 @@ namespace seedengine {
         m_capacity = strlen(rhs);
         m_length = strlen(rhs);
         m_buffer = new value_type[m_length + 1];
-        strncpy_s(m_buffer, m_length + 1, rhs, m_length);
+        strncpy(m_buffer, rhs, m_length);
         return *this;
     }
 
@@ -95,7 +95,7 @@ namespace seedengine {
         m_capacity = rhs.capacity();
         m_length = rhs.length();
         m_buffer = new value_type[m_capacity];
-        strncpy_s(m_buffer, m_capacity, rhs.c_str(), m_length);
+        strncpy(m_buffer, rhs.c_str(), m_length);
         return *this;
     }
 

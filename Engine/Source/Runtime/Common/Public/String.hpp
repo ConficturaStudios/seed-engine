@@ -16,12 +16,7 @@
 
 #include <iostream>
 #include <memory>
-
-#ifndef __STDC_WANT_LIB_EXT1__
-    #define __STDC_WANT_LIB_EXT1__ 1
-#endif
 #include <string>
-
 #include <initializer_list>
 
 /*extern template struct ::std::char_traits<char>;
