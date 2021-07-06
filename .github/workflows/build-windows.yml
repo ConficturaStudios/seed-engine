@@ -46,5 +46,5 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/Engine/Bin
-        run: ./SeedEngine-0.1.0Tests.exe
+        run: ./Engine/Bin/SeedEngine-0.1.0Tests.exe
 
