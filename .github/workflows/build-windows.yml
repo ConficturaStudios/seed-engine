@@ -12,11 +12,7 @@ env:
   VERSION_MAJOR: 0
   VERSION_MINOR: 1
   VERSION_PATCH: 0
-  VERSION: ${{VERSION_MAJOR}}.${{VERSION_MINOR}}.${{VERSION_PATCH}}
-  TESTS_NAME: SeedEngine-${{VERSION}}Tests
   ENGINE_FOLDER: ${{github.workspace}}/Engine
-  BUILD_FOLDER: ${{ENGINE_FOLDER}}/Build
-  BIN_FOLDER: ${{ENGINE_FOLDER}}/Bin
 
 jobs:
   build:
@@ -31,6 +27,11 @@ jobs:
               os: windows-latest,
               test-ext: .exe
             }
+
+    env:
+      VERSION: ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}
+      BUILD_FOLDER: ${{env.ENGINE_FOLDER}}/Build
+      BIN_FOLDER: ${{env.ENGINE_FOLDER}}/Bin
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -47,5 +48,5 @@ jobs:
 
       - name: Test
         working-directory: ${{env.BIN_FOLDER}}/${{env.BUILD_TYPE}}
-        run: ./${{env.TESTS_NAME}}${{matrix.config.test-ext}}
+        run: ./SeedEngine-${{VERSION}}Tests${{matrix.config.test-ext}}
 
