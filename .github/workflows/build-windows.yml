@@ -9,10 +9,17 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  VERSION_MAJOR: 0
+  VERSION_MINOR: 1
+  VERSION_PATCH: 0
+  VERSION: ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}
+  TESTS_NAME: SeedEngine-${{env.VERSION}}Tests
+  ENGINE_FOLDER: ${{github.workspace}}/Engine
+  BUILD_FOLDER: ${{env.ENGINE_FOLDER}}/Build
+  BIN_FOLDER: ${{env.ENGINE_FOLDER}}/Bin
 
 jobs:
   build:
-
     name: ${{matrix.config.name}}
     runs-on: ${{matrix.config.os}}
     strategy:
@@ -22,13 +29,7 @@ jobs:
           - {
               name: "Windows Latest MSVC",
               os: windows-latest,
-              artifact: "windows_msvc.7z",
-              build_type: "Release",
-              cc: "cl",
-              cxx: "cl",
-              environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-              archiver: "7z a",
-              generators: "Visual Studio 16 2019"
+              test-ext: .exe
             }
 
     steps:
@@ -36,15 +37,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          submodules: true
+          submodules: recursive
 
       - name: Configure CMake
-        run: cmake -S ${{github.workspace}}/Engine -B ${{github.workspace}}/Engine/Build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
+        run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/Engine/Build --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}}
 
       - name: Test
-        working-directory: ${{github.workspace}}/Engine/Bin/${{env.BUILD_TYPE}}
-        run: ./SeedEngine-0.1.0Tests.exe
+        working-directory: ${{env.BIN_FOLDER}}/${{env.BUILD_TYPE}}
+        run: ./${{env.TESTS_NAME}}${{matrix.config.test-ext}}
 
