@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure CMake
-        run: cmake -S ${{github.workspace}}/Engine -B ${{github.workspace}}/Engine/Build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -S ${{github.workspace}}/Engine -B ${{github.workspace}}/Engine/Build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
 
       - name: Build
         run: cmake --build ${{github.workspace}}/Engine/Build --config ${{env.BUILD_TYPE}}
