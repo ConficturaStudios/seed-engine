@@ -7,6 +7,7 @@ An open source game engine that supports both 3D and 2D games. The engine is des
 
 [![Linux Build Status](https://travis-ci.com/ConficturaStudios/seed-engine.svg?branch=dev)](https://travis-ci.com/ConficturaStudios/seed-engine) 
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/n7te2x6t1ie888tv?svg=true)](https://ci.appveyor.com/project/ConficturaStudios/seed-engine)
+[![GitHub Actions Windows Build Status](https://github.com/ConficturaStudios/seed-engine/actions/workflows/build-windows.yml/badge.svg)]()
 [![Coverage Status](https://coveralls.io/repos/github/ConficturaStudios/seed-engine/badge.svg?branch=master)](https://coveralls.io/github/ConficturaStudios/seed-engine?branch=master)
 
 ***NOTE:*** *Coverage reports and issue tracking are still being set up, and will be available at a later time.*
