@@ -1,4 +1,4 @@
-name: Windows Build
+name: Linux Build
 
 on:
   push:
@@ -26,8 +26,8 @@ jobs:
       matrix:
         config:
           - {
-              name: "Windows Latest MSVC",
-              os: windows-latest
+              name: "Ubuntu Latest",
+              os: ubuntu-latest
             }
 
     steps:
@@ -45,5 +45,5 @@ jobs:
 
       - name: Test
         working-directory: ${{env.BIN_FOLDER}}/${{env.BUILD_TYPE}}
-        run: ./SeedEngine-${{env.VERSION}}Tests.exe
+        run: ./SeedEngine-${{env.VERSION}}Tests
 
