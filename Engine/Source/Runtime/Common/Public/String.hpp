@@ -17,6 +17,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <cstring>
 #include <initializer_list>
 
 /*extern template struct ::std::char_traits<char>;
