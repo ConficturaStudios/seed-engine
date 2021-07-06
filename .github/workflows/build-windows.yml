@@ -12,7 +12,10 @@ env:
   VERSION_MAJOR: 0
   VERSION_MINOR: 1
   VERSION_PATCH: 0
+  VERSION: 0.1.0
   ENGINE_FOLDER: ${{github.workspace}}/Engine
+  BUILD_FOLDER: ${{github.workspace}}/Engine/Build
+  BIN_FOLDER: ${{github.workspace}}/Engine/Bin
 
 jobs:
   build:
@@ -27,11 +30,6 @@ jobs:
               os: windows-latest,
               test-ext: .exe
             }
-
-    env:
-      VERSION: ${{VERSION_MAJOR}}.${{VERSION_MINOR}}.${{VERSION_PATCH}}
-      BUILD_FOLDER: ${{ENGINE_FOLDER}}/Build
-      BIN_FOLDER: ${{ENGINE_FOLDER}}/Bin
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
