@@ -12,11 +12,11 @@
 #ifndef SEEDENGINE_INCLUDE_RUNTIME_COMMON_LOG_H_
 #define SEEDENGINE_INCLUDE_RUNTIME_COMMON_LOG_H_
 
-#include "CommonAPI.hpp"
-
 #include <spdlog/spdlog.h>
 #include <spdlog/async.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+
+#include "CommonAPI.hpp"
 
 namespace seedengine {
 
