@@ -46,5 +46,5 @@ jobs:
 
       - name: Test
         working-directory: ${{env.BIN_FOLDER}}/${{env.BUILD_TYPE}}
-        run: ./SeedEngine-${{VERSION}}Tests${{matrix.config.test-ext}}
+        run: ./SeedEngine-${{env.VERSION}}Tests${{matrix.config.test-ext}}
 
