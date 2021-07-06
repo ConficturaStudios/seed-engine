@@ -29,9 +29,9 @@ jobs:
             }
 
     env:
-      VERSION: ${{env.VERSION_MAJOR}}.${{env.VERSION_MINOR}}.${{env.VERSION_PATCH}}
-      BUILD_FOLDER: ${{env.ENGINE_FOLDER}}/Build
-      BIN_FOLDER: ${{env.ENGINE_FOLDER}}/Bin
+      VERSION: ${{VERSION_MAJOR}}.${{VERSION_MINOR}}.${{VERSION_PATCH}}
+      BUILD_FOLDER: ${{ENGINE_FOLDER}}/Build
+      BIN_FOLDER: ${{ENGINE_FOLDER}}/Bin
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
