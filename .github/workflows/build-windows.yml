@@ -45,8 +45,8 @@ jobs:
         run: cmake --build ${{github.workspace}}/Engine/Build --config ${{env.BUILD_TYPE}}
 
       - name: Test
-        working-directory: ${{github.workspace}}/Engine/Bin
+        working-directory: ${{github.workspace}}/Engine/Bin/${{env.BUILD_TYPE}}
         run: |
-          dir
+          ls
           ./SeedEngine-0.1.0Tests.exe
 
