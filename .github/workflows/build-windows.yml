@@ -33,7 +33,11 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{secrets.CI_TOKEN}}
+          submodules: true
 
       - name: Configure CMake
         run: cmake -S ${{github.workspace}}/Engine -B ${{github.workspace}}/Engine/Build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
