@@ -39,8 +39,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          echo "Installing GLFW Unix dependencies..."
           sudo apt-get update -y
           sudo apt-get install -y libxrandr-dev
+          sudo apt-get install -y libxinerama-dev
+          sudo apt-get install -y libx11-dev
+          sudo apt-get install -y libxcursor-dev
+          sudo apt-get install -y libxi-dev
+          sudo apt-get install -y libxext-dev
 
       - name: Configure CMake
         run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
