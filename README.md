@@ -1,5 +1,5 @@
 # Seed Engine
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/ConficturaStudios/seed-engine/blob/dev/LICENSE)
 
 An open source game engine that supports both 3D and 2D games. The engine is designed with flexibility and extensibility in mind.
 
@@ -7,7 +7,7 @@ An open source game engine that supports both 3D and 2D games. The engine is des
 
 ### Latest Release
 
-***NOTE:*** *The [`master`](https://github.com/ConficturaStudios/seed-engine/tree/master) branch is currently legacy only, updated badges will become available after next release. The legacy build status is still visible on the master branch.*
+***NOTE:*** *The* [`master`](https://github.com/ConficturaStudios/seed-engine/tree/master) *branch is currently legacy only, updated badges will become available after next release. The legacy build status is still visible on the master branch.*
 
 ### Development Branch
 
@@ -22,8 +22,6 @@ This project is still under active development and is currently not production r
 ## Documentation
 
 Documentation for this project is generated using [Doxygen](https://www.doxygen.org) and will be hosted here on github as well as on the [Confictura Studios website](https://www.conficturastudios.com).
-
-***NOTE:*** *Doxygen is still being set up for this project.*
 
 ## Features
 
@@ -161,4 +159,4 @@ All external dependencies are either included with source, or are linked as a gi
 
 The Seed Engine is released as open source under the MIT License.
 
-See [`LICENSE`](LICENSE) for the specific terms of the license.
+See [`LICENSE`](https://github.com/ConficturaStudios/seed-engine/blob/dev/LICENSE) for the specific terms of the license.
