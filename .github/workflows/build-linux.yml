@@ -61,9 +61,9 @@ jobs:
 
       - name: Coverage Report
         run: |
-          lcov --capture --directory ${{env.BUILD_FOLDER}}/Source --output-file coverage/lcov.info
-          lcov --remove coverage/lcov.info '*/Dev/*' '*/Extern/*' '*/Editor/*' '*/Tools/*' '*/Test/*' '/usr/*' --output-file coverage/lcov.info
-          lcov --list coverage/lcov.info
+          lcov --capture --directory ${{env.BUILD_FOLDER}}/Source --output-file coverage-lcov.info
+          lcov --remove coverage-lcov.info '*/Dev/*' '*/Extern/*' '*/Editor/*' '*/Tools/*' '*/Test/*' '/usr/*' --output-file coverage-lcov.info
+          lcov --list coverage-lcov.info
 
       - name: Coveralls Upload
         uses: coverallsapp/github-action@master
