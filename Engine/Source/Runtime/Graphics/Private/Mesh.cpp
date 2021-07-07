@@ -73,7 +73,11 @@ namespace seedengine {
         // Read header
         uint32 header[10];
         // TODO: Check read bytes count for error checking
-        fread(header, sizeof(uint32), 10, source);
+        if (fread(header, sizeof(uint32), 10, source) != 10) {
+            ENGINE_DEBUG_ERROR("Failed to read header data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
         data->header.positionCount = Memory::ntoh(header[0]);
         data->header.normalCount = Memory::ntoh(header[1]);
         data->header.uvCount = Memory::ntoh(header[2]);
@@ -93,16 +97,44 @@ namespace seedengine {
 
         auto* boneWeights = (float*)malloc(sizeof(float) * data->header.boneWeightCount);
 
+        // Store the number of expected elements for error checking
+        size_t expectedCount;
+
         // Read positions
-        fread(positions, sizeof(float), 3 * data->header.positionCount, source);
+        expectedCount = 3 * data->header.positionCount;
+        if (fread(positions, sizeof(float), expectedCount, source) != expectedCount) {
+            ENGINE_DEBUG_ERROR("Failed to read position data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
         // Read normals
-        fread(normals, sizeof(float), 3 * data->header.normalCount, source);
+        expectedCount = 3 * data->header.normalCount;
+        if (fread(normals, sizeof(float), expectedCount, source) != expectedCount) {
+            ENGINE_DEBUG_ERROR("Failed to read normal data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
         // Read uvs
-        fread(uvs, sizeof(float), 2 * data->header.uvCount, source);
+        expectedCount = 2 * data->header.uvCount;
+        if (fread(uvs, sizeof(float), expectedCount, source) != expectedCount) {
+            ENGINE_DEBUG_ERROR("Failed to read uv data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
         // Read colors
-        fread(colors, sizeof(float), 4 * data->header.colorCount, source);
+        expectedCount = 4 * data->header.colorCount;
+        if (fread(colors, sizeof(float), expectedCount, source) != expectedCount) {
+            ENGINE_DEBUG_ERROR("Failed to read color data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
         // Read weights
-        fread(boneWeights, sizeof(float), data->header.boneWeightCount, source);
+        expectedCount = data->header.boneWeightCount;
+        if (fread(boneWeights, sizeof(float), expectedCount, source) != expectedCount) {
+            ENGINE_DEBUG_ERROR("Failed to read bone weight data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
 
         // TODO: Apply ntoh to buffer data
 
@@ -124,7 +156,11 @@ namespace seedengine {
 
         // TODO: Check read bytes count for error checking
         // TODO: Apply ntoh to vertex data
-        fread(vertexData, sizeof(uint32), vertexDataSize, source);
+        if (fread(vertexData, sizeof(uint32), vertexDataSize, source) != vertexDataSize) {
+            ENGINE_DEBUG_ERROR("Failed to read vertex data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
 
         // Copy each vertex from the buffer
         for (uint32 i = 0; i < data->header.vertexCount; i++) {
@@ -197,8 +233,12 @@ namespace seedengine {
         data->smoothingGroups = (MeshData::SmoothingGroup*)malloc(sizeof(MeshData::SmoothingGroup) * data->header.smoothingGroupCount);
 
         auto* groupSizes = (uint32*)malloc(sizeof(uint32) * data->header.smoothingGroupCount);
-        // TODO: Check read bytes count for error checking
-        fread(groupSizes, sizeof(uint32), data->header.smoothingGroupCount, source);
+
+        if (fread(groupSizes, sizeof(uint32), data->header.smoothingGroupCount, source) != data->header.smoothingGroupCount) {
+            ENGINE_DEBUG_ERROR("Failed to read group size data from file '{0}'", path);
+            fclose(source);
+            return nullptr;
+        }
 
         for (int i = 0; i < data->header.smoothingGroupCount; i++) {
             data->smoothingGroups[i] = MeshData::SmoothingGroup();
