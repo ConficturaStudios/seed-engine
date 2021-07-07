@@ -52,7 +52,7 @@ jobs:
         run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
 
       - name: Build
-        run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}} -j 16
 
       - name: Test
         working-directory: ${{env.BIN_FOLDER}}/${{env.BUILD_TYPE}}
