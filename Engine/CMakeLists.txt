@@ -34,12 +34,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Enable multiprocessor compiling
-
-if (MSVC)
-    add_definitions(/MP16)
-endif()
-
 # Options
 
 option(BUILD_EDITOR "Build editor features" ON)
@@ -57,6 +51,9 @@ endif()
 # Compiler Specific Configuration
 
 if (MSVC)
+    # Force multithreading; Disabled due to poor performance with -j 16 option
+    # add_definitions(/MP16)
+    # Suppress suggestions/warnings to use Microsoft secure functions like fopen_s
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
 

@@ -760,11 +760,11 @@ class SeedEngineCLI(object):
         if args.debug:
             if args.clean:
                 os.system("cmake -S ./" + self.ENGINE_PATH + " -B " + self.BUILD_PATH + "Debug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_GENERATOR_PLATFORM=x64")
-            debug_ret = subprocess.call("cmake --build " + self.BUILD_PATH + "Debug --config Debug")
+            debug_ret = subprocess.call("cmake --build " + self.BUILD_PATH + "Debug --config Debug -j 16")
         if args.release:
             if args.clean:
                 os.system("cmake -S ./" + self.ENGINE_PATH + " -B " + self.BUILD_PATH + "Release -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=x64")
-            release_ret = subprocess.call("cmake --build " + self.BUILD_PATH + "Release --config Release")
+            release_ret = subprocess.call("cmake --build " + self.BUILD_PATH + "Release --config Release -j 16")
         if args.exec:
             if args.release and release_ret == 0:
                 print()
