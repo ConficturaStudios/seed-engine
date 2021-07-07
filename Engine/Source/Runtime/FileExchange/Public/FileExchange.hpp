@@ -15,7 +15,6 @@
 #include "FileExchangeAPI.hpp"
 
 
-#include "File.hpp"
 #include "FileBuffer.hpp"
 #include "IniData.hpp"
 #include "IniHandler.hpp"

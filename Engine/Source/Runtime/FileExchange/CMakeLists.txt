@@ -16,7 +16,6 @@ set(LIBRARY_NAME RuntimeFileExchange)
 set(LIBRARY_NAME_UPPER RUNTIME_FILE_EXCHANGE)
 
 set(${LIBRARY_NAME_UPPER}_SRC
-	${CMAKE_CURRENT_LIST_DIR}/Private/File.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/FileBuffer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/IniData.cpp
 	${CMAKE_CURRENT_LIST_DIR}/Private/IniHandler.cpp
@@ -27,7 +26,6 @@ set(${LIBRARY_NAME_UPPER}_SRC
 )
 
 set(${LIBRARY_NAME_UPPER}_HEADERS
-	${CMAKE_CURRENT_LIST_DIR}/Public/File.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FileBuffer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FileExchange.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FileExchangeAPI.hpp
