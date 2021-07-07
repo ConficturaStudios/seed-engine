@@ -36,10 +36,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Options
 
+# Feature Switches
 option(BUILD_EDITOR "Build editor features" ON)
 option(BUILD_DEV "Build developer (experimental) features" OFF)
+# Documentation switch
 option(BUILD_DOCS "Build documentation" OFF)
-option(BUILD_TESTS "Build all tests" ON)
+# Testing and coverage switches
+option(BUILD_TESTS "Build all tests" OFF)
+option(ENABLE_COVERAGE "Enable coverage report generation" OFF)
+
+# Compiler flags
+
+if (ENABLE_COVERAGE)
+    set(CMAKE_CXX_FLAGS --coverage)
+endif()
 
 # Architecture Specific Configuration
 

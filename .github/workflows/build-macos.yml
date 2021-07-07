@@ -38,7 +38,7 @@ jobs:
           submodules: recursive
 
       - name: Configure CMake
-        run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
+        run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF -DBUILD_TESTS=ON
 
       - name: Build
         run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}} -j 16

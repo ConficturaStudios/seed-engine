@@ -757,19 +757,22 @@ class SeedEngineCLI(object):
             self.__delete_dir(self.BUILD_PATH)
             self.__delete_dir(self.LIBRARY_PATH)
             self.__delete_dir(self.VS_PATH)
+        # TODO: Create configuration (Debug/Release) property, clean up below code
         if args.debug:
             if args.clean:
-                os.system("cmake -S ./" + self.ENGINE_PATH + " -B " + self.BUILD_PATH + "Debug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_GENERATOR_PLATFORM=x64")
+                # TODO: Only force x64 for editor builds
+                os.system("cmake -S ./" + self.ENGINE_PATH + " -B " + self.BUILD_PATH + "Debug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_GENERATOR_PLATFORM=x64 -DBUILD_TESTS=ON")
             debug_ret = subprocess.call("cmake --build " + self.BUILD_PATH + "Debug --config Debug -j 16")
         if args.release:
             if args.clean:
-                os.system("cmake -S ./" + self.ENGINE_PATH + " -B " + self.BUILD_PATH + "Release -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=x64")
+                os.system("cmake -S ./" + self.ENGINE_PATH + " -B " + self.BUILD_PATH + "Release -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=x64 -DBUILD_TESTS=ON")
             release_ret = subprocess.call("cmake --build " + self.BUILD_PATH + "Release --config Release -j 16")
         if args.exec:
             if args.release and release_ret == 0:
                 print()
                 print("Executing program release binaries.")
                 print()
+                # TODO: Define the editor executable name per platform
                 subprocess.call("./" + self.BINARY_PATH + "Release/seed-engine-editor.exe") #TODO: fix for linux users
             elif args.debug and debug_ret == 0:
                 print()
@@ -781,7 +784,7 @@ class SeedEngineCLI(object):
                 print("Could not run program. Exiting.")
                 print()
                 return
-        if args.test:
+        if args.test: # TODO: Refactor tests option to toggle test compilation instead of execution; Add 'test' command instead
             if args.release and release_ret == 0:
                 print()
                 print("Executing program release tests.")

@@ -47,9 +47,10 @@ jobs:
           sudo apt-get install -y libxcursor-dev
           sudo apt-get install -y libxi-dev
           sudo apt-get install -y libxext-dev
+          pip install --user cpp-coveralls
 
       - name: Configure CMake
-        run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF
+        run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON
 
       - name: Build
         run: cmake --build ${{env.BUILD_FOLDER}} --config ${{env.BUILD_TYPE}} -j 16
@@ -57,4 +58,10 @@ jobs:
       - name: Test
         working-directory: ${{env.BIN_FOLDER}}
         run: ./SeedEngine-${{env.VERSION}}Tests
+
+      - name: Coverage Report
+        run: |
+          lcov --capture --directory ${{env.ENGINE_FOLDER}} --output-file coverage.info
+          lcov --remove coverage.info 'Build/*' 'CMake/*' 'Config/*' 'Docs/*' 'Resources/*' 'Source/Dev/*' 'Source/Extern/*' 'Source/Editor/*' 'Source/Tools/*' --output-file coverage.info
+          lcov --list coverage.info
 
