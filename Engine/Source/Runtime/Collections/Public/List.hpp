@@ -72,7 +72,7 @@ namespace seedengine {
              * @param value The value to insert.
              */
             virtual void addFirst(const T& value) {
-                add(0, value);
+                this->add(0, value);
             }
 
             /**
@@ -80,7 +80,7 @@ namespace seedengine {
              * @param value The value to insert.
              */
             virtual void addLast(const T& value) {
-                add(this->size(), value);
+                this->add(this->size(), value);
             }
 
             /**
@@ -104,7 +104,7 @@ namespace seedengine {
              * @return The last element in this list.
              */
             [[nodiscard]] virtual T& last() {
-                return get(this->size() - 1);
+                return this->get(this->size() - 1);
             }
 
             /**
@@ -112,7 +112,7 @@ namespace seedengine {
              * @return The last element in this list.
              */
             [[nodiscard]] virtual const T& last() const {
-                return get(this->size() - 1);
+                return this->get(this->size() - 1);
             }
 
             /**
@@ -120,7 +120,7 @@ namespace seedengine {
              * @return The removed element.
              */
             virtual T removeFirst() {
-                return remove(0);
+                return this->remove(0);
             }
 
             /**
@@ -128,7 +128,7 @@ namespace seedengine {
              * @return The removed element.
              */
             virtual T removeLast() {
-                return remove(this->size() - 1);
+                return this->remove(this->size() - 1);
             }
 
             // Search
@@ -138,7 +138,7 @@ namespace seedengine {
             virtual void clear() {
                 const std::size_t s = this->size();
                 for (std::size_t i = 0; i < s; i++) {
-                    removeFirst();
+                    this->removeFirst();
                 }
             }
 
@@ -148,7 +148,7 @@ namespace seedengine {
             virtual void reverse() {
                 const std::size_t s = this->size();
                 for (std::size_t i = 0; i < s; i++) {
-                    add(i, removeLast());
+                    this->add(i, removeLast());
                 }
             }
             

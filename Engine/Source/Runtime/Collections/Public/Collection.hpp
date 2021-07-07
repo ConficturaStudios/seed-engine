@@ -102,7 +102,7 @@ namespace seedengine {
              */
             virtual void removeIf(bool (*check)(const T&)) {
                 for (size_t i = 0; i < size(); i++) {
-                    if (check(get(i))) remove(i--);
+                    if (check(get(i))) this->remove(i--);
                 }
             }
 
