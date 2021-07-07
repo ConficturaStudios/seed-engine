@@ -62,8 +62,7 @@ jobs:
 
       - name: Coverage Report
         run: |
-          ls -R
-          lcov --capture --directory ${{env.ENGINE_FOLDER}} --output-file coverage.info
+          lcov --capture --directory ${{env.BUILD_FOLDER}}/Source --output-file coverage.info
           lcov --remove coverage.info '*/Dev/*' '*/Extern/*' '*/Editor/*' '*/Tools/*' '*/Test/*' --output-file coverage.info
           lcov --list coverage.info
 
