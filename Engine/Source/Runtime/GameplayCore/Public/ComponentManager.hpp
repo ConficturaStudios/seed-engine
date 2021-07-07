@@ -31,7 +31,7 @@ namespace seedengine {
             template<typename T, typename = typename std::enable_if<std::is_base_of<Component, T>::value>::type>
             static T createComponent() {
                 static_assert(std::is_base_of<Component, T>::value, "T must be of type Component.");
-                return 
+                return T();
             }
 
         // Operators
