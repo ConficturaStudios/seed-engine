@@ -17,11 +17,13 @@ An open source game engine that supports both 3D and 2D games. The engine is des
 [![GitHub Actions MacOS Build Status](https://github.com/ConficturaStudios/seed-engine/actions/workflows/build-macos.yml/badge.svg?branch=dev)](https://github.com/ConficturaStudios/seed-engine/actions/workflows/build-macos.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ConficturaStudios/seed-engine/badge.svg?branch=dev)](https://coveralls.io/github/ConficturaStudios/seed-engine?branch=dev)
 
-***NOTE:*** *Coverage reports and issue tracking are still being set up, and will be available at a later time.*
+This project is still under active development and is currently not production ready. Since key features are still in development, please check back later if you are hoping to use this in a production environment.
 
 ## Documentation
 
 Documentation for this project is generated using [Doxygen](https://www.doxygen.org) and will be hosted here on github as well as on the [Confictura Studios website](https://www.conficturastudios.com).
+
+***NOTE:*** *Doxygen is still being set up for this project.*
 
 ## Features
 
@@ -31,7 +33,7 @@ As an application still in the early phases of development, most features still 
 
 The following are features planned for v1.0.0:
 
-- ECS based arcitecture using [EnTT](https://github.com/skypjack/entt)
+- ECS based architecture using [EnTT](https://github.com/skypjack/entt)
 - Deferred and Forward Rendering options
 - Multiple Graphics APIs (see [Graphics](#Graphics))
 - Mobile platform support (see [Platforms](#Platforms))
