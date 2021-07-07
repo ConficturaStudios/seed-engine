@@ -48,7 +48,6 @@ jobs:
           sudo apt-get install -y libxi-dev
           sudo apt-get install -y libxext-dev
           sudo apt install lcov
-          pip install --user cpp-coveralls
 
       - name: Configure CMake
         run: cmake -S ${{env.ENGINE_FOLDER}} -B ${{env.BUILD_FOLDER}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_EDITOR=OFF -DBUILD_TESTS=ON -DENABLE_COVERAGE=ON
@@ -62,7 +61,13 @@ jobs:
 
       - name: Coverage Report
         run: |
-          lcov --capture --directory ${{env.BUILD_FOLDER}}/Source --output-file coverage.info
-          lcov --remove coverage.info '*/Dev/*' '*/Extern/*' '*/Editor/*' '*/Tools/*' '*/Test/*' --output-file coverage.info
-          lcov --list coverage.info
+          lcov --capture --directory ${{env.BUILD_FOLDER}}/Source --output-file coverage/lcov.info
+          lcov --remove coverage/lcov.info '*/Dev/*' '*/Extern/*' '*/Editor/*' '*/Tools/*' '*/Test/*' '/usr/*' --output-file coverage/lcov.info
+          lcov --list coverage/lcov.info
+
+      - name: Coveralls Upload
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{secrets.github_token}}
+          path-to-lcov: ${{github.workspace}}/coverage.info
 
