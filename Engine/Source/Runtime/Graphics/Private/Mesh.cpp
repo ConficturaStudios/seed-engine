@@ -60,13 +60,10 @@ namespace seedengine {
     }
 
     UniquePtr<Mesh> Mesh::load(const char* path) {
-        FILE* source;
-        errno_t result;
+        FILE* source = fopen(path, "rb");
         // Open file
-        if ((result = fopen_s(&source, path, "rb")) != 0) {
-            char buffer[1024];
-            strerror_s(buffer, result);
-            ENGINE_DEBUG_ERROR("Failed to open mesh file '{0}': {1}", path, buffer);
+        if (!source) {
+            ENGINE_DEBUG_ERROR("Failed to open mesh file '{0}'", path);
             return nullptr;
         }
         // Allocate mesh

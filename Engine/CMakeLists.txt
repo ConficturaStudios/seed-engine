@@ -54,6 +54,12 @@ if (NOT ${CMAKE_GENERATOR_PLATFORM} STREQUAL "x64")
     set(BUILD_EDITOR OFF)
 endif()
 
+# Compiler Specific Configuration
+
+if (MSVC)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+endif()
+
 # Graphics options
 
 option(ENABLE_OPENGL "Enable Open GL features and rendering in this build" ON)
