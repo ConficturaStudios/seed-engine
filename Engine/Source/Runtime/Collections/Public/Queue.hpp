@@ -22,6 +22,9 @@ namespace seedengine {
      * @brief A first-in first-out queue of generic data.
      * @details
      * A first-in first-out queue of generic data built on top of a linked list implementation.
+     * It is worth noting that this queue implementation is not what would be considered a pure queue in that
+     * it allows for all generic collection operations and iteration without removal. This may be changed
+     * in a later update.
      *
      * @tparam T The type of data stored in this queue.
      */
