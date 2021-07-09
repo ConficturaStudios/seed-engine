@@ -64,13 +64,13 @@ namespace seedengine {
              * @brief The copy constructor for Pair objects.
              * @details Constructs a new Pair by copying an existing Pair.
              */
-            Pair(const Pair& ref) = default;
+            constexpr Pair(const Pair& ref) = default;
             
             /**
              * @brief The move constructor for Pair objects.
              * @details Constructs a new Pair by moving the data of a Pair into this object.
              */
-            Pair(Pair&& ref) = default;
+            constexpr Pair(Pair&& ref) noexcept = default;
 
             /**
              * @brief The destructor for Pair objects.
