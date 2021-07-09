@@ -71,8 +71,8 @@ jobs:
           github-token: ${{secrets.github_token}}
           path-to-lcov: ${{github.workspace}}/coverage-lcov.info
 
-      - name: Doxygen Build
-        uses: mattnotmitt/doxygen-action@v1
-        with:
-          working-directory: ${{env.ENGINE_FOLDER}}/Source
-          doxyfile-path: ../Docs/Doxyfile
+#      - name: Doxygen Build
+#        uses: mattnotmitt/doxygen-action@v1
+#        with:
+#          working-directory: ${{env.ENGINE_FOLDER}}/Source
+#          doxyfile-path: ../Docs/Doxyfile
