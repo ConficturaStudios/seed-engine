@@ -14,14 +14,19 @@
 
 #include "CollectionsAPI.hpp"
 
+#include "Collection.hpp"
+
 namespace seedengine {
 
     /**
-     * @brief
+     * @brief A first-in first-out queue of generic data.
      * @details
-     * 
+     * A first-in first-out queue of generic data built on top of a linked list implementation.
+     *
+     * @tparam T The type of data stored in this queue.
      */
-    class Queue {
+    template<typename T>
+    class Queue : public Collection<T> {
 
         public:
 
@@ -31,8 +36,8 @@ namespace seedengine {
              * @brief The default constructor for Queue objects.
              * @details Constructs a new Queue with default initialization for all members.
              */
-            Queue() {
-                
+            Queue() : Collection<T>() {
+                m_list();
             }
 
             /**
@@ -51,13 +56,83 @@ namespace seedengine {
              * @brief The destructor for Queue objects.
              * @details Called when an instance of Queue is deleted.
              */
-            virtual ~Queue() {
-                
-            }
+            virtual ~Queue() = default;
 
         // Functions
 
+            /**
+             * Pushes the provided value to the back of this queue.
+             * @param value The value to add to this queue.
+             */
+            void enqueue(const T& value) {
+                m_list.addLast(value);
+            }
 
+            /**
+             * Removes and returns the first element in this queue.
+             * @return The previously first element of this queue.
+             */
+            T dequeue() {
+                return m_list.removeFirst();
+            }
+
+            /**
+             * Returns the first element of this queue without removing it.
+             * @return The first element of this queue.
+             */
+            [[nodiscard]] T& front() {
+                return m_list.first();
+            }
+
+            /**
+             * Returns the first element of this queue without removing it.
+             * @return The first element of this queue.
+             */
+            [[nodiscard]] const T& front() const {
+                return m_list.first();
+            }
+
+            [[nodiscard]] size_t size() const noexcept override {
+                return m_list.size();
+            }
+
+            bool removeElement(const T& element) override {
+                return m_list.removeElement(element);
+            }
+
+            bool contains(const T& element) const override {
+                return m_list.contains(element);
+            }
+
+            void clear() override {
+                m_list.clear();
+            }
+
+        // Iterators
+
+            [[nodiscard]] Iterator<T> begin() override {
+                return m_list.begin();
+            }
+
+            [[nodiscard]] const Iterator<T> begin() const override {
+                return m_list.begin();
+            }
+
+            [[nodiscard]] const Iterator<T> cbegin() const override {
+                return m_list.cbegin();
+            }
+
+            [[nodiscard]] Iterator<T> end() override {
+                return m_list.end();
+            }
+
+            [[nodiscard]] const Iterator<T> end() const override {
+                return m_list.end();
+            }
+
+            [[nodiscard]] const Iterator<T> cend() const override {
+                return m_list.cend();
+            }
 
         // Assignment Operators
 
@@ -73,9 +148,10 @@ namespace seedengine {
              */
             Queue& operator=(Queue&& rhs) noexcept = default;
 
-        protected:
-
         private:
+
+            /** The internal linked list representing this queue. */
+            LinkedList<T> m_list;
 
     };
 
