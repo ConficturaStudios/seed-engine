@@ -28,7 +28,7 @@ namespace seedengine {
      *
      * @tparam T The type of data stored in this queue.
      */
-    template<typename T>
+    template <typename T>
     class Queue : public Collection<T> {
 
         public:
@@ -103,7 +103,7 @@ namespace seedengine {
                 return m_list.removeElement(element);
             }
 
-            bool contains(const T& element) const override {
+            [[nodiscard]]  bool contains(const T& element) const override {
                 return m_list.contains(element);
             }
 
