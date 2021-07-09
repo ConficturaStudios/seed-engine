@@ -28,7 +28,7 @@ namespace seedengine {
      * @tparam T The type of data stored in this list.
      */
     template <typename T>
-    class List : public Collection<T, std::size_t> {
+    class List : public Collection<T>, public ReverseIterable<T, Iterator<T>> {
 
         public:
 
@@ -59,6 +59,35 @@ namespace seedengine {
             virtual ~List() = default;
 
         // Functions
+
+            /**
+             * Sets the value associated with the specified index to the provided value.
+             * @param index The index to set at.
+             * @param value The new value.
+             * @return The previously stored value.
+             */
+            virtual T set(std::size_t index, const T& value) = 0;
+
+            /**
+             * Gets the value associated with the specified index.
+             * @param index The index to get.
+             * @return The value at the index.
+             */
+            [[nodiscard]] virtual T& get(std::size_t index) = 0;
+
+            /**
+             * Gets the value associated with the specified index.
+             * @param index The index to get.
+             * @return The value at the index.
+             */
+            [[nodiscard]] virtual const T& get(std::size_t index) const = 0;
+
+            /**
+             * Removes the element with the specified index.
+             * @param index The index of the element to remove.
+             * @return The removed object.
+             */
+            virtual T remove(std::size_t index) = 0;
 
             /**
              * Adds the provided value to the list at the specified index.
@@ -157,6 +186,14 @@ namespace seedengine {
         // Conversion
 
         // Operators
+
+            [[nodiscard]] virtual T& operator[](std::size_t index) {
+                return get(index);
+            }
+
+            [[nodiscard]] virtual const T& operator[](std::size_t index) const {
+                return get(index);
+            }
 
         // Assignment Operators
 

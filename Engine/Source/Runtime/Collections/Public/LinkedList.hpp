@@ -22,7 +22,7 @@
 namespace seedengine {
 
     /**
-     * @brief A doubly linked list collection with a m_head and m_tail pointer.
+     * @brief A doubly linked list collection with a head and tail pointer.
      * @details
      *
      * @tparam T The type of data stored in this list.
@@ -348,18 +348,21 @@ namespace seedengine {
                 m_size++;
             }
 
-            void removeIf(bool (*check)(const T &)) override {
+            size_t removeIf(bool (*filter)(const T &)) override {
+                size_t removed = 0;
                 LinkedNode* current = m_sentinel->next;
                 while (current && current != m_sentinel) {
                     LinkedNode* next = current->next;
-                    if (check(current->value)) {
+                    if (filter(current->value)) {
                         current->prev->next = current->next;
                         current->next->prev = current->prev;
                         m_size--;
                         free(current);
+                        removed++;
                     }
                     current = next;
                 }
+                return removed;
             }
 
             void addFirst(const T& value) override {

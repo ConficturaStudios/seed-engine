@@ -19,13 +19,14 @@
 namespace seedengine {
 
     /**
-     * @brief A generic collection of T typed objects. A collection is an abstract, iterable representation
-     *        used by all dynamically sized
-     * @tparam T
-     * @tparam IndexType
+     * @brief A generic collection of T typed objects.
+     * @details
+     * A generic collection of T typed objects. A collection is an abstract, iterable representation
+     * used by all dynamically sized sets of data such LinkedLists, Trees, Queues, and Maps.
+     * @tparam T The type of data stored in this collection.
      */
-    template <typename T, typename IndexType>
-    class Collection : public Iterable<T, Iterator<T>>, public ReverseIterable<T, Iterator<T>> {
+    template <typename T>
+    class Collection : public Iterable<T, Iterator<T>> {
 
         public:
             /**
@@ -39,28 +40,6 @@ namespace seedengine {
              * @details Called when an instance of Collection is deleted.
              */
             virtual ~Collection() = default;
-
-            /**
-             * Sets the value associated with the specified index to the provided value.
-             * @param index The index to set at.
-             * @param value The new value.
-             * @return The previously stored value.
-             */
-            virtual T set(IndexType index, const T& value) = 0;
-
-            /**
-             * Gets the value associated with the specified index.
-             * @param index The index to get.
-             * @return The value at the index.
-             */
-            [[nodiscard]] virtual T& get(IndexType index) = 0;
-
-            /**
-             * Gets the value associated with the specified index.
-             * @param index The index to get.
-             * @return The value at the index.
-             */
-            [[nodiscard]] virtual const T& get(IndexType index) const = 0;
 
             /**
              * Gets the number of elements in this collection.
@@ -82,32 +61,112 @@ namespace seedengine {
             virtual bool removeElement(const T& element) = 0;
 
             /**
-             * Removes the element with the specified index.
-             * @param index The index of the element to remove.
-             * @return The removed object.
+             * @brief Searches the collection for the provided elements, removing each if found.
+             * @details
+             * Searches the collection for the provided elements, removing each if found. The number of
+             * elements successfully removed by this function are returned. By default, this function
+             * uses removeElement for each removal.
+             * @param elements The elements to remove.
+             * @return The number of elements successfully removed from this collection.
              */
-            virtual T remove(IndexType index) = 0;
+            virtual size_t removeElements(const Collection<T>& elements) {
+                size_t removed = 0;
+                for (const T& element : elements) {
+                    if (removeElement(element)) removed++;
+                }
+                return removed;
+            }
 
             /**
-             * Checks if this collection contains the specified element.
+             * @brief Iterates through this collection, removing each element matching the
+             *        check condition provided.
+             * @details
+             * Iterates through this collection, removing each element matching the
+             * check condition provided using the removeElement(element) function by default. It is highly
+             * recommended to override this behavior in any derived class.
+             * @param filter The function used to evaluate if each element should be removed.
+             * @return The number of elements that were removed.
+             */
+            virtual size_t removeIf(bool (*filter)(const T&)) {
+                size_t removed = 0;
+                Array<T> elements = this->toArray();
+                for (const T& element : elements) {
+                    if (filter(element)) {
+                        this->removeElement(element);
+                        removed++;
+                    }
+                }
+                return removed;
+            }
+
+            /**
+             * @brief Removes all elements from this collection except for those contained by the
+             *        provided collection.
+             * @details
+             * Removes all elements from this collection except for those contained by the
+             * provided collection. The number of elements remaining after this operation are returned.
+             * By default, the removeElement(element) function is used.
+             * @param elements The elements that should be retained by this collection.
+             * @return The number of elements retained by this collection.
+             */
+            virtual size_t retainElements(const Collection<T>& elements) {
+                Array<T> content = this->toArray();
+                for (const T& element : content) {
+                    if (!elements.contains(element)) removeElement(element);
+                }
+                return this->size();
+            }
+
+            /**
+             * @brief Removes all elements from this collection not matching the provided predicate.
+             * @details
+             * Removes all elements from this collection not matching the provided predicate. The number of
+             * elements remaining after this operation are returned. By default, the removeElement(element)
+             * function is used.
+             * @param filter The predicate function used to evaluate if each element should be retained.
+             * @return The number of elements retained by this collection.
+             */
+            virtual size_t retainIf(bool (*filter)(const T&)) {
+                // TODO: Throw exception or provide check for null predicate
+                Array<T> content = this->toArray();
+                for (const T& element : content) {
+                    if (!filter(element)) removeElement(element);
+                }
+                return this->size();
+            }
+
+            /**
+             * @brief Checks if this collection contains the specified element.
+             * @details
+             * Checks if this collection contains the specified element. The exact behavior
+             * and performance of this function is dependent on the exact type of collection
+             * it is being called on.
              * @param element The element to search for.
              * @return True if the element was found.
              */
             [[nodiscard]] virtual bool contains(const T& element) const = 0;
 
             /**
-             * Iterates through this collection, removing each element matching the
-             * check condition provided.
-             * @param check The function used to evaluate if each element should be removed.
+             * @brief Checks if this collection contains all elements specified by the provided collection.
+             * @details
+             * Checks if this collection contains all elements specified by the provided collection. If an
+             * empty collection is provided, true is returned.
+             * @param elements The elements to search for.
+             * @return True if all elements requested were found.
              */
-            virtual void removeIf(bool (*check)(const T&)) {
-                for (size_t i = 0; i < size(); i++) {
-                    if (check(get(i))) this->remove(i--);
+            [[nodiscard]] virtual bool containsAll(const Collection<T>& elements) const {
+                bool result = true;
+                for (const T& element : elements) {
+                    result &= this->contains(element);
                 }
+                return result;
             }
 
             /**
-             * Removes all elements from this collection.
+             * @brief Removes all elements from this collection.
+             * @details
+             * Removes all elements from this collection. The exact implementation of this
+             * function is defined by its subclasses.
              */
             virtual void clear() = 0;
 
@@ -122,14 +181,6 @@ namespace seedengine {
                     result[i++] = element;
                 }
                 return result;
-            }
-
-            [[nodiscard]] virtual T& operator[](IndexType index) {
-                return get(index);
-            }
-
-            [[nodiscard]] virtual const T& operator[](IndexType index) const {
-                return get(index);
             }
     };
 
