@@ -68,6 +68,8 @@
 #include <memory>
 #include <mutex>
 
+#include <filesystem>
+
 #include <array>
 #include <queue>
 #include <map>
