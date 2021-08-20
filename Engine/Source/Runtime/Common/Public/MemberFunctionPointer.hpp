@@ -15,6 +15,7 @@
 #include "CommonAPI.hpp"
 #include <utility>
 #include <tuple>
+#include "Debug.hpp"
 
 namespace seedengine {
 
@@ -22,29 +23,31 @@ namespace seedengine {
      * @brief A wrapper class for class member function pointers.
      * @details A wrapper class for raw class member function pointers.
      * 
-     * @tparam Class The class type that contains this function.
-     * @tparam ReturnType The return type of the function.
+     * @tparam CT The class type that contains this function.
+     * @tparam RT The return type of the function.
      * @tparam Args The parameter types for the function.
      */
-    template<class Class, typename ReturnType, typename... Args>
-    class ENGINE_API MemberFunctionPointer final {
+    template<class CT, typename RT, typename... Args>
+    class MemberFunctionPointer final {
+
+            // TODO: Add support for const member function pointers
 
         public:
 
         // Type aliases
 
             /** The type of the class that contains this function. */
-            using class_t = Class;
+            using ClassType = CT;
             /** The type of the raw function pointer wrapped by this class. */
-            using pointer_t = ReturnType (Class::*)(Args... args);
+            using PointerType = RT (CT::*)(Args... args);
             /** The type returned by this function pointer. */
-            using return_t = ReturnType;
+            using ReturnType = RT;
             /** The parameter types of this function pointer wrapped in a tuple. */
-            using parameters = std::tuple<Args&&...>;
+            using Parameters = std::tuple<Args&&...>;
 
-            /** The nth paramter type of this function. */
+            /** The nth parameter type of this function. */
             template<std::size_t n>
-            using parameter = typename std::tuple_element<n, parameters>::type;
+            using Parameter = typename std::tuple_element<n, Parameters>::type;
 
         // Constructors and destructor
 
@@ -60,21 +63,22 @@ namespace seedengine {
              * 
              * @param ptr The raw function pointer.
              */
-            MemberFunctionPointer(const pointer_t& ptr) {
-                this->ptr = ptr;
+            MemberFunctionPointer(const PointerType& ptr) {
+                ENGINE_ASSERT(ptr != nullptr, "Cannot create a member function pointer from a null pointer")
+                this->m_ptr = ptr;
             }
 
             /**
              * @brief The copy constructor for MemberFunctionPointer objects.
              * @details Constructs a new MemberFunctionPointer by copying an existing MemberFunctionPointer.
              */
-            MemberFunctionPointer(const MemberFunctionPointer& ref) = default;
+            MemberFunctionPointer(const MemberFunctionPointer& ref) noexcept = default;
             
             /**
              * @brief The move constructor for MemberFunctionPointer objects.
              * @details Constructs a new MemberFunctionPointer by moving the data of a MemberFunctionPointer into this object.
              */
-            MemberFunctionPointer(MemberFunctionPointer&& ref) = default;
+            MemberFunctionPointer(MemberFunctionPointer&& ref) noexcept = default;
 
             /**
              * @brief The destructor for MemberFunctionPointer objects.
@@ -91,30 +95,43 @@ namespace seedengine {
              * @param args The parameters to call this function with.
              * @return ReturnType The return value of this function.
              */
-            ReturnType invoke(Class* inst, Args&&... args) {
-                return (inst->*(ptr))(std::forward<Args>(args)...);
+            RT invoke(CT* inst, Args&&... args) const {
+                return (inst->*(m_ptr))(std::forward<Args>(args)...);
+            }
+
+        // Call Operator
+
+            /**
+             * @brief Calls the stored function pointer using the passed parameters.
+             *
+             * @param inst The instance of the containing class type to call this function on.
+             * @param args The parameters to call this function with.
+             * @return ReturnType The return value of this function.
+             */
+            RT operator()(CT* inst, Args&&... args) const {
+                return (inst->*(m_ptr))(std::forward<Args>(args)...);
             }
 
         // Cast Operators
 
-            operator pointer_t() const {
-                return ptr;
+            [[nodiscard]] operator PointerType() const noexcept {
+                return m_ptr;
             }
 
         // Comparison Operators
 
-            bool operator==(const MemberFunctionPointer& rhs) const {
-                return this->ptr == rhs.ptr;
+            [[nodiscard]] bool operator==(const MemberFunctionPointer& rhs) const {
+                return this->m_ptr == rhs.m_ptr;
             }
-            bool operator==(const pointer_t& rhs) const {
-                return this->ptr == rhs;
+            [[nodiscard]] bool operator==(const PointerType& rhs) const {
+                return this->m_ptr == rhs;
             }
 
-            bool operator!=(const MemberFunctionPointer& rhs) const {
-                return this->ptr != rhs.ptr;
+            [[nodiscard]] bool operator!=(const MemberFunctionPointer& rhs) const {
+                return this->m_ptr != rhs.m_ptr;
             }
-            bool operator!=(const pointer_t& rhs) const {
-                return this->ptr != rhs;
+            [[nodiscard]] bool operator!=(const PointerType& rhs) const {
+                return this->m_ptr != rhs;
             }
 
         // Assignment Operators
@@ -123,18 +140,18 @@ namespace seedengine {
              * @brief The copy assignment operator for MemberFunctionPointer objects.
              * @details Reassigns the value of this object by copying the data of a MemberFunctionPointer into this object.
              */
-            MemberFunctionPointer& operator=(const MemberFunctionPointer& ref) = default;
+            MemberFunctionPointer& operator=(const MemberFunctionPointer& ref) noexcept = default;
 
             /**
              * @brief The move assignment operator for MemberFunctionPointer objects.
              * @details Reassigns the value of this object by moving the data of a MemberFunctionPointer into this object.
              */
-            MemberFunctionPointer& operator=(MemberFunctionPointer&& ref) = default;
+            MemberFunctionPointer& operator=(MemberFunctionPointer&& ref) noexcept = default;
 
         private:
 
             /** The pointer to the wrapped function. */
-            pointer_t ptr;
+            PointerType m_ptr;
 
     };
 

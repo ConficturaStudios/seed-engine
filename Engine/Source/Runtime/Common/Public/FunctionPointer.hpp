@@ -15,6 +15,7 @@
 #include "CommonAPI.hpp"
 #include <utility>
 #include <tuple>
+#include "Debug.hpp"
 
 namespace seedengine {
 
@@ -22,26 +23,26 @@ namespace seedengine {
      * @brief A wrapper class for function pointers.
      * @details A wrapper class for raw function pointers and captureless lambda statements.
      * 
-     * @tparam ReturnType The return type of the function.
+     * @tparam RT The return type of the function.
      * @tparam Args The parameter types for the function.
      */
-    template<typename ReturnType, typename... Args>
-    class ENGINE_API FunctionPointer final {
+    template<typename RT, typename... Args>
+    class FunctionPointer final {
 
         public:
 
         // Type aliases
 
             /** The type of the raw function pointer wrapped by this class. */
-            using pointer_t = ReturnType (*)(Args... args);
+            using PointerType = RT (*)(Args... args);
             /** The type returned by this function pointer. */
-            using return_t = ReturnType;
+            using ReturnType = RT;
             /** The parameter types of this function pointer wrapped in a tuple. */
-            using parameters = std::tuple<Args&&...>;
+            using Parameters = std::tuple<Args&&...>;
 
-            /** The nth paramter type of this function. */
+            /** The nth parameter type of this function. */
             template<std::size_t n>
-            using parameter = typename std::tuple_element<n, parameters>::type;
+            using Parameter = typename std::tuple_element<n, Parameters>::type;
 
         // Constructors and destructor
 
@@ -57,8 +58,9 @@ namespace seedengine {
              * 
              * @param ptr The raw function pointer.
              */
-            FunctionPointer(const pointer_t& ptr) {
-                this->ptr = ptr;
+            FunctionPointer(const PointerType& ptr) {
+                ENGINE_ASSERT(ptr != nullptr, "Cannot create a function pointer from a null pointer")
+                this->m_ptr = ptr;
             }
 
             /**
@@ -71,7 +73,7 @@ namespace seedengine {
              * @brief The move constructor for FunctionPointer objects.
              * @details Constructs a new FunctionPointer by moving the data of a FunctionPointer into this object.
              */
-            FunctionPointer(FunctionPointer&& ref) = default;
+            FunctionPointer(FunctionPointer&& ref) noexcept = default;
 
             /**
              * @brief The destructor for FunctionPointer objects.
@@ -87,30 +89,42 @@ namespace seedengine {
              * @param args The parameters to call this function with.
              * @return ReturnType The return value of this function.
              */
-            ReturnType invoke(Args&&... args) {
-                return (ptr)(std::forward<Args>(args)...);
+            RT invoke(Args&&... args) const {
+                return (m_ptr)(std::forward<Args>(args)...);
+            }
+
+        // Call operator
+
+            /**
+             * @brief Calls the stored function pointer using the passed parameters.
+             *
+             * @param args The parameters to call this function with.
+             * @return ReturnType The return value of this function.
+             */
+            RT operator()(Args&&... args) const {
+                return (m_ptr)(std::forward<Args>(args)...);
             }
 
         // Cast Operators
 
-            operator pointer_t() const {
-                return ptr;
+            [[nodiscard]] operator PointerType() const noexcept {
+                return m_ptr;
             }
 
         // Comparison Operators
 
-            bool operator==(const FunctionPointer& rhs) const {
-                return this->ptr == rhs.ptr;
+            [[nodiscard]] bool operator==(const FunctionPointer& rhs) const {
+                return this->m_ptr == rhs.m_ptr;
             }
-            bool operator==(const pointer_t& rhs) const {
-                return this->ptr == rhs;
+            [[nodiscard]] bool operator==(const PointerType& rhs) const {
+                return this->m_ptr == rhs;
             }
 
-            bool operator!=(const FunctionPointer& rhs) const {
-                return this->ptr != rhs.ptr;
+            [[nodiscard]] bool operator!=(const FunctionPointer& rhs) const {
+                return this->m_ptr != rhs.m_ptr;
             }
-            bool operator!=(const pointer_t& rhs) const {
-                return this->ptr != rhs;
+            [[nodiscard]] bool operator!=(const PointerType& rhs) const {
+                return this->m_ptr != rhs;
             }
 
         // Assignment Operators
@@ -119,18 +133,18 @@ namespace seedengine {
              * @brief The copy assignment operator for FunctionPointer objects.
              * @details Reassigns the value of this object by copying the data of a FunctionPointer into this object.
              */
-            FunctionPointer& operator=(const FunctionPointer& ref) = default;
+            FunctionPointer& operator=(const FunctionPointer& ref) noexcept = default;
 
             /**
              * @brief The move assignment operator for FunctionPointer objects.
              * @details Reassigns the value of this object by moving the data of a FunctionPointer into this object.
              */
-            FunctionPointer& operator=(FunctionPointer&& ref) = default;
+            FunctionPointer& operator=(FunctionPointer&& ref) noexcept = default;
 
         private:
 
             /** The pointer to the wrapped function. */
-            pointer_t ptr;
+            PointerType m_ptr;
 
     };
 
