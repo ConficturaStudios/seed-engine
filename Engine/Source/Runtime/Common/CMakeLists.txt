@@ -28,6 +28,7 @@ set(${LIBRARY_NAME_UPPER}_HEADERS
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonSTL.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/CommonTraits.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Debug.hpp
+	${CMAKE_CURRENT_LIST_DIR}/Public/Delegate.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/FunctionPointer.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/Log.hpp
 	${CMAKE_CURRENT_LIST_DIR}/Public/MemberFunctionPointer.hpp
@@ -78,6 +79,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ${LIBRARY_SCOPE} ENGINE_COMPILE_DEBUG=1)
 endif()
 
+add_dependencies(${LIBRARY_NAME} RuntimeCollections)
+target_link_libraries(${LIBRARY_NAME} ${LIBRARY_SCOPE} RuntimeCollections)
 
 
 target_include_directories(${LIBRARY_NAME}

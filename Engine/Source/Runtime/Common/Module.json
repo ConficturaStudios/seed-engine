@@ -3,7 +3,12 @@
     "Name": "Common",
     "BuildTarget": "Shared",
     "CustomOutputName": "",
-    "Dependencies": [],
+    "Dependencies": [
+        {
+            "Domain": "Runtime",
+            "Module": "Collections"
+        }
+    ],
     "GenerateCMake": "True",
     "GenerateAPI": "True",
     "GenerateCompositeHeader": "True",
